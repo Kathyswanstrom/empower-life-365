@@ -650,6 +650,82 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 }
 
 
+
+/* ── EXPANDED CALENDAR THEMES ── */
+/* Ocean */
+.theme-ocean .calendar-grid { background: linear-gradient(135deg, #E0F7FA, #B2EBF2); }
+.theme-ocean .month-title { color: #00838F !important; }
+.theme-ocean .dow-header { background: #00838F !important; }
+.theme-ocean .day-cell.weekend { background: #E0F7FA !important; }
+
+/* Patriotic */
+.theme-patriotic .calendar-grid { background: linear-gradient(135deg, #FFEBEE, #E3F2FD); }
+.theme-patriotic .month-title { color: #B71C1C !important; }
+.theme-patriotic .dow-header { background: #B71C1C !important; }
+.theme-patriotic .day-cell.weekend { background: #E3F2FD !important; }
+.theme-patriotic .day-cell.major { background: #FFCDD2 !important; }
+
+/* Garden */
+.theme-garden .calendar-grid { background: linear-gradient(135deg, #F3E5F5, #E8F5E9); }
+.theme-garden .month-title { color: #6A1B9A !important; }
+.theme-garden .dow-header { background: #6A1B9A !important; }
+.theme-garden .day-cell.weekend { background: #F3E5F5 !important; }
+
+/* Harvest */
+.theme-harvest .calendar-grid { background: linear-gradient(135deg, #FFF3E0, #FBE9E7); }
+.theme-harvest .month-title { color: #E65100 !important; }
+.theme-harvest .dow-header { background: #E65100 !important; }
+.theme-harvest .day-cell.weekend { background: #FFF3E0 !important; }
+
+/* Valentine */
+.theme-valentine .calendar-grid { background: linear-gradient(135deg, #FCE4EC, #FFF8E1); }
+.theme-valentine .month-title { color: #AD1457 !important; }
+.theme-valentine .dow-header { background: #AD1457 !important; }
+.theme-valentine .day-cell.weekend { background: #FCE4EC !important; }
+
+/* St. Patrick */
+.theme-stpatrick .calendar-grid { background: linear-gradient(135deg, #E8F5E9, #F9FBE7); }
+.theme-stpatrick .month-title { color: #1B5E20 !important; }
+.theme-stpatrick .dow-header { background: #1B5E20 !important; }
+.theme-stpatrick .day-cell.weekend { background: #DCEDC8 !important; }
+
+/* Sunrise */
+.theme-sunrise .calendar-grid { background: linear-gradient(135deg, #FFF8E1, #FCE4EC); }
+.theme-sunrise .month-title { color: #F57F17 !important; }
+.theme-sunrise .dow-header { background: linear-gradient(90deg,#F57F17,#AD1457) !important; }
+.theme-sunrise .day-cell.weekend { background: #FFF8E1 !important; }
+
+/* Lavender */
+.theme-lavender .calendar-grid { background: linear-gradient(135deg, #EDE7F6, #F3E5F5); }
+.theme-lavender .month-title { color: #4527A0 !important; }
+.theme-lavender .dow-header { background: #4527A0 !important; }
+.theme-lavender .day-cell.weekend { background: #EDE7F6 !important; }
+
+/* Birthday Calendar */
+.birthday-cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap:4px; background:var(--gray-200); border-radius:var(--radius-lg); overflow:hidden; padding:4px; }
+.bday-dow { background:var(--navy); color:white; padding:8px; text-align:center; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.bday-cell { background:white; padding:6px 8px; min-height:90px; display:flex; flex-direction:column; position:relative; }
+.bday-cell.empty { background:var(--gray-100); }
+.bday-cell.weekend { background:var(--bg-blue); }
+.bday-num { font-size:16px; font-weight:700; color:var(--navy); }
+.bday-entry { font-size:10px; margin-top:2px; padding:2px 5px; border-radius:10px; background:#FCE4EC; color:#AD1457; font-weight:600; display:flex; align-items:center; gap:3px; }
+.bday-entry .bday-icon { font-size:9px; }
+.theme-picker { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+.theme-swatch { width:36px; height:36px; border-radius:8px; border:2px solid var(--gray-200); cursor:pointer; transition:all 0.15s; position:relative; }
+.theme-swatch:hover { transform:scale(1.15); border-color:var(--navy); }
+.theme-swatch.active { border:3px solid var(--navy); box-shadow:var(--shadow); }
+.theme-swatch title { display:none; }
+.bday-form { background:white; border-radius:var(--radius); padding:16px 20px; border:1px solid var(--gray-200); margin-bottom:16px; }
+.bday-form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+.bday-form label { font-size:12px; font-weight:700; color:var(--navy); display:block; margin-bottom:3px; }
+.bday-form input, .bday-form select { width:100%; padding:7px 10px; border:1px solid var(--gray-300); border-radius:6px; font-size:13px; font-family:inherit; }
+@media print {
+  body.printing-bday .app-header, body.printing-bday .tab-bar,
+  body.printing-bday section.tab-panel:not(#panel-birthday),
+  body.printing-bday .bday-controls, body.printing-bday .bday-form { display:none !important; }
+  .bday-cell { min-height:80px; }
+}
+
 /* ── EMPOWER MOMENTS TWO-SIDED SHEET ── */
 .em-sheet-wrapper { max-width: 780px; margin: 0 auto; }
 .em-sheet { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; margin-bottom: 24px; font-family: Georgia, serif; }
@@ -773,6 +849,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="puzzles">🧩 Resident Puzzles</button>
     <button class="tab-btn" data-tab="tv">📺 TV Display</button>
     <button class="tab-btn" data-tab="library">📚 Library</button>
+    <button class="tab-btn" data-tab="birthday">🎂 Birthdays</button>
     <button class="tab-btn" data-tab="empower-moments">📰 Empower Moments</button>
     <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
@@ -794,6 +871,10 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="btn btn-secondary" onclick="exportCalendarPDF()">📄 Export PDF</button>
       <button class="btn btn-secondary" onclick="switchTab('tv')">📺 TV Display</button>
     </div>
+  </div>
+  <div style="margin-bottom:10px;">
+    <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🎨 Background Theme</div>
+    <div class="theme-picker" id="theme-picker"><div class="theme-swatch" style="background:linear-gradient(135deg,#E8F5E9,#FFF2CC);" onclick="setCalendarTheme('auto');updateSwatches();" title="Auto" id="swatch-auto"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#1F3864,#2E75B6);" onclick="setCalendarTheme('classic');updateSwatches();" title="Classic" id="swatch-classic"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#E8F5E9,#FFF8E1);" onclick="setCalendarTheme('spring');updateSwatches();" title="Spring" id="swatch-spring"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FFF8E1,#FFE0B2);" onclick="setCalendarTheme('summer');updateSwatches();" title="Summer" id="swatch-summer"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FBE9E7,#FFF3E0);" onclick="setCalendarTheme('fall');updateSwatches();" title="Fall" id="swatch-fall"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#E1F5FE,#F3E5F5);" onclick="setCalendarTheme('winter');updateSwatches();" title="Winter" id="swatch-winter"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FFEBEE,#E8F5E9);" onclick="setCalendarTheme('holiday');updateSwatches();" title="Holiday" id="swatch-holiday"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2);" onclick="setCalendarTheme('ocean');updateSwatches();" title="Ocean" id="swatch-ocean"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FFEBEE,#E3F2FD);" onclick="setCalendarTheme('patriotic');updateSwatches();" title="Patriotic" id="swatch-patriotic"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#F3E5F5,#E8F5E9);" onclick="setCalendarTheme('garden');updateSwatches();" title="Garden" id="swatch-garden"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FFF3E0,#FBE9E7);" onclick="setCalendarTheme('harvest');updateSwatches();" title="Harvest" id="swatch-harvest"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FCE4EC,#FFF8E1);" onclick="setCalendarTheme('valentine');updateSwatches();" title="Valentine" id="swatch-valentine"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#E8F5E9,#F9FBE7);" onclick="setCalendarTheme('stpatrick');updateSwatches();" title="St. Pat's" id="swatch-stpatrick"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#FFF8E1,#FCE4EC);" onclick="setCalendarTheme('sunrise');updateSwatches();" title="Sunrise" id="swatch-sunrise"></div><div class="theme-swatch" style="background:linear-gradient(135deg,#EDE7F6,#F3E5F5);" onclick="setCalendarTheme('lavender');updateSwatches();" title="Lavender" id="swatch-lavender"></div></div>
   </div>
   <div class="season-banner" id="season-banner"></div>
   <div class="calendar-grid" id="calendar-grid"></div>
@@ -1026,6 +1107,70 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 
 
+
+<section class="tab-panel" id="panel-birthday">
+  <div class="bday-controls" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+    <div>
+      <h2 style="margin:0;">🎂 Birthday Calendar</h2>
+      <div class="subtitle">Track resident birthdays — auto-populated when Residex is connected.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-gold" onclick="exportBirthdayPDF()">📄 Export PDF</button>
+      <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
+      <button class="btn btn-secondary" onclick="importBirthdayCSV()">📥 Import CSV</button>
+    </div>
+  </div>
+
+  <!-- Add Birthday Form -->
+  <div class="bday-form" id="bday-add-form">
+    <div style="font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">➕ Add Resident Birthday</div>
+    <div class="bday-form-grid">
+      <div>
+        <label>Resident Name</label>
+        <input id="bday-name" type="text" placeholder="e.g. Margaret Johnson">
+      </div>
+      <div>
+        <label>Month</label>
+        <select id="bday-month">
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5" selected>May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+      </div>
+      <div>
+        <label>Day</label>
+        <input id="bday-day" type="number" min="1" max="31" placeholder="e.g. 14">
+      </div>
+      <div>
+        <label>Room / Unit (optional)</label>
+        <input id="bday-room" type="text" placeholder="e.g. 204B">
+      </div>
+      <div>
+        <label>Care Level</label>
+        <select id="bday-level">
+          <option value="all">All Levels</option>
+          <option value="AL">Assisted Living</option>
+          <option value="IL">Independent</option>
+          <option value="MC">Memory Care</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <button class="btn btn-gold" onclick="addBirthday()">+ Add Birthday</button>
+      <button class="btn btn-secondary" onclick="clearAllBirthdays()" style="margin-left:auto;">🗑 Clear All</button>
+    </div>
+  </div>
+
+  <!-- Birthday calendar view -->
+  <div id="birthday-cal-container"></div>
+
+  <!-- Hidden CSV input -->
+  <input type="file" id="bday-csv-input" accept=".csv" style="display:none;" onchange="handleBirthdayCSV(event)">
+</section>
+
 <section class="tab-panel" id="panel-empower-moments">
   <div class="em-controls" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
     <div>
@@ -1104,12 +1249,20 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <label for="setting-theme">Theme</label>
     <select id="setting-theme" onchange="setCalendarTheme(this.value)">
       <option value="auto">Auto (by current month)</option>
-      <option value="classic">Classic (no seasonal accent)</option>
-      <option value="spring">🌷 Spring (green + gold)</option>
-      <option value="summer">☀️ Summer (gold + orange)</option>
-      <option value="fall">🍂 Fall (warm orange + brown)</option>
-      <option value="winter">❄️ Winter (cool blue + lavender)</option>
-      <option value="holiday">🎄 Holiday (red + green)</option>
+      <option value="classic">Classic Navy</option>
+      <option value="spring">🌷 Spring Garden</option>
+      <option value="summer">☀️ Summer Glow</option>
+      <option value="fall">🍂 Autumn Harvest</option>
+      <option value="winter">❄️ Winter Frost</option>
+      <option value="holiday">🎄 Holiday</option>
+      <option value="ocean">🌊 Ocean Breeze</option>
+      <option value="patriotic">🇺🇸 Patriotic</option>
+      <option value="garden">🌸 Garden Bloom</option>
+      <option value="harvest">🎃 Harvest Moon</option>
+      <option value="valentine">💕 Valentine</option>
+      <option value="stpatrick">☘️ St. Patrick's</option>
+      <option value="sunrise">🌅 Sunrise</option>
+      <option value="lavender">💜 Lavender Fields</option>
     </select>
     <p style="margin-top:6px;color:var(--gray-500);font-size:12px;">Note: Theme accents print only with the Color background option (stripped on White / B&W prints for regulatory clarity).</p>
   </div>
@@ -1263,6 +1416,7 @@ function renderLevelSwitcher() {
     btn.addEventListener('click', () => {
       currentLevel = btn.dataset.level;
       document.documentElement.style.setProperty('--level-color', DATA.levelColors[currentLevel]);
+updateSwatches();
       renderLevelSwitcher();
       renderCalendar();
       renderDailySheet();
@@ -2410,6 +2564,7 @@ function mulberry32(a) {
 }
 
 document.documentElement.style.setProperty('--level-color', DATA.levelColors[currentLevel]);
+updateSwatches();
 applyCalendarTheme();
 renderLevelSwitcher();
 renderCalendar();
@@ -2420,6 +2575,175 @@ renderLibrary();
 renderTimeSettings();
 renderAboutSlots();
 
+
+
+
+// ─────────────────────────────────────────────
+// BIRTHDAY CALENDAR
+// ─────────────────────────────────────────────
+const BDAY_KEY = 'el365_birthdays';
+
+function getBirthdays() {
+  try { return JSON.parse(localStorage.getItem(BDAY_KEY) || '[]'); } catch(e) { return []; }
+}
+function saveBirthdays(list) {
+  localStorage.setItem(BDAY_KEY, JSON.stringify(list));
+}
+
+function addBirthday() {
+  const name  = document.getElementById('bday-name').value.trim();
+  const month = parseInt(document.getElementById('bday-month').value);
+  const day   = parseInt(document.getElementById('bday-day').value);
+  const room  = document.getElementById('bday-room').value.trim();
+  const level = document.getElementById('bday-level').value;
+  if (!name || !day || day < 1 || day > 31) {
+    alert('Please enter a name and valid day.'); return;
+  }
+  const list = getBirthdays();
+  list.push({ name, month, day, room, level });
+  list.sort((a,b) => a.month - b.month || a.day - b.day);
+  saveBirthdays(list);
+  document.getElementById('bday-name').value = '';
+  document.getElementById('bday-day').value = '';
+  document.getElementById('bday-room').value = '';
+  renderBirthdayCalendar();
+}
+
+function clearAllBirthdays() {
+  if (!confirm('Remove all birthdays?')) return;
+  saveBirthdays([]);
+  renderBirthdayCalendar();
+}
+
+function importBirthdayCSV() {
+  document.getElementById('bday-csv-input').click();
+}
+
+function handleBirthdayCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const lines = e.target.result.split('\n').filter(l => l.trim());
+    const list = getBirthdays();
+    let added = 0;
+    lines.forEach((line, i) => {
+      if (i === 0 && line.toLowerCase().includes('name')) return; // skip header
+      const parts = line.split(',').map(p => p.trim().replace(/^"|"$/g,''));
+      if (parts.length < 3) return;
+      const name = parts[0], month = parseInt(parts[1]), day = parseInt(parts[2]);
+      const room = parts[3] || '', level = parts[4] || 'all';
+      if (!name || isNaN(month) || isNaN(day)) return;
+      list.push({ name, month, day, room, level });
+      added++;
+    });
+    list.sort((a,b) => a.month - b.month || a.day - b.day);
+    saveBirthdays(list);
+    alert(`✓ Imported ${added} birthday${added !== 1 ? 's' : ''}.`);
+    renderBirthdayCalendar();
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function renderBirthdayCalendar() {
+  const container = document.getElementById('birthday-cal-container');
+  if (!container) return;
+  const birthdays = getBirthdays();
+  let html = '';
+
+  // Show all 12 months
+  for (let m = 1; m <= 12; m++) {
+    const firstDay = new Date(2026, m-1, 1).getDay();
+    const daysInMonth = new Date(2026, m, 0).getDate();
+    const monthBdays = birthdays.filter(b => b.month === m);
+
+    html += `
+    <div style="margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);">${MONTH_NAMES[m-1]}</div>
+        <div style="font-size:13px;color:var(--gray-500);">${monthBdays.length} birthday${monthBdays.length !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="birthday-cal-grid">
+        ${DOW.map(d => `<div class="bday-dow">${d}</div>`).join('')}
+        ${Array(firstDay).fill('<div class="bday-cell empty"></div>').join('')}
+        ${Array.from({length: daysInMonth}, (_,i) => {
+          const d = i+1;
+          const isWeekend = (d + firstDay - 1) % 7 === 0 || (d + firstDay - 1) % 7 === 6;
+          const dayBdays = monthBdays.filter(b => b.day === d);
+          const bdayHtml = dayBdays.map(b =>
+            `<div class="bday-entry"><span class="bday-icon">🎂</span>${escapeHtml(b.name.split(' ')[0])}${b.room ? ' · '+escapeHtml(b.room) : ''}</div>`
+          ).join('');
+          return `<div class="bday-cell${isWeekend?' weekend':''}">
+            <div class="bday-num">${d}</div>
+            ${bdayHtml}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  if (birthdays.length === 0) {
+    html = `<div style="text-align:center;padding:40px;color:var(--gray-500);">
+      <div style="font-size:48px;margin-bottom:12px;">🎂</div>
+      <div style="font-size:16px;font-weight:600;">No birthdays yet</div>
+      <div style="font-size:13px;margin-top:6px;">Add residents above, import a CSV, or connect Residex to auto-populate.</div>
+      <div style="margin-top:14px;background:var(--gray-100);border-radius:8px;padding:12px 18px;font-size:12px;color:var(--gray-500);max-width:420px;margin-left:auto;margin-right:auto;">
+        <strong>CSV Format:</strong> Name, Month (1-12), Day, Room, Level<br>
+        Example: <em>Margaret Johnson, 5, 14, 204B, AL</em>
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function exportBirthdayPDF() {
+  const el = document.getElementById('birthday-cal-container');
+  if (!el) return;
+  const filename = `EmpowerLife365_BirthdayCalendar_${new Date().getFullYear()}.pdf`;
+  const clone = el.cloneNode(true);
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'font-family:Arial,sans-serif;padding:20px;max-width:900px;';
+  wrapper.innerHTML = `<div style="text-align:center;border-bottom:3px solid #BF9000;padding-bottom:14px;margin-bottom:20px;">
+    <div style="font-size:24px;font-weight:800;color:#1F3864;">🎂 Birthday Calendar</div>
+    <div style="font-size:13px;color:#667085;margin-top:4px;">Empower Life 365 · empowerlife365.app</div>
+  </div>`;
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+  html2pdf().set({
+    margin:[10,10,10,10], filename,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,logging:false},
+    jsPDF:{unit:'mm',format:'letter',orientation:'landscape'}
+  }).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+// Update swatch active state
+function updateSwatches() {
+  const current = getCurrentTheme();
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.classList.toggle('active', s.id === 'swatch-' + current);
+  });
+}
+
+// Init birthday calendar on tab click
+document.querySelectorAll('.tab-btn').forEach(b => {
+  if (b.dataset.tab === 'birthday') {
+    b.addEventListener('click', () => setTimeout(renderBirthdayCalendar, 50));
+  }
+});
+
+// Override applyCalendarTheme to also update swatches
+const _origApply = applyCalendarTheme;
+function applyCalendarTheme() { _origApply(); updateSwatches(); }
+
+// Also update theme select in settings when new themes are applied
+const _origSet = setCalendarTheme;
+function setCalendarTheme(t) { _origSet(t); updateSwatches(); }
 
 
 // ─────────────────────────────────────────────
