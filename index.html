@@ -1343,6 +1343,12 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="btn btn-gold" onclick="showMatSection('bingo')">🎲 Bingo Cards</button>
     <button class="btn btn-secondary" onclick="showMatSection('loteria')">🃏 Mexican Lotería</button>
     <button class="btn btn-secondary" onclick="showMatSection('singalong')">🎵 Sing-Along Sheets</button>
+    <button class="btn btn-secondary" onclick="showMatSection('wordgames')">🔤 Word Games</button>
+    <button class="btn btn-secondary" onclick="showMatSection('trivia')">❓ Trivia Packs</button>
+    <button class="btn btn-secondary" onclick="showMatSection('exercise')">🏋️ Exercise Cards</button>
+    <button class="btn btn-secondary" onclick="showMatSection('crafts')">🎨 Crafts</button>
+    <button class="btn btn-secondary" onclick="showMatSection('gamesheets')">🎯 Game Sheets</button>
+    <button class="btn btn-secondary" onclick="showMatSection('reminiscence')">💭 Reminiscence</button>
   </div>
 
   <!-- BINGO CARDS -->
@@ -1394,6 +1400,87 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     </div>
     <div id="singalong-list"></div>
   </div>
+
+  <!-- WORD GAMES -->
+  <div id="mat-wordgames" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">🔤 Word Games & Answer Keys</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Themed word searches and scrambles — each includes a printable answer key.</p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+      <label style="font-size:13px;font-weight:600;">Theme:</label>
+      <select id="wg-theme" style="padding:6px 10px;border-radius:6px;border:1px solid var(--gray-200);font-size:13px;" onchange="renderWordGamePreview()">
+        <option value="0">🌸 Spring & Flowers</option>
+        <option value="1">🍳 Kitchen & Cooking</option>
+        <option value="2">🐾 Animals & Pets</option>
+        <option value="3">✈️ Travel & Places</option>
+        <option value="4">🎶 Music & Entertainment</option>
+        <option value="5">⚽ Sports & Games</option>
+        <option value="6">🌿 Nature & Outdoors</option>
+        <option value="7">🏠 Family & Home</option>
+        <option value="8">🎄 Holidays & Seasons</option>
+        <option value="9">⭐ Simple Words (Memory Care)</option>
+      </select>
+      <button class="btn btn-gold" onclick="renderWordGamePreview()">👁 Preview</button>
+      <button class="btn btn-secondary" onclick="exportWordGamePDF()">📄 Print Puzzle + Key</button>
+    </div>
+    <div id="wg-preview" style="display:flex;gap:24px;flex-wrap:wrap;"></div>
+  </div>
+
+  <!-- TRIVIA PACKS -->
+  <div id="mat-trivia" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">❓ Trivia Packs</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">10-question themed trivia sets — includes answer key. Perfect for afternoon trivia games.</p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+      <label style="font-size:13px;font-weight:600;">Pack:</label>
+      <select id="trivia-pack" style="padding:6px 10px;border-radius:6px;border:1px solid var(--gray-200);font-size:13px;" onchange="renderTriviaPreview()">
+        <option value="0">📺 Classic TV Shows</option>
+        <option value="1">🎬 Old Hollywood</option>
+        <option value="2">🇺🇸 American History</option>
+        <option value="3">🎵 Music of the 50s & 60s</option>
+        <option value="4">🐾 Nature & Animals</option>
+        <option value="5">🍽️ Food & Cooking</option>
+        <option value="6">⚾ Sports Legends</option>
+        <option value="7">✝️ Bible & Inspirational</option>
+        <option value="8">🌍 World Geography</option>
+        <option value="9">💊 Health & Wellness</option>
+      </select>
+      <button class="btn btn-gold" onclick="renderTriviaPreview()">👁 Preview</button>
+      <button class="btn btn-secondary" onclick="exportTriviaPDF()">📄 Print Q&A + Key</button>
+    </div>
+    <div id="trivia-preview"></div>
+  </div>
+
+  <!-- EXERCISE CARDS -->
+  <div id="mat-exercise" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">🏋️ Exercise & Movement Cards</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Printable instruction cards for chair yoga, seated stretches, and movement activities.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="exercise-btns"></div>
+    <div id="exercise-preview"></div>
+  </div>
+
+  <!-- CRAFT SHEETS -->
+  <div id="mat-crafts" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">🎨 Craft Instruction Sheets</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Step-by-step instructions and supply lists for each craft activity.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="craft-btns"></div>
+    <div id="craft-preview"></div>
+  </div>
+
+  <!-- GAME SHEETS -->
+  <div id="mat-gamesheets" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">🎯 Scoring Sheets & Game Rules</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Score sheets, rules cards, and bracket sheets for common afternoon games.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="game-btns"></div>
+    <div id="game-preview"></div>
+  </div>
+
+  <!-- REMINISCENCE -->
+  <div id="mat-reminiscence" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">💭 Reminiscence & Discussion Cards</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Conversation starter cards for reminiscence groups and memory activities.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="rem-btns"></div>
+    <div id="rem-preview"></div>
+  </div>
+
 </section>
 
 </main>
@@ -3661,15 +3748,7 @@ const SING_ALONG_DATA = {
 
 let currentDecade = 'classics';
 
-function showMatSection(section) {
-  ['bingo','loteria','singalong'].forEach(s => {
-    const el = document.getElementById('mat-' + s);
-    if (el) el.style.display = s === section ? '' : 'none';
-  });
-  if (section === 'bingo') renderBingoCards();
-  if (section === 'loteria') renderLoteriaCards();
-  if (section === 'singalong') showDecade(currentDecade);
-}
+// showMatSection defined below with full 9-section support
 
 function showDecade(decade) {
   currentDecade = decade;
@@ -3831,6 +3910,721 @@ function exportSingAlongPDF() {
   wrapper.innerHTML = html;
   document.body.appendChild(wrapper);
   html2pdf().set(getPdfOpts('singalong-' + currentDecade + '.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// WORD GAME GENERATOR
+// ─────────────────────────────────────────────
+const WORD_GAME_THEMES = [
+  { name:"Spring & Flowers", words:["TULIP","ROSE","DAISY","VIOLET","LILY","BLOOM","GARDEN","PETAL","SPRING","BUTTERFLY","ROBIN","SUNSHINE","DAFFODIL","IRIS","LAVENDER"] },
+  { name:"Kitchen & Cooking", words:["BUTTER","FLOUR","SUGAR","RECIPE","OVEN","BAKING","SKILLET","SIMMER","GARLIC","ONION","PEPPER","SPATULA","WHISK","APRON","KITCHEN"] },
+  { name:"Animals & Pets", words:["PUPPY","KITTEN","RABBIT","PARROT","TURTLE","HAMSTER","GOLDFISH","CANARY","HORSE","DOLPHIN","ELEPHANT","PENGUIN","KOALA","PANDA","EAGLE"] },
+  { name:"Travel & Places", words:["PARIS","LONDON","HAWAII","FLORIDA","ITALY","OCEAN","MOUNTAIN","RIVER","BRIDGE","HOTEL","PASSPORT","LUGGAGE","AIRPORT","JOURNEY","VOYAGE"] },
+  { name:"Music & Entertainment", words:["MELODY","HARMONY","RHYTHM","GUITAR","PIANO","VIOLIN","TRUMPET","CHORUS","WALTZ","POLKA","BALLAD","CONCERT","SINGER","DANCER","ORCHESTRA"] },
+  { name:"Sports & Games", words:["BASEBALL","BOWLING","TENNIS","GOLF","FISHING","SWIMMING","BINGO","CHECKERS","CARDS","DOMINOES","PUZZLE","CROQUET","HORSESHOES","DARTS","BOCCE"] },
+  { name:"Nature & Outdoors", words:["SUNRISE","RAINBOW","MEADOW","FOREST","CREEK","BREEZE","SUNSET","STARLIGHT","MOONRISE","DEWDROP","ACORN","MAPLE","WILLOW","BIRCH","CEDAR"] },
+  { name:"Family & Home", words:["MOTHER","FATHER","SISTER","BROTHER","GRANDMA","GRANDPA","KITCHEN","GARDEN","PORCH","FIREPLACE","HOLIDAY","DINNER","LAUGHTER","MEMORY","BLESSING"] },
+  { name:"Holidays & Seasons", words:["CHRISTMAS","THANKSGIVING","EASTER","BIRTHDAY","HALLOWEEN","VALENTINE","MEMORIAL","PATRIOTIC","HARVEST","WINTER","SUMMER","AUTUMN","SPRING","CANDLE","WREATH"] },
+  { name:"Simple Words (MC)", words:["CAT","DOG","BIRD","FISH","SUN","MOON","STAR","TREE","FLOWER","HOUSE","LOVE","SMILE","HAPPY","FRIEND","HOME"] },
+];
+
+function buildWordSearch(words, size) {
+  size = size || 12;
+  const grid = Array.from({length:size}, () => Array(size).fill(''));
+  const placed = [];
+  const dirs = [[0,1],[1,0],[1,1],[0,-1],[-1,0],[-1,-1],[1,-1],[-1,1]];
+  const rng = () => Math.random();
+  words.slice(0,12).forEach(word => {
+    const w = word.toUpperCase().replace(/[^A-Z]/g,'');
+    let ok = false;
+    for (let attempt = 0; attempt < 100 && !ok; attempt++) {
+      const [dr,dc] = dirs[Math.floor(rng()*dirs.length)];
+      const maxR = size - (dr > 0 ? w.length*dr : 0) - (dr < 0 ? w.length*Math.abs(dr) : 0);
+      const maxC = size - (dc > 0 ? w.length*dc : 0) - (dc < 0 ? w.length*Math.abs(dc) : 0);
+      const startR = Math.abs(dr < 0 ? (w.length-1)*Math.abs(dr) : 0) + Math.floor(rng() * Math.max(1, size - Math.abs(dr)*w.length));
+      const startC = Math.abs(dc < 0 ? (w.length-1)*Math.abs(dc) : 0) + Math.floor(rng() * Math.max(1, size - Math.abs(dc)*w.length));
+      let canPlace = true;
+      const cells = [];
+      for (let i = 0; i < w.length; i++) {
+        const r = startR + i*dr, c = startC + i*dc;
+        if (r<0||r>=size||c<0||c>=size) { canPlace=false; break; }
+        if (grid[r][c] !== '' && grid[r][c] !== w[i]) { canPlace=false; break; }
+        cells.push([r,c]);
+      }
+      if (canPlace) {
+        cells.forEach(([r,c],i) => grid[r][c] = w[i]);
+        placed.push({word:w, cells});
+        ok = true;
+      }
+    }
+  });
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (let r=0; r<size; r++) for (let c=0; c<size; c++) {
+    if (!grid[r][c]) grid[r][c] = letters[Math.floor(rng()*26)];
+  }
+  return {grid, placed};
+}
+
+function renderWordGamePreview() {
+  const idx = parseInt(document.getElementById('wg-theme')?.value || 0);
+  const theme = WORD_GAME_THEMES[idx];
+  const {grid, placed} = buildWordSearch(theme.words);
+  const answeredCells = new Set(placed.flatMap(p => p.cells.map(([r,c])=>r+','+c)));
+  const container = document.getElementById('wg-preview');
+  if (!container) return;
+  const size = grid.length;
+  const cellSize = 26;
+  let puzzleHtml = '<div style="margin-bottom:16px;"><div style="font-weight:700;color:#1F3864;margin-bottom:8px;">Puzzle</div>';
+  puzzleHtml += '<table style="border-collapse:collapse;font-family:monospace;">';
+  for (let r=0; r<size; r++) {
+    puzzleHtml += '<tr>';
+    for (let c=0; c<size; c++) {
+      puzzleHtml += '<td style="width:'+cellSize+'px;height:'+cellSize+'px;text-align:center;font-size:13px;font-weight:600;border:1px solid #eee;">'+grid[r][c]+'</td>';
+    }
+    puzzleHtml += '</tr>';
+  }
+  puzzleHtml += '</table><div style="margin-top:10px;font-size:12px;color:#555;"><strong>Find these words:</strong> '+theme.words.slice(0,12).join(' &nbsp;·&nbsp; ')+'</div></div>';
+  let keyHtml = '<div><div style="font-weight:700;color:#C00;margin-bottom:8px;">Answer Key</div>';
+  keyHtml += '<table style="border-collapse:collapse;font-family:monospace;">';
+  for (let r=0; r<size; r++) {
+    keyHtml += '<tr>';
+    for (let c=0; c<size; c++) {
+      const isKey = answeredCells.has(r+','+c);
+      keyHtml += '<td style="width:'+cellSize+'px;height:'+cellSize+'px;text-align:center;font-size:13px;font-weight:600;border:1px solid #eee;background:'+( isKey?'#FFD966':'white')+';color:'+( isKey?'#1F3864':'#ccc')+';">'+grid[r][c]+'</td>';
+    }
+    keyHtml += '</tr>';
+  }
+  keyHtml += '</table></div>';
+  container.innerHTML = puzzleHtml + keyHtml;
+}
+
+function exportWordGamePDF() {
+  const idx = parseInt(document.getElementById('wg-theme')?.value || 0);
+  const theme = WORD_GAME_THEMES[idx];
+  const {grid, placed} = buildWordSearch(theme.words);
+  const answeredCells = new Set(placed.flatMap(p => p.cells.map(([r,c])=>r+','+c)));
+  const size = grid.length;
+  const cs = 22;
+  function makeGrid(highlight) {
+    let t = '<table style="border-collapse:collapse;font-family:monospace;margin:0 auto;">';
+    for (let r=0; r<size; r++) {
+      t += '<tr>';
+      for (let c=0; c<size; c++) {
+        const isKey = highlight && answeredCells.has(r+','+c);
+        const bg = isKey ? '#FFD966' : 'white';
+        const col = isKey ? '#1F3864' : '#111';
+        t += '<td style="width:'+cs+'px;height:'+cs+'px;text-align:center;font-size:11px;font-weight:600;border:1px solid #ddd;background:'+bg+';color:'+col+';">'+grid[r][c]+'</td>';
+      }
+      t += '</tr>';
+    }
+    t += '</table>';
+    return t;
+  }
+  const words = theme.words.slice(0,12);
+  let html = '<div style="font-family:Arial,sans-serif;padding:20px;">';
+  html += '<h1 style="text-align:center;color:#1F3864;font-size:18px;margin-bottom:4px;">🔤 Word Search: '+theme.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:12px;">Find each word — forward, backward, up, down, or diagonal</p>';
+  html += makeGrid(false);
+  html += '<div style="margin-top:14px;text-align:center;"><strong style="font-size:13px;">Words to Find:</strong><br><span style="font-size:12px;line-height:2.2;">'+words.join(' &nbsp;&nbsp; ')+'</span></div>';
+  html += '<div style="page-break-before:always;padding-top:20px;">';
+  html += '<h1 style="text-align:center;color:#C00;font-size:18px;margin-bottom:4px;">✅ Answer Key: '+theme.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:12px;">Highlighted letters show where each word is located</p>';
+  html += makeGrid(true);
+  html += '<div style="margin-top:14px;text-align:center;font-size:12px;"><strong>Words found:</strong> '+placed.map(p=>p.word).join(', ')+'</div>';
+  html += '</div>';
+  html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('wordsearch-'+theme.name.replace(/\W+/g,'-')+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// TRIVIA PACKS
+// ─────────────────────────────────────────────
+const TRIVIA_PACKS_DATA = [
+  { name:"Classic TV Shows (50s-70s)", questions:[
+    {q:"What was the name of Lucy's husband on 'I Love Lucy'?", a:"Ricky Ricardo"},
+    {q:"On 'The Andy Griffith Show,' what was the name of Andy's son?", a:"Opie Taylor"},
+    {q:"What was the name of the Beaver's older brother on 'Leave It to Beaver'?", a:"Wally Cleaver"},
+    {q:"On 'Gunsmoke,' what was the name of the marshal played by James Arness?", a:"Matt Dillon"},
+    {q:"What was the name of the hotel on 'The Flintstones' that parodies a real Ritz hotel?", a:"The Bedrock Ritz (or Rock Ritz)"},
+    {q:"On 'The Dick Van Dyke Show,' what was Rob Petrie's job?", a:"TV comedy writer"},
+    {q:"What character did Carol O'Connor play on 'All in the Family'?", a:"Archie Bunker"},
+    {q:"On 'M*A*S*H,' what did Hawkeye Pierce always want to return to?", a:"Crabapple Cove, Maine"},
+    {q:"What was the name of the bar on 'Cheers'?", a:"Cheers (in Boston)"},
+    {q:"On 'Bonanza,' what was the name of the Cartwright family's ranch?", a:"The Ponderosa"},
+  ]},
+  { name:"Old Hollywood Movies", questions:[
+    {q:"Who played Dorothy in 'The Wizard of Oz' (1939)?", a:"Judy Garland"},
+    {q:"What 1942 Humphrey Bogart film is set in Casablanca?", a:"Casablanca"},
+    {q:"Who starred as Scarlett O'Hara in 'Gone With the Wind'?", a:"Vivien Leigh"},
+    {q:"What actress is known as 'America's Sweetheart' from the silent film era?", a:"Mary Pickford"},
+    {q:"Which 1952 musical film starred Gene Kelly dancing in the rain?", a:"Singin' in the Rain"},
+    {q:"Who played Ben-Hur in the 1959 epic film?", a:"Charlton Heston"},
+    {q:"What 1961 film featured Audrey Hepburn singing 'Moon River'?", a:"Breakfast at Tiffany's"},
+    {q:"Who starred with Doris Day in many 1950s romantic comedies?", a:"Rock Hudson"},
+    {q:"What actor played Rhett Butler in 'Gone With the Wind'?", a:"Clark Gable"},
+    {q:"In what 1965 musical did Julie Andrews play Maria?", a:"The Sound of Music"},
+  ]},
+  { name:"American History", questions:[
+    {q:"Who was the first President of the United States?", a:"George Washington"},
+    {q:"In what year did the United States declare independence?", a:"1776"},
+    {q:"What document begins with 'We the People'?", a:"The U.S. Constitution"},
+    {q:"Who wrote the Gettysburg Address?", a:"Abraham Lincoln"},
+    {q:"What war ended on November 11, 1918, at 11 a.m.?", a:"World War I"},
+    {q:"What was the name of the beach landing on D-Day in June 1944?", a:"Normandy (D-Day invasion)"},
+    {q:"Who was the first American to walk in space?", a:"Ed White (1965)"},
+    {q:"What year did the U.S. land on the moon?", a:"1969"},
+    {q:"What U.S. President led the country through most of World War II?", a:"Franklin D. Roosevelt"},
+    {q:"What famous speech did Martin Luther King Jr. give in Washington D.C. in 1963?", a:"'I Have a Dream'"},
+  ]},
+  { name:"Music of the 50s & 60s", questions:[
+    {q:"Who was known as the 'King of Rock and Roll'?", a:"Elvis Presley"},
+    {q:"What British band had a #1 hit with 'I Want to Hold Your Hand' in 1964?", a:"The Beatles"},
+    {q:"Who sang 'What a Wonderful World' in 1967?", a:"Louis Armstrong"},
+    {q:"What singer was known as 'The Voice' and sang 'My Way'?", a:"Frank Sinatra"},
+    {q:"Who recorded 'Hound Dog' and 'Jailhouse Rock'?", a:"Elvis Presley"},
+    {q:"What 1960 Ben E. King song says 'When the night has come...'?", a:"Stand By Me"},
+    {q:"Who sang 'Que Sera Sera (Whatever Will Be, Will Be)'?", a:"Doris Day"},
+    {q:"What legendary country singer was 'The Man in Black'?", a:"Johnny Cash"},
+    {q:"What song by The Temptations begins 'I've got sunshine on a cloudy day'?", a:"My Girl"},
+    {q:"Who sang 'Moon River' in the movie Breakfast at Tiffany's?", a:"Audrey Hepburn"},
+  ]},
+  { name:"Nature & Animals", questions:[
+    {q:"What is the largest animal on Earth?", a:"Blue whale"},
+    {q:"How many legs does a spider have?", a:"Eight"},
+    {q:"What bird is known for its colorful tail feathers that fan out?", a:"Peacock"},
+    {q:"What is the fastest land animal?", a:"Cheetah"},
+    {q:"How long does it take a caterpillar to become a butterfly?", a:"About 10-14 days in the chrysalis"},
+    {q:"What flower is known as the 'queen of flowers'?", a:"Rose"},
+    {q:"What animal carries its young in a pouch?", a:"Kangaroo (or opossum, koala)"},
+    {q:"What tree produces acorns?", a:"Oak tree"},
+    {q:"What is a group of geese called?", a:"A gaggle (on land) or skein (in flight)"},
+    {q:"What bird can mimic human speech?", a:"Parrot (or mynah bird)"},
+  ]},
+  { name:"Food & Cooking", questions:[
+    {q:"What Italian dish is made with rice, broth, and often parmesan?", a:"Risotto"},
+    {q:"What is the main ingredient in guacamole?", a:"Avocado"},
+    {q:"What cooking method uses hot air circulating around food in an oven?", a:"Convection (or roasting)"},
+    {q:"What French pastry is made from choux dough and filled with cream?", a:"Cream puff (or éclair)"},
+    {q:"What spice gives mustard its yellow color?", a:"Turmeric"},
+    {q:"What is the Italian word for tomato sauce in pasta dishes?", a:"Marinara (or pomodoro)"},
+    {q:"What vegetable is used to make traditional coleslaw?", a:"Cabbage"},
+    {q:"What country is famous for creating apple pie as a national dish?", a:"United States"},
+    {q:"What cooking fat is made by churning cream?", a:"Butter"},
+    {q:"What kitchen tool do you use to measure ingredients accurately?", a:"Measuring cups and spoons"},
+  ]},
+  { name:"Sports Legends", questions:[
+    {q:"Who hit 714 home runs in Major League Baseball?", a:"Babe Ruth"},
+    {q:"What boxer was known as 'The Greatest'?", a:"Muhammad Ali"},
+    {q:"In what sport did Jesse Owens win four gold medals at the 1936 Olympics?", a:"Track and field (athletics)"},
+    {q:"Who was the first Black player in Major League Baseball's modern era?", a:"Jackie Robinson"},
+    {q:"What golfer won the Masters Tournament a record six times?", a:"Jack Nicklaus"},
+    {q:"What team did Vince Lombardi coach to multiple Super Bowl wins?", a:"Green Bay Packers"},
+    {q:"Who holds the record for most career touchdowns in NFL history?", a:"Jerry Rice"},
+    {q:"What country invented the game of baseball?", a:"United States"},
+    {q:"In bowling, what is a perfect score?", a:"300"},
+    {q:"What sport features a 'birdie' and an 'eagle'?", a:"Golf"},
+  ]},
+  { name:"Bible & Inspirational", questions:[
+    {q:"What is the first book of the Bible?", a:"Genesis"},
+    {q:"How many disciples did Jesus have?", a:"Twelve"},
+    {q:"Who built the ark in the Bible?", a:"Noah"},
+    {q:"What is the shortest verse in the Bible?", a:"'Jesus wept' (John 11:35)"},
+    {q:"In the 23rd Psalm, what begins 'The Lord is my...'?", a:"Shepherd"},
+    {q:"What is the Golden Rule?", a:"Do unto others as you would have them do unto you"},
+    {q:"Who was swallowed by a great fish in the Bible?", a:"Jonah"},
+    {q:"What queen visited King Solomon to test his wisdom?", a:"The Queen of Sheba"},
+    {q:"What fruit did Adam and Eve eat in the Garden of Eden?", a:"The forbidden fruit (often depicted as an apple)"},
+    {q:"Who wrote most of the Psalms?", a:"King David"},
+  ]},
+  { name:"World Geography", questions:[
+    {q:"What is the longest river in the world?", a:"The Nile (or Amazon — disputed)"},
+    {q:"What country has the most people in the world?", a:"India (recently surpassed China)"},
+    {q:"What is the capital of France?", a:"Paris"},
+    {q:"What ocean is the largest?", a:"Pacific Ocean"},
+    {q:"What is the tallest mountain in the world?", a:"Mount Everest"},
+    {q:"What country is known as the Land Down Under?", a:"Australia"},
+    {q:"What is the smallest country in the world?", a:"Vatican City"},
+    {q:"Through how many countries does the Amazon River flow?", a:"Nine (primarily Brazil)"},
+    {q:"What city is known as the Eternal City?", a:"Rome, Italy"},
+    {q:"What is the largest continent?", a:"Asia"},
+  ]},
+  { name:"Health & Wellness", questions:[
+    {q:"How many hours of sleep do most adults need each night?", a:"7-9 hours"},
+    {q:"What vitamin do we get primarily from sunshine?", a:"Vitamin D"},
+    {q:"How many ounces of water should most people drink per day?", a:"64 ounces (8 cups)"},
+    {q:"What exercise is considered the best for heart health?", a:"Walking (or aerobic exercise)"},
+    {q:"What does 'blood pressure' measure?", a:"The force of blood against artery walls"},
+    {q:"What food group includes bread, rice, and pasta?", a:"Grains (or carbohydrates)"},
+    {q:"What is the benefit of deep breathing exercises?", a:"Reduces stress and lowers heart rate"},
+    {q:"How often should adults get a flu vaccine?", a:"Once a year"},
+    {q:"What does stretching before exercise help prevent?", a:"Injuries and muscle soreness"},
+    {q:"What is the most important meal of the day, according to nutritionists?", a:"Breakfast"},
+  ]},
+];
+
+let currentTriviaIdx = 0;
+function renderTriviaPreview() {
+  currentTriviaIdx = parseInt(document.getElementById('trivia-pack')?.value || 0);
+  const pack = TRIVIA_PACKS_DATA[currentTriviaIdx];
+  const container = document.getElementById('trivia-preview');
+  if (!container) return;
+  container.innerHTML = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">' +
+    '<div style="background:#1F3864;color:#FFD966;padding:10px 16px;font-weight:700;font-size:14px;">❓ '+escapeHtml(pack.name)+'</div>' +
+    '<div style="padding:12px 16px;">' +
+    pack.questions.map((q,i) => '<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f0f0f0;">' +
+      '<div style="font-weight:600;font-size:13px;color:#1F3864;">'+(i+1)+'. '+escapeHtml(q.q)+'</div>' +
+      '<div style="font-size:12px;color:#555;margin-top:3px;">Answer: <strong>'+escapeHtml(q.a)+'</strong></div>' +
+    '</div>').join('') +
+    '</div></div>';
+}
+
+function exportTriviaPDF() {
+  const pack = TRIVIA_PACKS_DATA[currentTriviaIdx];
+  let html = '<div style="font-family:Arial,sans-serif;padding:20px;">';
+  html += '<h1 style="text-align:center;color:#1F3864;margin-bottom:4px;">❓ Trivia: '+pack.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:20px;">Read each question aloud. Give residents time to answer.</p>';
+  html += '<ol style="font-size:14px;line-height:2.2;padding-left:20px;">';
+  pack.questions.forEach(q => { html += '<li>'+escapeHtml(q.q)+'</li>'; });
+  html += '</ol>';
+  html += '<div style="page-break-before:always;padding-top:20px;">';
+  html += '<h1 style="text-align:center;color:#C00;margin-bottom:4px;">✅ Answer Key: '+pack.name+'</h1>';
+  html += '<ol style="font-size:13px;line-height:2;padding-left:20px;">';
+  pack.questions.forEach((q,i) => {
+    html += '<li><span style="color:#555;">'+escapeHtml(q.q)+'</span><br><strong style="color:#1F3864;">'+escapeHtml(q.a)+'</strong></li>';
+  });
+  html += '</ol></div>';
+  html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('trivia-'+pack.name.replace(/\W+/g,'-')+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// EXERCISE CARDS
+// ─────────────────────────────────────────────
+const EXERCISE_DATA = [
+  { name:"Chair Yoga: Spring Awakening", time:"20 min", level:"All levels",
+    description:"A gentle seated yoga flow using spring imagery and deep breathing.",
+    steps:[
+      "WARM-UP (3 min): Sit tall, feet flat. Take 3 deep breaths. Inhale slowly through the nose, exhale through the mouth.",
+      "NECK ROLLS (2 min): Slowly drop chin to chest. Roll head gently to the right, back to center, then left. Repeat 3 times each side.",
+      "SHOULDER CIRCLES (2 min): Lift both shoulders toward ears, roll back and down. Do 5 forward, 5 backward. Release tension with each exhale.",
+      "SEATED TWIST (2 min): Place right hand on left knee. Inhale tall. Exhale and gently twist left. Hold 3 breaths. Repeat other side.",
+      "ARM FLOWERS (2 min): 'Imagine holding a bouquet.' Start hands in lap, open arms wide to sides like a flower blooming. Bring back in. Repeat 8 times.",
+      "WRIST & HAND STRETCH (2 min): Extend arms forward. Flex hands up, then down. Circle wrists 5 times each direction.",
+      "SEATED FORWARD FOLD (2 min): Sit at edge of chair. Slowly fold forward, hands sliding down legs. Hold 3 breaths. Roll up slowly.",
+      "COOL-DOWN (5 min): Return to deep breathing. 3 breaths. Place hands over heart. 'Think of something in spring that makes you smile.' Share with neighbor.",
+    ],
+    safety:"Always work within comfortable range. Never force a stretch. Keep feet flat on floor throughout. Stop if any pain or dizziness." },
+  { name:"Seated Stretches & Flexibility", time:"15 min", level:"All levels",
+    description:"Simple seated stretches to improve flexibility and reduce stiffness.",
+    steps:[
+      "OVERHEAD REACH: Raise right arm overhead, gently lean left. Hold 10 seconds. Switch sides. Repeat 3 times.",
+      "CHEST OPENER: Clasp hands behind back (or hold towel). Lift chest, squeeze shoulder blades together. Hold 10 seconds. Release.",
+      "ANKLE CIRCLES: Lift one foot slightly. Circle ankle 5 times each direction. Switch feet.",
+      "KNEE LIFTS: Alternate lifting knees toward chest (hold chair arms for support). 10 lifts each leg.",
+      "SIDE BENDS: Hands on thighs. Slide right hand toward right knee, feeling stretch on left side. Hold 5 seconds. Switch.",
+      "CHIN TUCKS: Sit tall. Gently push chin back (creating a 'double chin'). Hold 5 seconds. Releases neck tension.",
+      "HIP FLEXOR: Sit at chair edge, feet flat. Gently push one knee down and back (feeling front of hip). Hold 10 seconds.",
+      "FINGER SPREADS: Open hands wide, spread fingers as far as possible. Hold 5 seconds, relax. Great for arthritis.",
+    ],
+    safety:"Move slowly and with control. Never bounce a stretch. Skip any movement that causes pain." },
+  { name:"Arm & Hand Exercises", time:"15 min", level:"All levels",
+    description:"Strengthening and range-of-motion exercises for arms and hands. Can use light weights (1-2 lb) or soup cans.",
+    steps:[
+      "BICEP CURLS (x10): Sit tall, arms at sides. Bend elbows, bringing hands to shoulders. Lower slowly. 3 sets.",
+      "OVERHEAD PRESS (x10): Start with hands at shoulder height, palms forward. Press up overhead. Lower slowly.",
+      "LATERAL RAISES (x10): Arms at sides, palms down. Raise arms to shoulder height. Lower slowly.",
+      "FRONT RAISES (x10): Arms in front, palms down. Raise to shoulder height. Lower slowly.",
+      "WRIST CURLS (x10 each): Rest forearm on thigh, palm up. Curl wrist upward. Flip palm down — curl up the other direction.",
+      "FINGER WALKING: Place hand flat on table/leg. 'Walk' fingers forward and back like a spider. 30 seconds each hand.",
+      "BALL SQUEEZE: Squeeze a soft foam ball or rolled towel. Hold 5 seconds. Release. 10 times each hand.",
+      "COOL-DOWN: Gently shake out hands. Massage each hand/wrist briefly.",
+    ],
+    safety:"Use very light resistance. Never lock elbows at full extension. Stop if joints hurt — do not push through joint pain." },
+  { name:"Breathing & Relaxation", time:"15 min", level:"All levels",
+    description:"Guided breathing and relaxation techniques to reduce stress and anxiety.",
+    steps:[
+      "4-7-8 BREATHING: Inhale 4 counts. Hold 7 counts. Exhale 8 counts. Repeat 4 times. (Skip hold if uncomfortable.)",
+      "BELLY BREATHING: Place one hand on belly, one on chest. Breathe so only the belly hand rises. 5 breaths.",
+      "ALTERNATE NOSTRIL (simplified): Close right nostril with thumb. Inhale left. Close both, pause. Open right. Exhale right. Reverse. 5 rounds.",
+      "BOX BREATHING: Inhale 4 counts. Hold 4. Exhale 4. Hold 4. Draw a square in your mind as you breathe.",
+      "PROGRESSIVE RELAXATION: Starting with feet, tighten each muscle group for 5 seconds, release. Move up through legs, belly, hands, shoulders, face.",
+      "VISUALIZATION: Close eyes. Picture a favorite peaceful place. What do you see? Hear? Smell? Stay there 2-3 minutes.",
+      "GRATITUDE BREATH: With each exhale, silently think of one thing you're grateful for. 10 breaths.",
+      "CLOSING: Return to normal breathing. Wiggle fingers and toes. Open eyes slowly. Share how you feel with the group.",
+    ],
+    safety:"Breathing exercises are generally very safe. If light-headed, return to normal breathing. Do not hold breath if oxygen levels are a concern." },
+  { name:"Balance & Core (Seated)", time:"15 min", level:"AL / IL",
+    description:"Seated core and balance exercises to improve stability and posture.",
+    steps:[
+      "SIT TALL HOLD: Sit at chair edge without back support. Arms crossed on chest. Hold 30 seconds. Work up to 1 minute.",
+      "TORSO SWAYS: Sit tall. Slowly sway right, then left (like a metronome). Keep hips planted. 10 each direction.",
+      "MARCHING: Alternate lifting knees while maintaining tall posture. 20 marches. Add arm swing for more challenge.",
+      "SINGLE LEG HOLD: Lift one foot 2 inches off floor. Hold 10 seconds. Switch. Keep spine tall.",
+      "HEEL-TOE ROCKS: Both feet flat. Rock onto heels (toes up). Rock onto toes (heels up). 15 repetitions.",
+      "TUMMY TIGHTENING: Exhale and pull belly button toward spine. Hold 5 seconds. Release. 10 times.",
+      "SEATED SIDE STEP: Feet together. Step right foot out, bring left to meet it. Step left, bring right to meet. 20 steps each direction.",
+      "POSTURE CHECK: Ears over shoulders, shoulders over hips. Chin level. Hold 1 minute.",
+    ],
+    safety:"Sit near a wall or have staff nearby. Only do single-leg exercises if resident has good upper body strength and balance. Skip if high fall risk." },
+  { name:"Leg & Foot Exercises", time:"15 min", level:"All levels",
+    description:"Exercises to improve lower body circulation, strength and mobility.",
+    steps:[
+      "ANKLE PUMPS: Feet flat. Lift toes up (heels down). Then lift heels (toes down). Alternating. 20 repetitions. Great for circulation.",
+      "KNEE EXTENSIONS: Sit at chair edge. Straighten one leg, hold 5 seconds. Lower slowly. 10 each leg.",
+      "SEATED LEG PRESS: Place hands on knee. Press leg down against hands while hands press up against leg (isometric). Hold 5 seconds. 10 each leg.",
+      "TOE SPREADS: Remove shoes if possible. Spread toes wide, hold 5 seconds. Curl toes, hold 5 seconds. Repeat 10 times.",
+      "CALF RAISES (seated): Feet flat. Lift heels as high as comfortable. Lower slowly. 15 repetitions.",
+      "HIP ABDUCTION: Sit tall. Lift one leg slightly and move it out to the side. Return. 10 each leg.",
+      "SEATED MARCH WITH KICK: Lift knee, then extend leg forward (kick). Lower. Alternate legs. 10 each side.",
+      "COOL-DOWN MASSAGE: If able, gently rub shins and calves with both hands. Promotes circulation.",
+    ],
+    safety:"Knee extensions should be pain-free. Stop if knee, hip, or ankle pain occurs. Ensure chair is stable before single-leg movements." },
+];
+
+let currentExerciseIdx = 0;
+function initExerciseBtns() {
+  const container = document.getElementById('exercise-btns');
+  if (!container || container.innerHTML) return;
+  EXERCISE_DATA.forEach((ex, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.textContent = ex.name;
+    btn.onclick = () => { currentExerciseIdx = i; renderExercisePreview(); };
+    container.appendChild(btn);
+  });
+  currentExerciseIdx = 0;
+  renderExercisePreview();
+}
+function renderExercisePreview() {
+  const ex = EXERCISE_DATA[currentExerciseIdx];
+  const container = document.getElementById('exercise-preview');
+  if (!container) return;
+  container.innerHTML = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;max-width:700px;">' +
+    '<div style="background:#1F3864;color:#FFD966;padding:10px 16px;font-weight:700;">🏋️ '+escapeHtml(ex.name)+' <span style="font-weight:400;font-size:11px;color:#ddd;">'+ex.time+' · '+ex.level+'</span></div>' +
+    '<div style="padding:12px 16px;">' +
+    '<p style="font-size:13px;color:#555;margin-bottom:12px;">'+escapeHtml(ex.description)+'</p>' +
+    '<ol style="font-size:13px;line-height:1.9;padding-left:18px;">'+ex.steps.map(s=>'<li style="margin-bottom:6px;">'+escapeHtml(s)+'</li>').join('')+'</ol>' +
+    '<div style="margin-top:12px;background:#FFF3CD;border-left:4px solid #FFD966;padding:8px 12px;font-size:12px;color:#555;border-radius:0 4px 4px 0;">⚠️ <strong>Safety:</strong> '+escapeHtml(ex.safety)+'</div>' +
+    '</div></div>' +
+    '<div style="margin-top:10px;"><button class="btn btn-secondary" onclick="exportExercisePDF()">📄 Print Card</button></div>';
+}
+function exportExercisePDF() {
+  const ex = EXERCISE_DATA[currentExerciseIdx];
+  let html = '<div style="font-family:Arial,sans-serif;padding:24px;max-width:700px;">';
+  html += '<div style="background:#1F3864;color:#FFD966;padding:12px 16px;border-radius:6px 6px 0 0;"><h1 style="margin:0;font-size:18px;">🏋️ '+ex.name+'</h1><p style="margin:4px 0 0;font-size:12px;color:#ddd;">'+ex.time+' &nbsp;·&nbsp; '+ex.level+'</p></div>';
+  html += '<div style="border:1px solid #ddd;border-top:none;padding:16px;border-radius:0 0 6px 6px;">';
+  html += '<p style="font-size:13px;color:#555;margin-bottom:14px;font-style:italic;">'+ex.description+'</p>';
+  html += '<ol style="font-size:13px;line-height:1.9;padding-left:18px;">';
+  ex.steps.forEach(s => { html += '<li style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f5f5f5;">'+s+'</li>'; });
+  html += '</ol>';
+  html += '<div style="margin-top:14px;background:#FFF3CD;border-left:4px solid #FFD966;padding:10px 14px;font-size:12px;border-radius:0 4px 4px 0;">⚠️ <strong>Safety Note:</strong> '+ex.safety+'</div>';
+  html += '</div>';
+  html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div'); wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('exercise-'+ex.name.replace(/\W+/g,'-')+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// CRAFT INSTRUCTIONS
+// ─────────────────────────────────────────────
+const CRAFT_DATA = [
+  { name:"Paper Flower Bouquet", time:"45 min", difficulty:"Easy", supplies:["Tissue paper (multiple colors)","Pipe cleaners or green straws","Scissors","Ribbon or rubber bands"],
+    steps:["CUT: Stack 4-5 sheets of tissue paper. Cut into 8-inch squares.","ACCORDION FOLD: Fold the stack back and forth in 1-inch folds (like a fan).","SECURE MIDDLE: Twist a pipe cleaner tightly around the center of the folded paper.","SHAPE: Carefully pull each tissue paper layer UP toward the center, one at a time, fluffing gently.","ARRANGE: Gather several flowers together. Wrap stems with ribbon.","DISPLAY: Place in a small vase or mason jar with marbles or rocks to hold upright."],
+    tip:"MC adaptation: pre-cut and pre-fold the paper. Residents just need to pull layers up and add to bouquet." },
+  { name:"Memory Collage Card", time:"30 min", difficulty:"Easy", supplies:["Cardstock or heavy paper","Old magazines or printed photos","Scissors (or pre-cut images)","Glue sticks","Markers or pens"],
+    steps:["CHOOSE THEME: Pick a theme — seasons, family, hobbies, faith, or 'things I love.'","BROWSE: Flip through magazines to find pictures, words, colors that fit the theme.","ARRANGE: Lay images on cardstock without gluing — rearrange until you like the layout.","GLUE: Press each piece down firmly with glue stick. Start with largest pieces first.","PERSONALIZE: Add a handwritten word, name, or message with marker.","FINISH: Allow to dry flat. Can be framed, mailed as a card, or displayed on a bulletin board."],
+    tip:"Great for Mother's Day, Father's Day, or 'All About Me' resident profiles." },
+  { name:"Painted Rock Garden", time:"45 min", difficulty:"Easy", supplies:["Smooth rocks (1 per resident)","Acrylic paint or paint pens","Sponge brushes","Paper plates for palette","Clear spray sealant (staff applies after)"],
+    steps:["PREP: Lay newspaper. Give each resident one smooth rock and paper plate palette.","BASE COAT: Paint entire rock one solid color. Let dry 5-10 minutes (or use a pre-painted base coat).","DESIGN: Add designs — dots, stripes, flowers, hearts, words, or simple scenes.","DETAILS: Use a thin brush or paint pen for lettering or outlines.","DRY: Allow to dry completely (15-30 min).","SEAL: Staff applies clear spray sealant outdoors for durability.","DISPLAY: Place in facility garden, windowsill, or give as a gift."],
+    tip:"Inspirational words work great: JOY, HOPE, LOVE, GRACE, BLOOM." },
+  { name:"Seasonal Wreath", time:"45 min", difficulty:"Medium", supplies:["Paper plate (center cut out) or foam wreath form","Silk flowers or seasonal decorations","Hot glue gun (staff uses)","Ribbon for hanging","Greenery or filler material"],
+    steps:["PLAN: Choose colors and materials to match the season — pastels for spring, red/green for Christmas, orange/gold for fall.","BASE: If using paper plate, paint it green or cover with ribbon strips.","ARRANGE: Lay out flowers and decorations before gluing — get placement right first.","ATTACH: Staff uses hot glue to secure each element. Residents direct placement.","FILL GAPS: Tuck greenery or ribbon between flowers to fill any open spaces.","HANG: Attach ribbon loop at top for hanging."],
+    tip:"MC adaptation: Staff does all gluing. Residents choose flowers and colors. Focus is on the creative decision-making." },
+  { name:"Greeting Card Making", time:"30 min", difficulty:"Easy", supplies:["Blank folded cardstock","Stamps and ink pads (or stickers)","Markers, colored pencils","Adhesive gems or ribbon","Envelopes"],
+    steps:["CHOOSE RECIPIENT: Who is this card for? Resident can choose — family member, friend, staff, or a neighbor resident.","FRONT DESIGN: Decorate the front — stamp a design, place stickers, draw a picture, or write a greeting.","COLOR: Add color with markers or colored pencils.","INSIDE MESSAGE: Write or dictate a personal message inside. Staff can assist with handwriting.","EMBELLISH: Add a gem sticker, bow, or washi tape border.","SIGN: Resident signs their name (with assistance if needed).","DELIVER: Mail or hand-deliver to recipient."],
+    tip:"Having cards to give gives residents a sense of purpose and connection. Keep a 'birthday list' so cards can be made for upcoming celebrations." },
+];
+
+let currentCraftIdx = 0;
+function initCraftBtns() {
+  const container = document.getElementById('craft-btns');
+  if (!container || container.innerHTML) return;
+  CRAFT_DATA.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.textContent = c.name;
+    btn.onclick = () => { currentCraftIdx = i; renderCraftPreview(); };
+    container.appendChild(btn);
+  });
+  currentCraftIdx = 0;
+  renderCraftPreview();
+}
+function renderCraftPreview() {
+  const craft = CRAFT_DATA[currentCraftIdx];
+  const container = document.getElementById('craft-preview');
+  if (!container) return;
+  container.innerHTML = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;max-width:700px;">' +
+    '<div style="background:#7030A0;color:white;padding:10px 16px;font-weight:700;">🎨 '+escapeHtml(craft.name)+' <span style="font-weight:400;font-size:11px;">'+craft.time+' · '+craft.difficulty+'</span></div>' +
+    '<div style="padding:12px 16px;">' +
+    '<div style="margin-bottom:12px;"><strong style="font-size:12px;text-transform:uppercase;color:#7030A0;">Supplies Needed</strong><ul style="margin-top:6px;font-size:13px;line-height:1.8;">'+craft.supplies.map(s=>'<li>'+escapeHtml(s)+'</li>').join('')+'</ul></div>' +
+    '<div><strong style="font-size:12px;text-transform:uppercase;color:#7030A0;">Steps</strong><ol style="margin-top:6px;font-size:13px;line-height:1.9;padding-left:18px;">'+craft.steps.map(s=>'<li style="margin-bottom:6px;">'+escapeHtml(s)+'</li>').join('')+'</ol></div>' +
+    '<div style="margin-top:10px;background:#F5F0FF;border-left:4px solid #7030A0;padding:8px 12px;font-size:12px;color:#555;">💡 <strong>Tip:</strong> '+escapeHtml(craft.tip)+'</div>' +
+    '</div></div>' +
+    '<div style="margin-top:10px;"><button class="btn btn-secondary" onclick="exportCraftPDF()">📄 Print Instructions</button></div>';
+}
+function exportCraftPDF() {
+  const craft = CRAFT_DATA[currentCraftIdx];
+  let html = '<div style="font-family:Arial,sans-serif;padding:24px;max-width:680px;">';
+  html += '<div style="background:#7030A0;color:white;padding:12px 16px;border-radius:6px 6px 0 0;"><h1 style="margin:0;font-size:18px;">🎨 '+craft.name+'</h1><p style="margin:4px 0 0;font-size:12px;opacity:0.85;">'+craft.time+' &nbsp;·&nbsp; Difficulty: '+craft.difficulty+'</p></div>';
+  html += '<div style="border:1px solid #ddd;border-top:none;padding:16px;border-radius:0 0 6px 6px;">';
+  html += '<div style="margin-bottom:16px;"><h3 style="color:#7030A0;margin-bottom:6px;font-size:14px;text-transform:uppercase;">📦 Supplies Needed</h3><ul style="font-size:13px;line-height:2;">'+craft.supplies.map(s=>'<li>'+s+'</li>').join('')+'</ul></div>';
+  html += '<div><h3 style="color:#7030A0;margin-bottom:6px;font-size:14px;text-transform:uppercase;">📋 Step-by-Step</h3><ol style="font-size:13px;line-height:1.9;padding-left:18px;">'+craft.steps.map(s=>'<li style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f5f5f5;">'+s+'</li>').join('')+'</ol></div>';
+  html += '<div style="margin-top:14px;background:#F5F0FF;border-left:4px solid #7030A0;padding:10px 14px;font-size:12px;border-radius:0 4px 4px 0;">💡 <strong>Tip:</strong> '+craft.tip+'</div>';
+  html += '</div>';
+  html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div'); wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('craft-'+craft.name.replace(/\W+/g,'-')+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// GAME SCORING SHEETS
+// ─────────────────────────────────────────────
+const GAME_SHEET_DATA = [
+  { name:"Bingo Score Tracker", type:"bingo" },
+  { name:"Bean Bag Toss Score Sheet", type:"beanbag" },
+  { name:"Bowling Score Sheet", type:"bowling" },
+  { name:"Team Trivia Bracket", type:"trivia" },
+  { name:"Ring Toss Tournament", type:"ringtoss" },
+];
+
+let currentGameIdx = 0;
+function initGameBtns() {
+  const container = document.getElementById('game-btns');
+  if (!container || container.innerHTML) return;
+  GAME_SHEET_DATA.forEach((g, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.textContent = g.name;
+    btn.onclick = () => { currentGameIdx = i; renderGamePreview(); };
+    container.appendChild(btn);
+  });
+  currentGameIdx = 0;
+  renderGamePreview();
+}
+function renderGamePreview() {
+  const g = GAME_SHEET_DATA[currentGameIdx];
+  const container = document.getElementById('game-preview');
+  if (!container) return;
+  container.innerHTML = buildGameSheetHtml(g.type) + '<div style="margin-top:10px;"><button class="btn btn-secondary" onclick="exportGameSheetPDF()">📄 Print Score Sheet</button></div>';
+}
+function buildGameSheetHtml(type) {
+  if (type === 'bingo') {
+    let h = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;max-width:600px;"><h3 style="color:#1F3864;margin-bottom:12px;">🎲 Bingo Session Score Tracker</h3>';
+    h += '<div style="font-size:12px;color:#555;margin-bottom:12px;">Date: ____________ &nbsp; Caller: ____________ &nbsp; Game #: ____</div>';
+    h += '<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="background:#1F3864;color:white;"><th style="padding:8px;">Resident Name</th><th style="padding:8px;">Round 1</th><th style="padding:8px;">Round 2</th><th style="padding:8px;">Round 3</th><th style="padding:8px;">Total Wins</th></tr>';
+    for (let i=0;i<10;i++) { h += '<tr style="border-bottom:1px solid #eee;"><td style="padding:10px;">'+(i+1)+'. _________________________</td><td style="padding:10px;"></td><td style="padding:10px;"></td><td style="padding:10px;"></td><td style="padding:10px;"></td></tr>'; }
+    h += '</table><div style="margin-top:10px;font-size:12px;color:#777;">Prizes distributed: _____________ &nbsp; Notes: _____________________</div></div>';
+    return h;
+  }
+  if (type === 'beanbag') {
+    let h = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;max-width:600px;"><h3 style="color:#1F3864;margin-bottom:6px;">🎯 Bean Bag Toss Score Sheet</h3>';
+    h += '<div style="font-size:12px;color:#555;margin-bottom:12px;">Date: ____________ &nbsp; Distance: _______ ft &nbsp; Bags per turn: ____</div>';
+    h += '<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="background:#1F3864;color:white;"><th style="padding:8px;text-align:left;">Name</th>';
+    for(let r=1;r<=5;r++) h += '<th style="padding:8px;">Rd '+r+'</th>';
+    h += '<th style="padding:8px;">TOTAL</th></tr>';
+    for(let i=0;i<8;i++) { h += '<tr style="border-bottom:1px solid #eee;"><td style="padding:10px;">'+(i+1)+'. _____________________</td>'; for(let r=0;r<5;r++) h += '<td style="padding:10px;"></td>'; h += '<td style="padding:10px;font-weight:700;"></td></tr>'; }
+    h += '</table><div style="margin-top:10px;font-size:12px;color:#777;">🏆 Winner: _____________________ &nbsp; Score: ______</div></div>';
+    return h;
+  }
+  if (type === 'bowling') {
+    let h = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;max-width:650px;"><h3 style="color:#1F3864;margin-bottom:12px;">🎳 Bowling Score Sheet</h3>';
+    h += '<table style="width:100%;border-collapse:collapse;font-size:12px;"><tr style="background:#1F3864;color:white;"><th style="padding:6px;text-align:left;width:140px;">Name</th>';
+    for(let f=1;f<=10;f++) h += '<th style="padding:6px;text-align:center;">'+f+'</th>';
+    h += '<th style="padding:6px;">Total</th></tr>';
+    for(let i=0;i<6;i++) { h += '<tr style="border-bottom:1px solid #eee;"><td style="padding:8px;">'+(i+1)+'. _______________</td>'; for(let f=0;f<11;f++) h += '<td style="padding:8px;border:1px solid #ddd;height:24px;"></td>'; h += '</tr>'; }
+    h += '</table></div>';
+    return h;
+  }
+  if (type === 'trivia') {
+    let h = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;max-width:600px;"><h3 style="color:#1F3864;margin-bottom:6px;">❓ Team Trivia Score Sheet</h3>';
+    h += '<div style="font-size:12px;color:#555;margin-bottom:12px;">Date: ____________ &nbsp; Topic: ________________________</div>';
+    h += '<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="background:#1F3864;color:white;"><th style="padding:8px;text-align:left;">Team Name</th>';
+    for(let r=1;r<=10;r++) h += '<th style="padding:6px;">Q'+r+'</th>';
+    h += '<th style="padding:8px;">TOTAL</th></tr>';
+    const teams = ['Team A','Team B','Team C','Team D'];
+    teams.forEach(t => { h += '<tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:600;">'+t+': __________</td>'; for(let r=0;r<10;r++) h += '<td style="padding:8px;border:1px solid #eee;"></td>'; h += '<td style="padding:8px;font-weight:700;"></td></tr>'; });
+    h += '</table><div style="margin-top:10px;font-size:12px;color:#777;">🏆 Winning Team: _________________ &nbsp; Score: ______</div></div>';
+    return h;
+  }
+  if (type === 'ringtoss') {
+    let h = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;max-width:600px;"><h3 style="color:#1F3864;margin-bottom:6px;">💍 Ring Toss Tournament</h3>';
+    h += '<div style="font-size:12px;color:#555;margin-bottom:14px;">3 rings per turn · 5 pts center · 3 pts middle · 1 pt outer</div>';
+    h += '<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="background:#1F3864;color:white;"><th style="padding:8px;text-align:left;">Name</th>';
+    for(let r=1;r<=4;r++) h += '<th style="padding:8px;">Round '+r+'</th>';
+    h += '<th style="padding:8px;">TOTAL</th></tr>';
+    for(let i=0;i<8;i++) { h += '<tr style="border-bottom:1px solid #eee;"><td style="padding:10px;">'+(i+1)+'. _____________________</td>'; for(let r=0;r<4;r++) h += '<td style="padding:10px;"></td>'; h += '<td style="padding:10px;font-weight:700;"></td></tr>'; }
+    h += '</table><div style="margin-top:10px;font-size:12px;color:#777;">🏆 Winner: _____________________ &nbsp; Score: ______</div></div>';
+    return h;
+  }
+  return '';
+}
+function exportGameSheetPDF() {
+  const g = GAME_SHEET_DATA[currentGameIdx];
+  const inner = buildGameSheetHtml(g.type);
+  let html = '<div style="font-family:Arial,sans-serif;padding:20px;">'+inner+'<div style="text-align:center;margin-top:20px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div'); wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('scoresheet-'+g.type+'.pdf','landscape')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// REMINISCENCE CARDS
+// ─────────────────────────────────────────────
+const REMINISCENCE_DATA = [
+  { name:"Childhood Memories", color:"#2E75B6", prompts:[
+    "What did your home smell like when you were a child?",
+    "What was your favorite game to play as a kid?",
+    "Tell us about your best friend growing up.",
+    "What did your family do on Sunday afternoons?",
+    "What was your favorite subject in school?",
+    "Do you remember your first day of school?",
+    "What was your chore growing up? Did you like it?",
+    "What kind of candy or treat did you love as a child?",
+    "What radio shows did your family listen to?",
+    "Tell us about a summer you'll never forget.",
+    "What did you want to be when you grew up?",
+    "What was your bedroom like as a child?",
+  ]},
+  { name:"Family Traditions", color:"#7030A0", prompts:[
+    "What was your family's favorite holiday tradition?",
+    "Tell us about a special Christmas or Hanukkah memory.",
+    "What did your family do for Thanksgiving?",
+    "What was a recipe that was always made for special occasions?",
+    "Who was the best cook in your family?",
+    "Tell us about a family reunion or gathering.",
+    "What songs did your family sing together?",
+    "What family tradition do you hope was passed down?",
+    "Tell us about a vacation or trip your family took.",
+    "What was something your mother or grandmother always said?",
+    "How did your family celebrate birthdays?",
+    "Tell us about a family story that always makes everyone laugh.",
+  ]},
+  { name:"Work & Life Milestones", color:"#548235", prompts:[
+    "What was your first job? How much did you earn?",
+    "Tell us about your wedding day — or a wedding you attended.",
+    "What was the house or apartment you loved the most?",
+    "Tell us about the car you drove when you were young.",
+    "What did you do to celebrate when something great happened?",
+    "Tell us about a mentor or boss who made a difference for you.",
+    "What is something you made or built that you were proud of?",
+    "What was the best part of your career or working life?",
+    "Tell us about a time you took a risk that paid off.",
+    "What invention during your lifetime amazed you the most?",
+    "What historical event do you remember most vividly?",
+    "If you could give your younger self one piece of advice, what would it be?",
+  ]},
+  { name:"Seasons & Nature", color:"#C00", prompts:[
+    "What is your favorite season and why?",
+    "Tell us about a garden you loved or tended.",
+    "What animal have you had a special connection with?",
+    "Describe a perfect spring morning from your memory.",
+    "Tell us about a beautiful place in nature you've visited.",
+    "What sounds of nature make you feel at peace?",
+    "Do you remember a big storm or unusual weather event?",
+    "What flower or plant is your favorite?",
+    "Tell us about a fishing, camping, or outdoor adventure.",
+    "What does the smell of rain remind you of?",
+    "Tell us about watching a sunrise or sunset that moved you.",
+    "What season smells the best to you?",
+  ]},
+  { name:"Faith & Values", color:"#1F3864", prompts:[
+    "Tell us about your church, temple, or faith community.",
+    "What prayer or verse has always stayed with you?",
+    "Who in your life showed you what it means to be kind?",
+    "Tell us about a time your faith helped you through something hard.",
+    "What values did your parents pass down to you?",
+    "Tell us about someone who was a spiritual mentor to you.",
+    "What is the most important thing you believe in?",
+    "Tell us about a moment when you felt grateful.",
+    "What blessing in your life are you most thankful for?",
+    "Tell us about a time you helped someone who really needed it.",
+    "What does 'home' mean to you?",
+    "What do you hope people will remember about you?",
+  ]},
+];
+
+let currentRemIdx = 0;
+function initReminiscenceBtns() {
+  const container = document.getElementById('rem-btns');
+  if (!container || container.innerHTML) return;
+  REMINISCENCE_DATA.forEach((r, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.textContent = r.name;
+    btn.onclick = () => { currentRemIdx = i; renderReminiscencePreview(); };
+    container.appendChild(btn);
+  });
+  currentRemIdx = 0;
+  renderReminiscencePreview();
+}
+function renderReminiscencePreview() {
+  const rem = REMINISCENCE_DATA[currentRemIdx];
+  const container = document.getElementById('rem-preview');
+  if (!container) return;
+  container.innerHTML = '<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;max-width:680px;">' +
+    '<div style="background:'+rem.color+';color:white;padding:10px 16px;font-weight:700;font-size:14px;">💭 '+escapeHtml(rem.name)+'</div>' +
+    '<div style="padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+    rem.prompts.map((p,i) => '<div style="background:#F8F9FA;border-radius:6px;padding:10px;font-size:13px;border-left:3px solid '+rem.color+';">' +
+      '<span style="font-weight:700;color:'+rem.color+';">'+(i+1)+'.</span> '+escapeHtml(p)+'</div>').join('') +
+    '</div></div>' +
+    '<div style="margin-top:10px;"><button class="btn btn-secondary" onclick="exportReminiscencePDF()">📄 Print Discussion Cards</button></div>';
+}
+function exportReminiscencePDF() {
+  const rem = REMINISCENCE_DATA[currentRemIdx];
+  let html = '<div style="font-family:Arial,sans-serif;padding:20px;">';
+  html += '<h1 style="text-align:center;color:'+rem.color+';margin-bottom:4px;">💭 Reminiscence: '+rem.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:16px;">Read each question aloud and invite residents to share their memories.</p>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">';
+  rem.prompts.forEach((p,i) => {
+    html += '<div style="border:1px solid #ddd;border-left:4px solid '+rem.color+';border-radius:4px;padding:12px;page-break-inside:avoid;">';
+    html += '<div style="font-weight:700;color:'+rem.color+';font-size:11px;margin-bottom:4px;">Question '+(i+1)+'</div>';
+    html += '<div style="font-size:13px;line-height:1.6;">'+p+'</div>';
+    html += '<div style="margin-top:8px;border-top:1px dashed #ddd;padding-top:6px;font-size:11px;color:#aaa;">Notes / Response: _____________________________</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div'); wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('reminiscence-'+rem.name.replace(/\W+/g,'-')+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// Updated showMatSection to include all sections
+// ─────────────────────────────────────────────
+function showMatSection(section) {
+  const all = ['bingo','loteria','singalong','wordgames','trivia','exercise','crafts','gamesheets','reminiscence'];
+  all.forEach(s => {
+    const el = document.getElementById('mat-' + s);
+    if (el) el.style.display = s === section ? '' : 'none';
+  });
+  if (section === 'bingo') renderBingoCards();
+  if (section === 'loteria') renderLoteriaCards();
+  if (section === 'singalong') showDecade(currentDecade);
+  if (section === 'wordgames') renderWordGamePreview();
+  if (section === 'trivia') renderTriviaPreview();
+  if (section === 'exercise') initExerciseBtns();
+  if (section === 'crafts') initCraftBtns();
+  if (section === 'gamesheets') initGameBtns();
+  if (section === 'reminiscence') initReminiscenceBtns();
 }
 
 </script>
