@@ -159,6 +159,14 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .slot-print-hint { position: absolute; bottom: 6px; right: 10px; font-size: 10px; color: var(--gray-300); font-style: italic; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
 .slot-content:hover .slot-print-hint { opacity: 1; }
 .slot-content:hover { border-color: var(--gold-light); box-shadow: 0 0 0 2px rgba(191,144,0,0.15); }
+.slot-mat-btn {
+  position:absolute; top:8px; right:52px;
+  background:#1F3864; color:#FFD700; border:none; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:700; cursor:pointer;
+  opacity:0; transition:opacity 0.15s; z-index:2; white-space:nowrap;
+}
+.slot-content:hover .slot-mat-btn { opacity:1; }
+@media print { .slot-mat-btn { display:none !important; } }
 .slot-print-btn { position: absolute; top: 8px; right: 8px; background: white; border: 1px solid var(--gray-300); border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 14px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; opacity: 0.55; font-family: inherit; }
 .slot-content:hover .slot-print-btn { opacity: 1; }
 .slot-print-btn:hover { background: var(--gold); color: white; transform: scale(1.1); border-color: var(--gold); box-shadow: var(--shadow); }
@@ -1709,6 +1717,31 @@ function renderDailyJumper() {
   }
 }
 
+
+// ── Materials-pairing helpers ──────────────────────────────────────────────
+function getMatSection(slot, title) {
+  const t = (title || '').toLowerCase();
+  // Slot-based hard mappings first
+  if (slot === 'TRIVIA')     return 'trivia';
+  if (slot === 'WORD_GAME')  return 'wordgames';
+  // Title keyword scan
+  if (/\blot[eé]r[ií]a\b|mexican bingo/i.test(title))        return 'loteria';
+  if (/\bbingo\b/i.test(title))                               return 'bingo';
+  if (/sing.?along|karaoke|\bchorus\b|decade song|lyric/i.test(title)) return 'singalong';
+  if (/\bcraft|painting|coloring|art project|yarn|knit/i.test(title))   return 'crafts';
+  if (/reminisce|memory lane|remember when|life review|then & now/i.test(title)) return 'reminiscence';
+  if (/bowling|bocce|\bscore sheet|card game|poker|bridge|billiard/i.test(title)) return 'gamesheets';
+  if (/\bexercise|chair yoga|stretch|fitness|movement|seated workout/i.test(title)) return 'exercise';
+  // PHYSICAL slot — most are exercise-based
+  if (slot === 'PHYSICAL') return 'exercise';
+  return null;
+}
+
+function openMaterials(section) {
+  switchTab('materials');
+  setTimeout(() => showMatSection(section), 80);
+}
+
 function renderDailySheet() {
   setLevelBanner('daily-level-banner');
   renderDailyJumper();
@@ -1759,6 +1792,8 @@ function renderDailySheet() {
     } else {
       body = `<div class="slot-title">${escapeHtml(a.title)}</div><div class="slot-desc">${escapeHtml(a.desc)}</div>`;
     }
+    const matSec = (s !== 'BIG_GROUP') ? getMatSection(s, a.title) : null;
+    const matBtn = matSec ? `<button class="slot-mat-btn" onclick="event.stopPropagation(); openMaterials('${matSec}')" title="Open printable materials for this activity">📄 Materials</button>` : '';
     return `
       <div class="slot-row">
         <div class="slot-label-box" style="background:${info.color};">
@@ -1770,6 +1805,7 @@ function renderDailySheet() {
         </div>
         <div class="slot-content" onclick="printSlot('${s}')" title="Click to print this activity">
           <button class="slot-print-btn" onclick="event.stopPropagation(); printSlot('${s}')" title="Print just this activity">🖨</button>
+          ${matBtn}
           ${body}
           <span class="slot-print-hint">🖨 click to print</span>
         </div>
@@ -3831,51 +3867,73 @@ function exportBingoPDF() {
   const count = parseInt(document.getElementById('bingo-count')?.value || 6);
   const cols = ['B','I','N','G','O'];
   const ranges = [[1,15],[16,30],[31,45],[46,60],[61,75]];
-  let html = '<div style="font-family:Arial,sans-serif;padding:10px;"><h2 style="text-align:center;color:#1F3864;margin-bottom:16px;">🎲 Bingo Cards — ' + DATA.monthName + ' ' + DATA.year + '</h2><div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">';
+  // One card per page — large print friendly
+  let html = '<div style="font-family:Arial,sans-serif;">';
   for (let c = 0; c < count; c++) {
-    const cols2 = cols.map((col, ci) => {
-      const nums = [];
-      const [lo, hi] = ranges[ci];
-      while (nums.length < 5) { const n = lo + Math.floor(Math.random()*(hi-lo+1)); if(!nums.includes(n)) nums.push(n); }
+    const cols2 = cols.map((_,ci) => {
+      const nums = []; const [lo,hi] = ranges[ci];
+      while (nums.length<5) { const n=lo+Math.floor(Math.random()*(hi-lo+1)); if(!nums.includes(n)) nums.push(n); }
       return nums;
     });
-    html += '<div style="border:2px solid #1F3864;border-radius:6px;overflow:hidden;width:160px;margin-bottom:10px;"><div style="background:#1F3864;color:#FFD966;text-align:center;padding:5px;font-weight:800;font-size:14px;letter-spacing:6px;">B I N G O</div><table style="width:100%;border-collapse:collapse;">';
-    for (let r = 0; r < 5; r++) {
+    if (c>0) html += '<div style="page-break-before:always;"></div>';
+    html += '<div style="padding:24px;max-width:680px;margin:0 auto;">';
+    html += '<div style="text-align:center;color:#1F3864;font-size:13px;font-weight:600;margin-bottom:6px;">Empower Life 365 &nbsp;·&nbsp; '+DATA.monthName+' '+DATA.year+' &nbsp;·&nbsp; Card '+(c+1)+' of '+count+'</div>';
+    html += '<div style="background:#1F3864;color:#FFD966;text-align:center;padding:18px;font-weight:900;font-size:56px;letter-spacing:20px;border-radius:8px 8px 0 0;">BINGO</div>';
+    html += '<table style="width:100%;border-collapse:collapse;border:3px solid #1F3864;">';
+    // Header row
+    html += '<tr>';
+    cols.forEach(l => { html += '<th style="background:#2E75B6;color:white;text-align:center;padding:14px;font-size:36px;font-weight:900;border:2px solid #1F3864;">'+l+'</th>'; });
+    html += '</tr>';
+    for (let r=0;r<5;r++) {
       html += '<tr>';
-      for (let ci = 0; ci < 5; ci++) {
-        const isFree = r===2 && ci===2;
-        const bg = isFree ? '#FFD966' : 'white';
-        const val = isFree ? 'FREE' : cols2[ci][r];
-        const fs = isFree ? '8' : '12';
-        html += '<td style="border:1px solid #ddd;text-align:center;padding:7px 2px;font-size:'+fs+'px;font-weight:600;background:'+bg+';color:#1F3864;">'+val+'</td>';
+      for (let ci=0;ci<5;ci++) {
+        const isFree=r===2&&ci===2;
+        const bg=isFree?'#FFD966':'white';
+        const val=isFree?'FREE SPACE':cols2[ci][r];
+        const fs=isFree?'18':'40';
+        const fw=isFree?'700':'800';
+        html += '<td style="border:2px solid #1F3864;text-align:center;padding:'+(isFree?'10':'14')+'px;font-size:'+fs+'px;font-weight:'+fw+';background:'+bg+';color:#1F3864;height:80px;">'+val+'</td>';
       }
       html += '</tr>';
     }
-    html += '</table></div>';
+    html += '</table>';
+    html += '<div style="margin-top:16px;text-align:center;font-size:14px;color:#888;font-style:italic;">Mark each square when your number is called. Five in a row wins!</div>';
+    html += '</div>';
   }
-  html += '</div></div>';
+  html += '</div>';
   const wrapper = document.createElement('div');
   wrapper.innerHTML = html;
   document.body.appendChild(wrapper);
-  html2pdf().set(getPdfOpts('bingo-cards-' + DATA.monthName + '.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+  html2pdf().set(getPdfOpts('bingo-cards-'+DATA.monthName+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
 }
 
 function exportLoteriaPDF() {
   const count = parseInt(document.getElementById('loteria-count')?.value || 6);
-  let html = '<div style="font-family:Arial,sans-serif;padding:10px;"><h2 style="text-align:center;color:#C00;margin-bottom:16px;">🃏 Lotería Cards — ' + DATA.monthName + ' ' + DATA.year + '</h2><div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">';
-  for (let c = 0; c < count; c++) {
+  // One card per page — large print
+  let html = '<div style="font-family:Arial,sans-serif;">';
+  for (let c=0; c<count; c++) {
     const picked = [...LOTERIA_ITEMS].sort(()=>Math.random()-0.5).slice(0,16);
-    html += '<div style="border:2px solid #C00;border-radius:6px;overflow:hidden;width:200px;margin-bottom:10px;"><div style="background:#C00;color:#FFD700;text-align:center;padding:4px;font-weight:800;font-size:12px;">🃏 LOTERÍA — Card '+(c+1)+'</div><div style="display:grid;grid-template-columns:repeat(4,1fr);">';
+    if (c>0) html += '<div style="page-break-before:always;"></div>';
+    html += '<div style="padding:20px;max-width:680px;margin:0 auto;">';
+    html += '<div style="background:#C00;color:#FFD700;text-align:center;padding:16px;font-weight:900;font-size:32px;border-radius:8px 8px 0 0;letter-spacing:4px;">🃏 LOTERÍA</div>';
+    html += '<div style="text-align:center;background:#900;color:white;padding:6px;font-size:14px;font-weight:600;margin-bottom:0;">Card '+(c+1)+' of '+count+' &nbsp;·&nbsp; '+DATA.monthName+' '+DATA.year+'</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);border:3px solid #C00;border-top:none;">';
     picked.forEach(item => {
-      html += '<div style="border:1px solid #eee;text-align:center;padding:4px 2px;"><div style="font-size:16px;">'+item.emoji+'</div><div style="font-weight:700;color:#C00;font-size:8px;">'+item.es+'</div><div style="color:#555;font-size:7px;">'+item.en+'</div></div>';
+      html += '<div style="border:1px solid #ddd;text-align:center;padding:10px 4px;background:white;">'
+        +'<div style="font-size:36px;line-height:1.1;">'+item.emoji+'</div>'
+        +'<div style="font-weight:800;color:#C00;font-size:13px;margin-top:4px;">'+item.es+'</div>'
+        +'<div style="color:#555;font-size:11px;margin-top:2px;">'+item.en+'</div>'
+        +'</div>';
     });
-    html += '</div></div>';
+    html += '</div>';
+    html += '<div style="margin-top:12px;text-align:center;font-size:13px;color:#888;font-style:italic;">Mark each square when it is called. Get 4 in a row to win!</div>';
+    html += '</div>';
   }
-  html += '</div></div>';
+  html += '</div>';
   const wrapper = document.createElement('div');
   wrapper.innerHTML = html;
   document.body.appendChild(wrapper);
-  html2pdf().set(getPdfOpts('loteria-cards-' + DATA.monthName + '.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+  html2pdf().set(getPdfOpts('loteria-cards-'+DATA.monthName+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
 }
 
 function exportLoteriaCallerPDF() {
@@ -3897,9 +3955,9 @@ function exportSingAlongPDF() {
   let html = '<div style="font-family:Arial,sans-serif;padding:20px;"><h1 style="color:#1F3864;text-align:center;margin-bottom:4px;">🎵 Sing-Along Lyric Sheet</h1><h2 style="color:#2E75B6;text-align:center;font-size:16px;margin-bottom:20px;">'+data.label+'</h2>';
   data.songs.forEach(s => {
     html += '<div style="margin-bottom:20px;page-break-inside:avoid;"><div style="background:#1F3864;color:#FFD966;padding:8px 12px;border-radius:4px 4px 0 0;font-weight:700;">'+escapeHtml(s.title)+' <span style="font-weight:400;font-size:11px;color:#ddd;">— '+escapeHtml(s.artist)+'</span></div><div style="border:1px solid #ddd;border-top:none;padding:10px 12px;border-radius:0 0 4px 4px;">';
-    if (s.verse) html += '<div style="font-style:italic;color:#555;font-size:12px;line-height:1.8;white-space:pre-line;margin-bottom:8px;">'+escapeHtml(s.verse)+'</div>';
+    if (s.verse) html += '<div style="font-style:italic;color:#555;font-size:15px;line-height:2;white-space:pre-line;margin-bottom:10px;">'+escapeHtml(s.verse)+'</div>';
     const ytLabel = s.youtube.replace('https://www.youtube.com/results?search_query=','Search: ').replace(/\+/g,' ');
-    html += '<div style="font-weight:600;font-size:13px;line-height:1.9;white-space:pre-line;color:#1F3864;">'+escapeHtml(s.chorus)+'</div><div style="margin-top:8px;font-size:10px;color:#888;">▶ YouTube: '+ytLabel+'</div></div></div>';
+    html += '<div style="font-weight:600;font-size:17px;line-height:2.1;white-space:pre-line;color:#1F3864;">'+escapeHtml(s.chorus)+'</div><div style="margin-top:10px;font-size:13px;color:#888;">▶ YouTube: '+ytLabel+'</div></div></div>';
   });
   html += '<div style="text-align:center;margin-top:20px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
   const wrapper = document.createElement('div');
@@ -4000,7 +4058,7 @@ function exportWordGamePDF() {
   const {grid, placed} = buildWordSearch(theme.words);
   const answeredCells = new Set(placed.flatMap(p => p.cells.map(([r,c])=>r+','+c)));
   const size = grid.length;
-  const cs = 22;
+  const cs = 28;
   function makeGrid(highlight) {
     let t = '<table style="border-collapse:collapse;font-family:monospace;margin:0 auto;">';
     for (let r=0; r<size; r++) {
@@ -4009,7 +4067,8 @@ function exportWordGamePDF() {
         const isKey = highlight && answeredCells.has(r+','+c);
         const bg = isKey ? '#FFD966' : 'white';
         const col = isKey ? '#1F3864' : '#111';
-        t += '<td style="width:'+cs+'px;height:'+cs+'px;text-align:center;font-size:11px;font-weight:600;border:1px solid #ddd;background:'+bg+';color:'+col+';">'+grid[r][c]+'</td>';
+        const brd = isKey ? '2px solid #1F3864' : '1px solid #ddd';
+        t += '<td style="width:'+cs+'px;height:'+cs+'px;text-align:center;font-size:16px;font-weight:700;border:'+brd+';background:'+bg+';color:'+col+';">'+grid[r][c]+'</td>';
       }
       t += '</tr>';
     }
@@ -4018,15 +4077,15 @@ function exportWordGamePDF() {
   }
   const words = theme.words.slice(0,12);
   let html = '<div style="font-family:Arial,sans-serif;padding:20px;">';
-  html += '<h1 style="text-align:center;color:#1F3864;font-size:18px;margin-bottom:4px;">🔤 Word Search: '+theme.name+'</h1>';
-  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:12px;">Find each word — forward, backward, up, down, or diagonal</p>';
+  html += '<h1 style="text-align:center;color:#1F3864;font-size:24px;margin-bottom:4px;">🔤 Word Search: '+theme.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:15px;margin-bottom:12px;">Find each word — forward, backward, up, down, or diagonal</p>';
   html += makeGrid(false);
-  html += '<div style="margin-top:14px;text-align:center;"><strong style="font-size:13px;">Words to Find:</strong><br><span style="font-size:12px;line-height:2.2;">'+words.join(' &nbsp;&nbsp; ')+'</span></div>';
+  html += '<div style="margin-top:16px;text-align:center;"><strong style="font-size:17px;">Words to Find:</strong><br><span style="font-size:15px;line-height:2.4;letter-spacing:1px;">'+words.join(' &nbsp;&nbsp; ')+'</span></div>';
   html += '<div style="page-break-before:always;padding-top:20px;">';
-  html += '<h1 style="text-align:center;color:#C00;font-size:18px;margin-bottom:4px;">✅ Answer Key: '+theme.name+'</h1>';
-  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:12px;">Highlighted letters show where each word is located</p>';
+  html += '<h1 style="text-align:center;color:#C00;font-size:24px;margin-bottom:4px;">✅ Answer Key: '+theme.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:15px;margin-bottom:12px;">Highlighted letters show where each word is located</p>';
   html += makeGrid(true);
-  html += '<div style="margin-top:14px;text-align:center;font-size:12px;"><strong>Words found:</strong> '+placed.map(p=>p.word).join(', ')+'</div>';
+  html += '<div style="margin-top:16px;text-align:center;font-size:14px;"><strong>Words found:</strong> '+placed.map(p=>p.word).join(', ')+'</div>';
   html += '</div>';
   html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
   const wrapper = document.createElement('div');
@@ -4180,16 +4239,16 @@ function renderTriviaPreview() {
 function exportTriviaPDF() {
   const pack = TRIVIA_PACKS_DATA[currentTriviaIdx];
   let html = '<div style="font-family:Arial,sans-serif;padding:20px;">';
-  html += '<h1 style="text-align:center;color:#1F3864;margin-bottom:4px;">❓ Trivia: '+pack.name+'</h1>';
-  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:20px;">Read each question aloud. Give residents time to answer.</p>';
-  html += '<ol style="font-size:14px;line-height:2.2;padding-left:20px;">';
-  pack.questions.forEach(q => { html += '<li>'+escapeHtml(q.q)+'</li>'; });
+  html += '<h1 style="text-align:center;color:#1F3864;font-size:26px;margin-bottom:4px;">❓ Trivia: '+pack.name+'</h1>';
+  html += '<p style="text-align:center;color:#555;font-size:16px;margin-bottom:20px;">Read each question aloud. Give residents time to answer.</p>';
+  html += '<ol style="font-size:18px;line-height:2.4;padding-left:24px;">';
+  pack.questions.forEach(q => { html += '<li style="margin-bottom:6px;">'+escapeHtml(q.q)+'</li>'; });
   html += '</ol>';
   html += '<div style="page-break-before:always;padding-top:20px;">';
-  html += '<h1 style="text-align:center;color:#C00;margin-bottom:4px;">✅ Answer Key: '+pack.name+'</h1>';
-  html += '<ol style="font-size:13px;line-height:2;padding-left:20px;">';
+  html += '<h1 style="text-align:center;color:#C00;font-size:26px;margin-bottom:4px;">✅ Answer Key: '+pack.name+'</h1>';
+  html += '<ol style="font-size:16px;line-height:2.2;padding-left:24px;">';
   pack.questions.forEach((q,i) => {
-    html += '<li><span style="color:#555;">'+escapeHtml(q.q)+'</span><br><strong style="color:#1F3864;">'+escapeHtml(q.a)+'</strong></li>';
+    html += '<li style="margin-bottom:8px;"><span style="color:#555;">'+escapeHtml(q.q)+'</span><br><strong style="color:#1F3864;font-size:17px;">→ '+escapeHtml(q.a)+'</strong></li>';
   });
   html += '</ol></div>';
   html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
@@ -4315,11 +4374,11 @@ function exportExercisePDF() {
   let html = '<div style="font-family:Arial,sans-serif;padding:24px;max-width:700px;">';
   html += '<div style="background:#1F3864;color:#FFD966;padding:12px 16px;border-radius:6px 6px 0 0;"><h1 style="margin:0;font-size:18px;">🏋️ '+ex.name+'</h1><p style="margin:4px 0 0;font-size:12px;color:#ddd;">'+ex.time+' &nbsp;·&nbsp; '+ex.level+'</p></div>';
   html += '<div style="border:1px solid #ddd;border-top:none;padding:16px;border-radius:0 0 6px 6px;">';
-  html += '<p style="font-size:13px;color:#555;margin-bottom:14px;font-style:italic;">'+ex.description+'</p>';
-  html += '<ol style="font-size:13px;line-height:1.9;padding-left:18px;">';
-  ex.steps.forEach(s => { html += '<li style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f5f5f5;">'+s+'</li>'; });
+  html += '<p style="font-size:16px;color:#555;margin-bottom:16px;font-style:italic;">'+ex.description+'</p>';
+  html += '<ol style="font-size:17px;line-height:2.1;padding-left:22px;">';
+  ex.steps.forEach(s => { html += '<li style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f5f5f5;">'+s+'</li>'; });
   html += '</ol>';
-  html += '<div style="margin-top:14px;background:#FFF3CD;border-left:4px solid #FFD966;padding:10px 14px;font-size:12px;border-radius:0 4px 4px 0;">⚠️ <strong>Safety Note:</strong> '+ex.safety+'</div>';
+  html += '<div style="margin-top:16px;background:#FFF3CD;border-left:5px solid #FFD966;padding:12px 16px;font-size:15px;border-radius:0 4px 4px 0;">⚠️ <strong>Safety Note:</strong> '+ex.safety+'</div>';
   html += '</div>';
   html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
   const wrapper = document.createElement('div'); wrapper.innerHTML = html;
@@ -4587,16 +4646,14 @@ function exportReminiscencePDF() {
   const rem = REMINISCENCE_DATA[currentRemIdx];
   let html = '<div style="font-family:Arial,sans-serif;padding:20px;">';
   html += '<h1 style="text-align:center;color:'+rem.color+';margin-bottom:4px;">💭 Reminiscence: '+rem.name+'</h1>';
-  html += '<p style="text-align:center;color:#555;font-size:12px;margin-bottom:16px;">Read each question aloud and invite residents to share their memories.</p>';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">';
+  html += '<p style="text-align:center;color:#555;font-size:16px;margin-bottom:20px;">Read each question aloud and invite residents to share their memories.</p>';
   rem.prompts.forEach((p,i) => {
-    html += '<div style="border:1px solid #ddd;border-left:4px solid '+rem.color+';border-radius:4px;padding:12px;page-break-inside:avoid;">';
-    html += '<div style="font-weight:700;color:'+rem.color+';font-size:11px;margin-bottom:4px;">Question '+(i+1)+'</div>';
-    html += '<div style="font-size:13px;line-height:1.6;">'+p+'</div>';
-    html += '<div style="margin-top:8px;border-top:1px dashed #ddd;padding-top:6px;font-size:11px;color:#aaa;">Notes / Response: _____________________________</div>';
+    html += '<div style="border:1px solid #ddd;border-left:6px solid '+rem.color+';border-radius:4px;padding:16px 20px;margin-bottom:14px;page-break-inside:avoid;">';
+    html += '<div style="font-weight:800;color:'+rem.color+';font-size:14px;margin-bottom:6px;">Question '+(i+1)+'</div>';
+    html += '<div style="font-size:19px;line-height:1.8;color:#222;">'+p+'</div>';
+    html += '<div style="margin-top:12px;border-top:1px dashed #ddd;padding-top:8px;font-size:13px;color:#aaa;">Notes: ___________________________________________</div>';
     html += '</div>';
   });
-  html += '</div>';
   html += '<div style="text-align:center;margin-top:16px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
   const wrapper = document.createElement('div'); wrapper.innerHTML = html;
   document.body.appendChild(wrapper);
