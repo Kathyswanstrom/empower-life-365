@@ -1034,7 +1034,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <thead><tr>
         <th style="width:40px;">#</th>
         <th>Name</th>
-        <th style="width:160px;">Care Level</th>
+        <th style="width:130px;">Care Level</th>
+        <th style="width:70px;">B-Day Mo</th>
+        <th style="width:70px;">B-Day Day</th>
         <th>Notes (mobility, hearing, preferences)</th>
         <th style="width:60px;"></th>
       </tr></thead>
@@ -1197,6 +1199,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
             <input type="radio" name="cal-paper" value="tabloid" onchange="updateCustomSize(this)"> Tabloid <span style="color:#888;font-weight:400;">11×17"</span>
           </label>
           <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
+            <input type="radio" name="cal-paper" value="legal" onchange="updateCustomSize(this)"> Legal <span style="color:#888;font-weight:400;">8½×14"</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
             <input type="radio" name="cal-paper" value="large" onchange="updateCustomSize(this)"> Large <span style="color:#888;font-weight:400;">17×22"</span>
           </label>
           <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
@@ -1240,12 +1245,12 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <div class="bday-controls" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
     <div>
       <h2 style="margin:0;">🎂 Birthday Calendar</h2>
-      <div class="subtitle">Track resident birthdays — auto-populated when Residex is connected.</div>
+      <div class="subtitle">Click any day to add a birthday · Sync from Roster · Or type in the form below</div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn btn-gold" onclick="exportBirthdayPDF()">📄 Export PDF</button>
-      <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
+      <button class="btn btn-secondary" onclick="syncRosterBirthdays()" title="Auto-fill birthdays from the Residents tab">🔄 Sync from Roster</button>
       <button class="btn btn-secondary" onclick="importBirthdayCSV()">📥 Import CSV</button>
+      <button class="btn btn-gold" onclick="exportBirthdayPDF()">📄 Export PDF</button>
     </div>
   </div>
 
@@ -2220,6 +2225,7 @@ function doPrintCalendar() {
   // Paper size -> @page CSS
   const sizeMap = {
     letter:  '11in 8.5in',
+    legal:   '14in 8.5in',
     tabloid: '17in 11in',
     large:   '22in 17in',
     custom:  (document.getElementById('custom-w')?.value || 11) + 'in ' + (document.getElementById('custom-h')?.value || 17) + 'in'
@@ -2526,13 +2532,15 @@ function renderRoster() {
   document.getElementById('roster-body').innerHTML = roster.map((r, i) => `
     <tr>
       <td>${i + 1}</td>
-      <td><input type="text" data-i="${i}" data-f="name" value="${escapeAttr(r.name)}"></td>
+      <td><input type="text" data-i="${i}" data-f="name" value="${escapeAttr(r.name)}" placeholder="Resident name"></td>
       <td><select data-i="${i}" data-f="level">
         <option value="" ${!r.level ? 'selected' : ''}>—</option>
         <option value="MC" ${r.level === 'MC' ? 'selected' : ''}>MC — Memory Care</option>
         <option value="AL" ${r.level === 'AL' ? 'selected' : ''}>AL — Assisted Living</option>
       </select></td>
-      <td><input type="text" data-i="${i}" data-f="notes" value="${escapeAttr(r.notes)}"></td>
+      <td><input type="number" data-i="${i}" data-f="bday_m" value="${escapeAttr(r.bday_m||'')}" min="1" max="12" placeholder="Mo" style="width:50px;"></td>
+      <td><input type="number" data-i="${i}" data-f="bday_d" value="${escapeAttr(r.bday_d||'')}" min="1" max="31" placeholder="Day" style="width:50px;"></td>
+      <td><input type="text" data-i="${i}" data-f="notes" value="${escapeAttr(r.notes)}" placeholder="Notes"></td>
       <td><button class="del-btn" data-del="${i}">×</button></td>
     </tr>`).join('');
   document.querySelectorAll('#roster-body input, #roster-body select').forEach(el => {
@@ -3018,57 +3026,164 @@ function handleBirthdayCSV(event) {
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DOW_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
+
+// ── Sync birthdays from the resident roster ──────────────────────────────
+function syncRosterBirthdays() {
+  const existing = getBirthdays();
+  // Build a set of roster-sourced names so we can update without duplicating
+  const rosterNames = new Set(existing.filter(b => b.fromRoster).map(b => b.name.toLowerCase()));
+  // Remove stale roster entries then re-add from current roster
+  const manual = existing.filter(b => !b.fromRoster);
+  const fromRoster = [];
+  roster.forEach(r => {
+    if (!r.name || !r.bday_m || !r.bday_d) return;
+    fromRoster.push({
+      name: r.name,
+      month: parseInt(r.bday_m),
+      day: parseInt(r.bday_d),
+      room: r.notes || '',
+      level: r.level || 'all',
+      fromRoster: true
+    });
+  });
+  const merged = [...manual, ...fromRoster].sort((a,b) => a.month - b.month || a.day - b.day);
+  saveBirthdays(merged);
+  renderBirthdayCalendar();
+  const added = fromRoster.length;
+  alert('✓ Synced ' + added + ' birthday' + (added !== 1 ? 's' : '') + ' from the resident roster.');
+}
+
+let bdayViewMonth = new Date().getMonth() + 1; // 1-12, default current month
+
 function renderBirthdayCalendar() {
   const container = document.getElementById('birthday-cal-container');
   if (!container) return;
   const birthdays = getBirthdays();
-  let html = '';
+  const m = bdayViewMonth; // 1-12
+  const year = 2026;
+  const monthName = MONTH_NAMES[m-1];
+  const firstDay = new Date(year, m-1, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, m, 0).getDate();
+  const monthBdays = birthdays.filter(b => b.month === m);
 
-  // Show all 12 months
-  for (let m = 1; m <= 12; m++) {
-    const firstDay = new Date(2026, m-1, 1).getDay();
-    const daysInMonth = new Date(2026, m, 0).getDate();
-    const monthBdays = birthdays.filter(b => b.month === m);
+  // Navigation header
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;background:white;border-radius:10px;padding:12px 18px;border:1px solid var(--gray-200);box-shadow:var(--shadow);">
+    <button class="btn btn-secondary" onclick="bdayNavMonth(-1)" style="padding:6px 14px;">◀ Prev</button>
+    <div style="text-align:center;">
+      <div style="font-size:22px;font-weight:800;color:var(--navy);">${monthName} ${year}</div>
+      <div style="font-size:12px;color:var(--gray-500);margin-top:2px;">${monthBdays.length} birthday${monthBdays.length!==1?'s':''} this month</div>
+    </div>
+    <button class="btn btn-secondary" onclick="bdayNavMonth(1)" style="padding:6px 14px;">Next ▶</button>
+  </div>`;
 
-    html += `
-    <div style="margin-bottom:28px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <div style="font-size:18px;font-weight:700;color:var(--navy);">${MONTH_NAMES[m-1]}</div>
-        <div style="font-size:13px;color:var(--gray-500);">${monthBdays.length} birthday${monthBdays.length !== 1 ? 's' : ''}</div>
-      </div>
-      <div class="birthday-cal-grid">
-        ${DOW_SHORT.map(d => `<div class="bday-dow">${d}</div>`).join('')}
-        ${Array(firstDay).fill('<div class="bday-cell empty"></div>').join('')}
-        ${Array.from({length: daysInMonth}, (_,i) => {
-          const d = i+1;
-          const isWeekend = (d + firstDay - 1) % 7 === 0 || (d + firstDay - 1) % 7 === 6;
-          const dayBdays = monthBdays.filter(b => b.day === d);
-          const bdayHtml = dayBdays.map(b =>
-            `<div class="bday-entry"><span class="bday-icon">🎂</span>${escapeHtml(b.name.split(' ')[0])}${b.room ? ' · '+escapeHtml(b.room) : ''}</div>`
-          ).join('');
-          return `<div class="bday-cell${isWeekend?' weekend':''}">
-            <div class="bday-num">${d}</div>
-            ${bdayHtml}
-          </div>`;
-        }).join('')}
-      </div>
+  // Month jump pills
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">';
+  MONTH_NAMES.forEach((mn, i) => {
+    const mi = i+1;
+    const cnt = birthdays.filter(b => b.month === mi).length;
+    const active = mi === m;
+    html += `<button onclick="bdayViewMonth=${mi};renderBirthdayCalendar()" style="padding:4px 10px;border-radius:20px;border:2px solid ${active?'var(--gold)':'var(--gray-200)'};background:${active?'#FFF2CC':'white'};font-size:12px;font-weight:${active?'700':'500'};cursor:pointer;color:${active?'var(--navy)':'var(--gray-500)'};">${mn.slice(0,3)}${cnt?' <span style=\'color:#C00;font-weight:800;\'>'+cnt+'</span>':''}</button>`;
+  });
+  html += '</div>';
+
+  // Calendar grid
+  html += '<div class="birthday-cal-grid" style="grid-template-columns:repeat(7,1fr);">';
+  // DOW headers
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+    html += `<div class="bday-dow">${d}</div>`;
+  });
+  // Empty cells before first day
+  for (let i=0; i<firstDay; i++) html += '<div class="bday-cell empty"></div>';
+  // Day cells
+  for (let d=1; d<=daysInMonth; d++) {
+    const dow = (d + firstDay - 1) % 7;
+    const isWeekend = dow===0 || dow===6;
+    const dayBdays = monthBdays.filter(b => b.day === d);
+    const bdayEntries = dayBdays.map((b,bi) => {
+      const idx = birthdays.indexOf(b);
+      return `<div class="bday-entry" style="display:flex;align-items:center;gap:3px;font-size:11px;line-height:1.3;cursor:pointer;" onclick="event.stopPropagation();editBday(${idx})">
+        <span>🎂</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(b.name.split(' ')[0])}${b.room?' <span style=\'color:#888;font-size:9px;\'>'+escapeHtml(b.room)+'</span>':''}</span>
+        <span onclick="event.stopPropagation();deleteBday(${idx})" style="color:#c00;font-size:11px;font-weight:700;padding:0 2px;cursor:pointer;" title="Remove">×</span>
+      </div>`;
+    }).join('');
+    html += `<div class="bday-cell${isWeekend?' weekend':''}" onclick="addBdayOnDay(${d},${m})" title="Click to add birthday on ${monthName} ${d}" style="cursor:pointer;">
+      <div class="bday-num">${d}</div>
+      ${bdayEntries}
+      <div class="bday-add-hint" style="font-size:9px;color:#ccc;text-align:center;margin-top:2px;display:${dayBdays.length?'none':'block'};">+ add</div>
     </div>`;
+  }
+  html += '</div>';
+
+  // List below grid
+  if (monthBdays.length > 0) {
+    html += '<div style="margin-top:16px;background:white;border-radius:10px;padding:14px 18px;border:1px solid var(--gray-200);">';
+    html += '<div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy);margin-bottom:10px;">🎂 '+monthName+' Birthdays</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">';
+    monthBdays.sort((a,b)=>a.day-b.day).forEach(b => {
+      const idx = birthdays.indexOf(b);
+      html += `<div style="background:#FFF8E1;border-left:4px solid var(--gold);border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px;">
+        <div style="font-size:20px;">🎂</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:700;font-size:13px;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(b.name)}</div>
+          <div style="font-size:11px;color:var(--gray-500);">${monthName} ${b.day}${b.room?' · '+escapeHtml(b.room):''}${b.fromRoster?' <span style=\'color:#2E75B6;\'>●</span>':''}</div>
+        </div>
+        <button onclick="deleteBday(${idx})" style="background:none;border:none;color:#c00;cursor:pointer;font-size:14px;padding:2px 4px;" title="Remove">×</button>
+      </div>`;
+    });
+    html += '</div></div>';
   }
 
   if (birthdays.length === 0) {
-    html = `<div style="text-align:center;padding:40px;color:var(--gray-500);">
-      <div style="font-size:48px;margin-bottom:12px;">🎂</div>
-      <div style="font-size:16px;font-weight:600;">No birthdays yet</div>
-      <div style="font-size:13px;margin-top:6px;">Add residents above, import a CSV, or connect Residex to auto-populate.</div>
-      <div style="margin-top:14px;background:var(--gray-100);border-radius:8px;padding:12px 18px;font-size:12px;color:var(--gray-500);max-width:420px;margin-left:auto;margin-right:auto;">
-        <strong>CSV Format:</strong> Name, Month (1-12), Day, Room, Level<br>
-        Example: <em>Margaret Johnson, 5, 14, 204B, AL</em>
-      </div>
+    html += `<div style="text-align:center;padding:30px;color:var(--gray-500);">
+      <div style="font-size:48px;margin-bottom:10px;">🎂</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">No birthdays yet</div>
+      <div style="font-size:13px;">Click any day to add one, use the form above, sync from Roster, or import a CSV.</div>
     </div>`;
   }
 
   container.innerHTML = html;
 }
+
+function bdayNavMonth(dir) {
+  bdayViewMonth = ((bdayViewMonth - 1 + dir + 12) % 12) + 1;
+  renderBirthdayCalendar();
+}
+
+function addBdayOnDay(day, month) {
+  const name = prompt('Resident name for ' + MONTH_NAMES[month-1] + ' ' + day + ':');
+  if (!name || !name.trim()) return;
+  const room = prompt('Room / unit (optional — press Enter to skip):') || '';
+  const list = getBirthdays();
+  list.push({ name: name.trim(), month, day, room: room.trim(), level: 'all', fromRoster: false });
+  list.sort((a,b) => a.month-b.month || a.day-b.day);
+  saveBirthdays(list);
+  renderBirthdayCalendar();
+}
+
+function editBday(idx) {
+  const list = getBirthdays();
+  const b = list[idx];
+  if (!b) return;
+  const name = prompt('Edit name:', b.name);
+  if (name === null) return;
+  const room = prompt('Edit room/unit:', b.room || '');
+  if (room === null) return;
+  list[idx].name = name.trim() || b.name;
+  list[idx].room = (room || '').trim();
+  list[idx].fromRoster = false; // mark as manually edited
+  saveBirthdays(list);
+  renderBirthdayCalendar();
+}
+
+function deleteBday(idx) {
+  const list = getBirthdays();
+  if (!list[idx]) return;
+  if (!confirm('Remove ' + list[idx].name + ' from birthday calendar?')) return;
+  list.splice(idx, 1);
+  saveBirthdays(list);
+  renderBirthdayCalendar();
+}
+
 
 function exportBirthdayPDF() {
   const el = document.getElementById('birthday-cal-container');
