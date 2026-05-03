@@ -1452,10 +1452,14 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 </section>
 
 <section class="tab-panel" id="panel-build">
+  <!-- Program banner – matches AL/MC calendar style -->
+  <div id="build-program-banner" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1F3864,#2E75B6);color:#FFD700;padding:8px 18px;border-radius:20px;font-weight:800;font-size:13px;letter-spacing:0.6px;margin-bottom:14px;">
+    🛠️ &nbsp;BUILD MY CALENDAR &nbsp;·&nbsp; Custom Activity Planner
+  </div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
     <div>
-      <h2 style="margin:0;">🛠️ Build My Calendar</h2>
-      <div class="subtitle">Click any day to schedule activities from the 10 care categories</div>
+      <h2 style="margin:0;">📅 Custom Calendar</h2>
+      <div class="subtitle">Click any day to schedule activities · up to 10 time slots · fully customizable</div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn btn-secondary" onclick="clearCustomMonth()" title="Clear all activities for this month">🗑 Clear Month</button>
@@ -1512,6 +1516,21 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <option value="lavender">💜 Lavender Fields</option>
     </select>
     <p style="margin-top:6px;color:var(--gray-500);font-size:12px;">Note: Theme accents print only with the Color background option (stripped on White / B&W prints for regulatory clarity).</p>
+  </div>
+
+  <div class="about-card settings-form" style="margin-top:18px;">
+    <h3>Extra Activity Groups</h3>
+    <p>Show additional free-form group slots at the bottom of every Daily Sheet — useful if your home runs more groups than the 7 built-in slots.</p>
+    <label for="setting-extra-groups">Number of extra group slots (0 – 4)</label>
+    <select id="setting-extra-groups" onchange="setExtraGroupCount(parseInt(this.value));renderDailySheet();"
+      style="width:auto;min-width:120px;">
+      <option value="0">0 — none</option>
+      <option value="1">1 extra group</option>
+      <option value="2" selected>2 extra groups</option>
+      <option value="3">3 extra groups</option>
+      <option value="4">4 extra groups</option>
+    </select>
+    <p style="margin-top:6px;color:var(--gray-500);font-size:12px;">Each extra slot has a customizable time, activity name, and notes field. Saved per day.</p>
   </div>
 
   <div class="about-card settings-form" style="margin-top:18px;">
@@ -1825,6 +1844,26 @@ function setSlotDeleted(day, slot, deleted) {
   }
   lsSet(dayOverridesKey(currentLevel), dayOverrides[currentLevel]);
   flashSavedMsg();
+}
+
+// ── Extra Group slots (configurable count, free-form, per-day) ───────────────
+const EXTRA_GROUPS_KEY = 'el365_extragroups_cnt';
+function getExtraGroupCount() {
+  try { return parseInt(localStorage.getItem(EXTRA_GROUPS_KEY) || '2', 10) || 2; } catch { return 2; }
+}
+function setExtraGroupCount(n) {
+  localStorage.setItem(EXTRA_GROUPS_KEY, String(n));
+}
+function getExtraGroups(day) {
+  return dayOverrides[currentLevel]?.[day]?.extraGroups || [];
+}
+function setExtraGroup(day, idx, field, value) {
+  if (!dayOverrides[currentLevel][day]) dayOverrides[currentLevel][day] = {};
+  if (!dayOverrides[currentLevel][day].extraGroups) dayOverrides[currentLevel][day].extraGroups = [];
+  const arr = dayOverrides[currentLevel][day].extraGroups;
+  while (arr.length <= idx) arr.push({ time: '', title: '', desc: '' });
+  arr[idx][field] = value;
+  lsSet(dayOverridesKey(currentLevel), dayOverrides[currentLevel]);
 }
 
 function deleteSlot(slot) {
@@ -2156,6 +2195,39 @@ function renderDailySheet() {
       </div>`;
   }).join('');
 
+  // Extra Group Slots (configurable count, free-form)
+  const extraCount = getExtraGroupCount();
+  const extraGroups = getExtraGroups(currentDay);
+  const extraColors = ['#E67E22','#16A085','#8E44AD','#2980B9'];
+  const extraIcons  = ['➕','🎯','🌟','🎪'];
+  const extraSlotsHtml = Array.from({length: extraCount}, (_, i) => {
+    const eg = extraGroups[i] || {};
+    const col = extraColors[i % extraColors.length];
+    const ico = extraIcons[i % extraIcons.length];
+    return `
+      <div class="slot-row">
+        <div class="slot-label-box" style="background:${col};">
+          <div class="slot-icon">${ico}</div>
+          <div class="slot-name">Extra Group ${i+1}</div>
+          <input type="text" class="slot-time-input"
+            value="${escapeAttr(eg.time || '')}"
+            onchange="setExtraGroup(${currentDay}, ${i}, 'time', this.value)"
+            placeholder="Time…" title="Edit time"/>
+        </div>
+        <div class="slot-content" style="cursor:default;">
+          <div style="margin-bottom:6px;">
+            <input type="text" value="${escapeAttr(eg.title || '')}"
+              onchange="setExtraGroup(${currentDay}, ${i}, 'title', this.value)"
+              placeholder="Activity name…"
+              style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:14px;font-weight:700;color:var(--navy);background:#fafbff;"/>
+          </div>
+          <textarea onchange="setExtraGroup(${currentDay}, ${i}, 'desc', this.value)"
+            placeholder="Notes, details, supplies…"
+            style="width:100%;box-sizing:border-box;border:1px solid #eee;border-radius:6px;padding:5px 8px;font-size:12px;color:#555;background:#fafbff;resize:vertical;min-height:40px;">${escapeHtml(eg.desc || '')}</textarea>
+        </div>
+      </div>`;
+  }).join('');
+
   const travelBanner = isTravel ? `
     <div class="travel-banner">
       <div class="flag">${DATA.travelDay.flag}</div>
@@ -2180,6 +2252,7 @@ function renderDailySheet() {
       ${travelBanner}
       ${foodBanner}
       ${slotsHtml}
+      ${extraSlotsHtml}
       <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--gray-500);font-style:italic;">
         Empower Life 365 &nbsp;|&nbsp; ${escapeHtml(DATA.levelNames[currentLevel])} Track &nbsp;|&nbsp; empowerlife365.app &nbsp;|&nbsp; ${DATA.monthName} ${DATA.year}
       </div>
@@ -5213,12 +5286,28 @@ const CUSTOM_CATS = [
 ];
 
 const CUSTOM_SLOTS = [
-  { id:'morning',    label:'Morning',       time:'9:00 AM',  icon:'🌅' },
-  { id:'midmorning', label:'Mid-Morning',   time:'10:30 AM', icon:'☀️' },
-  { id:'afternoon',  label:'Afternoon',     time:'2:00 PM',  icon:'🌤️' },
-  { id:'supper',     label:'Supper / Eve',  time:'5:30 PM',  icon:'🌆' },
-  { id:'evening',    label:'Evening',       time:'6:30 PM',  icon:'🌙' },
+  { id:'earlyam',     label:'Early Morning',   time:'7:30 AM',  icon:'🌄' },
+  { id:'morning',     label:'Morning',         time:'9:00 AM',  icon:'🌅' },
+  { id:'midmorning',  label:'Mid-Morning',     time:'10:30 AM', icon:'☀️' },
+  { id:'noon',        label:'Noon Activity',   time:'12:00 PM', icon:'🌞' },
+  { id:'afternoon',   label:'Afternoon',       time:'2:00 PM',  icon:'🌤️' },
+  { id:'midafternoon',label:'Mid-Afternoon',   time:'3:30 PM',  icon:'⛅' },
+  { id:'lateaft',     label:'Late Afternoon',  time:'4:30 PM',  icon:'🌇' },
+  { id:'supper',      label:'Supper / Eve',    time:'5:30 PM',  icon:'🌆' },
+  { id:'evening',     label:'Evening',         time:'6:30 PM',  icon:'🌙' },
+  { id:'nightwind',   label:'Night Wind-Down', time:'8:00 PM',  icon:'⭐' },
 ];
+// Per-month custom slot time overrides (persisted in localStorage)
+const CUSTOM_SLOT_TIMES_KEY = 'el365_cslottimes_' + (DATA ? DATA.year + '_' + DATA.monthNum : '2026_5');
+let customSlotTimes = (function() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_SLOT_TIMES_KEY) || '{}'); } catch { return {}; }
+})();
+function getCustomSlotTime(slotId, dayData) {
+  // per-day override > per-month override > default
+  if (dayData && dayData[slotId] && dayData[slotId].time) return dayData[slotId].time;
+  if (customSlotTimes[slotId]) return customSlotTimes[slotId];
+  return (CUSTOM_SLOTS.find(s => s.id === slotId) || {}).time || '';
+}
 
 const CUSTOM_CAL_KEY = 'el365_custom_' + (DATA ? DATA.year + '_' + DATA.monthNum : '2026_5');
 
@@ -5276,8 +5365,9 @@ function renderCustomCalendar() {
       const entry = dayData[slot.id];
       const cat = getCatById(entry.cat);
       const label = entry.custom || entry.activity || '';
-      return cat
-        ? `<div style="font-size:9px;line-height:1.3;padding:1px 4px;border-radius:3px;background:${cat.color}18;border-left:2px solid ${cat.color};margin-bottom:1px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${cat.icon} ${escapeHtml(label)}</div>`
+      const slotTime = getCustomSlotTime(slot.id, dayData);
+      return cat || entry.custom
+        ? `<div style="font-size:9px;line-height:1.3;padding:1px 4px;border-radius:3px;background:${cat?cat.color+'18':'#f0f0f0'};border-left:2px solid ${cat?cat.color:'#aaa'};margin-bottom:1px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="${escapeAttr(slotTime)} – ${escapeAttr(label)}"><span style="opacity:0.6;font-size:8px;">${escapeHtml(slot.icon)} ${escapeHtml(slotTime)} </span>${cat?cat.icon:''} ${escapeHtml(label)}</div>`
         : '';
     }).join('');
 
@@ -5298,32 +5388,74 @@ function renderCustomCalendar() {
 function openScheduler(day) {
   const overlay = document.getElementById('day-scheduler-overlay');
   if (!overlay) return;
-  const title = overlay.querySelector('.scheduler-day-title');
-  if (title) {
-    const meta = DATA ? DATA.dayMeta[String(day)] : null;
-    title.textContent = meta ? meta.date_long : 'Day ' + day;
-  }
   const cal = getCustomCal();
   const dayData = cal[String(day)] || {};
-  CUSTOM_SLOTS.forEach(slot => {
+  const meta = DATA ? DATA.dayMeta[String(day)] : null;
+  const dateLabel = meta ? meta.date_long : 'Day ' + day;
+
+  // Update modal title
+  const titleEl = document.getElementById('scheduler-title');
+  if (titleEl) titleEl.innerHTML = `📅 ${escapeHtml(dateLabel)}`;
+
+  // Build slot rows dynamically
+  const body = document.getElementById('scheduler-body');
+  if (!body) return;
+  body.innerHTML = CUSTOM_SLOTS.map(slot => {
     const entry = dayData[slot.id] || {};
-    const catSel = overlay.querySelector(`[data-slot-cat="${slot.id}"]`);
-    const actSel = overlay.querySelector(`[data-slot-act="${slot.id}"]`);
-    const custEl = overlay.querySelector(`[data-slot-custom="${slot.id}"]`);
-    if (catSel) catSel.value = entry.cat || '';
-    if (actSel) {
-      onSchedCatChange(slot.id, entry.cat, actSel);
-      actSel.value = entry.activity || '';
-    }
-    if (custEl) custEl.value = entry.custom || '';
-  });
+    const slotTime = getCustomSlotTime(slot.id, dayData);
+    const catOptions = `<option value="">— none —</option>` +
+      CUSTOM_CATS.map(cat => `<option value="${cat.id}" ${entry.cat===cat.id?'selected':''}>${cat.icon} ${escapeHtml(cat.label)}</option>`).join('');
+    const actOptions = entry.cat
+      ? `<option value="">— pick activity —</option>` +
+        ((CUSTOM_CATS.find(c=>c.id===entry.cat)||{activities:[]}).activities
+          .map(a=>`<option value="${escapeAttr(a)}" ${entry.activity===a?'selected':''}>${escapeHtml(a)}</option>`).join(''))
+      : `<option value="">— choose category first —</option>`;
+    return `
+    <div style="border:1px solid #e4e7ec;border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fafbff;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:18px;">${slot.icon}</span>
+        <strong style="color:var(--navy);font-size:14px;">${escapeHtml(slot.label)}</strong>
+        <input type="text" data-slot-time="${slot.id}" value="${escapeAttr(slotTime)}"
+          style="margin-left:auto;width:96px;border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px;text-align:center;"
+          title="Edit time for this slot" placeholder="e.g. 9:00 AM"/>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:3px;">Category</label>
+          <select data-slot-cat="${slot.id}" onchange="onSchedCatChange('${slot.id}')"
+            style="width:100%;border:1px solid #ddd;border-radius:6px;padding:5px 7px;font-size:12px;">${catOptions}</select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:3px;">Activity</label>
+          <select data-slot-act="${slot.id}"
+            style="width:100%;border:1px solid #ddd;border-radius:6px;padding:5px 7px;font-size:12px;">${actOptions}</select>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:3px;">✏ Other / Write-in (overrides dropdown)</label>
+        <input type="text" data-slot-custom="${slot.id}" value="${escapeAttr(entry.custom||'')}"
+          placeholder="Type a custom activity name…"
+          style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:12px;"/>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Action buttons
+  body.innerHTML += `
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+      <button class="btn btn-gold" onclick="saveSchedulerDay()" style="flex:1;min-width:120px;">💾 Save Day</button>
+      <button class="btn btn-secondary" onclick="clearSchedulerDay()" style="min-width:100px;">🗑 Clear Day</button>
+      <button class="btn btn-secondary" onclick="closeScheduler()" style="min-width:80px;">Cancel</button>
+    </div>`;
+
   overlay.dataset.day = day;
   overlay.style.display = 'flex';
 }
 
 function onSchedCatChange(slotId, catId, actSelEl) {
-  const catVal = catId !== undefined ? catId : document.querySelector(`[data-slot-cat="${slotId}"]`)?.value;
-  const actSel = actSelEl || document.querySelector(`[data-slot-act="${slotId}"]`);
+  const overlay = document.getElementById('day-scheduler-overlay');
+  const catVal = catId !== undefined ? catId : overlay?.querySelector(`[data-slot-cat="${slotId}"]`)?.value;
+  const actSel = actSelEl || overlay?.querySelector(`[data-slot-act="${slotId}"]`);
   if (!actSel) return;
   const cat = getCatById(catVal);
   actSel.innerHTML = `<option value="">— pick activity —</option>` +
@@ -5337,19 +5469,26 @@ function saveSchedulerDay() {
   if (!day) return;
   const cal = getCustomCal();
   if (!cal[day]) cal[day] = {};
+  // Save per-month default times if changed
   CUSTOM_SLOTS.forEach(slot => {
+    const timeEl = overlay.querySelector(`[data-slot-time="${slot.id}"]`);
     const catSel = overlay.querySelector(`[data-slot-cat="${slot.id}"]`);
     const actSel = overlay.querySelector(`[data-slot-act="${slot.id}"]`);
     const custEl = overlay.querySelector(`[data-slot-custom="${slot.id}"]`);
+    const time = timeEl ? timeEl.value.trim() : '';
     const cat = catSel ? catSel.value : '';
     const activity = actSel ? actSel.value : '';
     const custom = custEl ? custEl.value.trim() : '';
+    // Save monthly default time override if changed
+    const defaultTime = (CUSTOM_SLOTS.find(s=>s.id===slot.id)||{}).time || '';
+    if (time && time !== defaultTime) customSlotTimes[slot.id] = time;
     if (cat || custom) {
-      cal[day][slot.id] = { cat, activity, custom };
+      cal[day][slot.id] = { cat, activity, custom, time: (time !== defaultTime && time) ? time : undefined };
     } else {
       delete cal[day][slot.id];
     }
   });
+  localStorage.setItem(CUSTOM_SLOT_TIMES_KEY, JSON.stringify(customSlotTimes));
   saveCustomCal(cal);
   closeScheduler();
   renderCustomCalendar();
