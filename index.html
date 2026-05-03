@@ -1550,6 +1550,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     </div>
   </div>
   <!-- Category legend -->
+  
+  <!-- Community Gives Back card -->
+  <div id="cs-card-container"></div>
   <div id="custom-cat-legend" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;"></div>
   <!-- Calendar grid -->
   <div style="background:white;border-radius:12px;padding:16px;border:1px solid var(--gray-200);box-shadow:var(--shadow);">
@@ -2037,7 +2040,7 @@ function switchTab(name) {
   if (name === 'daily') renderDailySheet();
   if (name === 'puzzles') renderPuzzlesPanel();
   if (name === 'settings') renderTimeSettings();
-  if (name === 'build') renderCustomCalendar();
+  if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'tv') {
     renderTVDisplay();
     if (tvRefreshInterval) clearInterval(tvRefreshInterval);
@@ -4082,6 +4085,302 @@ const NL_MONTHLY = {
   11:{wellness:"Gratitude is good medicine — proven to lower stress and lift your mood. Try naming 3 things you are thankful for each morning.",humor:"Why did the turkey cross the road? To prove he wasn't chicken!",trivia:{q:"In what year did the Macy's Thanksgiving Day Parade first take place?",a:"1924"},scramble:{word:"GRATEFUL",hint:"How we feel when we count our blessings"},history:"On November 22, 1963, President Kennedy was assassinated — a moment every American remembers exactly where they were.",rememberWhen:"Remember when Thanksgiving dinner took two days to prepare and the whole family — every aunt, uncle, and cousin — fit around the table?",conversation:"What are you most grateful for this year? Who are you most thankful to have in your life?"},
   12:{wellness:"The holidays are a season of the heart. Give yourself permission to rest, reflect, and rejoice — you deserve every bit of the warmth.",humor:"Why does Santa go down the chimney? Because it soots him!",trivia:{q:"In 'The Twelve Days of Christmas,' what is given on the 7th day?",a:"Seven Swans a-Swimming"},scramble:{word:"MISTLETOE",hint:"A holiday decoration hung in doorways"},history:"On December 17, 1903, the Wright Brothers made their first successful airplane flight at Kitty Hawk, North Carolina — 12 seconds that changed the world.",rememberWhen:"Remember stringing popcorn and cranberries for the Christmas tree and making paper chains with your family?",conversation:"What is your most treasured holiday tradition or memory? What made it so special?"}
 };
+
+const CS_MONTHLY = {
+  1: {
+    theme: "Winter Warmth Drive", season: "❄️ January",
+    ideas: [
+      { title: "Hat & Mitten Sorting Station", level: "AL",
+        desc: "Sort, pair, and tag donated hats, mittens, and scarves for a local family shelter. Residents run the sorting table and attach donation cards.",
+        supplies: ["Donated hats, mittens, scarves", "Donation tags or gift labels", "Ribbon or twist ties to pair items", "Decorated collection box"] },
+      { title: "Warm Wishes Ribbon Tying", level: "MC",
+        desc: "Tie colorful ribbons on mittens and hats to make them gift-ready. Each finished item goes in the donation box — simple, tactile, and purposeful.",
+        supplies: ["Hats and mittens", "Pre-cut ribbon in 12-inch lengths", "Decorated donation box", "Sticker labels (star or heart)"] },
+      { title: "Fleece Blanket Knot Tying", level: "AL",
+        desc: "Cut and knot fleece strips along the edges of pre-cut blanket panels to make no-sew fleece blankets for a local shelter or children's home.",
+        supplies: ["Pre-cut fleece panels (2 layers each)", "Scissors", "Measuring tape", "Donation bags"] },
+      { title: "Soup Can Label Drive", level: "Both",
+        desc: "Sort and organize donated canned soups and stews into labeled boxes for a local food pantry winter drive. Add a handwritten note to each box.",
+        supplies: ["Donated canned goods", "Cardboard boxes", "Markers for labeling", "Note cards and pens"] },
+      { title: "Warm Hearts Cards for Shelter Families", level: "Both",
+        desc: "Write or decorate encouraging cards to tuck into donation bags for families receiving winter clothing from a local shelter.",
+        supplies: ["Blank note cards", "Markers, stickers, rubber stamps", "Envelopes", "Ink pads"] }
+    ]
+  },
+  2: {
+    theme: "Valentine Card Making", season: "💝 February",
+    ideas: [
+      { title: "Valentines for Children's Hospital", level: "AL",
+        desc: "Write and decorate handmade valentines for children's hospital patients. Personal notes, drawings, and words of encouragement make each card special.",
+        supplies: ["Card stock or folded cards", "Markers, colored pencils", "Heart stickers, foam shapes", "Envelopes"] },
+      { title: "Heart Decorating for School Children", level: "MC",
+        desc: "Decorate pre-cut heart shapes with stamps, stickers, and foam dots to create cheerful valentines for local school classrooms.",
+        supplies: ["Pre-cut card stock hearts", "Foam stickers, star and heart shapes", "Stamp pads (washable)", "Glitter glue sticks"] },
+      { title: "Valentine Treat Bags", level: "Both",
+        desc: "Fill small cellophane bags with candy hearts and Valentine's Day treats, seal with a ribbon bow, and attach a handmade tag. Donate to a school, shelter, or pediatric unit.",
+        supplies: ["Cellophane bags", "Candy hearts or wrapped candy", "Pre-cut gift tags", "Ribbon in pink and red"] },
+      { title: "Watercolor Heart Cards", level: "AL",
+        desc: "Paint watercolor washes on card stock, then cut or stamp heart shapes. Cards are mailed or hand-delivered to children's hospital patients.",
+        supplies: ["Watercolor paints and brushes", "Card stock", "Heart stamps or die-cut hearts", "Envelopes and stamps (optional)"] },
+      { title: "Love Letter Bookmark Making", level: "Both",
+        desc: "Decorate bookmarks with Valentine's messages and stickers, laminate or use card stock, and donate to a local school or library reading program.",
+        supplies: ["Card stock strips (2x7 inches)", "Markers, stickers, washi tape", "Hole punch", "Ribbon for tassel"] }
+    ]
+  },
+  3: {
+    theme: "Spring Into Giving", season: "🌱 March",
+    ideas: [
+      { title: "Seedling Starter Project", level: "AL",
+        desc: "Plant herb or flower seedlings in small pots to donate to a community garden, veterans' group, or neighbor in need. Write care instruction tags for each pot.",
+        supplies: ["Small clay or plastic pots", "Potting soil", "Herb or marigold seed packets", "Plant labels and markers"] },
+      { title: "Pot Filling & Seed Planting", level: "MC",
+        desc: "Fill small pots with pre-measured soil and press large seeds into the dirt — a grounding, sensory activity. Pots are donated to a community garden.",
+        supplies: ["Small pots", "Pre-measured cups of potting soil", "Large seeds (sunflower, bean)", "Watering can"] },
+      { title: "Spring Welcome Doorknob Hangers", level: "Both",
+        desc: "Decorate pre-cut doorknob hangers with spring flowers, butterflies, and uplifting messages to deliver to homebound seniors in the community.",
+        supplies: ["Pre-cut cardboard doorknob hangers", "Markers, foam stickers, silk flower stickers", "Ribbon", "Laminator (optional)"] },
+      { title: "Painted Rock Garden Markers", level: "Both",
+        desc: "Paint smooth stones with herb or vegetable names and cheerful designs to donate to a community garden or school garden project.",
+        supplies: ["Smooth flat rocks (palm-sized)", "Acrylic paint and brushes", "Paint pens for lettering", "Sealant spray (staff applies)"] },
+      { title: "Spring Greeting Cards for Hospice", level: "AL",
+        desc: "Write spring-themed cards with hopeful messages for residents of a local hospice facility. Include pressed flower stickers or dried flowers.",
+        supplies: ["Blank note cards", "Pens", "Pressed flower stickers or dried flowers", "Glue dots", "Envelopes"] }
+    ]
+  },
+  4: {
+    theme: "National Pet Day — April 11th 🐾", season: "🐾 April",
+    ideas: [
+      { title: "Fleece Tug Toys for Shelter Dogs", level: "Both",
+        desc: "Braid three strips of fleece into tug toys for dogs at the local animal shelter. Staff pre-cuts strips; residents braid and knot the ends. A real shelter drop-off makes it meaningful.",
+        supplies: ["Fleece fabric (pre-cut into 1.5-inch strips, 3 per toy)", "Scissors", "Rubber bands to hold ends while braiding", "Donation bags labeled with community name"] },
+      { title: "Dog Bandana Decorating", level: "Both",
+        desc: "Decorate pre-hemmed bandanas with fabric paint pawprints, bone shapes, and the shelter's name. Dogs wear them for photos and adoption events — great visibility for the shelter.",
+        supplies: ["Pre-cut hemmed bandanas (cotton, 18x18 triangle)", "Fabric paint in squeeze bottles", "Foam stamps (paw, bone, heart shapes)", "Wax paper to protect table", "Drying rack or flat surface"] },
+      { title: "Dog Treat Baking", level: "AL",
+        desc: "Bake a simple 3-ingredient peanut butter and oat dog treat recipe in the facility kitchen. Residents mix, roll, cut, and package the treats in cellophane bags with handmade tags.",
+        supplies: ["2 cups oats, 1 cup peanut butter, 1 ripe banana (per batch)", "Mixing bowl and spoon", "Rolling pin and bone-shaped cookie cutter", "Baking sheet, oven (staff supervises)", "Cellophane bags and twist ties"] },
+      { title: "Cat Toy Sock Stuffing", level: "MC",
+        desc: "Stuff child's socks with crinkle material and catnip, then tie off the end with a ribbon. Simple, satisfying, and cats at the shelter go wild for them.",
+        supplies: ["Colorful child's socks (dollar store)", "Crinkle material or crumpled tissue", "Dried catnip (optional)", "Pre-cut ribbon ties", "Small labels: 'Made with love'"] },
+      { title: "Pet Shelter Supply Drive", level: "AL",
+        desc: "Organize and pack donated pet shelter supplies — towels, blankets, food, toys — into donation boxes labeled by category. Write a group thank-you card to shelter staff.",
+        supplies: ["Donated items: old towels, blankets, canned pet food, leashes", "Cardboard donation boxes", "Labels and markers", "Thank-you card and pens"] },
+      { title: "Dog Collar Charm & Tag Decorating", level: "Both",
+        desc: "Attach colorful beads and charms to pre-made dog collar rings or ID tag holders to donate to the shelter adoption office for new pet owners.",
+        supplies: ["Plain dog collar slides or ID tag rings", "Colorful craft beads", "Elastic cord (pre-cut)", "Small charms (bone, heart, star)", "Needle-nose pliers (staff only)"] }
+    ]
+  },
+  5: {
+    theme: "Military Appreciation Month", season: "🎖️ May",
+    ideas: [
+      { title: "Care Package Assembly", level: "AL",
+        desc: "Assemble small care packages for active-duty military — write personal notes, tuck in snacks and hygiene items, and seal boxes with encouraging messages.",
+        supplies: ["Small boxes or gallon zip bags", "Donated items: snacks, gum, lip balm, socks, travel hygiene", "Tissue paper", "Note cards and pens"] },
+      { title: "Patriotic Card Decorating", level: "MC",
+        desc: "Decorate cards with star stickers, red, white, and blue foam shapes for inclusion in care packages or VA hospital delivery.",
+        supplies: ["Pre-folded cards", "Star stickers, patriotic foam shapes", "Red, white, blue markers", "Glue sticks"] },
+      { title: "Paracord Bracelet Making", level: "AL",
+        desc: "Make simple paracord bracelets in red, white, and blue to include in care packages. Staff sets up the jig; residents weave the cord.",
+        supplies: ["Paracord in red, white, blue (pre-cut 10-foot lengths)", "Bracelet jig or clipboard with tape", "Buckles (pre-loaded by staff)", "Scissors"] },
+      { title: "Thank You Banners for Veterans", level: "Both",
+        desc: "Create a group banner or series of decorated tiles spelling out THANK YOU to display in the lobby or donate to a local VFW post.",
+        supplies: ["Canvas banner or 4x4 tile squares", "Acrylic paint and foam brushes", "Stencils for letters and stars", "Patriotic ribbon for border"] },
+      { title: "Military Family Support Kits", level: "AL",
+        desc: "Pack activity kits for children of deployed service members — coloring books, crayons, stickers, and a handwritten note of encouragement.",
+        supplies: ["Coloring books", "Crayons (8-pack)", "Sticker sheets", "Note cards", "Small zip bags or gift bags"] }
+    ]
+  },
+  6: {
+    theme: "Summer of Kindness", season: "☀️ June",
+    ideas: [
+      { title: "Activity Kits for Kids in Need", level: "AL",
+        desc: "Assemble summer activity kits — coloring books, crayons, stickers — for donation to a family resource center or pediatric waiting room.",
+        supplies: ["Coloring books", "Crayons (8-packs)", "Sticker sheets", "Small bags or boxes"] },
+      { title: "Crayon Sorting & Bag Packing", level: "MC",
+        desc: "Sort crayons by color into sets of 8, pack with a coloring page, and seal in a bag. A wonderful sensory sorting activity with a real giving purpose.",
+        supplies: ["Bulk crayons", "Small zip bags", "Printed coloring pages", "Sticker to seal bag"] },
+      { title: "Lemonade Stand Cards", level: "Both",
+        desc: "Decorate cheerful cards that say 'Have a Sweet Summer!' to include in donation kits for children's charities or summer food program participants.",
+        supplies: ["Card stock (pre-folded)", "Yellow and orange markers", "Lemon and sun stickers", "Envelopes"] },
+      { title: "Sensory Bottle Making for Pediatric Units", level: "AL",
+        desc: "Fill clear plastic bottles with glitter, beads, and water to create calming sensory bottles for a pediatric waiting room or children's therapy program.",
+        supplies: ["Clear plastic bottles with tight lids", "Glitter glue", "Small beads or gems", "Water", "Super glue for lid (staff applies)"] },
+      { title: "Sidewalk Chalk Bag Assembly", level: "Both",
+        desc: "Count and pack sets of sidewalk chalk into labeled bags with a note card for donation to a summer youth program or playground.",
+        supplies: ["Bulk sidewalk chalk", "Paper bags or zip bags", "Sticker labels", "Note cards: 'Enjoy your summer!'"] }
+    ]
+  },
+  7: {
+    theme: "Freedom & Gratitude", season: "🇺🇸 July",
+    ideas: [
+      { title: "Letters to Troops Overseas", level: "AL",
+        desc: "Write personal letters of thanks to active-duty military. Coordinate with Soldiers' Angels or Operation Gratitude for delivery.",
+        supplies: ["Stationery or note paper", "Pens", "Envelopes", "Forever stamps (optional)"] },
+      { title: "Patriotic Coloring Pages for Troops", level: "MC",
+        desc: "Color patriotic scenes — flags, eagles, fireworks — to include in care packages sent to service members. Staff bundles and ships with the letters.",
+        supplies: ["Patriotic coloring sheets (printed)", "Colored pencils and markers", "Envelopes for mailing"] },
+      { title: "Red, White & Blue Pinwheel Garden", level: "Both",
+        desc: "Assemble pre-cut pinwheels in patriotic colors to display outside the building or donate to a Veterans' home for their garden.",
+        supplies: ["Pre-scored pinwheel paper kits", "Straight pins", "Dowel sticks", "Red, white, blue tissue paper (optional embellishment)"] },
+      { title: "Military Family Thank-You Kits", level: "AL",
+        desc: "Assemble kits for local military families with handmade cards, small treats, and a note of appreciation. Coordinate with a local base family support office.",
+        supplies: ["Gift bags", "Handmade cards", "Wrapped candy", "Note cards: 'We appreciate your sacrifice'"] },
+      { title: "Veteran Scrapbook Page Project", level: "AL",
+        desc: "Residents who are veterans or have military family members contribute to a shared community scrapbook page honoring service. Others write notes of gratitude.",
+        supplies: ["Scrapbook page (12x12)", "Photos or printouts (flags, medals)", "Sticker letters, embellishments", "Pens for journaling"] }
+    ]
+  },
+  8: {
+    theme: "Back to School Drive", season: "🎒 August",
+    ideas: [
+      { title: "School Supply Sorting Station", level: "AL",
+        desc: "Sort and count donated school supplies — pencils, erasers, glue sticks, folders — then pack into labeled bags for a local Title I school.",
+        supplies: ["Donated school supplies", "Zip bags (gallon size)", "Labels: 'Kindergarten Kit', 'Elementary Kit'", "Markers"] },
+      { title: "Pencil Bundling", level: "MC",
+        desc: "Rubber-band pencils into groups of 10 and tuck into supply bags. Repetitive, satisfying, and every bundle goes to a child in need.",
+        supplies: ["Sharpened pencils", "Rubber bands", "Small bags", "Stickers for decorating bags"] },
+      { title: "Decorated Pencil Pouches", level: "Both",
+        desc: "Decorate plain canvas pencil pouches with fabric markers and stickers for donation to a school supply drive.",
+        supplies: ["Plain canvas pencil pouches (dollar store)", "Fabric markers", "Iron-on stickers (optional)", "Foam letter stickers"] },
+      { title: "Encouraging Bookmarks", level: "Both",
+        desc: "Make bookmarks with uplifting messages like 'You Can Do It!' and 'Reading Is a Superpower' to donate with book bundles to a local school.",
+        supplies: ["Card stock strips", "Markers and colored pencils", "Sticker letters and decorations", "Hole punch and ribbon tassel"] },
+      { title: "Book Drive Sorting & Wrapping", level: "AL",
+        desc: "Sort donated books by grade level, wrap them in tissue, and pack into boxes with a handmade bookmark tucked inside each one.",
+        supplies: ["Donated books", "Tissue paper", "Sturdy boxes", "Handmade bookmarks", "Labels by grade level"] }
+    ]
+  },
+  9: {
+    theme: "Grandparents Day Pen Pals", season: "🍂 September",
+    ideas: [
+      { title: "Letters to Local School Students", level: "AL",
+        desc: "Write letters sharing a memory, life lesson, or piece of advice to local school students as part of a Grandparents Day intergenerational pen pal program.",
+        supplies: ["Stationery or note paper", "Pens", "Envelopes", "Optional: pressed flowers or small photos"] },
+      { title: "Decorated Stationery Exchange", level: "MC",
+        desc: "Decorate stationery sheets with stamps, stickers, and border designs to be sent to local school children who respond with their own drawings.",
+        supplies: ["Plain stationery paper", "Decorative rubber stamps", "Sticker borders", "Washable ink pads"] },
+      { title: "Memory Jar Notes", level: "Both",
+        desc: "Write favorite memories or wisdom quotes on slips of paper that are rolled, tied with ribbon, and placed in a jar to donate to a local classroom for daily reading.",
+        supplies: ["Small strips of paper or scrolls", "Pens", "Thin ribbon for tying", "A decorated mason jar"] },
+      { title: "Fall Greeting Cards for Homebound Seniors", level: "Both",
+        desc: "Make and send fall-themed cards to homebound seniors on the community care registry — a reminder that someone is thinking of them.",
+        supplies: ["Blank cards", "Fall leaf and pumpkin stickers", "Markers", "Envelopes", "Stamps (if mailing)"] },
+      { title: "Recipe Card Project", level: "AL",
+        desc: "Residents write their favorite recipes on decorated cards, which are compiled into a small booklet or bundle and donated to a local school's family night.",
+        supplies: ["Pre-printed recipe cards", "Pens", "Stickers and washi tape for decorating", "Small binder or ribbon to bundle"] }
+    ]
+  },
+  10: {
+    theme: "Harvest for Others", season: "🎃 October",
+    ideas: [
+      { title: "Food Bank Sorting Table", level: "AL",
+        desc: "Sort and organize collected canned goods by category, attach donation labels, and pack boxes for local food bank pickup.",
+        supplies: ["Donated canned and boxed goods", "Cardboard boxes", "Labels (soup, veggies, protein, pasta)", "Markers"] },
+      { title: "Can Sorting by Color & Size", level: "MC",
+        desc: "Sort cans into groups by size or label color — a tactile, visual activity that feeds directly into the food drive effort.",
+        supplies: ["Collected canned goods", "Labeled bins (small/large, red/green labels)", "Sticker dots for color coding"] },
+      { title: "Halloween Treat Bags for Kids in Need", level: "Both",
+        desc: "Fill small bags with wrapped Halloween candy and a fun sticker, then decorate the bag with a jack-o-lantern face. Donate to a community center or shelter for Halloween.",
+        supplies: ["Wrapped candy", "Small paper bags", "Orange and black markers", "Jack-o-lantern foam stickers", "Twist ties"] },
+      { title: "Scarecrow Stuffing for Community Garden", level: "AL",
+        desc: "Stuff old shirts and pants with newspaper to create a scarecrow for a local community garden or school garden. Residents dress and accessorize the scarecrow together.",
+        supplies: ["Old clothes (shirt, pants, hat)", "Newspaper for stuffing", "Rope or zip ties", "Googly eyes, yarn for hair (optional)"] },
+      { title: "Harvest Thank-You Cards", level: "Both",
+        desc: "Decorate Thanksgiving-themed cards with harvest stickers and leaf prints to give to community workers — postal carriers, grocery staff, first responders — as a gesture of gratitude.",
+        supplies: ["Blank cards", "Leaf stamps and orange/red ink pads", "Stickers: pumpkins, leaves, sunflowers", "Envelopes"] }
+    ]
+  },
+  11: {
+    theme: "Holiday Food Drive", season: "🍂 November",
+    ideas: [
+      { title: "Holiday Food Drive Packing Station", level: "AL",
+        desc: "Sort and pack donated non-perishable food items into holiday meal boxes for local families. Coordinate with a food bank or community pantry for pickup.",
+        supplies: ["Donated canned and boxed goods", "Sturdy boxes", "Holiday labels", "Markers", "Tissue paper for presentation"] },
+      { title: "Food Drive Bag Decorating", level: "MC",
+        desc: "Decorate paper bags with Thanksgiving stickers, foam shapes, and drawn turkeys and leaves to hold food donations — simple, festive, and purposeful.",
+        supplies: ["Brown paper bags", "Thanksgiving stickers (turkey, pumpkin, leaf)", "Foam shapes", "Markers", "Glue sticks"] },
+      { title: "Bake Sale for Food Bank", level: "AL",
+        desc: "Bake simple cookies or breads to sell at a facility bake sale, with all proceeds donated to a local food bank. Residents bake, package, and label items.",
+        supplies: ["Baking ingredients (oatmeal cookies, banana bread)", "Baking pans and mixer (kitchen use)", "Cellophane bags", "Ribbon and labels with price tags"] },
+      { title: "Gratitude Notes for Food Bank Volunteers", level: "Both",
+        desc: "Write and decorate thank-you cards for local food bank volunteers acknowledging the work they do year-round. Cards are delivered with the food donation.",
+        supplies: ["Blank note cards", "Pens", "Harvest-themed stickers", "Envelopes"] },
+      { title: "Soup Drive & Decoration Station", level: "Both",
+        desc: "Collect and decorate canned soup donations with cheerful ribbon bows and hand-drawn labels saying 'Warm Wishes' for a local family shelter winter soup drive.",
+        supplies: ["Donated canned soups", "Ribbon scraps", "Pre-cut labels", "Markers", "Hot glue (staff only)"] }
+    ]
+  },
+  12: {
+    theme: "Holiday Giving Season", season: "🎄 December",
+    ideas: [
+      { title: "Gift Wrapping Station", level: "AL",
+        desc: "Wrap donated toys and gifts, write gift tags, and add ribbon for a local toy drive or children's shelter. Festive, purposeful, and feels like the holidays.",
+        supplies: ["Donated toys", "Wrapping paper", "Tape and scissors", "Gift tags", "Ribbon and bows"] },
+      { title: "Bow & Ribbon Decorating", level: "MC",
+        desc: "Attach pre-curled ribbons and bows to wrapped gifts and sort them by bow color into donation bags. Festive, tactile, and deeply satisfying.",
+        supplies: ["Pre-wrapped boxes", "Stick-on bows in assorted colors", "Ribbon curls", "Gift bags"] },
+      { title: "Holiday Cards for Nursing Home Neighbors", level: "Both",
+        desc: "Make and write holiday cards to send to residents of a nearby nursing home or memory care facility who may not receive many visitors or cards.",
+        supplies: ["Blank holiday cards", "Glitter glue, sequin stickers, foam ornament stickers", "Pens for messages", "Envelopes"] },
+      { title: "Stocking Stuffer Assembly", level: "AL",
+        desc: "Fill donated mini stockings with small treats, lip balm, lotion packets, and candy for delivery to a local shelter or overnight warming center.",
+        supplies: ["Mini Christmas stockings", "Small toiletries (donated)", "Wrapped candy", "Tags: 'Happy Holidays from [Facility Name]'"] },
+      { title: "Holiday Ornament Making for Donation", level: "Both",
+        desc: "Decorate plain ball ornaments with paint pens, glitter, and stickers to donate to a holiday toy drive, a local family, or a community Christmas tree.",
+        supplies: ["Plain plastic ball ornaments", "Paint pens (gold, silver, red, green)", "Glitter glue", "Ribbon for hanging"] },
+      { title: "New Year's Kindness Countdown", level: "Both",
+        desc: "Write 12 acts of kindness on slips of paper and seal them in envelopes numbered 1–12. Donate the set to a local school for a January kindness challenge.",
+        supplies: ["12 envelopes", "Paper slips", "Pens", "Numbered stickers", "Decorative box or bag to hold set"] }
+    ]
+  }
+};
+
+
+function renderCommunityServiceCard() {
+  const m = DATA.month;
+  const cs = CS_MONTHLY[m];
+  const container = document.getElementById('cs-card-container');
+  if (!cs || !container) return;
+
+  const levelBadge = lvl => {
+    const colors = { AL: '#2E75B6', MC: '#7B4F9E', Both: '#2A7A4B' };
+    const labels = { AL: '🏠 Assisted Living', MC: '🧩 Memory Care', Both: '✅ Both Programs' };
+    return `<span style="display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;background:${colors[lvl]||'#555'};border-radius:20px;padding:2px 9px;">${labels[lvl]||lvl}</span>`;
+  };
+
+  const ideaCards = cs.ideas.map((idea, i) => `
+    <div style="background:#fff;border:1px solid #E4E7EC;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div style="font-size:13px;font-weight:700;color:#1A2A5C;flex:1;">${idea.title}</div>
+        ${levelBadge(idea.level)}
+      </div>
+      <div style="font-size:12px;color:#555;line-height:1.65;">${idea.desc}</div>
+      <div style="background:#F5F7FA;border-radius:7px;padding:8px 11px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#1A2A5C;margin-bottom:5px;">📋 Supplies Needed</div>
+        <ul style="margin:0;padding-left:16px;font-size:11.5px;color:#666;line-height:1.7;">
+          ${idea.supplies.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`).join('');
+
+  container.innerHTML = `
+    <div style="background:#fff;border-radius:14px;border:1px solid #E4E7EC;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;margin-bottom:22px;">
+      <div style="background:linear-gradient(135deg,#1F3864,#2E75B6);padding:14px 20px;display:flex;align-items:center;gap:12px;">
+        <span style="font-size:22px;">🤝</span>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.6);">${cs.season} &nbsp;·&nbsp; Community Gives Back</div>
+          <div style="font-size:17px;font-weight:800;color:#FFD700;margin-top:3px;">${cs.theme}</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff;">${cs.ideas.length} Ideas This Month</div>
+      </div>
+      <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
+        ${ideaCards}
+      </div>
+      <div style="padding:10px 18px;background:#F9F9F9;border-top:1px solid #E4E7EC;font-size:12px;color:#888;display:flex;align-items:center;gap:7px;">
+        <span>💡</span><span>Mix and match — run one idea or combine two! Most work best as a Thursday or Friday afternoon program.</span>
+      </div>
+    </div>`;
+}
 
 function renderNewsletter() {
   loadNlPrefs();
