@@ -936,6 +936,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="empower-moments">📰 Empower Moments</button>
     <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
     <button class="tab-btn" data-tab="materials">🎵 Materials</button>
+    <button class="tab-btn" data-tab="build">🛠️ Build My Cal</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
   </div>
@@ -1377,6 +1378,41 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <div id="newsletter-preview"></div>
 </section>
 
+<section class="tab-panel" id="panel-build">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">🛠️ Build My Calendar</h2>
+      <div class="subtitle">Click any day to schedule activities from the 10 care categories</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="clearCustomMonth()" title="Clear all activities for this month">🗑 Clear Month</button>
+      <button class="btn btn-secondary" onclick="copyPrevWeek()" title="Copy week pattern down">⬇ Repeat Week</button>
+      <button class="btn btn-gold" onclick="openPrintOptions()" title="Print this custom calendar">🖨 Print</button>
+    </div>
+  </div>
+  <!-- Category legend -->
+  <div id="custom-cat-legend" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;"></div>
+  <!-- Calendar grid -->
+  <div style="background:white;border-radius:12px;padding:16px;border:1px solid var(--gray-200);box-shadow:var(--shadow);">
+    <div style="text-align:center;margin-bottom:12px;">
+      <div id="custom-cal-month-title" style="font-size:22px;font-weight:800;color:var(--navy);"></div>
+      <div id="custom-cal-month-sub" style="font-size:13px;color:var(--gray-500);margin-top:2px;">Click any day to add or edit activities</div>
+    </div>
+    <div id="custom-calendar-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;background:var(--gray-200);border-radius:8px;overflow:hidden;padding:3px;"></div>
+  </div>
+</section>
+
+<!-- Day Scheduler Modal -->
+<div class="supplies-overlay" id="day-scheduler-overlay" onclick="if(event.target===this)closeScheduler()">
+  <div class="supplies-modal" style="max-width:620px;">
+    <div class="supplies-modal-header">
+      <h2 id="scheduler-title">📅 Schedule Day</h2>
+      <button class="supplies-modal-close" onclick="closeScheduler()">×</button>
+    </div>
+    <div class="supplies-modal-body" id="scheduler-body"></div>
+  </div>
+</div>
+
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
   <p class="subtitle">Configuration for staff and administrators.</p>
@@ -1732,6 +1768,7 @@ function switchTab(name) {
   if (name === 'daily') renderDailySheet();
   if (name === 'puzzles') renderPuzzlesPanel();
   if (name === 'settings') renderTimeSettings();
+  if (name === 'build') renderCustomCalendar();
   if (name === 'tv') {
     renderTVDisplay();
     if (tvRefreshInterval) clearInterval(tvRefreshInterval);
@@ -2227,6 +2264,13 @@ function doPrintCalendar() {
   closePrintOptions();
   const paper = document.querySelector('[name="cal-paper"]:checked')?.value || 'letter';
   const theme = _calPrintTheme;
+
+  // If user is on the Build My Cal tab, export the custom calendar instead
+  const activeTab = document.querySelector('.tab-panel.active')?.id || '';
+  if (activeTab === 'tab-build') {
+    exportCustomCalendarPDF();
+    return;
+  }
 
   // Route through PDF engine for consistent themed output
   switchTab('calendar');
@@ -4950,6 +4994,286 @@ function exportReminiscencePDF() {
   html2pdf().set(getPdfOpts('reminiscence-'+rem.name.replace(/\W+/g,'-')+'.pdf','portrait')).from(wrapper).save().then(()=>document.body.removeChild(wrapper));
 }
 
+
+// ═══════════════════════════════════════════════════════════════════
+// BUILD MY CALENDAR — Custom Calendar Builder
+// ═══════════════════════════════════════════════════════════════════
+
+const CUSTOM_CATS = [
+  { id:'cognitive',   label:'Cognitive / Brain',      icon:'🧠', color:'#7030A0',
+    activities:['Trivia','Word Games','Crossword Puzzle','Word Search','Jeopardy!','Reminiscing Session','Memory Match','Name That Tune','Current Events Discussion','Geography Quiz','History Trivia','Category Game'] },
+  { id:'physical',    label:'Physical / Movement',     icon:'💪', color:'#548235',
+    activities:['Chair Exercises','Walking Group','Stretching & Flex','Seated Dance','Chair Yoga','Balloon Volleyball','Bean Bag Toss','Ring Toss','Hand & Arm Exercises','Resistance Band','Seated Tai Chi','Ball Passing'] },
+  { id:'creative',    label:'Creative / Expression',   icon:'🎨', color:'#C65B8A',
+    activities:['Arts & Crafts','Painting','Decorating Project','Seasonal Art','Coloring','Card Making','Collage','Flower Arranging','Paper Crafts','Knitting / Crocheting','Scrapbooking','Origami'] },
+  { id:'social',      label:'Social / Group',          icon:'👥', color:'#2E75B6',
+    activities:['Bingo','Social Hour','Group Card Games','Ice Cream Social','Happy Hour','Birthday Celebration','Coffee & Chat','Show & Tell','Trivia Night','Game Tournament','Pitch-In Dinner','Debate / Discussion'] },
+  { id:'music',       label:'Sensory / Music',         icon:'🎶', color:'#00897B',
+    activities:['Music Listening','Sing-Along','Bell Choir','Drum Circle','Name That Tune','Karaoke','Armchair Concert','Rhythm & Movement','Aromatherapy','Sensory Bin','Texture Exploration','Relaxation Music'] },
+  { id:'spiritual',   label:'Emotional / Spiritual',   icon:'🧡', color:'#BF9000',
+    activities:['Morning Devotions','Prayer Group','Gratitude Circle','Reflection Time','Bible Study','Inspirational Reading','Mindfulness','Guided Meditation','Faith Discussion','Hymn Sing','Rosary','Journaling'] },
+  { id:'lifeskills',  label:'Life Skills / Purpose',   icon:'🌿', color:'#6B8E23',
+    activities:['Folding Laundry','Cooking / Baking Prep','Gardening','Watering Plants','Sorting / Organizing','Setting Tables','Envelope Stuffing','Helping Staff','Pet Care','Grocery List Making','Recipe Sharing','Menu Planning'] },
+  { id:'outings',     label:'Outings / Community',     icon:'🌍', color:'#4472C4',
+    activities:['Shopping Trip','Scenic Drive','Restaurant Outing','Farmers Market','Library Visit','Park / Nature Walk','Community Event','Cultural Outing','Ice Cream Shop','Car Show','Sports Event','Religious Service'] },
+  { id:'entertainment',label:'Entertainment / Leisure', icon:'🎉', color:'#C0392B',
+    activities:['Movie Afternoon','Game Show','Comedy Show','Talent Show','Puppet Show','Magician Visit','Live Music Performance','Storytelling','Trivia Game Show','Animal Visit','Sports Watching','Cooking Show'] },
+  { id:'oneOnOne',    label:'One-on-One / Individual', icon:'🗣️', color:'#7F8C8D',
+    activities:['Room Visit','Personal Engagement','Reading Together','Hand Massage','Letter Writing','Photo Review','Life Story Sharing','Music One-on-One','Crossword Together','Puzzle Together','Art Together','Manicure / Pampering'] },
+];
+
+const CUSTOM_SLOTS = [
+  { id:'morning',    label:'Morning',       time:'9:00 AM',  icon:'🌅' },
+  { id:'midmorning', label:'Mid-Morning',   time:'10:30 AM', icon:'☀️' },
+  { id:'afternoon',  label:'Afternoon',     time:'2:00 PM',  icon:'🌤️' },
+  { id:'supper',     label:'Supper / Eve',  time:'5:30 PM',  icon:'🌆' },
+  { id:'evening',    label:'Evening',       time:'6:30 PM',  icon:'🌙' },
+];
+
+const CUSTOM_CAL_KEY = 'el365_custom_' + (DATA ? DATA.year + '_' + DATA.monthNum : '2026_5');
+
+function getCustomCal() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_CAL_KEY) || '{}'); } catch { return {}; }
+}
+function saveCustomCal(cal) {
+  localStorage.setItem(CUSTOM_CAL_KEY, JSON.stringify(cal));
+}
+function getCatById(id) { return CUSTOM_CATS.find(c => c.id === id); }
+
+// ── Render the custom calendar grid ────────────────────────────────
+function renderCustomCalendar() {
+  // Legend
+  const legend = document.getElementById('custom-cat-legend');
+  if (legend) {
+    legend.innerHTML = CUSTOM_CATS.map(cat =>
+      `<div style="display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;background:${cat.color}18;border:1px solid ${cat.color}44;font-size:11px;font-weight:600;color:${cat.color};">${cat.icon} ${cat.label}</div>`
+    ).join('');
+  }
+
+  const title = document.getElementById('custom-cal-month-title');
+  if (title) title.textContent = (DATA ? DATA.monthName + ' ' + DATA.year : 'May 2026');
+
+  const grid = document.getElementById('custom-calendar-grid');
+  if (!grid) return;
+
+  const cal = getCustomCal();
+  const year = DATA ? DATA.year : 2026;
+  const month = DATA ? DATA.monthNum : 5;
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const firstDow = new Date(year, month - 1, 1).getDay(); // 0=Sun
+
+  let html = '';
+  // DOW headers
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+    html += `<div style="background:var(--navy);color:#FFD966;padding:8px 4px;text-align:center;font-size:11px;font-weight:800;letter-spacing:1px;">${d}</div>`;
+  });
+  // Empty leading cells
+  for (let i = 0; i < firstDow; i++) {
+    html += `<div style="background:var(--gray-100);min-height:110px;"></div>`;
+  }
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dow = (d + firstDow - 1) % 7;
+    const isWeekend = dow === 0 || dow === 6;
+    const isMajor = DATA && DATA.majorHolidays.includes(d);
+    const isBonus = DATA && DATA.bonusEventDays.includes(d);
+    const holiday = DATA ? (DATA.holidays[String(d)] || '') : '';
+    const dayData = cal[String(d)] || {};
+    const scheduled = CUSTOM_SLOTS.filter(s => dayData[s.id]);
+    const bg = isMajor ? '#FFF2CC' : isBonus ? '#F0FFF0' : isWeekend ? '#EFF6FF' : 'white';
+
+    let slotsHtml = scheduled.map(slot => {
+      const entry = dayData[slot.id];
+      const cat = getCatById(entry.cat);
+      const label = entry.custom || entry.activity || '';
+      return cat
+        ? `<div style="font-size:9px;line-height:1.3;padding:1px 4px;border-radius:3px;background:${cat.color}18;border-left:2px solid ${cat.color};margin-bottom:1px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${cat.icon} ${escapeHtml(label)}</div>`
+        : '';
+    }).join('');
+
+    const filled = scheduled.length;
+    html += `<div onclick="openScheduler(${d})" style="background:${bg};min-height:110px;padding:5px;cursor:pointer;position:relative;transition:box-shadow 0.1s;" onmouseover="this.style.boxShadow='0 0 0 2px var(--gold)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px;">
+        <div style="font-size:14px;font-weight:800;color:${isMajor?'#BF9000':'var(--navy)'};">${d}</div>
+        <div style="font-size:9px;color:${filled>0?'var(--navy)':'#ccc'};font-weight:600;">${filled>0?filled+'/5':'+ add'}</div>
+      </div>
+      ${holiday ? `<div style="font-size:9px;color:#BF9000;font-weight:700;margin-bottom:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${escapeHtml(holiday)}</div>` : ''}
+      ${slotsHtml || `<div style="font-size:9px;color:#ddd;text-align:center;margin-top:16px;">click to schedule</div>`}
+    </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+// ── Day Scheduler Modal ─────────────────────────────────────────────
+let _schedulerDay = null;
+
+function openScheduler(day) {
+  _schedulerDay = day;
+  const overlay = document.getElementById('day-scheduler-overlay');
+  const titleEl = document.getElementById('scheduler-title');
+  const body = document.getElementById('scheduler-body');
+  if (!overlay || !body) return;
+
+  const meta = DATA ? DATA.dayMeta[String(day)] : null;
+  const holiday = DATA ? (DATA.holidays[String(day)] || '') : '';
+  titleEl.textContent = '📅 ' + (meta ? meta.date_long : 'Day ' + day) + (holiday ? ' — ' + holiday : '');
+
+  const cal = getCustomCal();
+  const dayData = cal[String(day)] || {};
+
+  const catOptions = CUSTOM_CATS.map(c => `<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
+
+  body.innerHTML = `
+    <p style="color:var(--gray-600);font-size:13px;margin-top:0;margin-bottom:16px;">Choose a category and activity for each time slot. Leave blank to skip.</p>
+    <div id="scheduler-slots"></div>
+    <div style="display:flex;gap:10px;justify-content:space-between;border-top:1px solid #eee;padding-top:14px;margin-top:4px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="clearSchedulerDay()">🗑 Clear Day</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary" onclick="closeScheduler()">Cancel</button>
+        <button class="btn btn-gold" onclick="saveSchedulerDay()" style="padding:10px 24px;">💾 Save Day</button>
+      </div>
+    </div>`;
+
+  const slotsDiv = document.getElementById('scheduler-slots');
+  slotsDiv.innerHTML = CUSTOM_SLOTS.map(slot => {
+    const entry = dayData[slot.id] || {};
+    const selCat = entry.cat || '';
+    const selAct = entry.activity || '';
+    const customText = entry.custom || '';
+    const actOptions = selCat ? getCatById(selCat).activities.map(a => `<option value="${a}" ${a===selAct?'selected':''}>${a}</option>`).join('') : '';
+    return `<div style="background:var(--gray-100);border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:16px;">${slot.icon}</span>
+        <strong style="color:var(--navy);font-size:13px;">${slot.label}</strong>
+        <span style="color:var(--gray-500);font-size:12px;">${slot.time}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <select id="sched-cat-${slot.id}" onchange="onSchedCatChange('${slot.id}')" style="padding:6px 8px;border:1px solid var(--gray-300);border-radius:6px;font-size:12px;font-family:inherit;">
+          <option value="">— Category —</option>
+          ${catOptions.replace(`value="${selCat}"`, `value="${selCat}" selected`)}
+        </select>
+        <select id="sched-act-${slot.id}" style="padding:6px 8px;border:1px solid var(--gray-300);border-radius:6px;font-size:12px;font-family:inherit;">
+          <option value="">— Activity —</option>
+          ${actOptions}
+        </select>
+      </div>
+      <input id="sched-custom-${slot.id}" type="text" placeholder="Or type a custom activity name…" value="${escapeHtml(customText)}" style="width:100%;margin-top:6px;padding:6px 8px;border:1px solid var(--gray-300);border-radius:6px;font-size:12px;font-family:inherit;box-sizing:border-box;">
+    </div>`;
+  }).join('');
+
+  overlay.classList.add('open');
+}
+
+function onSchedCatChange(slotId) {
+  const catSel = document.getElementById('sched-cat-' + slotId);
+  const actSel = document.getElementById('sched-act-' + slotId);
+  if (!catSel || !actSel) return;
+  const cat = getCatById(catSel.value);
+  actSel.innerHTML = cat
+    ? '<option value="">— Activity —</option>' + cat.activities.map(a => `<option value="${a}">${a}</option>`).join('')
+    : '<option value="">— Activity —</option>';
+}
+
+function saveSchedulerDay() {
+  if (!_schedulerDay) return;
+  const cal = getCustomCal();
+  const dayData = {};
+  CUSTOM_SLOTS.forEach(slot => {
+    const cat = document.getElementById('sched-cat-' + slot.id)?.value || '';
+    const act = document.getElementById('sched-act-' + slot.id)?.value || '';
+    const custom = document.getElementById('sched-custom-' + slot.id)?.value?.trim() || '';
+    if (cat || custom) {
+      dayData[slot.id] = { cat, activity: act, custom };
+    }
+  });
+  cal[String(_schedulerDay)] = dayData;
+  saveCustomCal(cal);
+  closeScheduler();
+  renderCustomCalendar();
+}
+
+function clearSchedulerDay() {
+  if (!_schedulerDay) return;
+  const cal = getCustomCal();
+  delete cal[String(_schedulerDay)];
+  saveCustomCal(cal);
+  closeScheduler();
+  renderCustomCalendar();
+}
+
+function closeScheduler() {
+  document.getElementById('day-scheduler-overlay')?.classList.remove('open');
+  _schedulerDay = null;
+}
+
+function clearCustomMonth() {
+  if (!confirm('Clear all scheduled activities for this month?')) return;
+  localStorage.removeItem(CUSTOM_CAL_KEY);
+  renderCustomCalendar();
+}
+
+// Copy week 1 (days 1-7) pattern to fill the rest of the month
+function copyPrevWeek() {
+  const cal = getCustomCal();
+  const year = DATA ? DATA.year : 2026;
+  const month = DATA ? DATA.monthNum : 5;
+  const daysInMonth = new Date(year, month, 0).getDate();
+  // Find first 7 days that have any data
+  let srcDays = [];
+  for (let d = 1; d <= Math.min(7, daysInMonth); d++) {
+    srcDays.push(cal[String(d)] || {});
+  }
+  if (srcDays.every(d => Object.keys(d).length === 0)) {
+    alert('Schedule at least the first week (days 1–7) first, then use Repeat Week to copy the pattern.'); return;
+  }
+  if (!confirm('Copy days 1–7 pattern to fill the rest of the month?')) return;
+  for (let d = 8; d <= daysInMonth; d++) {
+    const src = srcDays[(d - 1) % 7];
+    if (Object.keys(src).length > 0) cal[String(d)] = JSON.parse(JSON.stringify(src));
+  }
+  saveCustomCal(cal);
+  renderCustomCalendar();
+}
+
+// ── Export Custom Calendar PDF ─────────────────────────────────────
+function exportCustomCalendarPDF() {
+  const grid = document.getElementById('custom-calendar-grid');
+  if (!grid) return;
+  const theme = _calPrintTheme || 'classic';
+  const paper = document.querySelector('[name="cal-paper"]:checked')?.value || 'letter';
+  const formatMap = { letter:[279.4,215.9], legal:[355.6,215.9], tabloid:[431.8,279.4], large:[558.8,431.8] };
+  const fmt = formatMap[paper] || formatMap.letter;
+
+  const allThemes = ['print-classic','print-spring','print-summer','print-patriotic','print-fall','print-winter','print-white','print-bw'];
+  document.body.classList.remove(...allThemes);
+  document.body.classList.add('print-' + theme);
+
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'font-family:Arial,sans-serif;padding:12px;';
+  // Header
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'text-align:center;margin-bottom:12px;padding-bottom:10px;border-bottom:3px solid #BF9000;';
+  hdr.innerHTML = `<div style="font-size:24px;font-weight:800;color:#1F3864;">${DATA ? DATA.monthName + ' ' + DATA.year : 'May 2026'}</div><div style="font-size:13px;color:#667085;margin-top:2px;">Custom Activity Calendar — Empower Life 365</div>`;
+  wrapper.appendChild(hdr);
+  // Clone grid
+  const gridClone = grid.cloneNode(true);
+  wrapper.appendChild(gridClone);
+  // Legend
+  const leg = document.createElement('div');
+  leg.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;';
+  leg.innerHTML = CUSTOM_CATS.map(c => `<div style="font-size:9px;padding:2px 7px;border-radius:10px;background:${c.color}18;border:1px solid ${c.color}66;color:${c.color};font-weight:700;">${c.icon} ${c.label}</div>`).join('');
+  wrapper.appendChild(leg);
+
+  document.body.appendChild(wrapper);
+  const opts = { margin:[6,6,6,6], filename:`Custom_Calendar_${DATA?DATA.monthName:'May'}.pdf`, image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2,useCORS:true,logging:false}, jsPDF:{unit:'mm',format:fmt,orientation:'landscape'} };
+  html2pdf().set(opts).from(wrapper).save().then(() => {
+    document.body.removeChild(wrapper);
+    document.body.classList.remove(...allThemes);
+  });
+}
+
+
 // ─────────────────────────────────────────────
 // Updated showMatSection to include all sections
 // ─────────────────────────────────────────────
@@ -4964,10 +5288,6 @@ function showMatSection(section) {
   if (section === 'singalong') showDecade(currentDecade);
   if (section === 'wordgames') renderWordGamePreview();
   if (section === 'trivia') renderTriviaPreview();
-  if (section === 'exercise') initExerciseBtns();
-  if (section === 'crafts') initCraftBtns();
-  if (section === 'gamesheets') initGameBtns();
-  if (section === 'reminiscence') initReminiscenceBtns();
 }
 
 </script>
