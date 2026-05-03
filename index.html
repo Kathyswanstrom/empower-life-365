@@ -943,44 +943,88 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   .em-opps { grid-template-columns: 1fr; }
 }
 
-/* ── NEWSLETTER ── */
-.nl-page { background: white; max-width: 760px; margin: 0 auto; font-family: Georgia, serif; box-shadow: var(--shadow-lg); border-radius: var(--radius-lg); overflow: hidden; }
-.nl-header { background: linear-gradient(135deg, var(--navy), var(--navy-dark)); color: white; padding: 32px 36px; text-align: center; }
-.nl-logo { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
-.nl-title { font-size: 38px; font-weight: 800; color: white; margin: 0 0 6px; letter-spacing: 1px; }
-.nl-subtitle { font-size: 16px; color: rgba(255,255,255,0.8); font-style: italic; }
-.nl-meta { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
-.nl-body { padding: 28px 36px; }
-.nl-section { margin-bottom: 28px; }
-.nl-section-title { font-size: 13px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--gold); padding-bottom: 4px; margin-bottom: 14px; font-family: -apple-system, sans-serif; }
-.nl-welcome { font-size: 15px; line-height: 1.7; color: var(--gray-700); }
-.nl-highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.nl-highlight-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--gray-200); }
-.nl-highlight-card-header { padding: 8px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; font-family: -apple-system, sans-serif; }
-.nl-highlight-card-body { padding: 10px 14px; font-size: 13px; line-height: 1.5; }
-.nl-highlight-card-body strong { display: block; color: var(--navy); font-size: 14px; margin-bottom: 3px; font-family: -apple-system, sans-serif; }
-.nl-week { margin-bottom: 14px; }
-.nl-week-header { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; background: var(--gray-100); padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-family: -apple-system, sans-serif; }
-.nl-week-row { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; align-items: baseline; }
-.nl-week-row:last-child { border-bottom: none; }
-.nl-week-day { font-weight: 700; color: var(--navy); min-width: 90px; font-family: -apple-system, sans-serif; }
-.nl-week-activity { color: var(--gray-700); }
-.nl-week-special { color: var(--gold); font-style: italic; }
-.nl-footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 18px 36px; text-align: center; font-size: 12px; line-height: 1.8; font-family: -apple-system, sans-serif; }
-.nl-footer strong { color: var(--gold-light); }
+.nl-page { background:white; max-width:760px; margin:0 auto 24px; font-family:Georgia,serif; box-shadow:var(--shadow-lg); border-radius:var(--radius-lg); overflow:hidden; }
+.nl-masthead { background:linear-gradient(135deg,#0D2B5E,#1F4E8A); color:white; padding:24px 32px 0; }
+.nl-masthead-row { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+.nl-masthead-title { font-size:46px; font-weight:900; color:white; margin:0; line-height:1; letter-spacing:-1px; }
+.nl-masthead-cursive { font-style:italic; color:#FFD700; }
+.nl-masthead-right { text-align:right; }
+.nl-masthead-comm { font-size:13px; font-weight:700; color:#FFD700; letter-spacing:1px; text-transform:uppercase; font-family:sans-serif; }
+.nl-masthead-date { font-size:22px; font-weight:700; color:rgba(255,255,255,0.9); font-family:sans-serif; margin-top:2px; }
+.nl-masthead-track { font-size:11px; color:rgba(255,255,255,0.55); letter-spacing:2px; text-transform:uppercase; font-family:sans-serif; margin-top:2px; }
+.nl-gold-bar { background:#C9A84C; padding:7px 32px; font-size:11px; font-weight:800; color:#0D2B5E; letter-spacing:2.5px; text-transform:uppercase; display:flex; justify-content:space-between; margin-top:16px; font-family:sans-serif; }
+.nl-cols { display:grid; grid-template-columns:3fr 2fr; min-height:1px; }
+.nl-col-main { padding:22px 26px 22px 32px; border-right:2px solid #EEF2FF; }
+.nl-col-side { padding:22px 24px; background:#F9FAFB; }
+.nl-sec-hd { font-size:10px; font-weight:800; color:white; background:#0D2B5E; text-transform:uppercase; letter-spacing:2px; padding:4px 10px; border-radius:3px; display:inline-block; margin-bottom:10px; font-family:sans-serif; }
+.nl-sec-hd.gold { background:#B8860B; }
+.nl-sec-hd.rose { background:#9F1239; }
+.nl-sec-hd.teal { background:#0F766E; }
+.nl-welcome-txt { font-size:14px; line-height:1.75; color:#374151; margin-bottom:18px; }
+.nl-director-sig { font-size:13px; font-style:italic; color:#6B7280; border-top:1px solid #E5E7EB; padding-top:8px; margin-top:-4px; }
+.nl-sched-week { margin-bottom:10px; }
+.nl-sched-wk-hd { font-size:10px; font-weight:800; color:#1E3A8A; background:#EEF2FF; padding:4px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px; font-family:sans-serif; }
+.nl-sched-row { display:flex; gap:6px; padding:3px 0; border-bottom:1px solid #F3F4F6; font-size:11.5px; align-items:baseline; }
+.nl-sched-row:last-child { border-bottom:none; }
+.nl-sched-day { font-weight:700; color:#0D2B5E; min-width:76px; font-family:sans-serif; font-size:10.5px; flex-shrink:0; }
+.nl-sched-act { color:#374151; flex:1; }
+.nl-sched-spec { color:#B8860B; font-style:italic; font-size:10.5px; }
+.nl-bday-box { background:#FFF7ED; border:1px solid #FED7AA; border-radius:8px; padding:14px; margin-bottom:16px; }
+.nl-bday-hd { font-size:10px; font-weight:800; color:#C2410C; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px; font-family:sans-serif; }
+.nl-bday-none { font-size:12px; color:#9CA3AF; font-style:italic; }
+.nl-bday-item { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px dashed #FED7AA; font-size:13px; }
+.nl-bday-item:last-child { border-bottom:none; }
+.nl-bday-name { font-weight:700; color:#0D2B5E; flex:1; }
+.nl-bday-date { color:#C2410C; font-size:11px; font-weight:600; font-family:sans-serif; }
+.nl-hl-box { background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:12px 14px; margin-bottom:10px; }
+.nl-hl-lbl { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; color:#1D4ED8; font-family:sans-serif; margin-bottom:3px; }
+.nl-hl-name { font-size:13px; font-weight:700; color:#0D2B5E; }
+.nl-hl-date { font-size:11px; color:#6B7280; font-family:sans-serif; }
+.nl-footer { background:#0D2B5E; color:rgba(255,255,255,0.7); padding:14px 32px; text-align:center; font-size:11px; line-height:1.8; font-family:sans-serif; }
+.nl-footer strong { color:#FFD700; }
+.nl-p2-hd { background:linear-gradient(135deg,#0D2B5E,#1F4E8A); padding:14px 32px; display:flex; align-items:center; justify-content:space-between; }
+.nl-p2-title { font-size:18px; font-weight:900; color:#FFD700; font-family:Georgia,serif; }
+.nl-p2-meta { font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:1px; text-transform:uppercase; font-family:sans-serif; }
+.nl-fun-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:22px 32px; }
+.nl-fun { border-radius:10px; padding:15px 16px; border:1px solid #e5e7eb; }
+.nl-fun.full { grid-column:1/-1; }
+.nl-fun.blue { background:#EFF6FF; border-color:#BFDBFE; }
+.nl-fun.amber { background:#FFFBEB; border-color:#FDE68A; }
+.nl-fun.green { background:#F0FDF4; border-color:#BBF7D0; }
+.nl-fun.purple { background:#F5F3FF; border-color:#DDD6FE; }
+.nl-fun.rose { background:#FFF1F2; border-color:#FECDD3; }
+.nl-fun.teal { background:#F0FDFA; border-color:#99F6E4; }
+.nl-fun.navy { background:#EEF2FF; border-color:#C7D2FE; }
+.nl-fun-title { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; font-family:sans-serif; }
+.nl-fun.blue .nl-fun-title { color:#1E40AF; }
+.nl-fun.amber .nl-fun-title { color:#92400E; }
+.nl-fun.green .nl-fun-title { color:#166534; }
+.nl-fun.purple .nl-fun-title { color:#4C1D95; }
+.nl-fun.rose .nl-fun-title { color:#9F1239; }
+.nl-fun.teal .nl-fun-title { color:#134E4A; }
+.nl-fun.navy .nl-fun-title { color:#1E3A8A; }
+.nl-fun-body { font-size:13px; line-height:1.65; color:#374151; }
+.nl-scramble { font-size:24px; font-weight:900; letter-spacing:6px; color:#4C1D95; font-family:monospace; text-align:center; margin:8px 0 4px; }
+.nl-scramble-hint { font-size:11px; color:#7C3AED; text-align:center; font-style:italic; }
+.nl-scramble-ans { font-size:10px; color:#C4B5FD; text-align:center; margin-top:6px; font-family:monospace; letter-spacing:3px; }
+.nl-trivia-q { font-weight:700; color:#0D2B5E; margin-bottom:6px; font-size:13px; }
+.nl-trivia-a { font-size:11px; color:#9CA3AF; font-style:italic; }
+.nl-conv { font-size:15px; font-style:italic; color:#0D2B5E; font-weight:700; line-height:1.5; text-align:center; }
 @media print {
   body.printing-newsletter .app-header, body.printing-newsletter .tab-bar,
   body.printing-newsletter section.tab-panel:not(#panel-newsletter),
-  body.printing-newsletter .day-actions, body.printing-newsletter > div:not(main) { display: none !important; }
-  body.printing-newsletter #panel-newsletter .btn { display: none !important; }
-  .nl-page { box-shadow: none !important; }
+  body.printing-newsletter .day-actions, body.printing-newsletter > div:not(main) { display:none !important; }
+  body.printing-newsletter #panel-newsletter .btn { display:none !important; }
+  .nl-page { box-shadow:none !important; page-break-after:always; }
+  .nl-page:last-child { page-break-after:auto; }
 }
-@media (max-width: 600px) {
-  .nl-header { padding: 20px 18px; }
-  .nl-title { font-size: 26px; }
-  .nl-body { padding: 18px 16px; }
-  .nl-footer { padding: 14px 16px; }
+@media (max-width:600px) {
+  .nl-masthead-title { font-size:30px; }
+  .nl-cols { grid-template-columns:1fr; }
+  .nl-fun-grid { grid-template-columns:1fr; }
+  .nl-fun.full { grid-column:1; }
 }
+
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -4024,6 +4068,21 @@ document.addEventListener('input', e => {
 });
 
 // ─────────────────────────────────────────────
+const NL_MONTHLY = {
+  1:{wellness:"Start fresh — every morning is a new beginning. Drink a full glass of water before your morning coffee!",humor:"Why did January feel so long? Because it had 31 days and no sunny days off!",trivia:{q:"What is the most popular New Year's resolution made each year?",a:"Exercise more / get healthy"},scramble:{word:"SNOWFLAKE",hint:"No two of these are exactly alike"},history:"On January 1, 1863, the Emancipation Proclamation took effect. In January 1964, the Beatles first played on The Ed Sullivan Show — 73 million people watched!",rememberWhen:"Remember when gas cost about 30 cents a gallon and a movie ticket was $1.25?",conversation:"What is one thing you hope to enjoy more of this year?"},
+  2:{wellness:"Heart Health Month! Even a 10-minute walk each day makes a meaningful difference. Your heart loves you — love it back!",humor:"Why did the calendar go on a diet in February? Too many dates!",trivia:{q:"What color roses traditionally say 'I love you'?",a:"Red roses"},scramble:{word:"SWEETHEART",hint:"A sweet term of endearment"},history:"In February 1962, John Glenn became the first American to orbit the Earth. In 1964, The Beatles arrived in America and changed music forever!",rememberWhen:"Remember when you gave a Valentine's card to every single classmate from a box of 25?",conversation:"Who was your very first Valentine? Tell us the story!"},
+  3:{wellness:"Spring is here! Open the windows, breathe in the fresh air, and let nature lift your spirits. Sunshine is free medicine!",humor:"Why is March so windy? Because February and April are blowing in opposite directions!",trivia:{q:"What four-leaf plant is the symbol of St. Patrick's Day?",a:"Clover (Shamrock)"},scramble:{word:"RAINBOW",hint:"You'll find this at the end of a pot of gold"},history:"In March 1955, Walt Disney announced Disneyland. In March 1965, the first U.S. combat troops arrived in Vietnam, changing a generation.",rememberWhen:"Remember when spring cleaning meant beating rugs outside on the clothesline?",conversation:"What is your favorite thing about the arrival of spring?"},
+  4:{wellness:"April showers bring May flowers — and fresh starts! Try planting something, even a small herb in a pot on the windowsill.",humor:"Why did the Easter egg hide? Because it was a little chicken!",trivia:{q:"How many eggs does the average hen lay in a year?",a:"About 250 eggs"},scramble:{word:"BLOSSOM",hint:"What flowers do in springtime"},history:"On April 12, 1961, Yuri Gagarin became the first human in space. On April 4, 1968, Dr. Martin Luther King Jr. was assassinated — a day the world wept.",rememberWhen:"Remember Easter Sunday in your best new outfit, hunting for eggs hidden in the yard?",conversation:"What is your favorite springtime memory from childhood?"},
+  5:{wellness:"May is Mental Health Month! A smile, a phone call to an old friend, and five minutes of fresh air can change your whole day.",humor:"Why do mothers make the best detectives? Because they always know when you're up to something!",trivia:{q:"What flower is most associated with Mother's Day?",a:"Carnation"},scramble:{word:"GARDEN",hint:"Where flowers and vegetables grow"},history:"In May 1927, Charles Lindbergh completed the first solo nonstop flight across the Atlantic. In May 1961, Alan Shepard became the first American in space!",rememberWhen:"Remember Mom's kitchen on a Sunday — that smell of something always baking?",conversation:"What is the best piece of advice your mother ever gave you?"},
+  6:{wellness:"Summer hydration starts now! Aim for 8 glasses of water a day. Add a slice of lemon to make it feel fancy!",humor:"Why did summer school feel so long? Because every day was a sun-day!",trivia:{q:"What is the longest day of the year called?",a:"The Summer Solstice (around June 21)"},scramble:{word:"SUNSHINE",hint:"What makes a summer day bright"},history:"On June 6, 1944, D-Day — Allied forces stormed the beaches of Normandy in the largest military invasion in history.",rememberWhen:"Remember catching fireflies in a jar on warm summer nights and staying out until dark?",conversation:"What was your favorite summer vacation? Where did you go and who was with you?"},
+  7:{wellness:"Celebrate independence — including your freedom to take it slow, rest, and enjoy this very moment. You've earned it!",humor:"Why does the Statue of Liberty stand in New York Harbor? Because she can't sit down!",trivia:{q:"How many stars are on the American flag?",a:"50 stars — one for each state"},scramble:{word:"FIREWORKS",hint:"The Fourth of July's sparkling nighttime show"},history:"On July 20, 1969, Neil Armstrong stepped on the moon — 'One small step for man, one giant leap for mankind.' Where were you?",rememberWhen:"Remember when the whole neighborhood watched the fireworks from lawn chairs in the front yard?",conversation:"Where were you when the moon landing happened? What do you remember about that night?"},
+  8:{wellness:"August heat calls for cool treats! A bowl of watermelon is 92% water — hydration AND delicious. It counts!",humor:"Why did the scarecrow win an award? Because he was outstanding in his field!",trivia:{q:"What gemstone is the birthstone for August?",a:"Peridot"},scramble:{word:"LEMONADE",hint:"The perfect pitcher for a hot summer day"},history:"On August 28, 1963, Dr. Martin Luther King Jr. delivered the 'I Have a Dream' speech to 250,000 people in Washington D.C.",rememberWhen:"Remember dreading back-to-school shopping but secretly loving new crayons and notebooks?",conversation:"What did you love most about August when you were growing up?"},
+  9:{wellness:"September is Healthy Aging Month — and you are doing beautifully. Keep moving, keep laughing, keep going!",humor:"Why did the leaves start going to school in September? To get a little more color!",trivia:{q:"What is the traditional birth flower for September?",a:"Aster"},scramble:{word:"HARVEST",hint:"What farmers do when crops are ready in fall"},history:"On September 9, 1956, Elvis Presley appeared on The Ed Sullivan Show for the first time. Over 60 million people watched!",rememberWhen:"Remember the smell of new crayons and fresh notebook paper on the very first day of school?",conversation:"What was your very favorite subject in school, and who was a teacher you'll never forget?"},
+  10:{wellness:"October is the perfect time for a cozy walk. Notice the colors — red, orange, gold. Nature is putting on a show just for you!",humor:"What do you call a skeleton who won't stop talking? A jawbreaker!",trivia:{q:"What vegetable is traditionally carved on Halloween?",a:"Pumpkin"},scramble:{word:"PUMPKIN",hint:"A popular orange fall decoration"},history:"In October 1962, the Cuban Missile Crisis had the world holding its breath for 13 days. In 1969, the first message was sent over ARPANET — the birth of the internet.",rememberWhen:"Remember when Halloween costumes were homemade — a ghost from an old bedsheet, a hobo from Dad's old clothes?",conversation:"What was your most memorable Halloween costume or trick-or-treat memory?"},
+  11:{wellness:"Gratitude is good medicine — proven to lower stress and lift your mood. Try naming 3 things you are thankful for each morning.",humor:"Why did the turkey cross the road? To prove he wasn't chicken!",trivia:{q:"In what year did the Macy's Thanksgiving Day Parade first take place?",a:"1924"},scramble:{word:"GRATEFUL",hint:"How we feel when we count our blessings"},history:"On November 22, 1963, President Kennedy was assassinated — a moment every American remembers exactly where they were.",rememberWhen:"Remember when Thanksgiving dinner took two days to prepare and the whole family — every aunt, uncle, and cousin — fit around the table?",conversation:"What are you most grateful for this year? Who are you most thankful to have in your life?"},
+  12:{wellness:"The holidays are a season of the heart. Give yourself permission to rest, reflect, and rejoice — you deserve every bit of the warmth.",humor:"Why does Santa go down the chimney? Because it soots him!",trivia:{q:"In 'The Twelve Days of Christmas,' what is given on the 7th day?",a:"Seven Swans a-Swimming"},scramble:{word:"MISTLETOE",hint:"A holiday decoration hung in doorways"},history:"On December 17, 1903, the Wright Brothers made their first successful airplane flight at Kitty Hawk, North Carolina — 12 seconds that changed the world.",rememberWhen:"Remember stringing popcorn and cranberries for the Christmas tree and making paper chains with your family?",conversation:"What is your most treasured holiday tradition or memory? What made it so special?"}
+};
+
 function renderNewsletter() {
   loadNlPrefs();
   const prefs = JSON.parse(localStorage.getItem(NL_KEY) || '{}');
@@ -4031,135 +4090,168 @@ function renderNewsletter() {
   const levelName = DATA.levelNames[level];
   const days = DATA.daily[level];
   const theme = DATA.monthTheme || '';
-  const communityName = prefs.community || '';
-  const nlTitle = prefs.title || ('Empower Life 365 — ' + DATA.monthName + ' ' + DATA.year);
+  const communityName = prefs.community || 'Your Community';
+  const nlTitle = prefs.title || 'Empower Moments';
   const directorLine = prefs.director || '';
   const contactLine = prefs.contact || '';
   const customWelcome = prefs.welcome || '';
   const footerNote = prefs.footer || '';
+  const monthNum = DATA.monthNum;
+  const mc = NL_MONTHLY[monthNum] || NL_MONTHLY[1];
 
-  // Collect highlights: travel, holidays, bonus
-  const highlights = [];
+  // ── Birthdays from roster ──
+  const bdayResidents = roster.filter(r => {
+    if (!r.dob) return false;
+    const s = String(r.dob).trim();
+    const parts = s.split(/[\/\-]/);
+    if (parts.length >= 2) {
+      const m = parseInt(parts[0], 10);
+      return m === monthNum;
+    }
+    return false;
+  }).map(r => {
+    const parts = String(r.dob).split(/[\/\-]/);
+    const day = parseInt(parts[1], 10);
+    const monthNames = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return { name: r.name, dateStr: monthNames[monthNum] + ' ' + day, day };
+  }).sort((a,b) => a.day - b.day);
+
+  const bdayHtml = bdayResidents.length
+    ? bdayResidents.map(r => `<div class="nl-bday-item"><span>🎂</span><span class="nl-bday-name">${escapeHtml(r.name)}</span><span class="nl-bday-date">${escapeHtml(r.dateStr)}</span></div>`).join('')
+    : '<div class="nl-bday-none">No birthdays on file this month.<br><small>Upload your resident roster to auto-populate birthdays.</small></div>';
+
+  // ── Activity highlights ──
+  const highlightBoxes = [];
   if (DATA.travelDay && DATA.travelDay.day) {
     const td = DATA.travelDay;
     const meta = DATA.dayMeta[String(td.day)] || {};
-    highlights.push({
-      color: '#FFD580', headerBg: '#1F3864', headerColor: '#FFD966',
-      label: '✈ Travel Day', date: meta.date_long || ('Day ' + td.day),
-      title: td.country, desc: td.tagline || td.description || ''
-    });
+    highlightBoxes.push(`<div class="nl-hl-box"><div class="nl-hl-lbl">✈ Travel Day</div><div class="nl-hl-name">${escapeHtml(td.country)}</div><div class="nl-hl-date">${escapeHtml(meta.date_long||'')}</div></div>`);
   }
-  Object.entries(DATA.holidays || {}).forEach(([day, name]) => {
+  Object.entries(DATA.holidays||{}).slice(0,3).forEach(([day,name]) => {
     const meta = DATA.dayMeta[day] || {};
-    highlights.push({
-      color: '#E4DFEC', headerBg: '#7030A0', headerColor: 'white',
-      label: '🎉 Holiday', date: meta.date_long || ('Day ' + day),
-      title: name, desc: ''
-    });
+    highlightBoxes.push(`<div class="nl-hl-box" style="background:#F5F3FF;border-color:#DDD6FE;"><div class="nl-hl-lbl" style="color:#6D28D9;">🎉 Special Event</div><div class="nl-hl-name">${escapeHtml(name)}</div><div class="nl-hl-date">${escapeHtml(meta.date_long||'')}</div></div>`);
   });
-  // Grab first 4 highlights max
-  const highlightCards = highlights.slice(0, 4).map(h => `
-    <div class="nl-highlight-card">
-      <div class="nl-highlight-card-header" style="background:${h.headerBg};color:${h.headerColor};">
-        ${h.label}
-      </div>
-      <div class="nl-highlight-card-body" style="background:${h.color}20;">
-        <strong>${escapeHtml(h.title)}</strong>
-        <span style="font-size:12px;color:#555;">${escapeHtml(h.date)}</span>
-        ${h.desc ? `<div style="margin-top:4px;font-size:12px;color:#666;">${escapeHtml(h.desc)}</div>` : ''}
-      </div>
-    </div>`).join('');
 
-  // Build weekly schedule (4 weeks)
+  // ── Weekly schedule ──
   const weeks = [
-    { label: 'Week 1', days: [1,2,3,4,5,6,7] },
-    { label: 'Week 2', days: [8,9,10,11,12,13,14] },
-    { label: 'Week 3', days: [15,16,17,18,19,20,21] },
-    { label: 'Week 4 & Beyond', days: [22,23,24,25,26,27,28,29,30,31] }
+    {label:'Week 1',days:[1,2,3,4,5,6,7]},
+    {label:'Week 2',days:[8,9,10,11,12,13,14]},
+    {label:'Week 3',days:[15,16,17,18,19,20,21]},
+    {label:'Week 4+',days:[22,23,24,25,26,27,28,29,30,31]}
   ];
-
-  const weekHtml = weeks.map(w => {
+  const schedHtml = weeks.map(w => {
     const rows = w.days.map(day => {
       const meta = DATA.dayMeta[String(day)];
       const slots = days[String(day)];
       if (!meta || !slots) return '';
       const holiday = DATA.holidays[String(day)] || '';
       const isTravel = day === (DATA.travelDay && DATA.travelDay.day);
-      // Pick the main morning activity as the headline
       const morningSlot = DATA.slotOrder.find(s => s !== 'BIG_GROUP' && slots[s] && slots[s].title);
       const mainAct = morningSlot ? slots[morningSlot].title : '';
-      const special = holiday ? holiday : (isTravel ? ('✈ ' + DATA.travelDay.country) : '');
-      return `<div class="nl-week-row">
-        <span class="nl-week-day">${escapeHtml(meta.date_short || ('Day '+day))}</span>
-        <span class="nl-week-activity">${escapeHtml(mainAct)}</span>
-        ${special ? `<span class="nl-week-special">&nbsp;· ${escapeHtml(special)}</span>` : ''}
-      </div>`;
+      if (!mainAct && !holiday && !isTravel) return '';
+      const special = holiday ? holiday : (isTravel ? ('✈ '+DATA.travelDay.country) : '');
+      return `<div class="nl-sched-row"><span class="nl-sched-day">${escapeHtml(meta.date_short||('Day '+day))}</span><span class="nl-sched-act">${escapeHtml(mainAct)}</span>${special?`<span class="nl-sched-spec"> · ${escapeHtml(special)}</span>`:''}</div>`;
     }).join('');
     if (!rows.trim()) return '';
-    return `<div class="nl-week"><div class="nl-week-header">${w.label}</div>${rows}</div>`;
+    return `<div class="nl-sched-week"><div class="nl-sched-wk-hd">${w.label}</div>${rows}</div>`;
   }).join('');
 
-  // Featured activity: pick from middle of month
-  const featuredDay = 15;
-  const featuredSlots = days[String(featuredDay)];
-  let featuredHtml = '';
-  if (featuredSlots) {
-    const fSlot = DATA.slotOrder.find(s => s !== 'BIG_GROUP' && featuredSlots[s] && featuredSlots[s].desc);
-    if (fSlot) {
-      const fa = featuredSlots[fSlot];
-      const fi = DATA.slotInfo[fSlot];
-      featuredHtml = `
-        <div style="background:linear-gradient(135deg,#EAF2FB,#D9E2F3);border-radius:10px;padding:18px 22px;border-left:5px solid #2E75B6;">
-          <div style="font-size:11px;font-weight:700;color:#2E75B6;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-family:sans-serif;">${fi.icon} ${escapeHtml(fi.name)} — Day ${featuredDay}</div>
-          <div style="font-size:18px;font-weight:700;color:#1F3864;margin-bottom:6px;">${escapeHtml(fa.title)}</div>
-          <div style="font-size:13px;color:#344054;line-height:1.6;">${escapeHtml(fa.desc ? fa.desc.substring(0,220) + (fa.desc.length > 220 ? '...' : '') : '')}</div>
-        </div>`;
-    }
-  }
+  // ── Word scramble — shuffle letters ──
+  const origWord = mc.scramble.word;
+  const shuffled = origWord.split('').sort(() => Math.random()-0.5).join('');
 
-  const html = `
-  <div class="nl-page" id="nl-content">
-    <div class="nl-header">
-      <div class="nl-logo">${communityName ? escapeHtml(communityName) + ' &nbsp;·&nbsp; ' : ''}Empower Life 365 &nbsp;·&nbsp; ${escapeHtml(levelName)} Track</div>
-      <div class="nl-title">${escapeHtml(nlTitle)}</div>
-      <div class="nl-subtitle">${escapeHtml(theme)}</div>
-      <div class="nl-meta">${escapeHtml(DATA.monthName)} ${DATA.year}${directorLine ? ' &nbsp;·&nbsp; ' + escapeHtml(directorLine) : ''}${contactLine ? ' &nbsp;·&nbsp; ' + escapeHtml(contactLine) : ''}</div>
-    </div>
-    <div class="nl-body">
-
-      <div class="nl-section">
-        <div class="nl-section-title">Welcome</div>
-        <div class="nl-welcome">
-          ${customWelcome ? escapeHtml(customWelcome) : 'Welcome to <strong>' + escapeHtml(DATA.monthName) + ' ' + DATA.year + '</strong>! This month\'s theme is <em>' + escapeHtml(theme) + '</em>. We have a wonderful lineup of activities planned — from morning fitness and creative arts to afternoon social events and entertainment. We look forward to sharing each day with you!'}
+  // ── Page 1 ──
+  const page1 = `
+  <div class="nl-page" id="nl-content-p1">
+    <div class="nl-masthead">
+      <div class="nl-masthead-row">
+        <div>
+          <div class="nl-masthead-title"><em class="nl-masthead-cursive">Empower</em> Moments</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;font-family:sans-serif;letter-spacing:0.5px;">${escapeHtml(theme)}</div>
+        </div>
+        <div class="nl-masthead-right">
+          <div class="nl-masthead-comm">${escapeHtml(communityName)}</div>
+          <div class="nl-masthead-date">${escapeHtml(DATA.monthName)} ${DATA.year}</div>
+          <div class="nl-masthead-track">${escapeHtml(levelName)} Track</div>
         </div>
       </div>
+      <div class="nl-gold-bar">
+        <span>Wellness · Joy · Purpose — 365 Days a Year</span>
+        <span>${directorLine ? escapeHtml(directorLine) : 'empowerlife365.app'}</span>
+      </div>
+    </div>
+    <div class="nl-cols">
+      <div class="nl-col-main">
+        <div class="nl-sec-hd gold">Welcome</div>
+        <div class="nl-welcome-txt">${customWelcome ? escapeHtml(customWelcome) : 'Welcome to <strong>'+escapeHtml(DATA.monthName)+' '+DATA.year+'</strong>! This month\'s theme is <em>'+escapeHtml(theme)+'</em>. We have a wonderful lineup of activities planned — from morning fitness and creative arts to afternoon socials and special events. Every single day is designed with you in mind. We are so glad you are here!'}</div>
+        ${directorLine ? `<div class="nl-director-sig">Warmly, ${escapeHtml(directorLine)}${contactLine ? ' · '+escapeHtml(contactLine) : ''}</div>` : ''}
+        <div style="margin-top:18px;"><div class="nl-sec-hd">Monthly Schedule</div></div>
+        ${schedHtml || '<div style="font-size:13px;color:#9CA3AF;font-style:italic;">Build your calendar to populate the schedule here.</div>'}
+      </div>
+      <div class="nl-col-side">
+        <div class="nl-bday-box">
+          <div class="nl-bday-hd">🎂 Birthdays This Month</div>
+          ${bdayHtml}
+        </div>
+        ${highlightBoxes.length ? `<div><div class="nl-sec-hd teal" style="margin-bottom:10px;">Month Highlights</div>${highlightBoxes.join('')}</div>` : ''}
+      </div>
+    </div>
+    <div class="nl-footer"><strong>${escapeHtml(nlTitle)}</strong> · ${escapeHtml(communityName)} · ${escapeHtml(DATA.monthName)} ${DATA.year}${footerNote ? '<br>'+escapeHtml(footerNote) : ''}<br>empowerlife365.app</div>
+  </div>`;
 
-      ${highlights.length ? `
-      <div class="nl-section">
-        <div class="nl-section-title">Month Highlights</div>
-        <div class="nl-highlights">${highlightCards}</div>
-      </div>` : ''}
+  // ── Page 2 ──
+  const page2 = `
+  <div class="nl-page" id="nl-content-p2">
+    <div class="nl-p2-hd">
+      <div>
+        <div class="nl-p2-title">Fun, Wellness & Conversation</div>
+        <div class="nl-p2-meta">${escapeHtml(DATA.monthName)} ${DATA.year} · ${escapeHtml(communityName)}</div>
+      </div>
+      <div style="font-size:24px;">🌟</div>
+    </div>
+    <div class="nl-fun-grid">
 
-      ${featuredHtml ? `
-      <div class="nl-section">
-        <div class="nl-section-title">Featured Activity</div>
-        ${featuredHtml}
-      </div>` : ''}
+      <div class="nl-fun green">
+        <div class="nl-fun-title">💚 Wellness Tip of the Month</div>
+        <div class="nl-fun-body">${escapeHtml(mc.wellness)}</div>
+      </div>
 
-      <div class="nl-section">
-        <div class="nl-section-title">Monthly Schedule at a Glance</div>
-        ${weekHtml}
+      <div class="nl-fun amber">
+        <div class="nl-fun-title">😄 Humor Corner</div>
+        <div class="nl-fun-body" style="font-style:italic;">"${escapeHtml(mc.humor)}"</div>
+      </div>
+
+      <div class="nl-fun purple">
+        <div class="nl-fun-title">🧩 Word Scramble</div>
+        <div class="nl-scramble">${escapeHtml(shuffled)}</div>
+        <div class="nl-scramble-hint">Hint: ${escapeHtml(mc.scramble.hint)}</div>
+        <div class="nl-scramble-ans">Answer: ${escapeHtml(origWord)}</div>
+      </div>
+
+      <div class="nl-fun blue">
+        <div class="nl-fun-title">🤔 Did You Know?</div>
+        <div class="nl-trivia-q">${escapeHtml(mc.trivia.q)}</div>
+        <div class="nl-fun-body" style="margin-bottom:8px;">Think about it… then flip this paper over!</div>
+        <div class="nl-trivia-a">Answer: ${escapeHtml(mc.trivia.a)}</div>
+      </div>
+
+      <div class="nl-fun rose full">
+        <div class="nl-fun-title">📰 Remember When… &amp; Historical Fun Facts</div>
+        <div class="nl-fun-body">${escapeHtml(mc.history)}<br><br><em>${escapeHtml(mc.rememberWhen)}</em></div>
+      </div>
+
+      <div class="nl-fun teal full">
+        <div class="nl-fun-title">💬 Let's Talk! — Conversation Starter</div>
+        <div class="nl-conv">"${escapeHtml(mc.conversation)}"</div>
       </div>
 
     </div>
-    <div class="nl-footer">
-      <strong>${nlTitle ? escapeHtml(nlTitle) : 'Empower Life 365'}</strong> &nbsp;·&nbsp; ${escapeHtml(levelName)} Track &nbsp;·&nbsp; ${escapeHtml(DATA.monthName)} ${DATA.year}<br>
-      ${communityName ? escapeHtml(communityName) + ' &nbsp;·&nbsp; ' : ''}${directorLine ? escapeHtml(directorLine) + ' &nbsp;·&nbsp; ' : ''}${contactLine ? escapeHtml(contactLine) + '<br>' : ''}${footerNote ? escapeHtml(footerNote) + '<br>' : ''}empowerlife365.app
-    </div>
+    <div class="nl-footer"><strong>${escapeHtml(nlTitle)}</strong> · Page 2 · ${escapeHtml(DATA.monthName)} ${DATA.year}${footerNote ? '<br>'+escapeHtml(footerNote) : ''}</div>
   </div>`;
 
-  document.getElementById('newsletter-preview').innerHTML = html;
+  document.getElementById('newsletter-preview').innerHTML = page1 + page2;
 }
+
 
 function exportNewsletterPDF() {
   const el = document.getElementById('nl-content');
