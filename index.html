@@ -167,6 +167,79 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 }
 .slot-content:hover .slot-mat-btn { opacity:1; }
 @media print { .slot-mat-btn { display:none !important; } }
+
+/* Delete / Other slot buttons */
+.slot-del-btn {
+  position:absolute; bottom:8px; right:8px;
+  background:transparent; color:#aaa; border:1px solid #ddd; border-radius:6px;
+  padding:3px 9px; font-size:11px; font-weight:600; cursor:pointer;
+  opacity:0; transition:opacity 0.15s; z-index:2; white-space:nowrap;
+}
+.slot-del-btn:hover { background:#FFF0F0; color:#C0392B; border-color:#C0392B; }
+.slot-content:hover .slot-del-btn { opacity:1; }
+
+.slot-other-btn {
+  position:absolute; bottom:8px; right:70px;
+  background:transparent; color:#555; border:1px solid #ddd; border-radius:6px;
+  padding:3px 9px; font-size:11px; font-weight:600; cursor:pointer;
+  opacity:0; transition:opacity 0.15s; z-index:2; white-space:nowrap;
+}
+.slot-other-btn:hover { background:#EEF4FF; color:#1F3864; border-color:#1F3864; }
+.slot-content:hover .slot-other-btn { opacity:1; }
+
+/* Deleted slot state */
+.slot-content.slot-deleted {
+  background:#f8f8f8; border-style:dashed; border-color:#ddd; cursor:default;
+  opacity:0.65;
+}
+.slot-deleted-label {
+  color:#aaa; font-style:italic; font-size:13px; padding:4px 0;
+}
+.slot-restore-btn {
+  margin-top:6px; background:transparent; border:1px solid #bbb;
+  border-radius:6px; padding:3px 10px; font-size:11px; color:#666;
+  cursor:pointer; font-weight:600;
+}
+.slot-restore-btn:hover { background:#f0fff0; border-color:#27ae60; color:#27ae60; }
+
+/* Custom "Other" badge on slot title */
+.slot-custom-badge {
+  display:inline-block; font-size:10px; font-weight:700;
+  background:#E8F5E9; color:#27ae60; border:1px solid #a8d5b5;
+  border-radius:10px; padding:1px 8px; margin-left:8px; vertical-align:middle;
+}
+
+/* Inline "Other" edit form inside slot */
+.slot-other-form {
+  display:none; margin-top:10px; padding:10px 12px;
+  background:#fffef5; border:1px solid #BF9000; border-radius:8px;
+}
+.slot-other-form label {
+  display:block; font-size:11px; font-weight:700; color:#1F3864; margin-bottom:3px;
+}
+.slot-other-form input, .slot-other-form textarea {
+  width:100%; box-sizing:border-box; border:1px solid #ddd; border-radius:6px;
+  padding:6px 8px; font-size:13px; font-family:inherit; margin-bottom:7px;
+  background:white;
+}
+.slot-other-form textarea { min-height:56px; resize:vertical; }
+.slot-other-form-btns { display:flex; gap:8px; }
+.slot-other-save-btn {
+  background:#1F3864; color:#FFD700; border:none; border-radius:6px;
+  padding:5px 14px; font-size:12px; font-weight:700; cursor:pointer;
+}
+.slot-other-save-btn:hover { background:#162a50; }
+.slot-other-cancel-btn {
+  background:white; color:#555; border:1px solid #ddd; border-radius:6px;
+  padding:5px 12px; font-size:12px; cursor:pointer;
+}
+.slot-other-clear-btn {
+  background:white; color:#C0392B; border:1px solid #f0a0a0; border-radius:6px;
+  padding:5px 12px; font-size:12px; cursor:pointer; margin-left:auto;
+}
+@media print {
+  .slot-del-btn, .slot-other-btn, .slot-other-form, .slot-restore-btn { display:none !important; }
+}
 .slot-print-btn { position: absolute; top: 8px; right: 8px; background: white; border: 1px solid var(--gray-300); border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 14px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; opacity: 0.55; font-family: inherit; }
 .slot-content:hover .slot-print-btn { opacity: 1; }
 .slot-print-btn:hover { background: var(--gold); color: white; transform: scale(1.1); border-color: var(--gold); box-shadow: var(--shadow); }
@@ -1722,6 +1795,75 @@ function flashSavedMsg() {
   setTimeout(() => m.textContent = '', 1800);
 }
 
+// ── Slot custom-activity & delete overrides ────────────────────────────────
+function getSlotCustom(day, slot) {
+  return dayOverrides[currentLevel]?.[day]?.customSlots?.[slot] || null;
+}
+function setSlotCustom(day, slot, title, desc) {
+  if (!dayOverrides[currentLevel][day]) dayOverrides[currentLevel][day] = {};
+  if (!dayOverrides[currentLevel][day].customSlots) dayOverrides[currentLevel][day].customSlots = {};
+  if (title) {
+    dayOverrides[currentLevel][day].customSlots[slot] = { title, desc: desc || '' };
+  } else {
+    delete dayOverrides[currentLevel][day].customSlots[slot];
+  }
+  lsSet(dayOverridesKey(currentLevel), dayOverrides[currentLevel]);
+  flashSavedMsg();
+}
+function isSlotDeleted(day, slot) {
+  return !!(dayOverrides[currentLevel]?.[day]?.deletedSlots?.[slot]);
+}
+function setSlotDeleted(day, slot, deleted) {
+  if (!dayOverrides[currentLevel][day]) dayOverrides[currentLevel][day] = {};
+  if (!dayOverrides[currentLevel][day].deletedSlots) dayOverrides[currentLevel][day].deletedSlots = {};
+  if (deleted) {
+    dayOverrides[currentLevel][day].deletedSlots[slot] = true;
+    // Also clear any custom override when deleting
+    if (dayOverrides[currentLevel][day].customSlots) delete dayOverrides[currentLevel][day].customSlots[slot];
+  } else {
+    delete dayOverrides[currentLevel][day].deletedSlots[slot];
+  }
+  lsSet(dayOverridesKey(currentLevel), dayOverrides[currentLevel]);
+  flashSavedMsg();
+}
+
+function deleteSlot(slot) {
+  setSlotDeleted(currentDay, slot, true);
+  renderDailySheet();
+}
+function restoreSlot(slot) {
+  setSlotDeleted(currentDay, slot, false);
+  renderDailySheet();
+}
+function openSlotOther(slot) {
+  const existing = getSlotCustom(currentDay, slot);
+  const titleEl = document.getElementById(`slot-other-title-${slot}`);
+  const descEl  = document.getElementById(`slot-other-desc-${slot}`);
+  const formEl  = document.getElementById(`slot-other-form-${slot}`);
+  if (!formEl) return;
+  if (titleEl) titleEl.value = existing ? existing.title : '';
+  if (descEl)  descEl.value  = existing ? existing.desc  : '';
+  formEl.style.display = 'block';
+  if (titleEl) titleEl.focus();
+}
+function saveSlotOther(slot) {
+  const titleEl = document.getElementById(`slot-other-title-${slot}`);
+  const descEl  = document.getElementById(`slot-other-desc-${slot}`);
+  const title = titleEl ? titleEl.value.trim() : '';
+  const desc  = descEl  ? descEl.value.trim()  : '';
+  if (!title) { alert('Please enter an activity name.'); return; }
+  setSlotCustom(currentDay, slot, title, desc);
+  renderDailySheet();
+}
+function cancelSlotOther(slot) {
+  const formEl = document.getElementById(`slot-other-form-${slot}`);
+  if (formEl) formEl.style.display = 'none';
+}
+function clearSlotOther(slot) {
+  setSlotCustom(currentDay, slot, '', '');
+  renderDailySheet();
+}
+
 let currentLevel = "AL";
 let currentDay = 1;
 let activePuzzle = "wordsearch";
@@ -1951,14 +2093,49 @@ function renderDailySheet() {
     const a = slots[s];
     const currentTime = getDayTime(currentDay, s);
     const defaultTime = slotTimes[s] || info.default_time;
+    const isBig = s === 'BIG_GROUP';
+    const deleted = !isBig && isSlotDeleted(currentDay, s);
+    const custom  = !isBig && !deleted && getSlotCustom(currentDay, s);
+
     let body;
-    if (s === 'BIG_GROUP') {
+    if (isBig) {
       body = `<div class="slot-title">${chosenCategory ? `✓ Chosen: ${chosenCategory}` : 'Pick one — your choice for the day'}</div>${renderAfternoonMenu(a)}`;
+    } else if (deleted) {
+      body = `<div class="slot-deleted-label">— No activity scheduled —</div>
+        <button class="slot-restore-btn" onclick="event.stopPropagation(); restoreSlot('${s}')">↩ Restore</button>`;
+    } else if (custom) {
+      body = `<div class="slot-title">${escapeHtml(custom.title)}<span class="slot-custom-badge">✏ Custom</span></div>
+        ${custom.desc ? `<div class="slot-desc">${escapeHtml(custom.desc)}</div>` : ''}
+        <div id="slot-other-form-${s}" class="slot-other-form" onclick="event.stopPropagation()">
+          <label>Activity Name</label>
+          <input id="slot-other-title-${s}" type="text" placeholder="Activity name…" value="${escapeAttr(custom.title)}"/>
+          <label>Notes / Description (optional)</label>
+          <textarea id="slot-other-desc-${s}" placeholder="Details, supplies, instructions…">${escapeHtml(custom.desc)}</textarea>
+          <div class="slot-other-form-btns">
+            <button class="slot-other-save-btn" onclick="saveSlotOther('${s}')">💾 Save</button>
+            <button class="slot-other-cancel-btn" onclick="cancelSlotOther('${s}')">Cancel</button>
+            <button class="slot-other-clear-btn" onclick="clearSlotOther('${s}')">🗑 Remove Custom</button>
+          </div>
+        </div>`;
     } else {
-      body = `<div class="slot-title">${escapeHtml(a.title)}</div><div class="slot-desc">${escapeHtml(a.desc)}</div>`;
+      body = `<div class="slot-title">${escapeHtml(a.title)}</div><div class="slot-desc">${escapeHtml(a.desc)}</div>
+        <div id="slot-other-form-${s}" class="slot-other-form" onclick="event.stopPropagation()">
+          <label>Activity Name</label>
+          <input id="slot-other-title-${s}" type="text" placeholder="Activity name…"/>
+          <label>Notes / Description (optional)</label>
+          <textarea id="slot-other-desc-${s}" placeholder="Details, supplies, instructions…"></textarea>
+          <div class="slot-other-form-btns">
+            <button class="slot-other-save-btn" onclick="saveSlotOther('${s}')">💾 Save</button>
+            <button class="slot-other-cancel-btn" onclick="cancelSlotOther('${s}')">Cancel</button>
+          </div>
+        </div>`;
     }
-    const matSec = (s !== 'BIG_GROUP') ? getMatSection(s, a.title) : null;
+
+    const matSec = !isBig && !deleted ? getMatSection(s, custom ? custom.title : a.title) : null;
     const matBtn = matSec ? `<button class="slot-mat-btn" onclick="event.stopPropagation(); openMaterials('${matSec}')" title="Open printable materials for this activity">📄 Materials</button>` : '';
+    const delBtn = !isBig && !deleted ? `<button class="slot-del-btn" onclick="event.stopPropagation(); deleteSlot('${s}')" title="Remove this activity for today">🗑 Delete</button>` : '';
+    const otherBtn = !isBig && !deleted ? `<button class="slot-other-btn" onclick="event.stopPropagation(); openSlotOther('${s}')" title="Enter a different activity">✏ Other</button>` : '';
+
     return `
       <div class="slot-row">
         <div class="slot-label-box" style="background:${info.color};">
@@ -1968,11 +2145,13 @@ function renderDailySheet() {
                  onchange="onTimeChange('${s}', this.value)" title="Edit this day's time"/>
           <div class="slot-time-default">Default: ${escapeHtml(defaultTime)}</div>
         </div>
-        <div class="slot-content" onclick="printSlot('${s}')" title="Click to print this activity">
-          <button class="slot-print-btn" onclick="event.stopPropagation(); printSlot('${s}')" title="Print just this activity">🖨</button>
+        <div class="slot-content${deleted ? ' slot-deleted' : ''}" ${!deleted ? `onclick="printSlot('${s}')" title="Click to print this activity"` : ''}>
+          ${!deleted ? `<button class="slot-print-btn" onclick="event.stopPropagation(); printSlot('${s}')" title="Print just this activity">🖨</button>` : ''}
           ${matBtn}
           ${body}
-          <span class="slot-print-hint">🖨 click to print</span>
+          ${!deleted ? `<span class="slot-print-hint">🖨 click to print</span>` : ''}
+          ${otherBtn}
+          ${delBtn}
         </div>
       </div>`;
   }).join('');
@@ -2020,7 +2199,7 @@ function onTimeChange(slot, value) {
   setDayTime(currentDay, slot, value);
 }
 function resetDayOverrides() {
-  if (!confirm(`Reset all custom times and the chosen activity for May ${currentDay}?`)) return;
+  if (!confirm(`Reset all custom times, deleted slots, custom activities, and the chosen activity for May ${currentDay}?`)) return;
   delete dayOverrides[currentLevel][currentDay];
   lsSet(dayOverridesKey(currentLevel), dayOverrides[currentLevel]);
   renderDailySheet();
@@ -2071,9 +2250,20 @@ function buildSlotPrintHtml(slot, day) {
   const levelName = DATA.levelNames[currentLevel];
   const a = slots[slot];
 
+  // Apply custom override or deleted state
+  const customOv = slot !== 'BIG_GROUP' ? getSlotCustom(day, slot) : null;
+  if (customOv) { a.title = customOv.title; a.desc = customOv.desc || ''; }
+  const deleted = slot !== 'BIG_GROUP' && isSlotDeleted(day, slot);
+
   const header = buildPrintHeader(meta, info, time, holiday, isTravel, levelName);
   const footer = buildPrintFooter();
   let body = '';
+
+  // Deleted slot: print a brief notice and return early
+  if (deleted) {
+    body = `<div style="text-align:center;padding:40px 20px;color:#aaa;font-size:18px;font-style:italic;border:2px dashed #ddd;border-radius:10px;">— No activity scheduled for this slot —</div>`;
+    return `<div style="font-family:Arial,sans-serif;max-width:720px;margin:0 auto;padding:20px;">${header}${body}${footer}</div>`;
+  }
 
   // ── TRIVIA ──────────────────────────────────────
   if (slot === 'TRIVIA') {
@@ -5102,164 +5292,131 @@ function renderCustomCalendar() {
     </div>`;
   }
 
-  grid.innerHTML = html;
+  erHTML = html;
 }
-
-// ── Day Scheduler Modal ─────────────────────────────────────────────
-let _schedulerDay = null;
 
 function openScheduler(day) {
-  _schedulerDay = day;
   const overlay = document.getElementById('day-scheduler-overlay');
-  const titleEl = document.getElementById('scheduler-title');
-  const body = document.getElementById('scheduler-body');
-  if (!overlay || !body) return;
-
-  const meta = DATA ? DATA.dayMeta[String(day)] : null;
-  const holiday = DATA ? (DATA.holidays[String(day)] || '') : '';
-  titleEl.textContent = '📅 ' + (meta ? meta.date_long : 'Day ' + day) + (holiday ? ' — ' + holiday : '');
-
+  if (!overlay) return;
+  const title = overlay.querySelector('.scheduler-day-title');
+  if (title) {
+    const meta = DATA ? DATA.dayMeta[String(day)] : null;
+    title.textContent = meta ? meta.date_long : 'Day ' + day;
+  }
   const cal = getCustomCal();
   const dayData = cal[String(day)] || {};
-
-  const catOptions = CUSTOM_CATS.map(c => `<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
-
-  body.innerHTML = `
-    <p style="color:var(--gray-600);font-size:13px;margin-top:0;margin-bottom:16px;">Choose a category and activity for each time slot. Leave blank to skip.</p>
-    <div id="scheduler-slots"></div>
-    <div style="display:flex;gap:10px;justify-content:space-between;border-top:1px solid #eee;padding-top:14px;margin-top:4px;flex-wrap:wrap;">
-      <button class="btn btn-secondary" onclick="clearSchedulerDay()">🗑 Clear Day</button>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-secondary" onclick="closeScheduler()">Cancel</button>
-        <button class="btn btn-gold" onclick="saveSchedulerDay()" style="padding:10px 24px;">💾 Save Day</button>
-      </div>
-    </div>`;
-
-  const slotsDiv = document.getElementById('scheduler-slots');
-  slotsDiv.innerHTML = CUSTOM_SLOTS.map(slot => {
+  CUSTOM_SLOTS.forEach(slot => {
     const entry = dayData[slot.id] || {};
-    const selCat = entry.cat || '';
-    const selAct = entry.activity || '';
-    const customText = entry.custom || '';
-    const actOptions = selCat ? getCatById(selCat).activities.map(a => `<option value="${a}" ${a===selAct?'selected':''}>${a}</option>`).join('') : '';
-    return `<div style="background:var(--gray-100);border-radius:8px;padding:12px 14px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:16px;">${slot.icon}</span>
-        <strong style="color:var(--navy);font-size:13px;">${slot.label}</strong>
-        <span style="color:var(--gray-500);font-size:12px;">${slot.time}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-        <select id="sched-cat-${slot.id}" onchange="onSchedCatChange('${slot.id}')" style="padding:6px 8px;border:1px solid var(--gray-300);border-radius:6px;font-size:12px;font-family:inherit;">
-          <option value="">— Category —</option>
-          ${catOptions.replace(`value="${selCat}"`, `value="${selCat}" selected`)}
-        </select>
-        <select id="sched-act-${slot.id}" style="padding:6px 8px;border:1px solid var(--gray-300);border-radius:6px;font-size:12px;font-family:inherit;">
-          <option value="">— Activity —</option>
-          ${actOptions}
-        </select>
-      </div>
-      <input id="sched-custom-${slot.id}" type="text" placeholder="Or type a custom activity name…" value="${escapeHtml(customText)}" style="width:100%;margin-top:6px;padding:6px 8px;border:1px solid var(--gray-300);border-radius:6px;font-size:12px;font-family:inherit;box-sizing:border-box;">
-    </div>`;
-  }).join('');
-
-  overlay.classList.add('open');
+    const catSel = overlay.querySelector(`[data-slot-cat="${slot.id}"]`);
+    const actSel = overlay.querySelector(`[data-slot-act="${slot.id}"]`);
+    const custEl = overlay.querySelector(`[data-slot-custom="${slot.id}"]`);
+    if (catSel) catSel.value = entry.cat || '';
+    if (actSel) {
+      onSchedCatChange(slot.id, entry.cat, actSel);
+      actSel.value = entry.activity || '';
+    }
+    if (custEl) custEl.value = entry.custom || '';
+  });
+  overlay.dataset.day = day;
+  overlay.style.display = 'flex';
 }
 
-function onSchedCatChange(slotId) {
-  const catSel = document.getElementById('sched-cat-' + slotId);
-  const actSel = document.getElementById('sched-act-' + slotId);
-  if (!catSel || !actSel) return;
-  const cat = getCatById(catSel.value);
-  actSel.innerHTML = cat
-    ? '<option value="">— Activity —</option>' + cat.activities.map(a => `<option value="${a}">${a}</option>`).join('')
-    : '<option value="">— Activity —</option>';
+function onSchedCatChange(slotId, catId, actSelEl) {
+  const catVal = catId !== undefined ? catId : document.querySelector(`[data-slot-cat="${slotId}"]`)?.value;
+  const actSel = actSelEl || document.querySelector(`[data-slot-act="${slotId}"]`);
+  if (!actSel) return;
+  const cat = getCatById(catVal);
+  actSel.innerHTML = `<option value="">— pick activity —</option>` +
+    (cat ? cat.activities.map(a => `<option value="${escapeAttr(a)}">${escapeHtml(a)}</option>`).join('') : '');
 }
 
 function saveSchedulerDay() {
-  if (!_schedulerDay) return;
+  const overlay = document.getElementById('day-scheduler-overlay');
+  if (!overlay) return;
+  const day = overlay.dataset.day;
+  if (!day) return;
   const cal = getCustomCal();
-  const dayData = {};
+  if (!cal[day]) cal[day] = {};
   CUSTOM_SLOTS.forEach(slot => {
-    const cat = document.getElementById('sched-cat-' + slot.id)?.value || '';
-    const act = document.getElementById('sched-act-' + slot.id)?.value || '';
-    const custom = document.getElementById('sched-custom-' + slot.id)?.value?.trim() || '';
+    const catSel = overlay.querySelector(`[data-slot-cat="${slot.id}"]`);
+    const actSel = overlay.querySelector(`[data-slot-act="${slot.id}"]`);
+    const custEl = overlay.querySelector(`[data-slot-custom="${slot.id}"]`);
+    const cat = catSel ? catSel.value : '';
+    const activity = actSel ? actSel.value : '';
+    const custom = custEl ? custEl.value.trim() : '';
     if (cat || custom) {
-      dayData[slot.id] = { cat, activity: act, custom };
+      cal[day][slot.id] = { cat, activity, custom };
+    } else {
+      delete cal[day][slot.id];
     }
   });
-  cal[String(_schedulerDay)] = dayData;
   saveCustomCal(cal);
   closeScheduler();
   renderCustomCalendar();
 }
 
 function clearSchedulerDay() {
-  if (!_schedulerDay) return;
+  const overlay = document.getElementById('day-scheduler-overlay');
+  if (!overlay) return;
+  const day = overlay.dataset.day;
+  if (!day) return;
   const cal = getCustomCal();
-  delete cal[String(_schedulerDay)];
+  delete cal[day];
   saveCustomCal(cal);
   closeScheduler();
   renderCustomCalendar();
 }
 
 function closeScheduler() {
-  document.getElementById('day-scheduler-overlay')?.classList.remove('open');
-  _schedulerDay = null;
+  const overlay = document.getElementById('day-scheduler-overlay');
+  if (overlay) overlay.style.display = 'none';
 }
 
 function clearCustomMonth() {
-  if (!confirm('Clear all scheduled activities for this month?')) return;
-  localStorage.removeItem(CUSTOM_CAL_KEY);
+  if (!confirm('Clear all scheduled activities for this month? This cannot be undone.')) return;
+  saveCustomCal({});
   renderCustomCalendar();
 }
 
-// Copy week 1 (days 1-7) pattern to fill the rest of the month
 function copyPrevWeek() {
   const cal = getCustomCal();
   const year = DATA ? DATA.year : 2026;
   const month = DATA ? DATA.monthNum : 5;
   const daysInMonth = new Date(year, month, 0).getDate();
-  // Find first 7 days that have any data
-  let srcDays = [];
-  for (let d = 1; d <= Math.min(7, daysInMonth); d++) {
-    srcDays.push(cal[String(d)] || {});
-  }
-  if (srcDays.every(d => Object.keys(d).length === 0)) {
-    alert('Schedule at least the first week (days 1–7) first, then use Repeat Week to copy the pattern.'); return;
-  }
-  if (!confirm('Copy days 1–7 pattern to fill the rest of the month?')) return;
+  let changed = false;
   for (let d = 8; d <= daysInMonth; d++) {
-    const src = srcDays[(d - 1) % 7];
-    if (Object.keys(src).length > 0) cal[String(d)] = JSON.parse(JSON.stringify(src));
+    const src = String(d - 7);
+    if (cal[src] && !cal[String(d)]) {
+      cal[String(d)] = JSON.parse(JSON.stringify(cal[src]));
+      changed = true;
+    }
   }
-  saveCustomCal(cal);
-  renderCustomCalendar();
+  if (changed) { saveCustomCal(cal); renderCustomCalendar(); }
+  else alert('No source week data found, or all days already filled.');
 }
 
-// ── Export Custom Calendar PDF ─────────────────────────────────────
 function exportCustomCalendarPDF() {
   const grid = document.getElementById('custom-calendar-grid');
-  if (!grid) return;
-  const theme = _calPrintTheme || 'classic';
-  const paper = document.querySelector('[name="cal-paper"]:checked')?.value || 'letter';
-  const formatMap = { letter:[279.4,215.9], legal:[355.6,215.9], tabloid:[431.8,279.4], large:[558.8,431.8] };
-  const fmt = formatMap[paper] || formatMap.letter;
-
+  if (!grid) { alert('Please switch to the Build My Cal tab first.'); return; }
+  const paperSize = document.querySelector('[name="cal-paper"]:checked')?.value || 'tabloid';
+  const formatMap = {
+    letter:[279.4,215.9], legal:[355.6,215.9], tabloid:[431.8,279.4],
+    large:[558.8,431.8],
+    custom:[parseFloat(document.getElementById('custom-w')?.value||11)*25.4,
+            parseFloat(document.getElementById('custom-h')?.value||17)*25.4]
+  };
+  const fmt = formatMap[paperSize] || formatMap.tabloid;
   const allThemes = ['print-classic','print-spring','print-summer','print-patriotic','print-fall','print-winter','print-white','print-bw'];
   document.body.classList.remove(...allThemes);
-  document.body.classList.add('print-' + theme);
 
   const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'font-family:Arial,sans-serif;padding:12px;';
-  // Header
+  wrapper.style.cssText = 'font-family:Arial,sans-serif;max-width:100%;padding:10px;';
   const hdr = document.createElement('div');
   hdr.style.cssText = 'text-align:center;margin-bottom:12px;padding-bottom:10px;border-bottom:3px solid #BF9000;';
   hdr.innerHTML = `<div style="font-size:24px;font-weight:800;color:#1F3864;">${DATA ? DATA.monthName + ' ' + DATA.year : 'May 2026'}</div><div style="font-size:13px;color:#667085;margin-top:2px;">Custom Activity Calendar — Empower Life 365</div>`;
   wrapper.appendChild(hdr);
-  // Clone grid
   const gridClone = grid.cloneNode(true);
   wrapper.appendChild(gridClone);
-  // Legend
   const leg = document.createElement('div');
   leg.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;';
   leg.innerHTML = CUSTOM_CATS.map(c => `<div style="font-size:9px;padding:2px 7px;border-radius:10px;background:${c.color}18;border:1px solid ${c.color}66;color:${c.color};font-weight:700;">${c.icon} ${c.label}</div>`).join('');
@@ -5275,7 +5432,7 @@ function exportCustomCalendarPDF() {
 
 
 // ─────────────────────────────────────────────
-// Updated showMatSection to include all sections
+// showMatSection — show/hide printable material panels
 // ─────────────────────────────────────────────
 function showMatSection(section) {
   const all = ['bingo','loteria','singalong','wordgames','trivia','exercise','crafts','gamesheets','reminiscence'];
