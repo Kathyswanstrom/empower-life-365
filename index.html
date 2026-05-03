@@ -310,6 +310,73 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   body.print-bw .day-cell { border: 1.5px solid black !important; }
   body.print-bw .day-cell.major, body.print-bw .day-cell.travel { border-width: 3px !important; }
   body.print-bw .dow-header { background: black !important; color: white !important; font-weight: 800; }
+
+  /* ── Always hide UI chrome in print ── */
+  @media print {
+    .slot-print-btn, .slot-mat-btn, .slot-print-hint, .day-quick-actions,
+    .supplies-list, .day-supplies-icon, .season-banner,
+    .calendar-controls .btn, .level-banner, .tab-bar, .app-header { display:none !important; }
+  }
+
+  /* ── SPRING theme ── */
+  body.print-spring .dow-header { background: #C65B8A !important; color: white !important; }
+  body.print-spring .month-title { color: #C65B8A !important; }
+  body.print-spring .month-theme { color: #4CAF50 !important; }
+  body.print-spring .calendar-grid { background: #FADADD !important; }
+  body.print-spring .day-cell { background: #FFF8FC !important; }
+  body.print-spring .day-cell.weekend { background: #F0FFF0 !important; }
+  body.print-spring .day-cell.major { background: #FFD6E8 !important; }
+  body.print-spring .day-cell.bonus { background: #E8FFE8 !important; }
+
+  /* ── SUMMER theme ── */
+  body.print-summer .dow-header { background: #0096C7 !important; color: white !important; }
+  body.print-summer .month-title { color: #0096C7 !important; }
+  body.print-summer .month-theme { color: #FF9900 !important; }
+  body.print-summer .calendar-grid { background: #B3E5FC !important; }
+  body.print-summer .day-cell { background: #FFFDE7 !important; }
+  body.print-summer .day-cell.weekend { background: #E0F7FA !important; }
+  body.print-summer .day-cell.major { background: #FFE082 !important; }
+  body.print-summer .day-cell.bonus { background: #FFF9C4 !important; }
+
+  /* ── PATRIOTIC theme (Memorial Day / July 4th) ── */
+  body.print-patriotic .dow-header { background: #B22222 !important; color: white !important; }
+  body.print-patriotic .month-title { color: #00205B !important; }
+  body.print-patriotic .month-theme { color: #B22222 !important; }
+  body.print-patriotic .calendar-grid { background: #BDC3C7 !important; }
+  body.print-patriotic .day-cell { background: #F8F8FF !important; }
+  body.print-patriotic .day-cell.weekend { background: #E8EAF6 !important; }
+  body.print-patriotic .day-cell.major { background: #FFCDD2 !important; }
+  body.print-patriotic .day-cell.bonus { background: #E3F2FD !important; }
+
+  /* ── FALL theme ── */
+  body.print-fall .dow-header { background: #B8541E !important; color: white !important; }
+  body.print-fall .month-title { color: #B8541E !important; }
+  body.print-fall .month-theme { color: #8B6914 !important; }
+  body.print-fall .calendar-grid { background: #D4956A !important; }
+  body.print-fall .day-cell { background: #FFFBF5 !important; }
+  body.print-fall .day-cell.weekend { background: #FFF3E0 !important; }
+  body.print-fall .day-cell.major { background: #FFE0B2 !important; }
+  body.print-fall .day-cell.bonus { background: #FFF8E1 !important; }
+
+  /* ── WINTER / HOLIDAY theme ── */
+  body.print-winter .dow-header { background: #0D3B6E !important; color: #C0C0C0 !important; }
+  body.print-winter .month-title { color: #0D3B6E !important; }
+  body.print-winter .month-theme { color: #C00 !important; }
+  body.print-winter .calendar-grid { background: #9BB0C5 !important; }
+  body.print-winter .day-cell { background: #F0F4FF !important; }
+  body.print-winter .day-cell.weekend { background: #E8F0FE !important; }
+  body.print-winter .day-cell.major { background: #FFCDD2 !important; }
+  body.print-winter .day-cell.bonus { background: #E8F5E9 !important; }
+
+  /* ── CLASSIC NAVY (app default) ── */
+  body.print-classic .dow-header { background: #1F3864 !important; color: #FFD966 !important; }
+  body.print-classic .month-title { color: #1F3864 !important; }
+  body.print-classic .month-theme { color: #BF9000 !important; }
+  body.print-classic .calendar-grid { background: #1F3864 !important; }
+  body.print-classic .day-cell { background: white !important; }
+  body.print-classic .day-cell.weekend { background: #EFF6FF !important; }
+  body.print-classic .day-cell.major { background: #FFF2CC !important; }
+  body.print-classic .day-cell.bonus { background: #F0FFF0 !important; }
   body.print-bw .day-num { font-weight: 900 !important; }
   body.print-bw .day-holiday, body.print-bw .day-activities { color: black !important; }
 
@@ -637,7 +704,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .time-edit-grid > input { padding: 8px 10px; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 14px; font-family: inherit; text-align: center; }
 
 @media print {
-  .app-header, .tab-bar, .calendar-controls .btn, .day-nav .btn, .charting-controls, .btn, .legend, .puzzle-tabs, .sudoku-controls, .sk-numpad { display: none !important; }
+  .app-header, .tab-bar, .calendar-controls .btn, .day-nav .btn, .charting-controls, .btn, .legend, .puzzle-tabs, .sudoku-controls, .sk-numpad, .slot-print-btn, .slot-mat-btn, .slot-print-hint, .day-quick-actions, .day-supplies-icon, .season-banner { display: none !important; }
   body { background: white; }
   main { padding: 0; max-width: 100%; }
   .day-cell { min-height: 110px; padding: 4px 6px; }
@@ -1065,37 +1132,87 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 <!-- Print options modal -->
 <div class="supplies-overlay" id="print-options-overlay" onclick="if(event.target===this) closePrintOptions()">
-  <div class="supplies-modal" style="max-width:540px;">
+  <div class="supplies-modal" style="max-width:660px;">
     <div class="supplies-modal-header">
-      <h2>🖨 Print Calendar — Choose Background</h2>
+      <h2>🖨 Print Calendar</h2>
       <button class="supplies-modal-close" onclick="closePrintOptions()">×</button>
     </div>
     <div class="supplies-modal-body">
-      <p style="color:var(--gray-700);font-size:14px;margin-top:0;margin-bottom:16px;">
-        For your hanging wall calendar, pick the background that fits your facility's needs.
-      </p>
-      <div class="print-options-grid">
-        <div class="print-opt color" onclick="printCalendarWith('color')">
-          <div class="print-opt-icon">🎨</div>
-          <div class="print-opt-text">
-            <strong>Full Color</strong>
-            <span>Color-coded holidays, bonus days, travel — best for shared bulletin boards if printer supports color.</span>
+
+      <!-- THEME PICKER -->
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy);margin-bottom:10px;">🎨 Seasonal Theme</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="cal-theme-grid">
+          <div class="cal-theme-btn selected" data-theme="classic" onclick="selectCalTheme(this,'classic')" style="border:2px solid var(--gold);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">🏛️</div>
+            <div style="font-size:11px;font-weight:700;color:#1F3864;margin-top:4px;">Classic Navy</div>
+            <div style="font-size:10px;color:#888;">App default</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="spring" onclick="selectCalTheme(this,'spring')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">🌸</div>
+            <div style="font-size:11px;font-weight:700;color:#C65B8A;margin-top:4px;">Spring</div>
+            <div style="font-size:10px;color:#888;">Pink & green</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="summer" onclick="selectCalTheme(this,'summer')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">☀️</div>
+            <div style="font-size:11px;font-weight:700;color:#0096C7;margin-top:4px;">Summer</div>
+            <div style="font-size:10px;color:#888;">Sky & sunshine</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="patriotic" onclick="selectCalTheme(this,'patriotic')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">🇺🇸</div>
+            <div style="font-size:11px;font-weight:700;color:#B22222;margin-top:4px;">Patriotic</div>
+            <div style="font-size:10px;color:#888;">Red, white & blue</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="fall" onclick="selectCalTheme(this,'fall')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">🍂</div>
+            <div style="font-size:11px;font-weight:700;color:#B8541E;margin-top:4px;">Fall</div>
+            <div style="font-size:10px;color:#888;">Warm harvest</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="winter" onclick="selectCalTheme(this,'winter')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">❄️</div>
+            <div style="font-size:11px;font-weight:700;color:#0D3B6E;margin-top:4px;">Winter</div>
+            <div style="font-size:10px;color:#888;">Blue & silver</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="white" onclick="selectCalTheme(this,'white')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">📄</div>
+            <div style="font-size:11px;font-weight:700;color:#555;margin-top:4px;">Clean White</div>
+            <div style="font-size:10px;color:#888;">Saves ink</div>
+          </div>
+          <div class="cal-theme-btn" data-theme="bw" onclick="selectCalTheme(this,'bw')" style="border:2px solid #eee;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:white;">
+            <div style="font-size:22px;">⬛</div>
+            <div style="font-size:11px;font-weight:700;color:#111;margin-top:4px;">B&W</div>
+            <div style="font-size:10px;color:#888;">Photocopy safe</div>
           </div>
         </div>
-        <div class="print-opt white" onclick="printCalendarWith('white')">
-          <div class="print-opt-icon">📄</div>
-          <div class="print-opt-text">
-            <strong>White / Minimal (Recommended for hanging)</strong>
-            <span>Clean white background with markers (★ for major, ✈ for travel). Saves toner. Common regulatory format.</span>
-          </div>
+      </div>
+
+      <!-- PAPER SIZE -->
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy);margin-bottom:10px;">📐 Paper Size</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid var(--gold);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
+            <input type="radio" name="cal-paper" value="letter" checked onchange="updateCustomSize(this)"> Letter <span style="color:#888;font-weight:400;">8½×11"</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
+            <input type="radio" name="cal-paper" value="tabloid" onchange="updateCustomSize(this)"> Tabloid <span style="color:#888;font-weight:400;">11×17"</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
+            <input type="radio" name="cal-paper" value="large" onchange="updateCustomSize(this)"> Large <span style="color:#888;font-weight:400;">17×22"</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:white;">
+            <input type="radio" name="cal-paper" value="custom" onchange="updateCustomSize(this)"> Custom
+          </label>
         </div>
-        <div class="print-opt bw" onclick="printCalendarWith('bw')">
-          <div class="print-opt-icon">⬛</div>
-          <div class="print-opt-text">
-            <strong>Black & White (High Contrast)</strong>
-            <span>Maximum contrast for photocopying or for residents with low vision.</span>
-          </div>
+        <div id="custom-size-row" style="display:none;margin-top:10px;display:none;gap:10px;align-items:center;">
+          <label style="font-size:13px;color:var(--navy);">Width (in): <input id="custom-w" type="number" value="11" min="4" max="40" step="0.5" style="width:70px;padding:4px 6px;border:1px solid #ddd;border-radius:4px;"></label>
+          <label style="font-size:13px;color:var(--navy);">Height (in): <input id="custom-h" type="number" value="17" min="4" max="40" step="0.5" style="width:70px;padding:4px 6px;border:1px solid #ddd;border-radius:4px;"></label>
         </div>
+      </div>
+
+      <!-- PRINT BUTTON -->
+      <div style="display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #eee;padding-top:16px;">
+        <button class="btn btn-secondary" onclick="closePrintOptions()">Cancel</button>
+        <button class="btn btn-gold" onclick="doPrintCalendar()" style="font-size:15px;padding:10px 28px;">🖨 Print Now</button>
       </div>
     </div>
   </div>
@@ -2072,17 +2189,69 @@ function openPrintOptions() {
 function closePrintOptions() {
   document.getElementById('print-options-overlay').classList.remove('open');
 }
-function printCalendarWith(theme) {
+
+let _calPrintTheme = 'classic';
+
+function selectCalTheme(el, theme) {
+  _calPrintTheme = theme;
+  document.querySelectorAll('.cal-theme-btn').forEach(b => {
+    b.style.border = '2px solid #eee';
+    b.classList.remove('selected');
+  });
+  el.style.border = '2px solid var(--gold)';
+  el.classList.add('selected');
+}
+
+function updateCustomSize(radio) {
+  // highlight selected label
+  document.querySelectorAll('[name="cal-paper"]').forEach(r => {
+    r.closest('label').style.border = '2px solid #eee';
+  });
+  radio.closest('label').style.border = '2px solid var(--gold)';
+  const row = document.getElementById('custom-size-row');
+  row.style.display = radio.value === 'custom' ? 'flex' : 'none';
+}
+
+function doPrintCalendar() {
   closePrintOptions();
-  // Make sure the calendar tab is active so it prints
+  const paper = document.querySelector('[name="cal-paper"]:checked')?.value || 'letter';
+  const theme = _calPrintTheme;
+
+  // Paper size -> @page CSS
+  const sizeMap = {
+    letter:  '11in 8.5in',
+    tabloid: '17in 11in',
+    large:   '22in 17in',
+    custom:  (document.getElementById('custom-w')?.value || 11) + 'in ' + (document.getElementById('custom-h')?.value || 17) + 'in'
+  };
+  const pageSize = sizeMap[paper] || '11in 8.5in';
+
+  // Inject a temporary @page style
+  const styleId = 'cal-print-page-style';
+  let styleEl = document.getElementById(styleId);
+  if (!styleEl) { styleEl = document.createElement('style'); styleEl.id = styleId; document.head.appendChild(styleEl); }
+  styleEl.textContent = '@page { size: ' + pageSize + ' landscape; margin: 0.4in; }';
+
+  // Apply theme class
+  const allThemes = ['print-classic','print-spring','print-summer','print-patriotic','print-fall','print-winter','print-white','print-bw','print-color'];
+  document.body.classList.remove(...allThemes);
+  if (theme) document.body.classList.add('print-' + theme);
+
+  // Switch to calendar tab and print
   switchTab('calendar');
-  document.body.classList.remove('print-white', 'print-bw');
-  if (theme === 'white') document.body.classList.add('print-white');
-  if (theme === 'bw') document.body.classList.add('print-bw');
   setTimeout(() => {
     window.print();
-    setTimeout(() => document.body.classList.remove('print-white', 'print-bw'), 1000);
-  }, 100);
+    setTimeout(() => {
+      document.body.classList.remove(...allThemes);
+      styleEl.textContent = '';
+    }, 1500);
+  }, 120);
+}
+
+// Legacy alias kept for any old onclick references
+function printCalendarWith(theme) {
+  _calPrintTheme = theme;
+  doPrintCalendar();
 }
 
 // =============================================================
