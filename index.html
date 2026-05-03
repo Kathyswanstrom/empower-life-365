@@ -854,6 +854,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="birthday">🎂 Birthdays</button>
     <button class="tab-btn" data-tab="empower-moments">📰 Empower Moments</button>
     <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
+    <button class="tab-btn" data-tab="materials">🎵 Materials</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
   </div>
@@ -1331,6 +1332,67 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
        <span class="kbd">D</span> Declined &nbsp;
        <span class="kbd">N/A</span> Not Available.
        Per-resident totals + engagement rate auto-calculate. Export CSV anytime.</p>
+  </div>
+</section>
+
+<!-- MATERIALS LIBRARY -->
+<section class="tab-panel" id="panel-materials">
+  <h1 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px;">🎵 Activity Materials</h1>
+  <p style="color:var(--gray-500);font-size:13px;margin-bottom:18px;">Printable bingo cards, lyric sheets, and activity aids</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+    <button class="btn btn-gold" onclick="showMatSection('bingo')">🎲 Bingo Cards</button>
+    <button class="btn btn-secondary" onclick="showMatSection('loteria')">🃏 Mexican Lotería</button>
+    <button class="btn btn-secondary" onclick="showMatSection('singalong')">🎵 Sing-Along Sheets</button>
+  </div>
+
+  <!-- BINGO CARDS -->
+  <div id="mat-bingo" class="mat-section">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px;">🎲 Standard Bingo Cards</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Generates unique random 5×5 bingo cards (B-I-N-G-O, numbers 1–75). Print and cut — each card is different.</p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+      <label style="font-size:13px;font-weight:600;">Number of cards:</label>
+      <select id="bingo-count" style="padding:6px 10px;border-radius:6px;border:1px solid var(--gray-200);font-size:13px;">
+        <option value="4">4 cards</option><option value="6" selected>6 cards</option><option value="8">8 cards</option><option value="12">12 cards</option><option value="16">16 cards</option>
+      </select>
+      <button class="btn btn-gold" onclick="renderBingoCards()">🎲 Generate Cards</button>
+      <button class="btn btn-secondary" onclick="exportBingoPDF()">📄 Print PDF</button>
+    </div>
+    <div id="bingo-cards-preview" style="display:flex;flex-wrap:wrap;gap:16px;"></div>
+  </div>
+
+  <!-- LOTERIA -->
+  <div id="mat-loteria" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">🃏 Mexican Lotería</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Traditional Lotería with Spanish & English. Print player cards + the caller's list. Caller announces the riddle phrase; players mark their card.</p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+      <label style="font-size:13px;font-weight:600;">Player cards:</label>
+      <select id="loteria-count" style="padding:6px 10px;border-radius:6px;border:1px solid var(--gray-200);font-size:13px;">
+        <option value="4">4 cards</option><option value="6" selected>6 cards</option><option value="8">8 cards</option><option value="12">12 cards</option>
+      </select>
+      <button class="btn btn-gold" onclick="renderLoteriaCards()">🃏 Generate Cards</button>
+      <button class="btn btn-secondary" onclick="exportLoteriaPDF()">📄 Print PDF</button>
+      <button class="btn btn-secondary" onclick="exportLoteriaCallerPDF()">📋 Print Caller List</button>
+    </div>
+    <div id="loteria-cards-preview" style="display:flex;flex-wrap:wrap;gap:16px;"></div>
+  </div>
+
+  <!-- SING-ALONG -->
+  <div id="mat-singalong" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">🎵 Sing-Along Lyric Sheets</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Select a decade to preview songs. Each song includes a YouTube link to play the video for residents.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="decade-btns">
+      <button class="btn btn-secondary decade-btn active" onclick="showDecade('classics')" data-decade="classics">🎶 Classics</button>
+      <button class="btn btn-secondary decade-btn" onclick="showDecade('50s')" data-decade="50s">50s</button>
+      <button class="btn btn-secondary decade-btn" onclick="showDecade('60s')" data-decade="60s">60s</button>
+      <button class="btn btn-secondary decade-btn" onclick="showDecade('70s')" data-decade="70s">70s</button>
+      <button class="btn btn-secondary decade-btn" onclick="showDecade('80s')" data-decade="80s">80s</button>
+      <button class="btn btn-secondary decade-btn" onclick="showDecade('country')" data-decade="country">🤠 Country</button>
+      <button class="btn btn-secondary decade-btn" onclick="showDecade('holiday')" data-decade="holiday">🎄 Holiday</button>
+    </div>
+    <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-gold" onclick="exportSingAlongPDF()">📄 Print Lyric Sheet</button>
+    </div>
+    <div id="singalong-list"></div>
   </div>
 </section>
 
@@ -3281,4 +3343,496 @@ function exportFullPlanPDF() {
   }
 
   html += `
-      <div style="text-align:center; margin-top:20px; font-size:11px; color:#999; fo
+      <div style="text-align:center; margin-top:20px; font-size:11px; color:#999; font-style:italic;">
+        Generated by Empower Life 365 &nbsp;|&nbsp; empowerlife365.app &nbsp;|&nbsp; Empower Life 365
+      </div>
+    </div>`;
+
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts(filename, 'portrait')).from(wrapper).save().then(() => {
+    document.body.removeChild(wrapper);
+  });
+}
+
+</script>
+</boper);
+  });
+}
+
+function exportCalendarPDF() {
+  const grid = document.getElementById('calendar-grid');
+  if (!grid) return;
+  const filename = `calendar-${DATA.monthName}-${DATA.year}.pdf`;
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'padding:16px;font-family:Arial,sans-serif;';
+  wrapper.innerHTML = `<h1 style="text-align:center;color:#1F3864;margin-bottom:4px;">${DATA.monthName} ${DATA.year}</h1><p style="text-align:center;color:#555;margin-bottom:12px;">${DATA.monthTheme}</p>`;
+  const gridClone = grid.cloneNode(true);
+  gridClone.style.fontSize = '10px';
+  wrapper.appendChild(gridClone);
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts(filename, 'landscape')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+function exportFullPlanPDF() {
+  const el = document.querySelector('.daily-sheet');
+  if (!el) { alert('Navigate to a day first.'); return; }
+  const meta = DATA.dayMeta[String(currentDay)];
+  const levelName = DATA.levelNames[currentLevel];
+  const filename = `full-plan-${DATA.monthName}-${currentDay}-${levelName}.pdf`;
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll('.slot-print-btn,.slot-print-hint,.slot-time-input,.day-actions,.choice-prompt select').forEach(e => e.style.display = 'none');
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'padding:16px;font-family:Arial,sans-serif;max-width:750px;';
+  wrapper.innerHTML = `<h1 style="color:#1F3864;">${DATA.monthName} ${currentDay} — ${levelName}</h1>`;
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts(filename, 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+function exportSuppliesPDF() {
+  const day = currentDay;
+  const supplies = DATA.supplies[String(day)] || [];
+  const filename = `supplies-${DATA.monthName}-${day}.pdf`;
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'padding:24px;font-family:Arial,sans-serif;max-width:600px;';
+  wrapper.innerHTML = `<h1 style="color:#1F3864;margin-bottom:4px;">📋 Supplies — ${DATA.monthName} ${day}</h1>
+    <p style="color:#555;margin-bottom:16px;">${DATA.dayMeta[String(day)]?.date_long || ''}</p>` +
+    (supplies.length ? `<ul style="font-size:14px;line-height:2;">${supplies.map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ul>` : '<p style="color:#888;">No supplies listed for this day.</p>');
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts(filename, 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+// ─────────────────────────────────────────────
+// MATERIALS LIBRARY
+// ─────────────────────────────────────────────
+
+const LOTERIA_ITEMS = [
+  {num:1,  es:"El Gallo",       en:"The Rooster",      emoji:"🐓", call:"El que le cantó a San Pedro no le volverá a cantar"},
+  {num:2,  es:"El Diablito",    en:"Little Devil",     emoji:"😈", call:"Pórtate bien cuñado, o te lleva el diablito"},
+  {num:3,  es:"La Dama",        en:"The Lady",         emoji:"👒", call:"La que se pasea en la alameda"},
+  {num:4,  es:"El Catrín",      en:"The Dandy",        emoji:"🎩", call:"Don Ferruco en la alameda, su bastón quería tirar"},
+  {num:5,  es:"El Paraguas",    en:"The Umbrella",     emoji:"☂️", call:"Para el sol y para el agua"},
+  {num:6,  es:"La Sirena",      en:"The Mermaid",      emoji:"🧜", call:"Con su canto hechicero te llama"},
+  {num:7,  es:"La Escalera",    en:"The Ladder",       emoji:"🪜", call:"Súbeme paso a pasito, no quiero caer"},
+  {num:8,  es:"La Botella",     en:"The Bottle",       emoji:"🍾", call:"Una para el borracho y otra para el gato"},
+  {num:9,  es:"El Barril",      en:"The Barrel",       emoji:"🛢️", call:"Tanto bebió el albañil que quedó en el barril"},
+  {num:10, es:"El Árbol",       en:"The Tree",         emoji:"🌳", call:"El que a buen árbol se arrima, buena sombra le cobija"},
+  {num:11, es:"El Melón",       en:"The Melon",        emoji:"🍈", call:"Melón, melón, melón — amigo del corazón"},
+  {num:12, es:"El Valiente",    en:"The Brave One",    emoji:"⚔️", call:"No te rajes, ni por las tijeras"},
+  {num:13, es:"El Gorrito",     en:"The Little Hat",   emoji:"🧢", call:"Ponte tu gorrito que te vas a asolar"},
+  {num:14, es:"La Muerte",      en:"Death",            emoji:"💀", call:"La tilica y flaca — a todos nos llega"},
+  {num:15, es:"La Pera",        en:"The Pear",         emoji:"🍐", call:"El que espera, desespera"},
+  {num:16, es:"La Bandera",     en:"The Flag",         emoji:"🚩", call:"El verde, blanco y colorado, la bandera del soldado"},
+  {num:17, es:"El Bandolón",    en:"The Mandolin",     emoji:"🪗", call:"Tocando el bandolón con cariño"},
+  {num:18, es:"El Violoncello", en:"The Cello",        emoji:"🎻", call:"El violoncello canta en la noche"},
+  {num:19, es:"La Garza",       en:"The Heron",        emoji:"🦢", call:"Garza morena, dame tus plumas para escribir"},
+  {num:20, es:"El Pájaro",      en:"The Bird",         emoji:"🐦", call:"Tu pájaro carpintero, que bonito balancear"},
+  {num:21, es:"La Mano",        en:"The Hand",         emoji:"🤚", call:"La mano de un buen amigo vale mucho"},
+  {num:22, es:"La Bota",        en:"The Boot",         emoji:"👢", call:"Una bota para botar el pasado"},
+  {num:23, es:"La Luna",        en:"The Moon",         emoji:"🌙", call:"El farol de los enamorados"},
+  {num:24, es:"El Cotorro",     en:"The Parrot",       emoji:"🦜", call:"Pico pico cotorro — hablas mucho y sabes poco"},
+  {num:25, es:"El Borracho",    en:"The Drunkard",     emoji:"🍺", call:"Tomando su tequilita ya se cayó"},
+  {num:26, es:"El Corazón",     en:"The Heart",        emoji:"❤️", call:"No me extraña que te hayas enamorado"},
+  {num:27, es:"La Sandía",      en:"The Watermelon",   emoji:"🍉", call:"Ay, sandía, qué dulzura"},
+  {num:28, es:"El Tambor",      en:"The Drum",         emoji:"🥁", call:"Tan tan, el tambor que repica sin parar"},
+  {num:29, es:"El Camarón",     en:"The Shrimp",       emoji:"🦐", call:"Camarón que se duerme, se lo lleva la corriente"},
+  {num:30, es:"Las Jaras",      en:"The Arrows",       emoji:"🏹", call:"Las jaras del indio apache"},
+  {num:31, es:"El Músico",      en:"The Musician",     emoji:"🎵", call:"El músico toca de noche y de día"},
+  {num:32, es:"La Araña",       en:"The Spider",       emoji:"🕷️", call:"La araña que pica y no mata"},
+  {num:33, es:"El Soldado",     en:"The Soldier",      emoji:"💂", call:"Uno, dos, tres y cuatro — el soldado va al cuartel"},
+  {num:34, es:"La Estrella",    en:"The Star",         emoji:"⭐", call:"La guía de los marineros"},
+  {num:35, es:"El Cazo",        en:"The Ladle",        emoji:"🥄", call:"El cazo y la cuchara en la cocina"},
+  {num:36, es:"El Mundo",       en:"The World",        emoji:"🌎", call:"Así de gordo es tu mundo"},
+  {num:37, es:"El Nopal",       en:"The Cactus",       emoji:"🌵", call:"Al nopal lo van a ver nomás cuando tiene tunas"},
+  {num:38, es:"El Alacán",      en:"The Scorpion",     emoji:"🦂", call:"Alacrán de Durango, a mí no me picará"},
+  {num:39, es:"La Rosa",        en:"The Rose",         emoji:"🌹", call:"Rosita, ¿dónde estás? Aquí entre las flores"},
+  {num:40, es:"La Calavera",    en:"The Skull",        emoji:"☠️", call:"Al cabo que nomás uno se muere"},
+  {num:41, es:"La Corona",      en:"The Crown",        emoji:"👑", call:"El que nace para rey, del cielo le cae la corona"},
+  {num:42, es:"La Chalupa",     en:"The Canoe",        emoji:"🚣", call:"Rema que rema Lupita, por la orilla del canal"},
+  {num:43, es:"El Pino",        en:"The Pine Tree",    emoji:"🌲", call:"Frío, solitario y fiel — el pino"},
+  {num:44, es:"El Pescado",     en:"The Fish",         emoji:"🐟", call:"Al pescado le gusta nadar"},
+  {num:45, es:"La Palma",       en:"The Palm",         emoji:"🌴", call:"Palmera, palmera del desierto brillante"},
+  {num:46, es:"La Maceta",      en:"The Flowerpot",    emoji:"🪴", call:"No me cuentes más chismes — maceta"},
+  {num:47, es:"El Arpa",        en:"The Harp",         emoji:"🎵", call:"El arpa llora con el viento"},
+  {num:48, es:"La Rana",        en:"The Frog",         emoji:"🐸", call:"Al agua patos — y la rana también"},
+  {num:49, es:"La Avispa",      en:"The Wasp",         emoji:"🐝", call:"La avispa que te pica con ganas"},
+  {num:50, es:"El Apache",      en:"The Apache",       emoji:"🏹", call:"Que no te agarre el apache"},
+  {num:51, es:"El Venado",      en:"The Deer",         emoji:"🦌", call:"Saltando entre los cerros va el venado"},
+  {num:52, es:"El Sol",         en:"The Sun",          emoji:"☀️", call:"El sol que nos da vida todos los días"},
+  {num:53, es:"La Campana",     en:"The Bell",         emoji:"🔔", call:"Tañe tañe la campana — ya es hora"},
+  {num:54, es:"El Cocodrilo",   en:"The Crocodile",    emoji:"🐊", call:"El que anda en el río, se lo come el cocodrilo"},
+];
+
+const SING_ALONG_DATA = {
+  classics: {
+    label: "🎶 Classics (1920s–1940s)",
+    songs: [
+      { title:"You Are My Sunshine", artist:"Jimmie Davis / Various", year:1939,
+        youtube:"https://www.youtube.com/results?search_query=you+are+my+sunshine+sing+along+lyrics",
+        chorus:"You are my sunshine, my only sunshine\nYou make me happy when skies are grey\nYou'll never know dear, how much I love you\nPlease don't take my sunshine away",
+        verse:"The other night dear, as I lay sleeping\nI dreamed I held you in my arms\nWhen I awoke dear, I was mistaken\nAnd I hung my head and cried" },
+      { title:"Take Me Out to the Ball Game", artist:"Traditional (1908)", year:1908,
+        youtube:"https://www.youtube.com/results?search_query=take+me+out+to+the+ball+game+lyrics+sing+along",
+        chorus:"Take me out to the ball game\nTake me out with the crowd\nBuy me some peanuts and Cracker Jack\nI don't care if I never get back\nLet me root, root, root for the home team\nIf they don't win it's a shame\nFor it's one, two, three strikes you're out\nAt the old ball game!",
+        verse:"" },
+      { title:"Let Me Call You Sweetheart", artist:"Traditional (1910)", year:1910,
+        youtube:"https://www.youtube.com/results?search_query=let+me+call+you+sweetheart+sing+along",
+        chorus:"Let me call you sweetheart, I'm in love with you\nLet me hear you whisper that you love me too\nKeep the love-light glowing in your eyes so true\nLet me call you sweetheart, I'm in love with you",
+        verse:"" },
+      { title:"I'll Be Seeing You", artist:"Billie Holiday / Various (1938)", year:1938,
+        youtube:"https://www.youtube.com/results?search_query=i'll+be+seeing+you+sing+along+lyrics",
+        chorus:"I'll be seeing you in all the old familiar places\nThat this heart of mine embraces all day through\nIn that small café, the park across the way\nThe children's carousel, the chestnut trees, the wishing well",
+        verse:"" },
+      { title:"We'll Meet Again", artist:"Vera Lynn (1939)", year:1939,
+        youtube:"https://www.youtube.com/results?search_query=vera+lynn+we'll+meet+again+lyrics",
+        chorus:"We'll meet again, don't know where, don't know when\nBut I know we'll meet again some sunny day\nKeep smiling through, just like you always do\nTill the blue skies drive the dark clouds far away",
+        verse:"" },
+      { title:"Boogie Woogie Bugle Boy", artist:"Andrews Sisters (1941)", year:1941,
+        youtube:"https://www.youtube.com/results?search_query=boogie+woogie+bugle+boy+andrews+sisters",
+        chorus:"He was a famous trumpet man from out Chicago way\nHe had a boogie style that no one else could play\nHe was the top man at his craft\nBut then his number came up and he was gone with the draft",
+        verse:"" },
+    ]
+  },
+  "50s": {
+    label: "🎸 1950s Rock & Pop",
+    songs: [
+      { title:"Que Sera, Sera", artist:"Doris Day (1956)", year:1956,
+        youtube:"https://www.youtube.com/results?search_query=que+sera+sera+doris+day+sing+along",
+        chorus:"Que sera, sera\nWhatever will be, will be\nThe future's not ours to see\nQue sera, sera\nWhat will be, will be",
+        verse:"When I was just a little girl\nI asked my mother, what will I be\nWill I be pretty, will I be rich\nHere's what she said to me" },
+      { title:"Love Me Tender", artist:"Elvis Presley (1956)", year:1956,
+        youtube:"https://www.youtube.com/results?search_query=elvis+love+me+tender+lyrics",
+        chorus:"Love me tender, love me sweet\nNever let me go\nYou have made my life complete\nAnd I love you so",
+        verse:"Love me tender, love me true\nAll my dreams fulfilled\nFor my darlin' I love you\nAnd I always will" },
+      { title:"Rock Around the Clock", artist:"Bill Haley & His Comets (1954)", year:1954,
+        youtube:"https://www.youtube.com/results?search_query=rock+around+the+clock+bill+haley+lyrics",
+        chorus:"One, two, three o'clock, four o'clock rock\nFive, six, seven o'clock, eight o'clock rock\nNine, ten, eleven o'clock, twelve o'clock rock\nWe're gonna rock around the clock tonight",
+        verse:"Put your glad rags on and join me hon'\nWe'll have some fun when the clock strikes one" },
+      { title:"Tennessee Waltz", artist:"Patti Page (1950)", year:1950,
+        youtube:"https://www.youtube.com/results?search_query=tennessee+waltz+patti+page+lyrics",
+        chorus:"I was dancing with my darlin' to the Tennessee Waltz\nWhen an old friend I happened to see\nIntroduced him to my loved one\nAnd while they were dancing\nMy friend stole my sweetheart from me",
+        verse:"" },
+      { title:"Hound Dog", artist:"Elvis Presley (1956)", year:1956,
+        youtube:"https://www.youtube.com/results?search_query=elvis+hound+dog+lyrics+sing+along",
+        chorus:"You ain't nothin' but a hound dog\nCryin' all the time\nYou ain't nothin' but a hound dog\nCryin' all the time\nWell, you ain't never caught a rabbit\nAnd you ain't no friend of mine",
+        verse:"" },
+      { title:"Oh! My Papa", artist:"Eddie Fisher (1954)", year:1954,
+        youtube:"https://www.youtube.com/results?search_query=oh+my+papa+eddie+fisher+lyrics",
+        chorus:"Oh my papa, to me he was so wonderful\nOh my papa, to me he was so good\nNo one could be so gentle and so lovable\nOh my papa, he always understood",
+        verse:"" },
+    ]
+  },
+  "60s": {
+    label: "🌸 1960s Gold",
+    songs: [
+      { title:"What a Wonderful World", artist:"Louis Armstrong (1967)", year:1967,
+        youtube:"https://www.youtube.com/results?search_query=what+a+wonderful+world+louis+armstrong+lyrics",
+        chorus:"I see trees of green, red roses too\nI see them bloom for me and you\nAnd I think to myself, what a wonderful world\nI see skies of blue and clouds of white\nThe bright blessed day, the dark sacred night\nAnd I think to myself, what a wonderful world",
+        verse:"" },
+      { title:"Stand By Me", artist:"Ben E. King (1961)", year:1961,
+        youtube:"https://www.youtube.com/results?search_query=stand+by+me+ben+e+king+sing+along+lyrics",
+        chorus:"Stand by me, oh stand by me\nOh stand, stand by me, stand by me\nIf the sky that we look upon should tumble and fall\nOr the mountains should crumble to the sea\nI won't cry, I won't cry, no I won't shed a tear\nJust as long as you stand, stand by me",
+        verse:"When the night has come and the land is dark\nAnd the moon is the only light we'll see" },
+      { title:"My Girl", artist:"The Temptations (1964)", year:1964,
+        youtube:"https://www.youtube.com/results?search_query=my+girl+temptations+lyrics+sing+along",
+        chorus:"I've got sunshine on a cloudy day\nWhen it's cold outside, I've got the month of May\nI guess you'd say, what can make me feel this way?\nMy girl, talking 'bout my girl",
+        verse:"I've got so much honey the bees envy me\nI've got a sweeter song than the birds in the trees" },
+      { title:"Moon River", artist:"Andy Williams / Audrey Hepburn (1961)", year:1961,
+        youtube:"https://www.youtube.com/results?search_query=moon+river+andy+williams+lyrics",
+        chorus:"Moon river, wider than a mile\nI'm crossing you in style some day\nOh, dream maker, you heart breaker\nWherever you're going, I'm going your way",
+        verse:"Two drifters, off to see the world\nThere's such a lot of world to see\nWe're after the same rainbow's end\nWaiting 'round the bend, my huckleberry friend\nMoon river and me" },
+      { title:"Hey Jude", artist:"The Beatles (1968)", year:1968,
+        youtube:"https://www.youtube.com/results?search_query=hey+jude+beatles+sing+along+lyrics",
+        chorus:"Hey Jude, don't make it bad\nTake a sad song and make it better\nRemember to let her into your heart\nThen you can start to make it better\nNa na na, na-na-na-na, na-na-na-na, Hey Jude",
+        verse:"Hey Jude, don't be afraid\nYou were made to go out and get her\nThe minute you let her under your skin\nThen you begin to make it better" },
+      { title:"Yesterday", artist:"The Beatles (1965)", year:1965,
+        youtube:"https://www.youtube.com/results?search_query=yesterday+beatles+lyrics+sing+along",
+        chorus:"Yesterday, all my troubles seemed so far away\nNow it looks as though they're here to stay\nOh I believe in yesterday",
+        verse:"Suddenly, I'm not half the man I used to be\nThere's a shadow hanging over me\nOh, yesterday came suddenly" },
+    ]
+  },
+  "70s": {
+    label: "🕺 1970s Hits",
+    songs: [
+      { title:"Country Roads (Take Me Home)", artist:"John Denver (1971)", year:1971,
+        youtube:"https://www.youtube.com/results?search_query=take+me+home+country+roads+john+denver+lyrics",
+        chorus:"Take me home, country roads\nTo the place I belong\nWest Virginia, mountain mama\nTake me home, country roads",
+        verse:"Almost heaven, West Virginia\nBlue Ridge Mountains, Shenandoah River\nLife is old there, older than the trees\nYounger than the mountains, blowing like a breeze" },
+      { title:"Piano Man", artist:"Billy Joel (1973)", year:1973,
+        youtube:"https://www.youtube.com/results?search_query=piano+man+billy+joel+lyrics+sing+along",
+        chorus:"Sing us a song, you're the piano man\nSing us a song tonight\nWell, we're all in the mood for a melody\nAnd you've got us feeling alright",
+        verse:"It's nine o'clock on a Saturday\nThe regular crowd shuffles in\nThere's an old man sitting next to me\nMaking love to his tonic and gin" },
+      { title:"Lean on Me", artist:"Bill Withers (1972)", year:1972,
+        youtube:"https://www.youtube.com/results?search_query=lean+on+me+bill+withers+lyrics+sing+along",
+        chorus:"Lean on me, when you're not strong\nAnd I'll be your friend, I'll help you carry on\nFor it won't be long till I'm gonna need\nSomebody to lean on",
+        verse:"Sometimes in our lives we all have pain\nWe all have sorrow\nBut if we are wise, we know that there's\nAlways tomorrow" },
+      { title:"Imagine", artist:"John Lennon (1971)", year:1971,
+        youtube:"https://www.youtube.com/results?search_query=john+lennon+imagine+lyrics+sing+along",
+        chorus:"Imagine all the people\nLiving life in peace — you\nYou may say I'm a dreamer\nBut I'm not the only one\nI hope someday you'll join us\nAnd the world will live as one",
+        verse:"Imagine there's no heaven\nIt's easy if you try\nNo hell below us\nAbove us only sky" },
+      { title:"Dancing Queen", artist:"ABBA (1976)", year:1976,
+        youtube:"https://www.youtube.com/results?search_query=dancing+queen+abba+lyrics+sing+along",
+        chorus:"You are the dancing queen\nYoung and sweet, only seventeen\nDancing queen, feel the beat from the tambourine\nYou can dance, you can jive\nHaving the time of your life\nOoh, see that girl, watch that scene\nDig in the dancing queen",
+        verse:"Friday night and the lights are low\nLooking out for a place to go" },
+      { title:"I Will Always Love You", artist:"Dolly Parton (1973)", year:1973,
+        youtube:"https://www.youtube.com/results?search_query=dolly+parton+i+will+always+love+you+lyrics",
+        chorus:"And I will always love you\nI will always love you",
+        verse:"If I should stay\nI would only be in your way\nSo I'll go but I know\nI'll think of you each step of the way" },
+    ]
+  },
+  "80s": {
+    label: "💿 1980s Favorites",
+    songs: [
+      { title:"Don't Stop Believin'", artist:"Journey (1981)", year:1981,
+        youtube:"https://www.youtube.com/results?search_query=don't+stop+believin+journey+lyrics+sing+along",
+        chorus:"Don't stop believin'\nHold on to the feelin'\nStreetlights, people\nOh oh oh",
+        verse:"Just a small town girl\nLivin' in a lonely world\nShe took the midnight train\nGoing anywhere" },
+      { title:"Islands in the Stream", artist:"Dolly Parton & Kenny Rogers (1983)", year:1983,
+        youtube:"https://www.youtube.com/results?search_query=islands+in+the+stream+dolly+kenny+rogers+lyrics",
+        chorus:"Islands in the stream, that is what we are\nNo one in between, how can we be wrong\nSail away with me to another world\nAnd we rely on each other, ah ha\nFrom one lover to another, ah ha",
+        verse:"Baby, when I met you there was peace unknown\nI set out to get you with a fine tooth comb" },
+      { title:"What's Love Got to Do With It", artist:"Tina Turner (1984)", year:1984,
+        youtube:"https://www.youtube.com/results?search_query=tina+turner+what's+love+got+to+do+with+it+lyrics",
+        chorus:"What's love got to do, got to do with it\nWhat's love but a second hand emotion\nWhat's love got to do, got to do with it\nWho needs a heart when a heart can be broken",
+        verse:"You must understand that the touch of your hand\nMakes my pulse react" },
+      { title:"Girls Just Want to Have Fun", artist:"Cyndi Lauper (1983)", year:1983,
+        youtube:"https://www.youtube.com/results?search_query=girls+just+want+to+have+fun+cyndi+lauper+lyrics",
+        chorus:"Oh girls just want to have fun\nYeah girls just want to have fun\nThat's all they really want, some fun\nWhen the working day is done\nOh girls, they want to have fun",
+        verse:"I come home in the morning light\nMy mother says when you gonna live your life right" },
+      { title:"We Are the World", artist:"USA for Africa (1985)", year:1985,
+        youtube:"https://www.youtube.com/results?search_query=we+are+the+world+usa+for+africa+lyrics",
+        chorus:"We are the world, we are the children\nWe are the ones who make a brighter day, so let's start giving\nThere's a choice we're making, we're saving our own lives\nIt's true we'll make a better day, just you and me",
+        verse:"There comes a time when we heed a certain call\nWhen the world must come together as one" },
+    ]
+  },
+  country: {
+    label: "🤠 Country Favorites",
+    songs: [
+      { title:"On the Road Again", artist:"Willie Nelson (1980)", year:1980,
+        youtube:"https://www.youtube.com/results?search_query=willie+nelson+on+the+road+again+lyrics",
+        chorus:"On the road again\nJust can't wait to get on the road again\nThe life I love is making music with my friends\nAnd I can't wait to get on the road again",
+        verse:"On the road again, going places that I've never been\nSeeing things that I may never see again" },
+      { title:"Jolene", artist:"Dolly Parton (1973)", year:1973,
+        youtube:"https://www.youtube.com/results?search_query=jolene+dolly+parton+lyrics+sing+along",
+        chorus:"Jolene, Jolene, Jolene, Jolene\nI'm begging of you please don't take my man\nJolene, Jolene, Jolene, Jolene\nPlease don't take him just because you can",
+        verse:"Your beauty is beyond compare\nWith flaming locks of auburn hair\nWith ivory skin and eyes of emerald green" },
+      { title:"Ring of Fire", artist:"Johnny Cash (1963)", year:1963,
+        youtube:"https://www.youtube.com/results?search_query=ring+of+fire+johnny+cash+lyrics+sing+along",
+        chorus:"I fell into a burning ring of fire\nI went down, down, down and the flames went higher\nAnd it burns, burns, burns — the ring of fire\nThe ring of fire",
+        verse:"Love is a burning thing\nAnd it makes a fiery ring\nBound by wild desire\nI fell into a ring of fire" },
+      { title:"Friends in Low Places", artist:"Garth Brooks (1990)", year:1990,
+        youtube:"https://www.youtube.com/results?search_query=garth+brooks+friends+in+low+places+lyrics",
+        chorus:"'Cause I've got friends in low places\nWhere the whiskey drowns and the beer chases\nMy blues away\nAnd I'll be okay\nI'm not big on social graces\nThink I'll slip on down to the oasis\nOh, I've got friends in low places",
+        verse:"Blame it all on my roots\nI showed up in boots and ruined your black tie affair" },
+      { title:"He Stopped Loving Her Today", artist:"George Jones (1980)", year:1980,
+        youtube:"https://www.youtube.com/results?search_query=george+jones+he+stopped+loving+her+today+lyrics",
+        chorus:"He stopped loving her today\nThey placed a wreath upon his door\nAnd soon they'll carry him away\nHe stopped loving her today",
+        verse:"He said I'll love you 'til I die\nShe told him you'll forget in time\nAs the years went slowly by\nShe still preyed upon his mind" },
+    ]
+  },
+  holiday: {
+    label: "🎄 Holiday Songs",
+    songs: [
+      { title:"White Christmas", artist:"Bing Crosby (1942)", year:1942,
+        youtube:"https://www.youtube.com/results?search_query=bing+crosby+white+christmas+lyrics+sing+along",
+        chorus:"I'm dreaming of a white Christmas\nJust like the ones I used to know\nWhere the treetops glisten and children listen\nTo hear sleigh bells in the snow",
+        verse:"I'm dreaming of a white Christmas\nWith every Christmas card I write\nMay your days be merry and bright\nAnd may all your Christmases be white" },
+      { title:"Jingle Bells", artist:"Traditional", year:1857,
+        youtube:"https://www.youtube.com/results?search_query=jingle+bells+sing+along+lyrics",
+        chorus:"Jingle bells, jingle bells, jingle all the way\nOh what fun it is to ride in a one-horse open sleigh\nJingle bells, jingle bells, jingle all the way\nOh what fun it is to ride in a one-horse open sleigh hey!",
+        verse:"Dashing through the snow\nIn a one-horse open sleigh\nO'er the fields we go\nLaughing all the way" },
+      { title:"Silver Bells", artist:"Bing Crosby & Carol Richards (1950)", year:1950,
+        youtube:"https://www.youtube.com/results?search_query=silver+bells+lyrics+sing+along",
+        chorus:"Silver bells, silver bells\nIt's Christmas time in the city\nRing-a-ling, hear them ring\nSoon it will be Christmas day",
+        verse:"City sidewalks, busy sidewalks\nDressed in holiday style\nIn the air there's a feeling of Christmas" },
+      { title:"Have Yourself a Merry Little Christmas", artist:"Judy Garland (1944)", year:1944,
+        youtube:"https://www.youtube.com/results?search_query=have+yourself+a+merry+little+christmas+lyrics",
+        chorus:"Have yourself a merry little Christmas\nLet your heart be light\nFrom now on our troubles will be out of sight\nHave yourself a merry little Christmas\nMake the yuletide gay",
+        verse:"" },
+      { title:"Happy Birthday to You", artist:"Traditional", year:1893,
+        youtube:"https://www.youtube.com/results?search_query=happy+birthday+to+you+song",
+        chorus:"Happy birthday to you\nHappy birthday to you\nHappy birthday dear [Name]\nHappy birthday to you!",
+        verse:"" },
+    ]
+  }
+};
+
+let currentDecade = 'classics';
+
+function showMatSection(section) {
+  ['bingo','loteria','singalong'].forEach(s => {
+    const el = document.getElementById('mat-' + s);
+    if (el) el.style.display = s === section ? '' : 'none';
+  });
+  if (section === 'bingo') renderBingoCards();
+  if (section === 'loteria') renderLoteriaCards();
+  if (section === 'singalong') showDecade(currentDecade);
+}
+
+function showDecade(decade) {
+  currentDecade = decade;
+  document.querySelectorAll('.decade-btn').forEach(b => b.classList.toggle('active', b.dataset.decade === decade));
+  const data = SING_ALONG_DATA[decade];
+  if (!data) return;
+  const container = document.getElementById('singalong-list');
+  container.innerHTML = data.songs.map((s, i) => `
+    <div style="background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1F3864;">${escapeHtml(s.title)}</div>
+          <div style="font-size:12px;color:#667085;">${escapeHtml(s.artist)}</div>
+        </div>
+        <a href="${s.youtube}" target="_blank" style="background:#FF0000;color:white;padding:6px 12px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;">▶ YouTube</a>
+      </div>
+      ${s.verse ? `<div style="margin-top:10px;font-style:italic;font-size:13px;color:#374151;line-height:1.7;white-space:pre-line;border-left:3px solid #e5e7eb;padding-left:10px;">${escapeHtml(s.verse)}</div>` : ''}
+      <div style="margin-top:8px;font-weight:600;font-size:13px;color:#1F3864;line-height:1.8;white-space:pre-line;background:#F0F4FF;border-radius:6px;padding:10px;">${escapeHtml(s.chorus)}</div>
+    </div>`).join('');
+}
+
+function renderBingoCards() {
+  const count = parseInt(document.getElementById('bingo-count')?.value || 6);
+  const container = document.getElementById('bingo-cards-preview');
+  if (!container) return;
+  container.innerHTML = '';
+  const cols = ['B','I','N','G','O'];
+  const ranges = [[1,15],[16,30],[31,45],[46,60],[61,75]];
+  for (let c = 0; c < count; c++) {
+    const card = document.createElement('div');
+    card.style.cssText = 'border:2px solid #1F3864;border-radius:8px;overflow:hidden;width:200px;font-family:Arial,sans-serif;';
+    let html = `<div style="background:#1F3864;color:#FFD966;text-align:center;padding:6px;font-weight:800;font-size:16px;letter-spacing:8px;">B I N G O</div>
+      <table style="width:100%;border-collapse:collapse;">`;
+    const cols2 = cols.map((col, ci) => {
+      const nums = [];
+      const [lo, hi] = ranges[ci];
+      while (nums.length < 5) {
+        const n = lo + Math.floor(Math.random() * (hi - lo + 1));
+        if (!nums.includes(n)) nums.push(n);
+      }
+      return nums;
+    });
+    for (let r = 0; r < 5; r++) {
+      html += '<tr>';
+      for (let ci = 0; ci < 5; ci++) {
+        const isFree = r === 2 && ci === 2;
+        html += `<td style="border:1px solid #ddd;text-align:center;padding:8px 4px;font-size:${isFree?'10':'14'}px;font-weight:${isFree?'400':'600'};background:${isFree?'#FFD966':'white'};color:#1F3864;">${isFree ? 'FREE' : cols2[ci][r]}</td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</table>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  }
+}
+
+function renderLoteriaCards() {
+  const count = parseInt(document.getElementById('loteria-count')?.value || 6);
+  const container = document.getElementById('loteria-cards-preview');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let c = 0; c < count; c++) {
+    // Pick 16 random items for 4x4 card
+    const shuffled = [...LOTERIA_ITEMS].sort(() => Math.random() - 0.5);
+    const picked = shuffled.slice(0, 16);
+    const card = document.createElement('div');
+    card.style.cssText = 'border:2px solid #C00;border-radius:8px;overflow:hidden;width:220px;font-family:Arial,sans-serif;';
+    let html = `<div style="background:#C00;color:#FFD700;text-align:center;padding:6px;font-weight:800;font-size:14px;">🃏 LOTERÍA</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">`;
+    picked.forEach(item => {
+      html += `<div style="border:1px solid #ddd;text-align:center;padding:6px 2px;font-size:11px;background:white;">
+        <div style="font-size:18px;">${item.emoji}</div>
+        <div style="font-weight:700;color:#C00;font-size:9px;">${item.es}</div>
+        <div style="color:#555;font-size:8px;">${item.en}</div>
+      </div>`;
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  }
+}
+
+function exportBingoPDF() {
+  const count = parseInt(document.getElementById('bingo-count')?.value || 6);
+  const cols = ['B','I','N','G','O'];
+  const ranges = [[1,15],[16,30],[31,45],[46,60],[61,75]];
+  let html = '<div style="font-family:Arial,sans-serif;padding:10px;"><h2 style="text-align:center;color:#1F3864;margin-bottom:16px;">🎲 Bingo Cards — ' + DATA.monthName + ' ' + DATA.year + '</h2><div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">';
+  for (let c = 0; c < count; c++) {
+    const cols2 = cols.map((col, ci) => {
+      const nums = [];
+      const [lo, hi] = ranges[ci];
+      while (nums.length < 5) { const n = lo + Math.floor(Math.random()*(hi-lo+1)); if(!nums.includes(n)) nums.push(n); }
+      return nums;
+    });
+    html += '<div style="border:2px solid #1F3864;border-radius:6px;overflow:hidden;width:160px;margin-bottom:10px;"><div style="background:#1F3864;color:#FFD966;text-align:center;padding:5px;font-weight:800;font-size:14px;letter-spacing:6px;">B I N G O</div><table style="width:100%;border-collapse:collapse;">';
+    for (let r = 0; r < 5; r++) {
+      html += '<tr>';
+      for (let ci = 0; ci < 5; ci++) {
+        const isFree = r===2 && ci===2;
+        const bg = isFree ? '#FFD966' : 'white';
+        const val = isFree ? 'FREE' : cols2[ci][r];
+        const fs = isFree ? '8' : '12';
+        html += '<td style="border:1px solid #ddd;text-align:center;padding:7px 2px;font-size:'+fs+'px;font-weight:600;background:'+bg+';color:#1F3864;">'+val+'</td>';
+      }
+      html += '</tr>';
+    }
+    html += '</table></div>';
+  }
+  html += '</div></div>';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('bingo-cards-' + DATA.monthName + '.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+function exportLoteriaPDF() {
+  const count = parseInt(document.getElementById('loteria-count')?.value || 6);
+  let html = '<div style="font-family:Arial,sans-serif;padding:10px;"><h2 style="text-align:center;color:#C00;margin-bottom:16px;">🃏 Lotería Cards — ' + DATA.monthName + ' ' + DATA.year + '</h2><div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">';
+  for (let c = 0; c < count; c++) {
+    const picked = [...LOTERIA_ITEMS].sort(()=>Math.random()-0.5).slice(0,16);
+    html += '<div style="border:2px solid #C00;border-radius:6px;overflow:hidden;width:200px;margin-bottom:10px;"><div style="background:#C00;color:#FFD700;text-align:center;padding:4px;font-weight:800;font-size:12px;">🃏 LOTERÍA — Card '+(c+1)+'</div><div style="display:grid;grid-template-columns:repeat(4,1fr);">';
+    picked.forEach(item => {
+      html += '<div style="border:1px solid #eee;text-align:center;padding:4px 2px;"><div style="font-size:16px;">'+item.emoji+'</div><div style="font-weight:700;color:#C00;font-size:8px;">'+item.es+'</div><div style="color:#555;font-size:7px;">'+item.en+'</div></div>';
+    });
+    html += '</div></div>';
+  }
+  html += '</div></div>';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('loteria-cards-' + DATA.monthName + '.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+function exportLoteriaCallerPDF() {
+  let html = '<div style="font-family:Arial,sans-serif;padding:16px;"><h2 style="color:#C00;text-align:center;">🃏 Lotería — Caller\'s List</h2><p style="text-align:center;color:#555;font-size:12px;margin-bottom:16px;">Read the call phrase aloud. Players mark the matching image on their card.</p><table style="width:100%;border-collapse:collapse;font-size:11px;"><tr style="background:#C00;color:white;"><th style="padding:6px;text-align:left;">#</th><th>Español</th><th>English</th><th style="text-align:left;padding:6px;">Call Phrase</th></tr>';
+  LOTERIA_ITEMS.forEach((item, i) => {
+    const bg = i%2 ? '#FFF5F5' : 'white';
+    html += '<tr style="background:'+bg+';"><td style="padding:5px;text-align:center;font-weight:700;color:#C00;">'+item.num+'</td><td style="padding:5px;text-align:center;font-weight:700;">'+item.emoji+' '+item.es+'</td><td style="padding:5px;text-align:center;color:#555;">'+item.en+'</td><td style="padding:5px;font-style:italic;color:#333;">"'+item.call+'"</td></tr>';
+  });
+  html += '</table></div>';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('loteria-caller-list.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+function exportSingAlongPDF() {
+  const data = SING_ALONG_DATA[currentDecade];
+  if (!data) return;
+  let html = '<div style="font-family:Arial,sans-serif;padding:20px;"><h1 style="color:#1F3864;text-align:center;margin-bottom:4px;">🎵 Sing-Along Lyric Sheet</h1><h2 style="color:#2E75B6;text-align:center;font-size:16px;margin-bottom:20px;">'+data.label+'</h2>';
+  data.songs.forEach(s => {
+    html += '<div style="margin-bottom:20px;page-break-inside:avoid;"><div style="background:#1F3864;color:#FFD966;padding:8px 12px;border-radius:4px 4px 0 0;font-weight:700;">'+escapeHtml(s.title)+' <span style="font-weight:400;font-size:11px;color:#ddd;">— '+escapeHtml(s.artist)+'</span></div><div style="border:1px solid #ddd;border-top:none;padding:10px 12px;border-radius:0 0 4px 4px;">';
+    if (s.verse) html += '<div style="font-style:italic;color:#555;font-size:12px;line-height:1.8;white-space:pre-line;margin-bottom:8px;">'+escapeHtml(s.verse)+'</div>';
+    const ytLabel = s.youtube.replace('https://www.youtube.com/results?search_query=','Search: ').replace(/\+/g,' ');
+    html += '<div style="font-weight:600;font-size:13px;line-height:1.9;white-space:pre-line;color:#1F3864;">'+escapeHtml(s.chorus)+'</div><div style="margin-top:8px;font-size:10px;color:#888;">▶ YouTube: '+ytLabel+'</div></div></div>';
+  });
+  html += '<div style="text-align:center;margin-top:20px;font-size:10px;color:#aaa;">Empower Life 365 · empowerlife365.app</div></div>';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+  html2pdf().set(getPdfOpts('singalong-' + currentDecade + '.pdf', 'portrait')).from(wrapper).save().then(() => document.body.removeChild(wrapper));
+}
+
+</script>
+</body>
+</html>
