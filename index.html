@@ -6568,26 +6568,18 @@ function exportReminiscencePDF() {
 // ═══════════════════════════════════════════════════════════════════
 
 const CUSTOM_CATS = [
-  { id:'cognitive',   label:'Cognitive / Brain',      icon:'🧠', color:'#7030A0',
-    activities:['Trivia','Word Games','Crossword Puzzle','Word Search','Jeopardy!','Reminiscing Session','Memory Match','Name That Tune','Current Events Discussion','Geography Quiz','History Trivia','Category Game'] },
-  { id:'physical',    label:'Physical / Movement',     icon:'💪', color:'#548235',
-    activities:['Chair Exercises','Walking Group','Stretching & Flex','Seated Dance','Chair Yoga','Balloon Volleyball','Bean Bag Toss','Ring Toss','Hand & Arm Exercises','Resistance Band','Seated Tai Chi','Ball Passing'] },
-  { id:'creative',    label:'Creative / Expression',   icon:'🎨', color:'#C65B8A',
-    activities:['Arts & Crafts','Painting','Decorating Project','Seasonal Art','Coloring','Card Making','Collage','Flower Arranging','Paper Crafts','Knitting / Crocheting','Scrapbooking','Origami'] },
-  { id:'social',      label:'Social / Group',          icon:'👥', color:'#2E75B6',
-    activities:['Bingo','Social Hour','Group Card Games','Ice Cream Social','Happy Hour','Birthday Celebration','Coffee & Chat','Show & Tell','Trivia Night','Game Tournament','Pitch-In Dinner','Debate / Discussion'] },
-  { id:'music',       label:'Sensory / Music',         icon:'🎶', color:'#00897B',
-    activities:['Music Listening','Sing-Along','Bell Choir','Drum Circle','Name That Tune','Karaoke','Armchair Concert','Rhythm & Movement','Aromatherapy','Sensory Bin','Texture Exploration','Relaxation Music'] },
-  { id:'spiritual',   label:'Emotional / Spiritual',   icon:'🧡', color:'#BF9000',
-    activities:['Morning Devotions','Prayer Group','Gratitude Circle','Reflection Time','Bible Study','Inspirational Reading','Mindfulness','Guided Meditation','Faith Discussion','Hymn Sing','Rosary','Journaling'] },
-  { id:'lifeskills',  label:'Life Skills / Purpose',   icon:'🌿', color:'#6B8E23',
-    activities:['Folding Laundry','Cooking / Baking Prep','Gardening','Watering Plants','Sorting / Organizing','Setting Tables','Envelope Stuffing','Helping Staff','Pet Care','Grocery List Making','Recipe Sharing','Menu Planning'] },
-  { id:'outings',     label:'Outings / Community',     icon:'🌍', color:'#4472C4',
-    activities:['Shopping Trip','Scenic Drive','Restaurant Outing','Farmers Market','Library Visit','Park / Nature Walk','Community Event','Cultural Outing','Ice Cream Shop','Car Show','Sports Event','Religious Service'] },
-  { id:'entertainment',label:'Entertainment / Leisure', icon:'🎉', color:'#C0392B',
-    activities:['Movie Afternoon','Game Show','Comedy Show','Talent Show','Puppet Show','Magician Visit','Live Music Performance','Storytelling','Trivia Game Show','Animal Visit','Sports Watching','Cooking Show'] },
-  { id:'oneOnOne',    label:'One-on-One / Individual', icon:'🗣️', color:'#7F8C8D',
-    activities:['Room Visit','Personal Engagement','Reading Together','Hand Massage','Letter Writing','Photo Review','Life Story Sharing','Music One-on-One','Crossword Together','Puzzle Together','Art Together','Manicure / Pampering'] },
+  { id:'mind',     label:'Mind & Memory',          icon:'🧠', color:'#7030A0', defaultTier:1,
+    activities:['Trivia','Word Games','Crossword Puzzle','Word Search','Jeopardy!','Reminiscing Session','Memory Match','Name That Tune','Current Events Discussion','Geography Quiz','History Trivia','Category Game','Finish the Phrase','Sensory Bin','Aromatherapy','Music Listening','Alphabet Game','Number Puzzle','20 Questions','Spelling Bee'] },
+  { id:'movement', label:'Movement & Wellness',    icon:'💪', color:'#548235', defaultTier:1,
+    activities:['Chair Exercises','Walking Group','Stretching & Flex','Seated Dance','Chair Yoga','Balloon Volleyball','Bean Bag Toss','Ring Toss','Hand & Arm Exercises','Resistance Band','Seated Tai Chi','Ball Passing','Wellness Education','Relaxation & Breathing','Wii Bowling','Indoor Bowling','Parachute Play','Foam Noodle Exercise','Balance & Strength','Morning Wake-Up Walk'] },
+  { id:'creative', label:'Creative & Expression',  icon:'🎨', color:'#C65B8A', defaultTier:2,
+    activities:['Arts & Crafts','Painting','Decorating Project','Seasonal Art','Coloring','Card Making','Collage','Flower Arranging','Paper Crafts','Knitting / Crocheting','Scrapbooking','Origami','Sing-Along','Bell Choir','Drum Circle','Karaoke','Journaling','Rhythm & Movement','Watercolor','Pottery / Clay Work','Wreath Making','Tie Dye','Photography Walk','Sewing Project'] },
+  { id:'social',   label:'Social & Leisure',       icon:'👥', color:'#2E75B6', defaultTier:1,
+    activities:['Bingo','Social Hour','Card Games','Ice Cream Social','Happy Hour','Birthday Celebration','Coffee & Chat','Show & Tell','Game Tournament','Movie Afternoon','Talent Show','Storytelling Circle','Sports Watching','Board Games','Charades','Trivia Night','Bingo Tournament','Comedy Show','Pet Visit','Book Club','Debate & Discussion','Pitch-In Dinner','Popcorn & a Movie','Name That Tune Night','Dance Social'] },
+  { id:'purpose',  label:'Purpose & Daily Living', icon:'🌿', color:'#6B8E23', defaultTier:1,
+    activities:['Folding Laundry','Cooking / Baking Prep','Gardening','Watering Plants','Sorting & Organizing','Setting Tables','Envelope Stuffing','Helping Staff','Pet Care','Recipe Sharing','Menu Planning','Morning Devotions','Prayer Group','Gratitude Circle','Reflection Time','Bible Study','Mindfulness','Guided Meditation','Hymn Sing','Letter Writing','Life Story Sharing','Room Visit','Hand Massage','Photo Review','Flower Arranging for Tables','Greeting Card Writing'] },
+  { id:'outings',  label:'Outings & Community',    icon:'🌍', color:'#4472C4', defaultTier:3,
+    activities:['Shopping Trip','Scenic Drive','Restaurant Outing','Farmers Market','Library Visit','Park / Nature Walk','Community Event','Cultural Outing','Ice Cream Shop','Car Show','Sports Event','Religious Service','Museum Visit','Volunteer Outing','Movie Theater','Botanical Garden','Winery / Brewery Tour','State Fair','Pumpkin Patch','Holiday Light Drive'] },
 ];
 
 const CUSTOM_SLOTS = [
@@ -6671,8 +6663,11 @@ function renderCustomCalendar() {
       const cat = getCatById(entry.cat);
       const label = entry.custom || entry.activity || '';
       const slotTime = getCustomSlotTime(slot.id, dayData);
-      return cat || entry.custom
-        ? `<div style="font-size:9px;line-height:1.3;padding:1px 4px;border-radius:3px;background:${cat?cat.color+'18':'#f0f0f0'};border-left:2px solid ${cat?cat.color:'#aaa'};margin-bottom:1px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="${escapeAttr(slotTime)} – ${escapeAttr(label)}"><span style="opacity:0.6;font-size:8px;">${escapeHtml(slot.icon)} ${escapeHtml(slotTime)} </span>${cat?cat.icon:''} ${escapeHtml(label)}</div>`
+      const oobadge  = entry.oo   ? '<span style="font-size:7px;font-weight:800;color:#7B4F9E;margin-left:2px;">1:1</span>' : '';
+        const tiersym  = entry.tier===3?'$$$':entry.tier===2?'$$':'';
+        const tierbadge= tiersym ? `<span style="font-size:7px;color:#BF9000;font-weight:800;margin-left:2px;">${tiersym}</span>` : '';
+        return cat || entry.custom
+        ? `<div style="font-size:9px;line-height:1.3;padding:1px 4px;border-radius:3px;background:${cat?cat.color+'18':'#f0f0f0'};border-left:2px solid ${cat?cat.color:'#aaa'};margin-bottom:1px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="${escapeAttr(slotTime)} – ${escapeAttr(label)}"><span style="opacity:0.6;font-size:8px;">${escapeHtml(slot.icon)} ${escapeHtml(slotTime)} </span>${cat?cat.icon:''} ${escapeHtml(label)}${oobadge}${tierbadge}</div>`
         : '';
     }).join('');
 
@@ -6698,16 +6693,19 @@ function openScheduler(day) {
   const meta = DATA ? DATA.dayMeta[String(day)] : null;
   const dateLabel = meta ? meta.date_long : 'Day ' + day;
 
-  // Update modal title
   const titleEl = document.getElementById('scheduler-title');
   if (titleEl) titleEl.innerHTML = `📅 ${escapeHtml(dateLabel)}`;
 
-  // Build slot rows dynamically
   const body = document.getElementById('scheduler-body');
   if (!body) return;
+
+  const tierLabel = t => t==1?'$ Free / No Cost':t==2?'$$ Low / Moderate':t==3?'$$$ Special / Outing':'$ Free / No Cost';
+
   body.innerHTML = CUSTOM_SLOTS.map(slot => {
     const entry = dayData[slot.id] || {};
     const slotTime = getCustomSlotTime(slot.id, dayData);
+    const isOO = entry.oo || false;
+    const tier = entry.tier || (getCatById(entry.cat)||{}).defaultTier || 1;
     const catOptions = `<option value="">— none —</option>` +
       CUSTOM_CATS.map(cat => `<option value="${cat.id}" ${entry.cat===cat.id?'selected':''}>${cat.icon} ${escapeHtml(cat.label)}</option>`).join('');
     const actOptions = entry.cat
@@ -6717,12 +6715,17 @@ function openScheduler(day) {
       : `<option value="">— choose category first —</option>`;
     return `
     <div style="border:1px solid #e4e7ec;border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fafbff;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
         <span style="font-size:18px;">${slot.icon}</span>
         <strong style="color:var(--navy);font-size:14px;">${escapeHtml(slot.label)}</strong>
         <input type="text" data-slot-time="${slot.id}" value="${escapeAttr(slotTime)}"
-          style="margin-left:auto;width:96px;border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px;text-align:center;"
-          title="Edit time for this slot" placeholder="e.g. 9:00 AM"/>
+          style="width:96px;border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px;text-align:center;"
+          title="Edit time" placeholder="e.g. 9:00 AM"/>
+        <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#7B4F9E;margin-left:auto;cursor:pointer;"
+          title="One-on-One: tag this slot as an individual activity">
+          <input type="checkbox" data-slot-oo="${slot.id}" ${isOO?'checked':''} style="accent-color:#7B4F9E;width:14px;height:14px;"/>
+          ⭐ 1:1
+        </label>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
         <div>
@@ -6736,16 +6739,26 @@ function openScheduler(day) {
             style="width:100%;border:1px solid #ddd;border-radius:6px;padding:5px 7px;font-size:12px;">${actOptions}</select>
         </div>
       </div>
-      <div>
-        <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:3px;">✏ Other / Write-in (overrides dropdown)</label>
-        <input type="text" data-slot-custom="${slot.id}" value="${escapeAttr(entry.custom||'')}"
-          placeholder="Type a custom activity name…"
-          style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:12px;"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:3px;">✏ Write-in Activity <span style="font-weight:400;">(overrides dropdown)</span></label>
+          <input type="text" data-slot-custom="${slot.id}" value="${escapeAttr(entry.custom||'')}"
+            placeholder="Type a custom activity name…"
+            style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:12px;"/>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:3px;">💰 Expense Level</label>
+          <select data-slot-tier="${slot.id}" onchange="this.dataset.userSet='1'"
+            style="width:100%;border:1px solid #ddd;border-radius:6px;padding:5px 7px;font-size:12px;">
+            <option value="1" ${tier==1?'selected':''}>${tierLabel(1)}</option>
+            <option value="2" ${tier==2?'selected':''}>${tierLabel(2)}</option>
+            <option value="3" ${tier==3?'selected':''}>${tierLabel(3)}</option>
+          </select>
+        </div>
       </div>
     </div>`;
   }).join('');
 
-  // Action buttons
   body.innerHTML += `
     <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
       <button class="btn btn-gold" onclick="saveSchedulerDay()" style="flex:1;min-width:120px;">💾 Save Day</button>
@@ -6755,7 +6768,17 @@ function openScheduler(day) {
 
   overlay.dataset.day = day;
   overlay.style.display = 'flex';
+
+  // Populate quick ideas
+  const ideasWrap = document.getElementById('sch-ideas-wrap');
+  if (ideasWrap) {
+    const ideas = [...ACTIVITY_LIBRARY.afternoon, ...ACTIVITY_LIBRARY.evening, ...(ACTIVITY_LIBRARY.seasonal[DATA.monthNum]||[])]
+      .sort(() => Math.random()-0.5).slice(0,8);
+    ideasWrap.innerHTML = `<div class="sch-ideas-hd">💡 Quick Ideas — click to copy name</div>
+      <div class="sch-idea-chips">${ideas.map(a=>`<button class="sch-idea-chip" onclick="useSchedulerIdea('${escapeHtml(a.title)}',this)">${escapeHtml(a.title)}</button>`).join('')}</div>`;
+  }
 }
+
 
 function onSchedCatChange(slotId, catId, actSelEl) {
   const overlay = document.getElementById('day-scheduler-overlay');
@@ -6765,7 +6788,13 @@ function onSchedCatChange(slotId, catId, actSelEl) {
   const cat = getCatById(catVal);
   actSel.innerHTML = `<option value="">— pick activity —</option>` +
     (cat ? cat.activities.map(a => `<option value="${escapeAttr(a)}">${escapeHtml(a)}</option>`).join('') : '');
+  // Auto-set tier to category default
+  if (cat) {
+    const tierSel = overlay?.querySelector(`[data-slot-tier="${slotId}"]`);
+    if (tierSel && !tierSel.dataset.userSet) tierSel.value = cat.defaultTier || 1;
+  }
 }
+
 
 function saveSchedulerDay() {
   const overlay = document.getElementById('day-scheduler-overlay');
@@ -6774,21 +6803,24 @@ function saveSchedulerDay() {
   if (!day) return;
   const cal = getCustomCal();
   if (!cal[day]) cal[day] = {};
-  // Save per-month default times if changed
   CUSTOM_SLOTS.forEach(slot => {
-    const timeEl = overlay.querySelector(`[data-slot-time="${slot.id}"]`);
-    const catSel = overlay.querySelector(`[data-slot-cat="${slot.id}"]`);
-    const actSel = overlay.querySelector(`[data-slot-act="${slot.id}"]`);
-    const custEl = overlay.querySelector(`[data-slot-custom="${slot.id}"]`);
-    const time = timeEl ? timeEl.value.trim() : '';
-    const cat = catSel ? catSel.value : '';
-    const activity = actSel ? actSel.value : '';
-    const custom = custEl ? custEl.value.trim() : '';
-    // Save monthly default time override if changed
+    const timeEl  = overlay.querySelector(`[data-slot-time="${slot.id}"]`);
+    const catSel  = overlay.querySelector(`[data-slot-cat="${slot.id}"]`);
+    const actSel  = overlay.querySelector(`[data-slot-act="${slot.id}"]`);
+    const custEl  = overlay.querySelector(`[data-slot-custom="${slot.id}"]`);
+    const ooEl    = overlay.querySelector(`[data-slot-oo="${slot.id}"]`);
+    const tierEl  = overlay.querySelector(`[data-slot-tier="${slot.id}"]`);
+    const time     = timeEl  ? timeEl.value.trim()  : '';
+    const cat      = catSel  ? catSel.value          : '';
+    const activity = actSel  ? actSel.value          : '';
+    const custom   = custEl  ? custEl.value.trim()   : '';
+    const oo       = ooEl    ? ooEl.checked          : false;
+    const tier     = tierEl  ? parseInt(tierEl.value): 1;
     const defaultTime = (CUSTOM_SLOTS.find(s=>s.id===slot.id)||{}).time || '';
     if (time && time !== defaultTime) customSlotTimes[slot.id] = time;
     if (cat || custom) {
-      cal[day][slot.id] = { cat, activity, custom, time: (time !== defaultTime && time) ? time : undefined };
+      cal[day][slot.id] = { cat, activity, custom, oo, tier,
+        time: (time !== defaultTime && time) ? time : undefined };
     } else {
       delete cal[day][slot.id];
     }
