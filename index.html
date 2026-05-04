@@ -1642,6 +1642,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="lib-filter-btn"        data-filter="evening"   onclick="setLibFilter('evening')">🌙 Evening Programs</button>
     <button class="lib-filter-btn"        data-filter="special"   onclick="setLibFilter('special')">🎉 Special Events</button>
     <button class="lib-filter-btn"        data-filter="seasonal"  onclick="setLibFilter('seasonal')">🗓️ This Month</button>
+    <button class="lib-filter-btn"        data-filter="spiritual" onclick="setLibFilter('spiritual')">✝ Spiritual</button>
   </div>
   <div class="lib-grid" id="lib-grid"></div>
 </section>
@@ -1769,6 +1770,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="btn btn-secondary" onclick="showMatSection('crafts')">🎨 Crafts</button>
     <button class="btn btn-secondary" onclick="showMatSection('gamesheets')">🎯 Game Sheets</button>
     <button class="btn btn-secondary" onclick="showMatSection('reminiscence')">💭 Reminiscence</button>
+    <button class="btn btn-secondary" onclick="showMatSection('spiritual')">✝ Spiritual</button>
   </div>
 
   <!-- BINGO CARDS -->
@@ -1901,6 +1903,71 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <div id="rem-preview"></div>
   </div>
 
+
+  <!-- SPIRITUAL MATERIALS -->
+  <div id="mat-spiritual" class="mat-section" style="display:none;">
+    <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px;">✝ Spiritual &amp; Devotional Materials</h2>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:20px;">Large-print printables for worship, devotions, hymn sings, prayer, and reflection — AL &amp; MC friendly.</p>
+
+    <!-- HYMN LYRIC SHEETS -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">🎵 Hymn Lyric Sheets</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">Large-print (18pt+) single-song lyric sheets. Print one per resident. All hymns are public domain.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;" id="hymn-btn-grid">
+      </div>
+      <button class="btn btn-secondary" style="font-size:12px;" onclick="printAllHymns()">🖨️ Print All 15 Hymns (booklet)</button>
+    </div>
+
+    <!-- MONTHLY DEVOTIONAL CARDS -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">📖 Monthly Devotional Cards</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">One large-print devotional card per month — scripture passage, reflection thought, and closing prayer. Rotate daily or use for morning devotions.</p>
+      <button class="btn btn-gold" onclick="printDevotionalCard()">🖨️ Print This Month's Devotional Card</button>
+      <button class="btn btn-secondary" style="margin-left:8px;" onclick="printAllDevotionals()">Print All 12 Months</button>
+    </div>
+
+    <!-- PRAYER PROMPT CARDS -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">🙏 Prayer Prompt Cards</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">Cut-apart cards with nondenominational prayer starters — for group prayer circles or individual use. 8 cards per sheet.</p>
+      <button class="btn btn-gold" onclick="printPrayerPrompts()">🖨️ Print Prayer Prompt Cards</button>
+    </div>
+
+    <!-- GRATITUDE & REFLECTION CARDS -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">💛 Gratitude &amp; Reflection Cards</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">Simple prompts for gratitude circles and guided reflection. 6 large cards per sheet — easy to hold and read.</p>
+      <button class="btn btn-gold" onclick="printGratitudeCards()">🖨️ Print Gratitude Cards</button>
+    </div>
+
+    <!-- WORSHIP ORDER OF SERVICE -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">📋 Worship Order of Service</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">A simple fill-in order of service template staff can use to lead Sunday worship — opening hymn, scripture, reflection, prayer, closing hymn. No pastor required.</p>
+      <button class="btn btn-gold" onclick="printWorshipOrder()">🖨️ Print Worship Order Template</button>
+    </div>
+
+    <!-- EVENING VESPERS GUIDE -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">🕯️ Evening Vespers Guide</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">A gentle 10-minute evening ritual guide — candle lighting, one hymn, a brief blessing. Same format every night provides comfort through predictability.</p>
+      <button class="btn btn-gold" onclick="printVespersGuide()">🖨️ Print Vespers Guide</button>
+    </div>
+
+    <!-- BIBLE STUDY GUIDE -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">📚 Bible Study Discussion Guide</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">8-week rotating discussion guide — one short passage per session with 3 open-ended questions. Non-lecture format; residents lead the conversation.</p>
+      <button class="btn btn-gold" onclick="printBibleStudyGuide()">🖨️ Print 8-Week Discussion Guide</button>
+    </div>
+
+    <!-- ROSARY / BEAD MEDITATION GUIDE -->
+    <div style="background:var(--gray-50);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin:0 0 6px;">📿 Rosary &amp; Bead Meditation Guide</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin:0 0 14px;">Large-print guide for the traditional Rosary PLUS a nondenominational bead meditation for interfaith groups. One page each.</p>
+      <button class="btn btn-gold" onclick="printRosaryGuide()">🖨️ Print Rosary &amp; Bead Guide</button>
+    </div>
+  </div>
 </section>
 
 </main>
@@ -4770,6 +4837,75 @@ const ACTIVITY_LIBRARY = {
     11:[ {id:'s11a',title:'Thanksgiving Feast & Gratitude Circle',tags:['holiday','food','community'],al:{desc:'Full Thanksgiving feast with resident and family favorites. Before eating, go around the table sharing one thing each person is grateful for.',supplies:['Thanksgiving menu','Gratitude prompt cards','Decorative centerpieces','Printed menu cards for each place setting']},mc:{desc:'Small Thanksgiving plates, warm and familiar. Staff sits alongside residents and shares one gratitude with each person.',supplies:['Familiar Thanksgiving foods in small portions','Gratitude prompt: "What is one thing you love?"','Warm and calm atmosphere']}} ],
     12:[ {id:'s12a',title:'Holiday Party & Gift Exchange',tags:['holiday','celebration'],al:{desc:'White elephant or Secret Santa gift exchange ($5 limit), holiday music, cookies, eggnog, and community caroling.',supplies:['Gift exchange setup ($5 limit communicated)','Holiday music playlist','Cookies and eggnog','Carol lyric sheets']},mc:{desc:'Staff delivers a wrapped small gift to each resident personally with a warm holiday message. Simple, meaningful, and deeply felt.',supplies:['Small wrapped gifts (lotion, candy, socks)','Holiday card with personal message','Holiday music playing softly']}} ]
   }
+,
+
+  spiritual: [
+    {
+      id:'sp-devotions', title:'Morning Devotions', tags:['daily','spiritual','gentle'], duration:'15–20 min',
+      al:{ desc:'Open with a short scripture reading or inspirational passage, a brief reflection question, and a closing prayer or moment of silence. Rotate between nondenominational, Christian, and secular inspirational formats to be inclusive. Staff can read or invite a resident to lead.', supplies:['Large-print devotional cards (printable from Materials tab)','Hymnals or lyric sheets (optional)','Soft instrumental or gospel background music','Coffee or tea for the group'] },
+      mc:{ desc:'Staff reads one short, familiar scripture or inspirational sentence slowly and clearly. Pause. Ask one simple question: "Does that remind you of anything?" Familiar words bring deep comfort. Keep under 10 minutes.', supplies:['Large-print single devotional card','Soft familiar hymn playing in background','Small cups of coffee or tea','Calm, unhurried tone from staff'] }
+    },
+    {
+      id:'sp-sunday', title:'Sunday Worship Service', tags:['sunday','worship','community'], duration:'30–45 min',
+      al:{ desc:'A structured in-house Sunday service: opening hymn, scripture reading, brief reflection or message, prayer, and closing hymn. Invite a local pastor, chaplain, or seminary student to lead monthly. Staff can lead the off weeks using the printable worship guide.', supplies:['Printable worship order of service (from Materials tab)','Hymnals or large-print lyric sheets','Offering basket (optional — for a charity, not the facility)','Candle (LED) for altar table','Recorded or live piano/organ music'] },
+      mc:{ desc:'A gentle 20-minute Sunday gathering: one familiar hymn sung together, one short scripture (Psalm 23 or similar), a brief prayer, and a blessing. The same format every week provides comfort through repetition. Residents who can\'t participate verbally often still respond to the music and touch.', supplies:['Large-print single-song lyric sheet','One familiar hymn recording (Amazing Grace, How Great Thou Art)','LED candle','Staff seated alongside residents throughout'] }
+    },
+    {
+      id:'sp-chaplain', title:'Chaplain Visit', tags:['pastoral','1:1','spiritual'], duration:'30–60 min',
+      al:{ desc:'Coordinate monthly or bi-monthly chaplain visits for group service AND one-on-one pastoral care. Provide the chaplain with a resident list noting faith backgrounds. Schedule group service first, then 1:1 visits for those who request them.', supplies:['Resident faith preference list (from intake forms)','Private space for 1:1 visits','Chaplain contact information posted for families','Communion elements if applicable (coordinate with chaplain)'] },
+      mc:{ desc:'Chaplain sits with 2–3 residents at a time in a calm space. Familiar prayers, gentle touch, and listening are the primary tools. Chaplains skilled in dementia care know that presence matters more than words. Alert chaplain to any residents with religious anxiety or trauma.', supplies:['Quiet semi-private space','Resident faith notes shared with chaplain in advance','Rosary, prayer beads, or cross for tactile comfort (if applicable)','Simple refreshment after visit'] }
+    },
+    {
+      id:'sp-prayer', title:'Prayer Group', tags:['spiritual','social','comfort'], duration:'20–30 min',
+      al:{ desc:'A voluntary open prayer circle. Residents share prayer requests (personal or for others in the world), staff leads a brief prayer incorporating them, and the group closes together. Nondenominational framing welcomes all faiths.', supplies:['Prayer request cards (index cards + pens)','Prayer prompt sheet (printable from Materials tab)','Comfortable seating circle','Soft music before and after'] },
+      mc:{ desc:'Staff leads a simple group prayer using familiar words — the Lord\'s Prayer, a blessing, or a simple "Thank you for this day." Residents who know the words often join in spontaneously. Repeat the same prayer weekly for comfort through familiarity.', supplies:['Familiar prayer printed in large font (Lord\'s Prayer, 23rd Psalm)','Soft music','Resident\'s hands held if welcome','No expectation of participation — presence is enough'] }
+    },
+    {
+      id:'sp-hymnsing', title:'Hymn Sing', tags:['music','spiritual','social'], duration:'30–45 min',
+      al:{ desc:'Group hymn sing with lyric sheets. Rotate 8–10 beloved hymns weekly. Invite a volunteer pianist, guitarist, or use quality recorded accompaniment. Residents often know every word by heart — this is pure joy. Request favorites in advance.', supplies:['Printable hymn lyric sheets (from Materials tab — top 20 hymns)','Piano, guitar, or recorded accompaniment','Song request cards from prior week','Comfortable seating with good sightlines'] },
+      mc:{ desc:'Sing 3–4 familiar hymns slowly, with staff singing alongside every resident. Large-print lyric sheets help those who can follow along. Many residents with advanced memory loss still know every word of hymns learned in childhood — music accesses long-term memory differently.', supplies:['Large-print lyric sheet (1 song per page, min 18pt font)','Familiar hymns only: Amazing Grace, In the Garden, What a Friend We Have in Jesus','Recorded piano accompaniment','Rhythm instruments (tambourines, maracas) for non-singers to participate'] }
+    },
+    {
+      id:'sp-bible', title:'Bible Study / Scripture Reading', tags:['education','spiritual','discussion'], duration:'30–45 min',
+      al:{ desc:'Weekly or bi-weekly Bible study — select a short passage (3–5 verses), read aloud, and discuss using 2–3 reflection questions. Works best with groups of 6–10. Staff facilitates but doesn\'t preach — ask open questions and let residents lead.', supplies:['Large-print Bibles or printed passage sheets','Discussion question cards (printable from Materials tab)','Coffee or tea','Comfortable discussion circle'] },
+      mc:{ desc:'Read one short, familiar scripture slowly (Psalm 23, John 3:16, the Beatitudes). Pause between phrases. Ask simple responses: "Does that sound familiar?" "What word stands out to you?" Accept any response warmly. One verse can fill 15 meaningful minutes.', supplies:['Single large-print scripture card (min 20pt font)','Soft instrumental music before reading','Staff patience and genuine engagement','No quiz, no right answers — only connection'] }
+    },
+    {
+      id:'sp-rosary', title:'Rosary / Devotional Beads', tags:['catholic','spiritual','tactile'], duration:'20–30 min',
+      al:{ desc:'Lead the Rosary for Catholic residents or offer a multi-faith bead meditation. Coordinate with local parish for a volunteer to lead monthly. On off weeks, staff can play a recorded rosary and residents follow along.', supplies:['Rosary beads for each participant','Recorded or printed rosary guide','Optional: Marian image or candle for focal point','Tissue — this practice often moves residents deeply'] },
+      mc:{ desc:'Place rosary beads in residents\' hands for tactile comfort even if they cannot follow the prayer verbally. The sensation of holding beads from childhood is powerful. Staff can pray quietly alongside. Even non-verbal residents often move their fingers in rhythm.', supplies:['Rosary beads (one per resident)','Gentle recorded Rosary or Ave Maria playing softly','No verbal participation required — touch is the activity'] }
+    },
+    {
+      id:'sp-gratitude', title:'Gratitude & Blessing Circle', tags:['spiritual','wellness','social'], duration:'20–30 min',
+      al:{ desc:'Go around the circle and each resident shares one thing they are grateful for today. Staff opens with their own gratitude to model vulnerability. Close with a group blessing or moment of appreciation. Simple, powerful, and works every single week.', supplies:['Gratitude prompt cards for residents who need a prompt (printable from Materials tab)','Comfortable circle seating','Optional: small "gratitude stone" passed around as a talking piece','Light refreshments after'] },
+      mc:{ desc:'Staff asks each resident one simple question: "What made you smile today?" or "What do you love?" Accept any answer. Even "I don\'t know" is met with: "That\'s okay — I\'m grateful you\'re here." Close with "We are thankful for each of you."', supplies:['Simple prompt: one question written large on a card','Soft music','Staff warmth and eye contact','No expectation of lengthy answers'] }
+    },
+    {
+      id:'sp-meditation', title:'Guided Meditation / Reflection', tags:['wellness','spiritual','relaxing'], duration:'20–30 min',
+      al:{ desc:'Staff-led or recorded guided meditation — a peaceful visualization (garden, beach, mountain, childhood home) with slow breathing. Nondenominational and accessible to all. Pair with soft nature sounds. Excellent for managing anxiety and afternoon restlessness.', supplies:['Printed or recorded guided meditation script (printable from Materials tab)','Soft nature sounds or instrumental music','Comfortable reclining chairs or cushions','Dim warm lighting','Lavender-scented lotion optional'] },
+      mc:{ desc:'Staff speaks slowly and gently: "Close your eyes if you\'d like... take a deep breath... imagine somewhere warm and peaceful..." 5–8 minutes maximum. The voice and cadence matter more than the content. Follow with gentle hand massage with lotion.', supplies:['Soft voice, slow pace, warm presence','Lavender lotion for hand massage after','Soft music (no lyrics)','Reclined or supported seating','1:4 staff ratio minimum'] }
+    },
+    {
+      id:'sp-vespers', title:'Evening Vespers', tags:['evening','spiritual','closing'], duration:'20–30 min',
+      al:{ desc:'A brief evening prayer service as the day winds down. Opening candle lighting, one hymn, a short reading or prayer of gratitude for the day, and a closing blessing. Peaceful and grounding at the end of the day. Families often join.', supplies:['LED candles (one per table)','Evening vespers order of service (printable from Materials tab)','Hymnal or lyric sheet','Decaf tea or warm milk served during'] },
+      mc:{ desc:'Light a candle (LED), play one soft hymn, and speak a simple blessing over the group: "Thank you for this day. You are loved. Rest well tonight." 10 minutes. The ritual of the candle and familiar words signals safety and the end of the day.', supplies:['LED candle','Familiar hymn recording (one song)','Simple blessing card for staff to read','Warm milk or herbal tea','Dim lighting'] }
+    },
+    {
+      id:'sp-grief', title:'Grief Support & Prayer', tags:['emotional','spiritual','support'], duration:'30–45 min',
+      al:{ desc:'A gentle group space to acknowledge loss — of friends, family, health, independence. Staff or chaplain facilitates. Share memories, light a candle for someone who has passed, read a poem about hope. Not therapy, but sacred space for grief to be held.', supplies:['LED candle','Memorial poem or reading (printable from Materials tab)','Tissues','Small photo display if residents bring pictures','Chaplain involvement recommended monthly'] },
+      mc:{ desc:'Staff sits with 2–3 residents and simply says: "Sometimes we miss people we love. That\'s okay." Hold space. Play soft familiar music. Some residents may cry, some may not engage — both are valid. Presence and warmth are the entire activity.', supplies:['Soft familiar music','Tissues','Staff trained in grief responses for dementia','LED candle','No pressure to speak or perform grief "correctly"'] }
+    },
+    {
+      id:'sp-advent', title:'Advent / Lent / Seasonal Reflection', tags:['seasonal','spiritual','holiday'], duration:'20–30 min',
+      al:{ desc:'Tie spiritual programming to the liturgical calendar: Advent candle lighting in December, Lenten reflection in spring, Easter sunrise reflection, Pentecost celebration. These anchor residents in time and tradition in a deeply meaningful way.', supplies:['Advent wreath with LED candles (December)','Lenten reflection cards (Lent)','Seasonal devotional passages (printable from Materials tab)','Seasonal hymns playlist','Simple seasonal decoration for the table'] },
+      mc:{ desc:'Use one powerful seasonal symbol — an Advent candle, a palm branch, an Easter egg — and let residents touch and hold it while staff says a few words about what it means. The object is the anchor. Keep words simple and familiar.', supplies:['Seasonal symbol (candle, palm, egg, etc.)','One familiar seasonal hymn','Staff narration: "This is a ___. In our faith it means ___."\n','Gentle unhurried pace'] }
+    },
+    {
+      id:'sp-ecumenical', title:'Ecumenical / Interfaith Service', tags:['inclusive','spiritual','community'], duration:'30–45 min',
+      al:{ desc:'A monthly interfaith service honoring multiple traditions — a prayer from the Christian tradition, a reading from another faith, a moment of silence, and a shared universal blessing. Works especially well in diverse communities. Invite a multi-faith volunteer panel.', supplies:['Printable interfaith order of service (Materials tab)','Readings from 2–3 traditions','Moment of silence instructions','Refreshments representing different cultural traditions afterward'] },
+      mc:{ desc:'Use universal spiritual language: "We are grateful." "We are loved." "We are not alone." These words cross all faith traditions and resonate with almost everyone. Pair with universally familiar music — Amazing Grace, Ave Maria, Shalom.', supplies:['Simple universal blessing card','Multi-faith familiar music playlist','Comfortable group seating','Staff participation alongside residents'] }
+    }
+  ],
 };
 
 const CS_MONTHLY = {
@@ -5041,6 +5177,7 @@ function renderLibrary() {
   if (libFilter === 'all' || libFilter === 'evening')   addSection(ACTIVITY_LIBRARY.evening,   '🌙 Evening Programs');
   if (libFilter === 'all' || libFilter === 'special')   addSection(ACTIVITY_LIBRARY.special,   '🎉 Special Events');
   if (libFilter === 'all' || libFilter === 'seasonal')  addSection(seasonal,                   '🗓️ This Month\'s Seasonal Ideas');
+  if (libFilter === 'all' || libFilter === 'spiritual') addSection(ACTIVITY_LIBRARY.spiritual || [], '✝ Spiritual & Faith');
 
   // Search filter
   if (libSearch.trim()) {
@@ -7143,7 +7280,7 @@ function exportCustomCalendarPDF() {
 // showMatSection — show/hide printable material panels
 // ─────────────────────────────────────────────
 function showMatSection(section) {
-  const all = ['bingo','loteria','singalong','wordgames','trivia','exercise','crafts','gamesheets','reminiscence'];
+  const all = ['bingo','loteria','singalong','wordgames','trivia','exercise','crafts','gamesheets','reminiscence','spiritual'];
   all.forEach(s => {
     const el = document.getElementById('mat-' + s);
     if (el) el.style.display = s === section ? '' : 'none';
@@ -7153,6 +7290,535 @@ function showMatSection(section) {
   if (section === 'singalong') showDecade(currentDecade);
   if (section === 'wordgames') renderWordGamePreview();
   if (section === 'trivia') renderTriviaPreview();
+  if (section === 'spiritual') initSpiritualButtons();
+}
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// SPIRITUAL MATERIALS DATA & PRINT FUNCTIONS
+// ═══════════════════════════════════════════════════════════════
+
+const HYMN_DATA = [
+  { title:'Amazing Grace', author:'John Newton, 1779', verses:[
+    'Amazing grace! How sweet the sound\nThat saved a wretch like me!\nI once was lost, but now am found;\nWas blind, but now I see.',
+    '\'Twas grace that taught my heart to fear,\nAnd grace my fears relieved;\nHow precious did that grace appear\nThe hour I first believed.',
+    'Through many dangers, toils, and snares,\nI have already come;\n\'Tis grace hath brought me safe thus far,\nAnd grace will lead me home.',
+    'The Lord has promised good to me,\nHis Word my hope secures;\nHe will my Shield and Portion be,\nAs long as life endures.',
+    'When we\'ve been there ten thousand years,\nBright shining as the sun,\nWe\'ve no less days to sing God\'s praise\nThan when we first begun.'
+  ]},
+  { title:'What a Friend We Have in Jesus', author:'Joseph Scriven, 1855', verses:[
+    'What a friend we have in Jesus,\nAll our sins and griefs to bear!\nWhat a privilege to carry\nEverything to God in prayer!\nO what peace we often forfeit,\nO what needless pain we bear,\nAll because we do not carry\nEverything to God in prayer!',
+    'Have we trials and temptations?\nIs there trouble anywhere?\nWe should never be discouraged;\nTake it to the Lord in prayer.\nCan we find a friend so faithful\nWho will all our sorrows share?\nJesus knows our every weakness;\nTake it to the Lord in prayer.',
+    'Are we weak and heavy laden,\nCumbered with a load of care?\nPrecious Savior, still our refuge—\nTake it to the Lord in prayer.\nDo your friends despise, forsake you?\nTake it to the Lord in prayer!\nIn His arms He\'ll take and shield you;\nYou will find a solace there.'
+  ]},
+  { title:'Blessed Assurance', author:'Fanny Crosby, 1873', verses:[
+    'Blessed assurance, Jesus is mine!\nO what a foretaste of glory divine!\nHeir of salvation, purchase of God,\nBorn of His Spirit, washed in His blood.',
+    'Perfect submission, perfect delight,\nVisions of rapture now burst on my sight;\nAngels descending bring from above\nEchoes of mercy, whispers of love.',
+    'Perfect submission, all is at rest,\nI in my Savior am happy and blest,\nWatching and waiting, looking above,\nFilled with His goodness, lost in His love.',
+    'CHORUS: This is my story, this is my song,\nPraising my Savior all the day long;\nThis is my story, this is my song,\nPraising my Savior all the day long.'
+  ]},
+  { title:'It Is Well with My Soul', author:'Horatio Spafford, 1873', verses:[
+    'When peace like a river attendeth my way,\nWhen sorrows like sea billows roll;\nWhatever my lot, Thou hast taught me to say,\n"It is well, it is well with my soul."',
+    'Though Satan should buffet, though trials should come,\nLet this blest assurance control,\nThat Christ hath regarded my helpless estate,\nAnd hath shed His own blood for my soul.',
+    'My sin—O the bliss of this glorious thought—\nMy sin, not in part, but the whole,\nIs nailed to the cross, and I bear it no more;\nPraise the Lord, praise the Lord, O my soul!',
+    'And, Lord, haste the day when the faith shall be sight,\nThe clouds be rolled back as a scroll,\nThe trump shall resound and the Lord shall descend;\n"Even so"—it is well with my soul.',
+    'CHORUS: It is well with my soul,\nIt is well, it is well with my soul.'
+  ]},
+  { title:'Rock of Ages', author:'Augustus Toplady, 1776', verses:[
+    'Rock of Ages, cleft for me,\nLet me hide myself in Thee;\nLet the water and the blood,\nFrom Thy wounded side which flowed,\nBe of sin the double cure;\nSave from wrath and make me pure.',
+    'Not the labor of my hands\nCan fulfill Thy law\'s demands;\nCould my zeal no respite know,\nCould my tears forever flow,\nAll for sin could not atone;\nThou must save, and Thou alone.',
+    'Nothing in my hand I bring,\nSimply to the cross I cling;\nNaked, come to Thee for dress;\nHelpless, look to Thee for grace;\nFoul, I to the fountain fly;\nWash me, Savior, or I die.',
+    'While I draw this fleeting breath,\nWhen mine eyes shall close in death,\nWhen I soar to worlds unknown,\nSee Thee on Thy judgment throne,\nRock of Ages, cleft for me,\nLet me hide myself in Thee.'
+  ]},
+  { title:'Abide with Me', author:'Henry Lyte, 1847', verses:[
+    'Abide with me; fast falls the eventide;\nThe darkness deepens; Lord, with me abide!\nWhen other helpers fail and comforts flee,\nHelp of the helpless, O abide with me.',
+    'Swift to its close ebbs out life\'s little day;\nEarth\'s joys grow dim, its glories pass away;\nChange and decay in all around I see;\nO Thou who changest not, abide with me.',
+    'I need Thy presence every passing hour;\nWhat but Thy grace can foil the tempter\'s power?\nWho, like Thyself, my guide and stay can be?\nThrough cloud and sunshine, Lord, abide with me.',
+    'I fear no foe, with Thee at hand to bless;\nIlls have no weight, and tears no bitterness;\nWhere is death\'s sting? Where, grave, thy victory?\nI triumph still, if Thou abide with me.'
+  ]},
+  { title:'Holy, Holy, Holy', author:'Reginald Heber, 1826', verses:[
+    'Holy, holy, holy! Lord God Almighty!\nEarly in the morning our song shall rise to Thee;\nHoly, holy, holy! Merciful and mighty!\nGod in three Persons, blessèd Trinity!',
+    'Holy, holy, holy! All the saints adore Thee,\nCasting down their golden crowns around the glassy sea;\nCherubim and seraphim falling down before Thee,\nWho wert, and art, and evermore shalt be.',
+    'Holy, holy, holy! Though the darkness hide Thee,\nThough the eye of sinful man Thy glory may not see,\nOnly Thou art holy; there is none beside Thee\nPerfect in power, in love, and purity.',
+    'Holy, holy, holy! Lord God Almighty!\nAll Thy works shall praise Thy name, in earth, and sky, and sea;\nHoly, holy, holy! Merciful and mighty!\nGod in three Persons, blessèd Trinity!'
+  ]},
+  { title:'Come Thou Fount', author:'Robert Robinson, 1758', verses:[
+    'Come, Thou Fount of every blessing,\nTune my heart to sing Thy grace;\nStreams of mercy, never ceasing,\nCall for songs of loudest praise.\nTeach me some melodious sonnet,\nSung by flaming tongues above;\nPraise the mount! I\'m fixed upon it,\nMount of Thy redeeming love.',
+    'Here I raise my Ebenezer;\nHither by Thy help I\'m come;\nAnd I hope, by Thy good pleasure,\nSafely to arrive at home.\nJesus sought me when a stranger,\nWandering from the fold of God;\nHe, to rescue me from danger,\nInterposed His precious blood.',
+    'O to grace how great a debtor\nDaily I\'m constrained to be!\nLet Thy goodness, like a fetter,\nBind my wandering heart to Thee.\nProne to wander, Lord, I feel it,\nProne to leave the God I love;\nHere\'s my heart, O take and seal it,\nSeal it for Thy courts above.'
+  ]},
+  { title:'Sweet Hour of Prayer', author:'W.W. Walford, 1845', verses:[
+    'Sweet hour of prayer! Sweet hour of prayer!\nThat calls me from a world of care,\nAnd bids me at my Father\'s throne\nMake all my wants and wishes known.\nIn seasons of distress and grief,\nMy soul has often found relief,\nAnd oft escaped the tempter\'s snare\nBy thy return, sweet hour of prayer!',
+    'Sweet hour of prayer! Sweet hour of prayer!\nThe joys I feel, the bliss I share\nOf those whose anxious spirits burn\nWith strong desires for Thy return!\nWith such I hasten to the place\nWhere God my Savior shows His face,\nAnd gladly take my station there,\nAnd wait for thee, sweet hour of prayer!',
+    'Sweet hour of prayer! Sweet hour of prayer!\nThy wings shall my petition bear\nTo Him whose truth and faithfulness\nEngage the waiting soul to bless.\nAnd since He bids me seek His face,\nBelieve His Word and trust His grace,\nI\'ll cast on Him my every care,\nAnd wait for thee, sweet hour of prayer!'
+  ]},
+  { title:'To God Be the Glory', author:'Fanny Crosby, 1875', verses:[
+    'To God be the glory, great things He hath taught us,\nGreat things He hath done, and great our rejoicing\nThrough Jesus the Son;\nBut purer, and higher, and greater will be\nOur wonder, our transport, when Jesus we see.',
+    'O perfect redemption, the purchase of blood,\nTo every believer the promise of God;\nThe vilest offender who truly believes,\nThat moment from Jesus a pardon receives.',
+    'Great things He hath taught us, great things He hath done,\nAnd great our rejoicing through Jesus the Son;\nBut purer, and higher, and greater will be\nOur wonder, our transport, when Jesus we see.',
+    'CHORUS: Praise the Lord, praise the Lord,\nLet the earth hear His voice!\nPraise the Lord, praise the Lord,\nLet the people rejoice!\nO come to the Father, through Jesus the Son,\nAnd give Him the glory, great things He hath done.'
+  ]},
+  { title:'A Mighty Fortress Is Our God', author:'Martin Luther, 1529 (tr. Frederick Hedge)', verses:[
+    'A mighty fortress is our God,\nA bulwark never failing;\nOur helper He amid the flood\nOf mortal ills prevailing.\nFor still our ancient foe\nDoth seek to work us woe;\nHis craft and power are great,\nAnd armed with cruel hate,\nOn earth is not his equal.',
+    'Did we in our own strength confide,\nOur striving would be losing,\nWere not the right Man on our side,\nThe Man of God\'s own choosing.\nDost ask who that may be?\nChrist Jesus, it is He;\nLord Sabaoth, His name,\nFrom age to age the same,\nAnd He must win the battle.',
+    'And though this world, with devils filled,\nShould threaten to undo us,\nWe will not fear, for God hath willed\nHis truth to triumph through us.\nThe Prince of Darkness grim,\nWe tremble not for him;\nHis rage we can endure,\nFor lo, his doom is sure,\nOne little word shall fell him.',
+    'That word above all earthly powers,\nNo thanks to them, abideth;\nThe Spirit and the gifts are ours\nThrough Him who with us sideth.\nLet goods and kindred go,\nThis mortal life also;\nThe body they may kill;\nGod\'s truth abideth still,\nHis kingdom is forever.'
+  ]},
+  { title:'Leaning on the Everlasting Arms', author:'E.A. Hoffman, 1887', verses:[
+    'What a fellowship, what a joy divine,\nLeaning on the everlasting arms;\nWhat a blessedness, what a peace is mine,\nLeaning on the everlasting arms.',
+    'O how sweet to walk in this pilgrim way,\nLeaning on the everlasting arms;\nO how bright the path grows from day to day,\nLeaning on the everlasting arms.',
+    'What have I to dread, what have I to fear,\nLeaning on the everlasting arms;\nI have blessed peace with my Lord so near,\nLeaning on the everlasting arms.',
+    'CHORUS: Leaning, leaning,\nSafe and secure from all alarms;\nLeaning, leaning,\nLeaning on the everlasting arms.'
+  ]},
+  { title:'How Firm a Foundation', author:'John Rippon, 1787', verses:[
+    'How firm a foundation, ye saints of the Lord,\nIs laid for your faith in His excellent Word!\nWhat more can He say than to you He hath said,\nTo you who for refuge to Jesus have fled?',
+    '"Fear not, I am with thee; O be not dismayed,\nFor I am thy God, and will still give thee aid;\nI\'ll strengthen thee, help thee, and cause thee to stand,\nUpheld by My righteous, omnipotent hand."',
+    '"When through the deep waters I call thee to go,\nThe rivers of sorrow shall not overflow;\nFor I will be with thee, thy troubles to bless,\nAnd sanctify to thee thy deepest distress."',
+    '"The soul that on Jesus hath leaned for repose,\nI will not, I will not desert to its foes;\nThat soul, though all hell should endeavor to shake,\nI\'ll never, no never, no never forsake!"'
+  ]},
+  { title:'O For a Thousand Tongues', author:'Charles Wesley, 1739', verses:[
+    'O for a thousand tongues to sing\nMy great Redeemer\'s praise,\nThe glories of my God and King,\nThe triumphs of His grace!',
+    'My gracious Master and my God,\nAssist me to proclaim,\nTo spread through all the earth abroad\nThe honors of Thy name.',
+    'Jesus! The name that charms our fears,\nThat bids our sorrows cease;\n\'Tis music in the sinner\'s ears,\n\'Tis life, and health, and peace.',
+    'He breaks the power of canceled sin,\nHe sets the prisoner free;\nHis blood can make the foulest clean;\nHis blood availed for me.'
+  ]},
+  { title:'In the Garden', author:'C. Austin Miles, 1912', verses:[
+    'I come to the garden alone,\nWhile the dew is still on the roses;\nAnd the voice I hear, falling on my ear,\nThe Son of God discloses.',
+    'He speaks, and the sound of His voice\nIs so sweet the birds hush their singing,\nAnd the melody that He gave to me\nWithin my heart is ringing.',
+    'I\'d stay in the garden with Him\nThough the night around me be falling,\nBut He bids me go through the voice of woe,\nHis voice to me is calling.',
+    'CHORUS: And He walks with me, and He talks with me,\nAnd He tells me I am His own;\nAnd the joy we share as we tarry there,\nNone other has ever known.'
+  ]}
+];
+
+const DEVOTIONAL_DATA = [
+  { month:"January",   theme:"New Beginnings",       scripture:"“See, I am doing a new thing! Now it springs up; do you not perceive it?” — Isaiah 43:19",                                                                                               reflection:"Every new year — and every new day — is a gift. What is one small hope you are carrying into this season?",                                                                  prayer:"Lord, thank You for the gift of new beginnings. Help us to face each day with courage, knowing You go before us. Amen." },
+  { month:"February",  theme:"Love",                  scripture:"“And now these three remain: faith, hope, and love. But the greatest of these is love.” — 1 Corinthians 13:13",                                                                          reflection:"Love is shown in small, everyday moments — a kind word, a listening ear, a gentle touch. Who has shown you love that you still carry with you?",                                    prayer:"Gracious God, thank You for the love that surrounds us. Help us to give and receive love freely today. Amen." },
+  { month:"March",     theme:"Renewal",               scripture:"“Create in me a clean heart, O God, and renew a right spirit within me.” — Psalm 51:10",                                                                                                   reflection:"Spring reminds us that after every winter, new life comes. What in your own life feels like it is being renewed or given fresh hope?",                                                   prayer:"Lord of all seasons, renew our hearts and spirits. Let us trust that Your mercies are new every morning. Amen." },
+  { month:"April",     theme:"Hope & Resurrection",   scripture:"“I am the resurrection and the life. Whoever believes in me will live, even though they die.” — John 11:25",                                                                              reflection:"Easter reminds us that hope is not wishful thinking — it is a certainty rooted in love. What does hope mean to you today?",                                                         prayer:"Risen Lord, fill us with the hope of Easter. Remind us that no darkness is permanent, and that You are always at work. Amen." },
+  { month:"May",       theme:"Gratitude",             scripture:"“Give thanks in all circumstances; for this is God’s will for you in Christ Jesus.” — 1 Thessalonians 5:18",                                                                         reflection:"Gratitude is a choice, especially when life is hard. What is one thing — however small — that you are grateful for today?",                                                    prayer:"Father, open our eyes to see Your gifts in ordinary moments. Thank You for this day, for the people around us, and for Your steady love. Amen." },
+  { month:"June",      theme:"Peace",                 scripture:"“The Lord bless you and keep you; the Lord make His face shine on you and be gracious to you; the Lord turn His face toward you and give you peace.” — Numbers 6:24–26",             reflection:"Peace is not the absence of trouble — it is a deep trust that we are held. Where do you feel most at peace in your life?",                                                            prayer:"Prince of Peace, quiet the noise in our hearts today. Help us to rest in the knowledge that we are deeply loved and not alone. Amen." },
+  { month:"July",      theme:"Freedom & Joy",         scripture:"“You will know the truth, and the truth will set you free.” — John 8:32",                                                                                                                  reflection:"True freedom is found in love — freedom from fear, from shame, from regret. What truth has set you free in your lifetime?",                                                        prayer:"Lord, we celebrate the freedom You give — not just freedom from, but freedom for — for joy, for love, for a life well lived. Amen." },
+  { month:"August",    theme:"Rest",                  scripture:"“Come to me, all you who are weary and burdened, and I will give you rest.” — Matthew 11:28",                                                                                              reflection:"Rest is not laziness — it is trust. It means believing that the world will keep turning if we stop for a moment. What does real rest feel like for you?",                          prayer:"Lord, You invite us to rest in You. Help us to lay down what is heavy today and to receive the rest You so freely offer. Amen." },
+  { month:"September", theme:"Harvest & Provision",   scripture:"“The Lord is my shepherd; I shall not want.” — Psalm 23:1",                                                                                                                                reflection:"A shepherd doesn’t just lead — they protect, provide, and search for the one who is lost. How have you experienced being cared for in your life?",                            prayer:"Good Shepherd, thank You for providing all we need. As the harvest season comes, fill our hearts with trust in Your abundant care. Amen." },
+  { month:"October",   theme:"Comfort",               scripture:"“Even though I walk through the darkest valley, I will fear no evil, for You are with me.” — Psalm 23:4",                                                                                  reflection:"The valley is real. The darkness is real. And so is the presence of the One who walks with us through it. What comfort have you found in hard times?",                                  prayer:"God of all comfort, be near to those who are struggling today. Remind us that You are closest to us in our hardest moments. Amen." },
+  { month:"November",  theme:"Thankfulness",          scripture:"“Enter His gates with thanksgiving and His courts with praise; give thanks to Him and praise His name.” — Psalm 100:4",                                                                    reflection:"Thanksgiving is not a feeling — it’s a practice. Even in difficulty, there is always something to name. What memory or person fills your heart with thanksgiving today?",    prayer:"Heavenly Father, we come before You with thankful hearts. For life, for love, for laughter, and for one another — thank You. Amen." },
+  { month:"December",  theme:"Light & Hope",          scripture:"“The people walking in darkness have seen a great light; on those living in the land of deep darkness a light has dawned.” — Isaiah 9:2",                                                  reflection:"Christmas began not with a palace, but with a stable — a reminder that God meets us right where we are. Where have you found unexpected light this year?",                         prayer:"Lord of Light, come into the dark places of our world and our hearts. Thank You for the gift of Your presence — the greatest gift of all. Amen." }
+];
+
+const PRAYER_PROMPTS = [
+  'Today I am thankful for…',
+  'Someone I want to pray for today is…',
+  'One worry I can give to God today is…',
+  'A person who has been a blessing to me is…',
+  'Something beautiful I noticed this week is…',
+  'A memory that brings me comfort is…',
+  'Something I hope for is…',
+  'I feel closest to God when…'
+];
+
+const GRATITUDE_PROMPTS = [
+  { q:'What made you smile today?', sub:'No answer is too small.' },
+  { q:'Who is someone you love?', sub:'Tell us something about them.' },
+  { q:'What is one of your favorite memories?', sub:'A place, a time, a person.' },
+  { q:'What is something beautiful you have seen?', sub:'In nature, in people, in life.' },
+  { q:'What are you grateful for right now?', sub:'In this moment, today.' },
+  { q:'What is something you are proud of?', sub:'Something you did or someone you raised.' }
+];
+
+function initSpiritualButtons() {
+  const grid = document.getElementById('hymn-btn-grid');
+  if (!grid || grid.dataset.initialized) return;
+  grid.dataset.initialized = 'true';
+  grid.innerHTML = HYMN_DATA.map((h, i) => 
+    `<button class="btn btn-secondary" style="font-size:11px;padding:5px 10px;" onclick="printHymnSheet(${i})">${h.title}</button>`
+  ).join('');
+}
+
+function printHymnSheet(idx) {
+  const h = HYMN_DATA[idx];
+  let verseNum = 0;
+  const versesHtml = h.verses.map(function(v) {
+    const isChorus = v.startsWith('CHORUS:');
+    const text = isChorus ? v.replace('CHORUS: ','').replace('CHORUS:','') : v;
+    const label = isChorus
+      ? '<div style="font-size:12px;font-weight:700;color:#7030A0;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Chorus</div>'
+      : '<div style="font-size:12px;font-weight:600;color:#666;margin-bottom:4px;">Verse ' + (++verseNum) + '</div>';
+    const boxStyle = isChorus
+      ? 'margin-bottom:20px;padding:12px 20px;background:#f5f0ff;border-left:4px solid #7030A0;border-radius:4px;'
+      : 'margin-bottom:20px;';
+    return '<div style="' + boxStyle + '">' + label + '<div style="font-size:20px;line-height:1.7;white-space:pre-wrap;font-family:Georgia,serif;">' + text + '</div></div>';
+  }).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>${h.title}</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Georgia,serif;margin:40px;max-width:680px;}
+    h1{font-size:28px;color:#1a1a40;border-bottom:3px solid #7030A0;padding-bottom:10px;margin-bottom:6px;}
+    .author{font-size:14px;color:#666;margin-bottom:28px;font-style:italic;}
+  </style></head><body>
+    <h1>${h.title}</h1>
+    <div class="author">${h.author}</div>
+    ${versesHtml}
+    <div style="margin-top:30px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Public domain hymn · Empower Life 365 · empowerlife365.app</div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printAllHymns() {
+  const allHtml = HYMN_DATA.map(function(h, hIdx) {
+    const versesHtml = h.verses.map(function(v) {
+      const isChorus = v.startsWith('CHORUS:');
+      const text = isChorus ? v.replace('CHORUS: ','').replace('CHORUS:','') : v;
+      const chorusLabel = isChorus ? '<div style="font-size:11px;font-weight:700;color:#7030A0;margin-bottom:4px;text-transform:uppercase;">Chorus</div>' : '';
+      const boxStyle = isChorus ? 'margin-bottom:16px;padding:10px 16px;background:#f5f0ff;border-left:4px solid #7030A0;border-radius:4px;' : 'margin-bottom:16px;';
+      return '<div style="' + boxStyle + '">' + chorusLabel + '<div style="font-size:18px;line-height:1.65;white-space:pre-wrap;font-family:Georgia,serif;">' + text + '</div></div>';
+    }).join('');
+    const pageBreak = hIdx < HYMN_DATA.length-1 ? 'page-break-after:always;' : '';
+    return '<div style="' + pageBreak + 'padding-bottom:20px;"><h1 style="font-size:24px;color:#1a1a40;border-bottom:3px solid #7030A0;padding-bottom:8px;margin-bottom:4px;">' + h.title + '</h1><div style="font-size:13px;color:#666;margin-bottom:22px;font-style:italic;">' + h.author + '</div>' + versesHtml + '</div>';
+  }).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Hymn Booklet</title><style>@media print{body{margin:0;}}body{font-family:Georgia,serif;margin:40px;max-width:680px;}</style></head><body>${allHtml}<div style="font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;margin-top:20px;">Public domain hymns · Empower Life 365 · empowerlife365.app</div></body></html>`);
+  w.document.close(); w.print();
+}
+
+function printDevotionalCard(monthOverride) {
+  const mIdx = (monthOverride !== undefined) ? monthOverride : (DATA.monthNum - 1);
+  const d = DEVOTIONAL_DATA[mIdx];
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Devotional — ${d.month}</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Georgia,serif;margin:0;background:#fff;}
+    .card{max-width:700px;margin:40px auto;border:3px solid #7030A0;border-radius:16px;overflow:hidden;}
+    .card-head{background:#7030A0;color:#fff;padding:24px 32px;}
+    .card-head h1{margin:0;font-size:26px;}
+    .card-head .theme{font-size:15px;opacity:.85;margin-top:4px;}
+    .card-body{padding:28px 32px;}
+    .scripture{font-size:20px;line-height:1.65;font-style:italic;color:#1a1a40;border-left:5px solid #7030A0;padding-left:20px;margin-bottom:24px;}
+    .section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#7030A0;margin-bottom:8px;}
+    .reflection{font-size:18px;line-height:1.7;color:#333;margin-bottom:24px;}
+    .prayer-box{background:#f5f0ff;border-radius:10px;padding:20px 24px;}
+    .prayer{font-size:17px;line-height:1.7;color:#1a1a40;font-style:italic;}
+    .footer{font-size:11px;color:#aaa;text-align:center;padding:16px;border-top:1px solid #eee;}
+  </style></head><body>
+    <div class="card">
+      <div class="card-head"><h1>✝ ${d.month} Devotional</h1><div class="theme">Theme: ${d.theme}</div></div>
+      <div class="card-body">
+        <div class="section-lbl">📖 Scripture</div>
+        <div class="scripture">${d.scripture}</div>
+        <div class="section-lbl">💭 Reflection</div>
+        <div class="reflection">${d.reflection}</div>
+        <div class="section-lbl">🙏 Closing Prayer</div>
+        <div class="prayer-box"><div class="prayer">${d.prayer}</div></div>
+      </div>
+      <div class="footer">Empower Life 365 · empowerlife365.app</div>
+    </div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printAllDevotionals() {
+  const allHtml = DEVOTIONAL_DATA.map((d, i) => {
+    const pb = i < DEVOTIONAL_DATA.length-1 ? 'page-break-after:always;' : '';
+    return `<div style="${pb}">
+      <div style="border:3px solid #7030A0;border-radius:12px;overflow:hidden;max-width:660px;margin:20px auto;">
+        <div style="background:#7030A0;color:#fff;padding:16px 24px;"><div style="font-size:20px;font-weight:700;">✝ ${d.month} — ${d.theme}</div></div>
+        <div style="padding:20px 24px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#7030A0;margin-bottom:6px;">Scripture</div>
+          <div style="font-size:16px;line-height:1.6;font-style:italic;color:#1a1a40;border-left:4px solid #7030A0;padding-left:14px;margin-bottom:16px;">${d.scripture}</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#7030A0;margin-bottom:6px;">Reflection</div>
+          <div style="font-size:15px;line-height:1.65;color:#333;margin-bottom:16px;">${d.reflection}</div>
+          <div style="background:#f5f0ff;border-radius:8px;padding:14px 18px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#7030A0;margin-bottom:6px;">Closing Prayer</div><div style="font-size:15px;line-height:1.65;font-style:italic;color:#1a1a40;">${d.prayer}</div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>All Monthly Devotionals</title><style>@media print{body{margin:0;}}body{font-family:Georgia,serif;margin:30px;}</style></head><body>${allHtml}<div style="font-size:11px;color:#aaa;text-align:center;padding-top:16px;">Empower Life 365 · empowerlife365.app</div></body></html>`);
+  w.document.close(); w.print();
+}
+
+function printPrayerPrompts() {
+  const cards = PRAYER_PROMPTS.map(p => `
+    <div style="border:2px solid #7030A0;border-radius:10px;padding:18px 20px;display:flex;align-items:center;min-height:80px;">
+      <div style="font-size:13px;color:#7030A0;margin-right:12px;font-size:22px;">🙏</div>
+      <div style="font-size:18px;line-height:1.5;color:#1a1a40;font-family:Georgia,serif;">${p}</div>
+    </div>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Prayer Prompt Cards</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Arial,sans-serif;margin:30px;}
+    h1{font-size:20px;color:#1a1a40;text-align:center;border-bottom:3px solid #7030A0;padding-bottom:10px;margin-bottom:8px;}
+    .sub{text-align:center;font-size:13px;color:#666;margin-bottom:20px;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .cut{text-align:center;font-size:11px;color:#aaa;margin:16px 0;border-top:1px dashed #ccc;padding-top:10px;}
+  </style></head><body>
+    <h1>🙏 Prayer Prompt Cards</h1>
+    <div class="sub">Cut apart · Use for group prayer circle or individual reflection · One card per person</div>
+    <div class="grid">${cards}</div>
+    <div class="cut">✂ Cut apart along the dashed lines · Empower Life 365 · empowerlife365.app</div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printGratitudeCards() {
+  const cards = GRATITUDE_PROMPTS.map(g => `
+    <div style="border:2px solid #DAA520;border-radius:12px;padding:20px 22px;background:#fffdf0;min-height:100px;display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:20px;line-height:1.5;color:#1a1a40;font-family:Georgia,serif;font-weight:700;margin-bottom:6px;">${g.q}</div>
+      <div style="font-size:14px;color:#888;font-style:italic;">${g.sub}</div>
+    </div>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Gratitude Cards</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Arial,sans-serif;margin:30px;}
+    h1{font-size:20px;color:#1a1a40;text-align:center;border-bottom:3px solid #DAA520;padding-bottom:10px;margin-bottom:8px;}
+    .sub{text-align:center;font-size:13px;color:#666;margin-bottom:20px;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .cut{text-align:center;font-size:11px;color:#aaa;margin:16px 0;border-top:1px dashed #ccc;padding-top:10px;}
+  </style></head><body>
+    <h1>💛 Gratitude &amp; Reflection Cards</h1>
+    <div class="sub">Pass one card to each resident · Read aloud · Share as you feel comfortable · No wrong answers</div>
+    <div class="grid">${cards}</div>
+    <div class="cut">✂ Cut apart · Empower Life 365 · empowerlife365.app</div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printWorshipOrder() {
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Worship Order of Service</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Georgia,serif;margin:40px;max-width:660px;}
+    h1{font-size:24px;color:#1a1a40;text-align:center;margin-bottom:4px;}
+    .sub{text-align:center;font-size:13px;color:#666;margin-bottom:28px;}
+    .step{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding:14px 16px;border:1px solid #e0d5f0;border-radius:8px;}
+    .step-num{font-size:22px;font-weight:700;color:#7030A0;min-width:32px;}
+    .step-body{flex:1;}
+    .step-title{font-size:15px;font-weight:700;color:#1a1a40;margin-bottom:4px;}
+    .step-desc{font-size:13px;color:#555;line-height:1.5;}
+    .step-fill{font-size:13px;color:#7030A0;font-style:italic;margin-top:4px;}
+    .notes{background:#f5f0ff;border-radius:8px;padding:14px 18px;font-size:13px;color:#333;line-height:1.6;margin-top:16px;}
+    .footer{font-size:11px;color:#aaa;text-align:center;margin-top:24px;padding-top:10px;border-top:1px solid #eee;}
+  </style></head><body>
+    <h1>✝ Sunday Worship — Order of Service</h1>
+    <div class="sub">Staff-led in-house service · Approx. 35–45 minutes · No pastor required</div>
+
+    <div class="step"><div class="step-num">1</div><div class="step-body">
+      <div class="step-title">🕯️ Welcome &amp; Candle Lighting (2 min)</div>
+      <div class="step-desc">Light the LED candle on the table. Welcome everyone warmly by name.</div>
+      <div class="step-fill">Staff says: "Good morning, and welcome to our Sunday worship. We are so glad you are here."</div>
+    </div></div>
+
+    <div class="step"><div class="step-num">2</div><div class="step-body">
+      <div class="step-title">🎵 Opening Hymn (5–8 min)</div>
+      <div class="step-desc">Sing together using large-print lyric sheets. Play recorded accompaniment or live piano.</div>
+      <div class="step-fill">Today's hymn: _________________________ (write in before service)</div>
+    </div></div>
+
+    <div class="step"><div class="step-num">3</div><div class="step-body">
+      <div class="step-title">📖 Scripture Reading (3–5 min)</div>
+      <div class="step-desc">Read the scripture passage slowly and clearly. Pause between sentences.</div>
+      <div class="step-fill">Today's passage: _________________________ (write in before service)</div>
+    </div></div>
+
+    <div class="step"><div class="step-num">4</div><div class="step-body">
+      <div class="step-title">💭 Reflection (8–10 min)</div>
+      <div class="step-desc">Share a brief thought on the passage, then open to the group. Ask: "Does anything in that reading stand out to you?"</div>
+      <div class="step-fill">Brief note / key thought: _________________________</div>
+    </div></div>
+
+    <div class="step"><div class="step-num">5</div><div class="step-body">
+      <div class="step-title">🙏 Prayers of the People (5 min)</div>
+      <div class="step-desc">Invite residents to share prayer requests. Staff writes them down and prays over them aloud.</div>
+      <div class="step-fill">Requests noted: _________________________</div>
+    </div></div>
+
+    <div class="step"><div class="step-num">6</div><div class="step-body">
+      <div class="step-title">🎵 Closing Hymn (5–8 min)</div>
+      <div class="step-desc">End with a beloved, familiar hymn. Invite residents to choose.</div>
+      <div class="step-fill">Today's closing hymn: _________________________</div>
+    </div></div>
+
+    <div class="step"><div class="step-num">7</div><div class="step-body">
+      <div class="step-title">✝ Benediction &amp; Blessing (1–2 min)</div>
+      <div class="step-desc">Close with a spoken blessing over the group.</div>
+      <div class="step-fill">Staff says: "May the Lord bless you and keep you. May His face shine upon you, and give you peace. Go in love."</div>
+    </div></div>
+
+    <div class="notes"><strong>💡 Staff Notes:</strong> Keep the service the same format every week — predictability provides comfort. If a resident becomes tearful, that is a gift, not a problem. Sit with them. If a resident with dementia calls out or wanders, gently redirect without stopping the service. Always begin and end on time.</div>
+    <div class="footer">Empower Life 365 · empowerlife365.app · Duplicate freely for internal use</div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printVespersGuide() {
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Evening Vespers Guide</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Georgia,serif;margin:40px;max-width:660px;}
+    h1{font-size:24px;color:#1a1a40;text-align:center;margin-bottom:4px;}
+    .sub{text-align:center;font-size:13px;color:#555;margin-bottom:24px;font-style:italic;}
+    .step{margin-bottom:18px;padding:14px 18px;border-left:4px solid #7030A0;background:#faf8ff;border-radius:0 8px 8px 0;}
+    .step-title{font-size:14px;font-weight:700;color:#7030A0;margin-bottom:6px;}
+    .step-text{font-size:16px;line-height:1.7;color:#1a1a40;}
+    .blessing-box{border:2px solid #7030A0;border-radius:12px;padding:20px 24px;margin:20px 0;text-align:center;}
+    .blessing{font-size:20px;line-height:1.7;font-style:italic;color:#1a1a40;}
+    .footer{font-size:11px;color:#aaa;text-align:center;margin-top:24px;padding-top:10px;border-top:1px solid #eee;}
+  </style></head><body>
+    <h1>🕯️ Evening Vespers</h1>
+    <div class="sub">A 10-minute evening ritual · Same format every night · Comfort through repetition</div>
+
+    <div class="step">
+      <div class="step-title">1. Light the Candle (1 min)</div>
+      <div class="step-text">Light the LED candle on the table. Dim the overhead lights slightly if possible. Allow a moment of quiet as the room settles.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">2. Words of Welcome (30 sec)</div>
+      <div class="step-text"><em>"Good evening. The day is coming to a close, and we gather together one more time. You are loved, and you are not alone."</em></div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">3. Hymn (3–4 min)</div>
+      <div class="step-text">Play or sing one familiar evening hymn. Suggested: <strong>Abide with Me</strong>, <strong>Sweet Hour of Prayer</strong>, or <strong>It Is Well with My Soul</strong>. Use the same hymn for a week at a time so residents can anticipate and sing along.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">4. A Word of Gratitude (1 min)</div>
+      <div class="step-text"><em>"Before we close, let us give thanks. Today there was [name something specific — a meal shared, laughter, a beautiful sky, a kind word]. We are grateful."</em></div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">5. The Blessing (1 min)</div>
+      <div class="step-text">Speak this blessing slowly and warmly, making eye contact with each resident:</div>
+    </div>
+
+    <div class="blessing-box">
+      <div class="blessing">
+        "May you rest well tonight.<br>
+        May your dreams be gentle.<br>
+        May you know that you are loved,<br>
+        that you matter,<br>
+        and that tomorrow holds good things.<br>
+        Good night. God bless you."
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">6. Extinguish the Candle (30 sec)</div>
+      <div class="step-text">Gently blow out or click off the LED candle. This signals the ritual is complete. The act of closing is as important as the opening.</div>
+    </div>
+
+    <div style="background:#f5f0ff;border-radius:8px;padding:14px 18px;font-size:13px;color:#333;line-height:1.6;margin-top:6px;">
+      <strong>💡 For Memory Care:</strong> The candle is the anchor. Many residents will not track the words but will visually follow the candle, feel the mood, and respond to your tone. Speak slowly. Touch a shoulder or hand if welcomed. The ritual communicates safety — "the day is done, you are safe, you are loved."
+    </div>
+    <div class="footer">Empower Life 365 · empowerlife365.app · Duplicate freely for internal use</div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printBibleStudyGuide() {
+  const sessions = [
+    { week:1, passage:"Psalm 23",                      title:"The Good Shepherd",  questions:["The psalm says God 'leads me beside still waters.' Where in your life have you found stillness or peace?","The 'valley of the shadow' is real — hard times happen to everyone. How have you found comfort in a difficult season?","What does it mean to you that you will 'dwell in the house of the Lord forever'?"] },
+    { week:2, passage:"Matthew 5:3–12 (The Beatitudes)", title:"Blessed Are…",     questions:["Jesus blesses the poor in spirit, the mourning, and the meek. Does that surprise you? Why or why not?","Which of the Beatitudes speaks most to your life right now?","What does it look like to be a peacemaker in everyday life?"] },
+    { week:3, passage:"1 Corinthians 13:4–8",           title:"The Definition of Love", questions:["Love is patient and kind. Who is someone in your life who showed you that kind of love?","Which word in this passage do you find hardest — patient, kind, humble? Why?","Love never fails. Do you believe that? What has helped or challenged that belief?"] },
+    { week:4, passage:"John 15:9–13",                   title:"Abide in Love",     questions:["Jesus says to remain in His love. What does that mean to you in practical, everyday terms?","The greatest love is laying down one's life. Have you known someone who sacrificed for others? Tell us about them.","What does joy look like in your life today?"] },
+    { week:5, passage:"Romans 8:38–39",                 title:"Nothing Can Separate Us", questions:["Paul lists things that cannot separate us from God's love — death, height, depth, anything in creation. Does that bring you comfort? Why or why not?","Have there been times in your life when you felt far from God? What happened?","What is one thing you know with certainty today?"] },
+    { week:6, passage:"Philippians 4:4–8",              title:"Think on These Things", questions:["Paul says to think about what is true, noble, right, pure, lovely, and admirable. What beautiful thing can you name right now?","Do not be anxious about anything — is that easy or hard advice for you?","What does the peace that passes all understanding mean to you?"] },
+    { week:7, passage:"Isaiah 40:28–31",                title:"Soaring on Wings",   questions:["Those who wait on the Lord renew their strength. What does it mean to wait on God — in practice, day to day?","The passage promises we will run and not grow weary. When have you found unexpected strength?","How do you rest — truly rest? What restores you?"] },
+    { week:8, passage:"Revelation 21:3–5",              title:"All Things New",     questions:["God says He will wipe every tear from our eyes. What does that promise mean to you?","The image of no more death, mourning, crying, or pain — what does that feel like to imagine?","I am making everything new. What would you most love to see made new — in yourself, in the world?"] }
+  ];
+;
+
+  const html = sessions.map((s,i) => {
+    const pb = i < sessions.length-1 ? 'page-break-after:always;' : '';
+    return `<div style="${pb}padding:10px 0;">
+      <div style="background:#7030A0;color:#fff;padding:14px 20px;border-radius:8px 8px 0 0;">
+        <span style="font-size:13px;opacity:.8;">Week ${s.week} of 8</span>
+        <div style="font-size:20px;font-weight:700;">${s.title}</div>
+        <div style="font-size:14px;opacity:.85;margin-top:2px;">📖 ${s.passage}</div>
+      </div>
+      <div style="border:2px solid #7030A0;border-top:none;border-radius:0 0 8px 8px;padding:18px 22px;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#7030A0;margin-bottom:12px;">Discussion Questions</div>
+        ${s.questions.map((q,qi)=>`<div style="margin-bottom:14px;"><div style="font-size:16px;line-height:1.6;color:#1a1a40;font-family:Georgia,serif;"><strong>${qi+1}.</strong> ${q}</div></div>`).join('')}
+        <div style="margin-top:16px;padding:10px 14px;background:#f5f0ff;border-radius:6px;font-size:13px;color:#555;font-style:italic;">
+          💡 Facilitator tip: There are no wrong answers. If someone shares a difficult memory, simply say "Thank you for sharing that." Don't rush to fix or advise. Your presence is the ministry.
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>8-Week Bible Study Guide</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Arial,sans-serif;margin:30px;max-width:680px;}
+    h1{font-size:22px;color:#1a1a40;border-bottom:3px solid #7030A0;padding-bottom:10px;margin-bottom:6px;}
+    .intro{font-size:13px;color:#555;margin-bottom:24px;line-height:1.6;}
+  </style></head><body>
+    <h1>📚 8-Week Bible Study Discussion Guide</h1>
+    <div class="intro">This guide rotates through 8 short scripture passages with open-ended discussion questions. No preparation required. No lecture needed. Read the passage aloud, then let the group lead. Repeat the cycle as many times as you like — the conversations are always different.</div>
+    ${html}
+    <div style="font-size:11px;color:#aaa;text-align:center;padding-top:14px;margin-top:10px;border-top:1px solid #eee;">Empower Life 365 · empowerlife365.app · Duplicate freely for internal use</div>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+
+function printRosaryGuide() {
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Rosary &amp; Bead Meditation Guide</title><style>
+    @media print{body{margin:0;}}
+    body{font-family:Georgia,serif;margin:0;background:#fff;}
+    .page{max-width:680px;margin:0 auto;padding:36px;}
+    h1{font-size:24px;color:#1a1a40;border-bottom:3px solid #7030A0;padding-bottom:10px;margin-bottom:4px;}
+    .sub{font-size:13px;color:#666;margin-bottom:20px;}
+    .prayer-block{margin-bottom:14px;padding:12px 16px;border-left:4px solid #7030A0;background:#faf8ff;border-radius:0 6px 6px 0;}
+    .prayer-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#7030A0;margin-bottom:4px;}
+    .prayer-text{font-size:16px;line-height:1.7;color:#1a1a40;}
+    .step{font-size:15px;line-height:1.7;color:#333;margin-bottom:10px;}
+    .page-break{page-break-after:always;}
+    .footer{font-size:11px;color:#aaa;text-align:center;padding-top:12px;border-top:1px solid #eee;margin-top:20px;}
+  </style></head><body>
+    <div class="page page-break">
+      <h1>📿 The Traditional Rosary</h1>
+      <div class="sub">For Catholic residents and their families · Lead slowly · Presence matters more than perfection</div>
+
+      <div style="font-size:13px;color:#555;margin-bottom:16px;line-height:1.6;">The Rosary is divided into five decades. Each decade: 1 Our Father + 10 Hail Marys + 1 Glory Be. Announce each Mystery before its decade. The sorrowful mysteries are traditionally prayed on Tuesday and Friday; joyful on Monday and Saturday; glorious on Wednesday and Sunday.</div>
+
+      <div class="prayer-block"><div class="prayer-name">The Apostles' Creed (opening)</div><div class="prayer-text">I believe in God, the Father Almighty, Creator of Heaven and earth; and in Jesus Christ, His only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried. He descended into Hell; on the third day He rose again from the dead. He ascended into Heaven, sits at the right hand of God the Father Almighty; from there He shall come to judge the living and the dead. I believe in the Holy Spirit, the Holy Catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.</div></div>
+
+      <div class="prayer-block"><div class="prayer-name">Our Father</div><div class="prayer-text">Our Father, who art in heaven, hallowed be Thy name; Thy kingdom come, Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.</div></div>
+
+      <div class="prayer-block"><div class="prayer-name">Hail Mary (×10 each decade)</div><div class="prayer-text">Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners now and at the hour of our death. Amen.</div></div>
+
+      <div class="prayer-block"><div class="prayer-name">Glory Be</div><div class="prayer-text">Glory be to the Father, and to the Son, and to the Holy Spirit; as it was in the beginning, is now, and ever shall be, world without end. Amen.</div></div>
+
+      <div class="prayer-block"><div class="prayer-name">Hail Holy Queen (closing)</div><div class="prayer-text">Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us; and after this our exile show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary. Pray for us, O Holy Mother of God, that we may be made worthy of the promises of Christ. Amen.</div></div>
+      <div class="footer">Empower Life 365 · empowerlife365.app</div>
+    </div>
+
+    <div class="page">
+      <h1>📿 Nondenominational Bead Meditation</h1>
+      <div class="sub">For interfaith groups · No religious background required · The beads are an anchor for the hands and the mind</div>
+
+      <div style="font-size:14px;color:#555;margin-bottom:20px;line-height:1.6;">Distribute one strand of beads to each participant. Explain that beads have been used for prayer and meditation across many traditions — Christian, Buddhist, Islamic, and others. There is no wrong way to hold them.</div>
+
+      <div class="step"><strong>1. Hold the beads.</strong> Feel their weight. Run them through your fingers slowly. Notice the texture, the warmth they take from your hands.</div>
+      <div class="step"><strong>2. Take three slow breaths.</strong> Breathe in through your nose, out through your mouth. Let your shoulders drop.</div>
+      <div class="step"><strong>3. As you touch each bead, say or think one word:</strong></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 20px;">
+        ${['Grateful','Peaceful','Present','Loved','Safe','Hopeful','Enough','Held','Still','Blessed','Kind','Home'].map(w=>`<div style="border:1px solid #7030A0;border-radius:6px;padding:10px 14px;font-size:18px;color:#1a1a40;text-align:center;font-family:Georgia,serif;">${w}</div>`).join('')}
+      </div>
+
+      <div class="step"><strong>4. When you reach the end,</strong> hold the last bead and sit quietly for a moment. Notice how you feel.</div>
+      <div class="step"><strong>5. Close together:</strong> Staff says — <em>"Whatever brought you here today, whatever you are carrying, you are not alone. And in this moment, you are exactly where you need to be."</em></div>
+
+      <div style="background:#f5f0ff;border-radius:8px;padding:14px 18px;font-size:13px;color:#333;line-height:1.6;margin-top:16px;">
+        <strong>💡 For Memory Care:</strong> Simply placing beads in a resident's hands can be deeply calming — even if they cannot follow the meditation. The tactile sensation of familiar objects often accesses long-term memory. Many residents will automatically begin to pray in their tradition when beads are placed in their hands.
+      </div>
+      <div class="footer">Empower Life 365 · empowerlife365.app · Duplicate freely for internal use</div>
+    </div>
+  </body></html>`);
+  w.document.close(); w.print();
 }
 
 </script>
