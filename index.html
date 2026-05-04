@@ -1289,7 +1289,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div class="puzzle-meta" id="ws-theme"></div>
         <div id="ws-board" class="ws-board"></div>
         <div class="ws-words" id="ws-words"></div>
-        <div style="text-align:center;margin-top:16px;"><button class="btn btn-secondary" onclick="resetWordSearch()">Reset</button></div>
+        <div style="text-align:center;margin-top:16px;display:flex;gap:8px;justify-content:center;"><button class="btn btn-secondary" onclick="resetWordSearch()">↺ Reset</button><button class="btn btn-gold" onclick="printWordSearch()">🖨 Print with Answers</button></div>
       </div>
       <div class="puzzle-section" id="puzzle-crossword">
         <h3>This Week's Mini Crossword</h3>
@@ -1298,7 +1298,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div class="cw-clues" id="cw-clues"></div>
         <div style="text-align:center;margin-top:16px;">
           <button class="btn btn-secondary" onclick="checkCrossword()">Check Answers</button>
-          <button class="btn btn-secondary" onclick="resetCrossword()">Reset</button>
+          <button class="btn btn-secondary" onclick="resetCrossword()">↺ Reset</button>
+          <button class="btn btn-gold" onclick="printCrossword()">🖨 Print with Answers</button>
         </div>
       </div>
       <div class="puzzle-section" id="puzzle-sudoku">
@@ -1316,7 +1317,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div class="sudoku-status" id="sk-status"></div>
         <div style="text-align:center;margin-top:8px;">
           <button class="btn btn-secondary" onclick="checkSudoku()">Check</button>
-          <button class="btn btn-secondary" onclick="resetSudoku()">Reset</button>
+          <button class="btn btn-secondary" onclick="resetSudoku()">↺ Reset</button>
+          <button class="btn btn-gold" onclick="printSudoku()">🖨 Print with Answers</button>
         </div>
       </div>
       <div class="puzzle-section" id="puzzle-riddle">
@@ -1324,6 +1326,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div class="riddle-card">
           <div class="riddle-q" id="riddle-q"></div>
           <button class="btn btn-gold" onclick="revealRiddle()" id="riddle-btn">Reveal Answer</button>
+          <button class="btn btn-secondary" onclick="printRiddle()" style="margin-top:8px;">🖨 Print with Answer</button>
           <div class="riddle-a" id="riddle-a"></div>
         </div>
       </div>
@@ -3318,10 +3321,231 @@ function showPuzzleApp() {
   document.getElementById('puzzle-app').style.display = 'block';
   renderPuzzlesPanel();
 }
+// ── PUZZLE PRINT WITH ANSWERS ────────────────────────────────────────
+function puzzlePrintStyles() {
+  return `<style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Georgia,serif;color:#111;background:#fff;}
+    .page{width:8.5in;min-height:11in;padding:0.65in 0.75in;display:flex;flex-direction:column;}
+    .page-break{page-break-after:always;}
+    .hd{text-align:center;margin-bottom:18px;}
+    .hd-title{font-size:26px;font-weight:800;color:#1F3864;letter-spacing:1px;}
+    .hd-sub{font-size:13px;color:#555;margin-top:4px;font-style:italic;}
+    .hd-label{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#BF9000;border:1.5px solid #BF9000;border-radius:20px;padding:3px 14px;}
+    .ws-grid{display:inline-grid;gap:0;border:2px solid #1F3864;margin:0 auto;}
+    .ws-cell{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;border:1px solid #ccc;font-family:monospace;}
+    .ws-words{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:18px;justify-content:center;}
+    .ws-word{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+    .ws-word.found{text-decoration:line-through;color:#aaa;}
+    .cw-grid{display:inline-grid;gap:2px;margin:0 auto;}
+    .cw-cell{width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;border:2px solid #1F3864;font-family:monospace;}
+    .cw-cell.black{background:#111;border-color:#111;}
+    .cw-cell.empty{background:#fff;}
+    .clues{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin-top:18px;}
+    .clues h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#1F3864;border-bottom:1.5px solid #1F3864;padding-bottom:4px;margin-bottom:8px;}
+    .clue-row{font-size:12px;line-height:1.6;margin-bottom:3px;}
+    .sk-grid{display:inline-grid;gap:0;border:3px solid #1F3864;margin:0 auto;}
+    .sk-cell{width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;border:1px solid #aaa;font-family:monospace;}
+    .sk-cell.right-edge{border-right:3px solid #1F3864;}
+    .sk-cell.bottom-edge{border-bottom:3px solid #1F3864;}
+    .sk-cell.given{color:#1F3864;}
+    .sk-cell.answer{color:#C00000;}
+    .riddle-box{border:2px solid #1F3864;border-radius:12px;padding:32px;margin:24px auto;max-width:5.5in;text-align:center;}
+    .riddle-q-txt{font-size:20px;line-height:1.6;font-style:italic;color:#1F3864;}
+    .answer-box{border:2px dashed #BF9000;border-radius:12px;padding:24px 32px;margin:24px auto;max-width:5.5in;text-align:center;background:#FFFBE6;}
+    .answer-lbl{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#BF9000;margin-bottom:12px;}
+    .answer-txt{font-size:22px;font-weight:800;color:#1F3864;}
+    .ans-grid-row{display:flex;justify-content:center;gap:4px;margin-bottom:4px;}
+    .footer{margin-top:auto;padding-top:16px;border-top:1px solid #ddd;text-align:center;font-size:10px;color:#aaa;font-family:sans-serif;}
+    @media print{.page-break{page-break-after:always;} body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+  </style>`;
+}
+
+function puzzlePrintHeader(title, subtitle, label) {
+  const comm = (JSON.parse(localStorage.getItem('nl_prefs')||'{}').community) || '';
+  const dateStr = DATA ? DATA.monthName + ' ' + DATA.year : '';
+  return `<div class="hd">
+    <div class="hd-title">${title}</div>
+    <div class="hd-sub">${subtitle}${comm ? ' · ' + comm : ''}${dateStr ? ' · ' + dateStr : ''}</div>
+    <div class="hd-label">${label}</div>
+  </div>`;
+}
+
+function printWordSearch() {
+  if (!wsState) { showToast('Load a Word Search first'); return; }
+  const { grid, placed } = wsState;
+  const SIZE = 12;
+  const day = currentPuzzleDay || 1;
+  const cfg = DATA.wordSearches[String(day)];
+  const theme = cfg ? cfg.theme : 'Word Search';
+  const words = cfg ? cfg.words.map(w => w.toUpperCase()) : placed.map(p => p.word);
+
+  // Palette for highlighted words
+  const palette = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#85C1E9','#F8C471','#82E0AA','#F1948A'];
+
+  function buildGrid(showAnswers) {
+    let cells = '';
+    const answerMap = {}; // "r,c" -> color
+    if (showAnswers) {
+      placed.forEach((p, wi) => {
+        const color = palette[wi % palette.length];
+        p.cells.forEach(([r, c]) => { answerMap[`${r},${c}`] = color; });
+      });
+    }
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        const bg = answerMap[`${r},${c}`] ? `background:${answerMap[`${r},${c}`]};color:#fff;border-radius:50%;` : '';
+        cells += `<div class="ws-cell" style="${bg}">${grid[r][c]}</div>`;
+      }
+    }
+    return `<div style="text-align:center;"><div class="ws-grid" style="grid-template-columns:repeat(${SIZE},34px);">${cells}</div></div>`;
+  }
+
+  const wordListHtml = words.map(w => `<div class="ws-word">${w}</div>`).join('');
+  const ansWordListHtml = placed.map((p, wi) => `<div class="ws-word" style="color:${palette[wi%palette.length]};text-decoration:line-through;">${p.word}</div>`).join('');
+
+  const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Word Search</title>${puzzlePrintStyles()}</head><body>
+    <div class="page page-break">
+      ${puzzlePrintHeader('Word Search', theme, '📋 Puzzle — Resident Copy')}
+      ${buildGrid(false)}
+      <div class="ws-words">${wordListHtml}</div>
+      <div class="footer">empowerlife365.app · Find all the words hidden in the grid above!</div>
+    </div>
+    <div class="page">
+      ${puzzlePrintHeader('Word Search — Answer Key', theme, '✅ Answers — Staff Reference')}
+      ${buildGrid(true)}
+      <div class="ws-words">${ansWordListHtml}</div>
+      <div class="footer">empowerlife365.app · Answer key — for staff use</div>
+    </div>
+  </body></html>`;
+
+  const w = window.open('','_blank','width=900,height=700');
+  w.document.write(docHtml); w.document.close(); w.focus();
+  setTimeout(() => w.print(), 500);
+}
+
+function printCrossword() {
+  if (!cwState || !cwState.config) { showToast('Load a Crossword first'); return; }
+  const cw = cwState.config;
+  const SIZE = cw.size;
+
+  function buildCWGrid(filled) {
+    let cells = '';
+    for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) {
+      const letter = cw.grid[r][c];
+      if (!letter || letter === '.') {
+        cells += `<div class="cw-cell black"></div>`;
+      } else {
+        const style = filled ? `color:#C00000;` : `color:#111;opacity:0;`;
+        cells += `<div class="cw-cell empty"><span style="${filled?'color:#C00000;font-size:16px;font-weight:800;':'opacity:0;'}">${filled ? letter : '&nbsp;'}</span></div>`;
+      }
+    }
+    return `<div style="text-align:center;"><div class="cw-grid" style="grid-template-columns:repeat(${SIZE},38px);">${cells}</div></div>`;
+  }
+
+  const cluesHtml = `<div class="clues">
+    <div><h4>Across</h4>${cw.across.map(([r,c,len,clue])=>`<div class="clue-row"><strong>${r+1}.</strong> ${clue} <em>(${len} letters)</em></div>`).join('')}</div>
+    <div><h4>Down</h4>${cw.down.map(([r,c,len,clue])=>`<div class="clue-row"><strong>${r+1}.</strong> ${clue} <em>(${len} letters)</em></div>`).join('')}</div>
+  </div>`;
+
+  const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Crossword</title>${puzzlePrintStyles()}</head><body>
+    <div class="page page-break">
+      ${puzzlePrintHeader('Mini Crossword', cw.title, '📋 Puzzle — Resident Copy')}
+      ${buildCWGrid(false)}
+      ${cluesHtml}
+      <div class="footer">empowerlife365.app</div>
+    </div>
+    <div class="page">
+      ${puzzlePrintHeader('Crossword Answer Key', cw.title, '✅ Answers — Staff Reference')}
+      ${buildCWGrid(true)}
+      ${cluesHtml}
+      <div class="footer">empowerlife365.app · Answer key — for staff use</div>
+    </div>
+  </body></html>`;
+
+  const w = window.open('','_blank','width=900,height=700');
+  w.document.write(docHtml); w.document.close(); w.focus();
+  setTimeout(() => w.print(), 500);
+}
+
+function printSudoku() {
+  if (!skState) { showToast('Load a Sudoku first'); return; }
+  const { solution, locked, board } = skState;
+
+  function buildSKGrid(useSolution) {
+    let cells = '';
+    for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
+      const val = useSolution ? solution[r][c] : (locked[r][c] ? board[r][c] : 0);
+      const classes = ['sk-cell'];
+      if (c === 2 || c === 5) classes.push('right-edge');
+      if (r === 2 || r === 5) classes.push('bottom-edge');
+      const colorStyle = useSolution && !locked[r][c] ? 'color:#C00000;' : locked[r][c] ? 'color:#1F3864;' : 'color:#ccc;';
+      cells += `<div class="${classes.join(' ')}" style="${colorStyle}">${val || ''}</div>`;
+    }
+    return `<div style="text-align:center;"><div class="sk-grid" style="grid-template-columns:repeat(9,48px);">${cells}</div></div>`;
+  }
+
+  const diffLabel = sudokuDifficulty ? sudokuDifficulty.charAt(0).toUpperCase()+sudokuDifficulty.slice(1) : 'Easy';
+  const instructions = `<div style="text-align:center;font-size:12px;color:#666;margin-top:14px;font-family:sans-serif;">Fill in the grid so every row, column, and 3×3 box contains the numbers 1–9 with no repeats.</div>`;
+
+  const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Sudoku</title>${puzzlePrintStyles()}</head><body>
+    <div class="page page-break">
+      ${puzzlePrintHeader('Sudoku', `Difficulty: ${diffLabel}`, '📋 Puzzle — Resident Copy')}
+      ${buildSKGrid(false)}
+      ${instructions}
+      <div class="footer">empowerlife365.app</div>
+    </div>
+    <div class="page">
+      ${puzzlePrintHeader('Sudoku Solution', `Difficulty: ${diffLabel}`, '✅ Answer Key — Staff Reference')}
+      ${buildSKGrid(true)}
+      <div style="text-align:center;font-size:12px;color:#888;margin-top:14px;font-family:sans-serif;">Red numbers show the solution. Blue numbers were the original clues.</div>
+      <div class="footer">empowerlife365.app · Answer key — for staff use</div>
+    </div>
+  </body></html>`;
+
+  const w = window.open('','_blank','width=900,height=700');
+  w.document.write(docHtml); w.document.close(); w.focus();
+  setTimeout(() => w.print(), 500);
+}
+
+function printRiddle() {
+  const day = currentPuzzleDay || 1;
+  const r = DATA.riddles[String(day)];
+  if (!r) { showToast('No riddle found'); return; }
+
+  const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Riddle</title>${puzzlePrintStyles()}</head><body>
+    <div class="page page-break">
+      ${puzzlePrintHeader('Riddle of the Day', DATA.dayMeta[String(day)]?.date_long || '', '📋 Puzzle — Resident Copy')}
+      <div class="riddle-box">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#BF9000;margin-bottom:20px;">🤔 Can you figure it out?</div>
+        <div class="riddle-q-txt">${r.q}</div>
+      </div>
+      <div style="text-align:center;margin-top:24px;font-size:13px;color:#aaa;font-family:sans-serif;">Think about it… the answer is on the back!</div>
+      <div class="footer">empowerlife365.app</div>
+    </div>
+    <div class="page">
+      ${puzzlePrintHeader('Riddle — Answer', DATA.dayMeta[String(day)]?.date_long || '', '✅ Answer Key')}
+      <div class="riddle-box" style="margin-top:40px;">
+        <div class="riddle-q-txt" style="font-size:15px;color:#888;margin-bottom:20px;">${r.q}</div>
+      </div>
+      <div class="answer-box">
+        <div class="answer-lbl">✦ The Answer Is ✦</div>
+        <div class="answer-txt">${r.a}</div>
+      </div>
+      <div class="footer">empowerlife365.app</div>
+    </div>
+  </body></html>`;
+
+  const w = window.open('','_blank','width=900,height=700');
+  w.document.write(docHtml); w.document.close(); w.focus();
+  setTimeout(() => w.print(), 500);
+}
+
 function renderPuzzlesPanel() {
   if (sessionStorage.getItem(RESIDENT_AUTH_KEY) !== '1') return;
   showPuzzleApp();
   const today = pickPuzzleDay();
+  currentPuzzleDay = today;
   document.getElementById('puzzle-day-title').textContent = `Puzzles for May ${today}`;
   document.getElementById('puzzle-day-date').textContent = DATA.dayMeta[String(today)].date_long;
   renderWordSearch(today); renderCrossword(today); renderSudoku(today); renderRiddle(today);
@@ -3339,7 +3563,7 @@ document.querySelectorAll('.puzzle-tab').forEach(btn => {
   });
 });
 
-let wsState = null, wsDragging = false;
+let wsState = null, wsDragging = false, currentPuzzleDay = 1;
 function renderWordSearch(day) {
   const cfg = DATA.wordSearches[String(day)];
   document.getElementById('ws-theme').textContent = `Theme: ${cfg.theme}`;
