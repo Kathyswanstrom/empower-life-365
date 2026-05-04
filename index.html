@@ -1026,6 +1026,19 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 }
 
 
+
+/* Newsletter extras */
+.nl-fun.navy { background: #1A2A5C; color: #fff; }
+.nl-fun.navy .nl-fun-title { color: #FFD700; }
+.nl-fun.navy .nl-conv { font-size: 15px; font-style: italic; color: rgba(255,255,255,0.9); text-align: center; line-height: 1.7; padding: 6px 0; }
+.nl-answers-wrap { margin: 4px 16px 0; border-top: 1.5px dashed #CBD5E1; padding-top: 8px; }
+.nl-answers-inner { transform: rotate(180deg); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 10.5px; color: #444; font-family: -apple-system, sans-serif; justify-content: center; }
+.nl-ans-label { font-weight: 800; color: #1A2A5C; letter-spacing: 1px; font-size: 10px; text-transform: uppercase; }
+.nl-ans-item { color: #333; }
+.nl-ans-sep { color: #CBD5E1; font-weight: 700; }
+@media print {
+  .nl-answers-wrap { page-break-inside: avoid; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -4072,18 +4085,174 @@ document.addEventListener('input', e => {
 
 // ─────────────────────────────────────────────
 const NL_MONTHLY = {
-  1:{wellness:"Start fresh — every morning is a new beginning. Drink a full glass of water before your morning coffee!",humor:"Why did January feel so long? Because it had 31 days and no sunny days off!",trivia:{q:"What is the most popular New Year's resolution made each year?",a:"Exercise more / get healthy"},scramble:{word:"SNOWFLAKE",hint:"No two of these are exactly alike"},history:"On January 1, 1863, the Emancipation Proclamation took effect. In January 1964, the Beatles first played on The Ed Sullivan Show — 73 million people watched!",rememberWhen:"Remember when gas cost about 30 cents a gallon and a movie ticket was $1.25?",conversation:"What is one thing you hope to enjoy more of this year?"},
-  2:{wellness:"Heart Health Month! Even a 10-minute walk each day makes a meaningful difference. Your heart loves you — love it back!",humor:"Why did the calendar go on a diet in February? Too many dates!",trivia:{q:"What color roses traditionally say 'I love you'?",a:"Red roses"},scramble:{word:"SWEETHEART",hint:"A sweet term of endearment"},history:"In February 1962, John Glenn became the first American to orbit the Earth. In 1964, The Beatles arrived in America and changed music forever!",rememberWhen:"Remember when you gave a Valentine's card to every single classmate from a box of 25?",conversation:"Who was your very first Valentine? Tell us the story!"},
-  3:{wellness:"Spring is here! Open the windows, breathe in the fresh air, and let nature lift your spirits. Sunshine is free medicine!",humor:"Why is March so windy? Because February and April are blowing in opposite directions!",trivia:{q:"What four-leaf plant is the symbol of St. Patrick's Day?",a:"Clover (Shamrock)"},scramble:{word:"RAINBOW",hint:"You'll find this at the end of a pot of gold"},history:"In March 1955, Walt Disney announced Disneyland. In March 1965, the first U.S. combat troops arrived in Vietnam, changing a generation.",rememberWhen:"Remember when spring cleaning meant beating rugs outside on the clothesline?",conversation:"What is your favorite thing about the arrival of spring?"},
-  4:{wellness:"April showers bring May flowers — and fresh starts! Try planting something, even a small herb in a pot on the windowsill.",humor:"Why did the Easter egg hide? Because it was a little chicken!",trivia:{q:"How many eggs does the average hen lay in a year?",a:"About 250 eggs"},scramble:{word:"BLOSSOM",hint:"What flowers do in springtime"},history:"On April 12, 1961, Yuri Gagarin became the first human in space. On April 4, 1968, Dr. Martin Luther King Jr. was assassinated — a day the world wept.",rememberWhen:"Remember Easter Sunday in your best new outfit, hunting for eggs hidden in the yard?",conversation:"What is your favorite springtime memory from childhood?"},
-  5:{wellness:"May is Mental Health Month! A smile, a phone call to an old friend, and five minutes of fresh air can change your whole day.",humor:"Why do mothers make the best detectives? Because they always know when you're up to something!",trivia:{q:"What flower is most associated with Mother's Day?",a:"Carnation"},scramble:{word:"GARDEN",hint:"Where flowers and vegetables grow"},history:"In May 1927, Charles Lindbergh completed the first solo nonstop flight across the Atlantic. In May 1961, Alan Shepard became the first American in space!",rememberWhen:"Remember Mom's kitchen on a Sunday — that smell of something always baking?",conversation:"What is the best piece of advice your mother ever gave you?"},
-  6:{wellness:"Summer hydration starts now! Aim for 8 glasses of water a day. Add a slice of lemon to make it feel fancy!",humor:"Why did summer school feel so long? Because every day was a sun-day!",trivia:{q:"What is the longest day of the year called?",a:"The Summer Solstice (around June 21)"},scramble:{word:"SUNSHINE",hint:"What makes a summer day bright"},history:"On June 6, 1944, D-Day — Allied forces stormed the beaches of Normandy in the largest military invasion in history.",rememberWhen:"Remember catching fireflies in a jar on warm summer nights and staying out until dark?",conversation:"What was your favorite summer vacation? Where did you go and who was with you?"},
-  7:{wellness:"Celebrate independence — including your freedom to take it slow, rest, and enjoy this very moment. You've earned it!",humor:"Why does the Statue of Liberty stand in New York Harbor? Because she can't sit down!",trivia:{q:"How many stars are on the American flag?",a:"50 stars — one for each state"},scramble:{word:"FIREWORKS",hint:"The Fourth of July's sparkling nighttime show"},history:"On July 20, 1969, Neil Armstrong stepped on the moon — 'One small step for man, one giant leap for mankind.' Where were you?",rememberWhen:"Remember when the whole neighborhood watched the fireworks from lawn chairs in the front yard?",conversation:"Where were you when the moon landing happened? What do you remember about that night?"},
-  8:{wellness:"August heat calls for cool treats! A bowl of watermelon is 92% water — hydration AND delicious. It counts!",humor:"Why did the scarecrow win an award? Because he was outstanding in his field!",trivia:{q:"What gemstone is the birthstone for August?",a:"Peridot"},scramble:{word:"LEMONADE",hint:"The perfect pitcher for a hot summer day"},history:"On August 28, 1963, Dr. Martin Luther King Jr. delivered the 'I Have a Dream' speech to 250,000 people in Washington D.C.",rememberWhen:"Remember dreading back-to-school shopping but secretly loving new crayons and notebooks?",conversation:"What did you love most about August when you were growing up?"},
-  9:{wellness:"September is Healthy Aging Month — and you are doing beautifully. Keep moving, keep laughing, keep going!",humor:"Why did the leaves start going to school in September? To get a little more color!",trivia:{q:"What is the traditional birth flower for September?",a:"Aster"},scramble:{word:"HARVEST",hint:"What farmers do when crops are ready in fall"},history:"On September 9, 1956, Elvis Presley appeared on The Ed Sullivan Show for the first time. Over 60 million people watched!",rememberWhen:"Remember the smell of new crayons and fresh notebook paper on the very first day of school?",conversation:"What was your very favorite subject in school, and who was a teacher you'll never forget?"},
-  10:{wellness:"October is the perfect time for a cozy walk. Notice the colors — red, orange, gold. Nature is putting on a show just for you!",humor:"What do you call a skeleton who won't stop talking? A jawbreaker!",trivia:{q:"What vegetable is traditionally carved on Halloween?",a:"Pumpkin"},scramble:{word:"PUMPKIN",hint:"A popular orange fall decoration"},history:"In October 1962, the Cuban Missile Crisis had the world holding its breath for 13 days. In 1969, the first message was sent over ARPANET — the birth of the internet.",rememberWhen:"Remember when Halloween costumes were homemade — a ghost from an old bedsheet, a hobo from Dad's old clothes?",conversation:"What was your most memorable Halloween costume or trick-or-treat memory?"},
-  11:{wellness:"Gratitude is good medicine — proven to lower stress and lift your mood. Try naming 3 things you are thankful for each morning.",humor:"Why did the turkey cross the road? To prove he wasn't chicken!",trivia:{q:"In what year did the Macy's Thanksgiving Day Parade first take place?",a:"1924"},scramble:{word:"GRATEFUL",hint:"How we feel when we count our blessings"},history:"On November 22, 1963, President Kennedy was assassinated — a moment every American remembers exactly where they were.",rememberWhen:"Remember when Thanksgiving dinner took two days to prepare and the whole family — every aunt, uncle, and cousin — fit around the table?",conversation:"What are you most grateful for this year? Who are you most thankful to have in your life?"},
-  12:{wellness:"The holidays are a season of the heart. Give yourself permission to rest, reflect, and rejoice — you deserve every bit of the warmth.",humor:"Why does Santa go down the chimney? Because it soots him!",trivia:{q:"In 'The Twelve Days of Christmas,' what is given on the 7th day?",a:"Seven Swans a-Swimming"},scramble:{word:"MISTLETOE",hint:"A holiday decoration hung in doorways"},history:"On December 17, 1903, the Wright Brothers made their first successful airplane flight at Kitty Hawk, North Carolina — 12 seconds that changed the world.",rememberWhen:"Remember stringing popcorn and cranberries for the Christmas tree and making paper chains with your family?",conversation:"What is your most treasured holiday tradition or memory? What made it so special?"}
+  1:{
+    wellness:"Start fresh — every morning is a new beginning. Drink a full glass of water before your morning coffee!",
+    humor:"Why did January feel so long? Because it had 31 days — and the heat bill.",
+    trivia:{q:"What famous monument did France give to the United States as a gift of friendship?",a:"The Statue of Liberty — a gift from France, dedicated in 1886."},
+    scramble:{word:"SNOWFLAKE",hint:"No two of these are exactly alike"},
+    history:"In January 1920, the very first League of Nations assembly met in Paris — the world's first attempt at international peacekeeping.",
+    rememberWhen:"Remember when milk was delivered right to your doorstep in glass bottles every morning? The milkman knew everyone by name!",
+    conversation:"What is your favorite winter memory — a snowstorm, sledding, or staying warm by the fire?",
+    saying:{phrase:"Every cloud has a silver ___",answer:"lining"},
+    sudoku:{
+      puzzle:[[0,2,0,4],[3,0,1,0],[2,0,4,0],[0,3,0,1]],
+      solution:[[1,2,3,4],[3,4,1,2],[2,1,4,3],[4,3,2,1]]
+    }
+  },
+  2:{
+    wellness:"A smile is contagious — share one today! Even a few minutes of gentle stretching in the morning can lift your mood all day.",
+    humor:"Valentine's Day tip: Chocolate doesn't ask silly questions. Chocolate understands.",
+    trivia:{q:"Who invented the telephone and made the first successful call in 1876?",a:"Alexander Graham Bell — his first words were 'Mr. Watson, come here, I want to see you.'"},
+    scramble:{word:"SWEETHEART",hint:"What you call someone you love"},
+    history:"In February 1962, John Glenn became the first American to orbit the Earth — circling the globe three times in just under 5 hours.",
+    rememberWhen:"Remember when valentines were handmade — construction paper, paste, and a little glitter? The messier, the better!",
+    conversation:"Who was your first Valentine — a childhood sweetheart, a friend, or a family member?",
+    saying:{phrase:"The way to a man's heart is through his ___",answer:"stomach"},
+    sudoku:{
+      puzzle:[[2,0,4,0],[0,3,0,1],[1,0,3,0],[0,4,0,2]],
+      solution:[[2,1,4,3],[4,3,2,1],[1,2,3,4],[3,4,1,2]]
+    }
+  },
+  3:{
+    wellness:"Fresh air is medicine! Even five minutes outside can lower stress. Open a window and take three slow, deep breaths.",
+    humor:"Spring cleaning tip: If you haven't used it in a year, it belongs in someone else's pile.",
+    trivia:{q:"What plant is said to bring good luck on St. Patrick's Day, and how many leaves does a lucky one have?",a:"A four-leaf clover — most clovers only have three leaves, making four-leaf ones rare and considered lucky."},
+    scramble:{word:"BLOSSOM",hint:"What flowers do in spring"},
+    history:"In March 1969, Apollo 9 completed the first full test of the lunar module in Earth orbit — a critical step toward landing on the Moon.",
+    rememberWhen:"Remember when spring meant airing out the quilts, beating rugs on the clothesline, and the whole house smelling fresh again?",
+    conversation:"What's the first sign of spring that always made you smile — robins, tulips, or warmer evenings?",
+    saying:{phrase:"April showers bring May ___",answer:"flowers"},
+    sudoku:{
+      puzzle:[[0,4,0,2],[1,0,3,0],[4,0,2,0],[0,1,0,3]],
+      solution:[[3,4,1,2],[1,2,3,4],[4,3,2,1],[2,1,4,3]]
+    }
+  },
+  4:{
+    wellness:"Spending time with animals reduces stress and lowers blood pressure. Even watching birds at a feeder counts as nature therapy!",
+    humor:"Why did the Easter egg hide? Because it was a little chicken.",
+    trivia:{q:"National Pet Day is April 11th — what was the most popular pet in American households in the 1950s?",a:"Dogs! Though cats have since caught up. In the 1950s, dogs were far and away the most common household pet."},
+    scramble:{word:"BUTTERFLY",hint:"It starts as a caterpillar and transforms"},
+    history:"In April 1912, the Titanic sank after striking an iceberg — a tragedy that changed maritime safety laws forever.",
+    rememberWhen:"Remember when the neighborhood had a dog that everyone knew by name — the friendly mutt that followed the kids home from school every day?",
+    conversation:"Did you ever have a pet that was truly special to you? What was their name and what made them unforgettable?",
+    saying:{phrase:"You can't teach an old dog new ___",answer:"tricks"},
+    sudoku:{
+      puzzle:[[4,0,2,0],[0,1,0,3],[3,0,1,0],[0,2,0,4]],
+      solution:[[4,3,2,1],[2,1,4,3],[3,4,1,2],[1,2,3,4]]
+    }
+  },
+  5:{
+    wellness:"Gratitude is a workout for your heart. Try naming three things you're thankful for each morning — it rewires your brain toward joy.",
+    humor:"Mother's Day is in May — but Mom already knew what you were going to say before you said it.",
+    trivia:{q:"Memorial Day honors American military veterans. In what year did it become an official federal holiday?",a:"1971 — Congress declared it a federal holiday observed the last Monday of May."},
+    scramble:{word:"FREEDOM",hint:"What veterans fought to protect"},
+    history:"In May 1927, Charles Lindbergh completed the first solo nonstop transatlantic flight, landing in Paris after 33 hours in the air.",
+    rememberWhen:"Remember when the whole neighborhood came out for Memorial Day parades — veterans in uniform, kids on bikes with streamers, and everyone waving flags?",
+    conversation:"What does honoring our veterans mean to you? Did you or someone you love serve in the military?",
+    saying:{phrase:"Home is where the ___ is",answer:"heart"},
+    sudoku:{
+      puzzle:[[0,3,0,4],[2,0,1,0],[0,1,0,2],[4,0,3,0]],
+      solution:[[1,3,2,4],[2,4,1,3],[3,1,4,2],[4,2,3,1]]
+    }
+  },
+  6:{
+    wellness:"Laughter is the best medicine — and it's free! Find something that makes you laugh every single day, whether it's a story, a show, or a friend.",
+    humor:"Summer advice: The sunscreen goes ON the skin, not just in the beach bag.",
+    trivia:{q:"What is the longest day of the year in the Northern Hemisphere called, and approximately when does it occur?",a:"The Summer Solstice — it occurs around June 20–21, giving us the most daylight hours of the year."},
+    scramble:{word:"SUNSHINE",hint:"What everyone chases in summer"},
+    history:"In June 1944, D-Day — the largest amphibious military operation in history — began on the beaches of Normandy, France.",
+    rememberWhen:"Remember when summer meant bare feet all day, catching fireflies in a jar at dusk, and falling asleep to the sound of crickets?",
+    conversation:"What was your favorite summer tradition growing up — a special trip, a backyard cookout, or a beloved activity?",
+    saying:{phrase:"Make hay while the sun ___",answer:"shines"},
+    sudoku:{
+      puzzle:[[2,0,1,0],[0,3,0,4],[4,0,3,0],[0,1,0,2]],
+      solution:[[2,4,1,3],[1,3,2,4],[4,2,3,1],[3,1,4,2]]
+    }
+  },
+  7:{
+    wellness:"Stay cool and hydrated! On warm days, sip water throughout the day — herbal iced tea and fruit-infused water count too.",
+    humor:"Why do Americans celebrate July 4th with fireworks? Because nothing says 'freedom' like waking the whole neighborhood.",
+    trivia:{q:"How many stars were on the original American flag, and what did they represent?",a:"13 stars — one for each of the original colonies that declared independence from Britain in 1776."},
+    scramble:{word:"FIREWORKS",hint:"July 4th tradition lighting up the sky"},
+    history:"On July 20, 1969, astronaut Neil Armstrong became the first human to walk on the Moon, saying 'That's one small step for man, one giant leap for mankind.'",
+    rememberWhen:"Remember when the Fourth of July meant sparklers on the porch, homemade ice cream cranked by hand, and fireworks you watched from a blanket in the yard?",
+    conversation:"Where were you when astronauts landed on the Moon in 1969? Do you remember watching it on TV?",
+    saying:{phrase:"It's as American as apple ___",answer:"pie"},
+    sudoku:{
+      puzzle:[[0,1,0,2],[4,0,3,0],[0,3,0,4],[2,0,1,0]],
+      solution:[[3,1,4,2],[4,2,3,1],[1,3,2,4],[2,4,1,3]]
+    }
+  },
+  8:{
+    wellness:"Learning something new at any age keeps the brain strong! Try a new card game, a craft, or ask someone to teach you something they love.",
+    humor:"Back to school season: Children excited for new pencils. Teachers excited for… also new pencils.",
+    trivia:{q:"What was the first state in the United States to make school attendance mandatory for children?",a:"Massachusetts — in 1852, it became the first state to require compulsory school attendance."},
+    scramble:{word:"HARVEST",hint:"What farmers do in late summer and fall"},
+    history:"In August 1963, Martin Luther King Jr. delivered his famous 'I Have a Dream' speech to over 250,000 people during the March on Washington.",
+    rememberWhen:"Remember when back-to-school shopping meant a new pair of shoes, a Big Chief tablet, and a box of Crayola crayons — 64 colors felt like a luxury!",
+    conversation:"What was your favorite subject in school, and did you have a teacher who truly changed your life?",
+    saying:{phrase:"The early bird catches the ___",answer:"worm"},
+    sudoku:{
+      puzzle:[[4,0,3,0],[0,1,0,2],[2,0,1,0],[0,3,0,4]],
+      solution:[[4,2,3,1],[3,1,4,2],[2,4,1,3],[1,3,2,4]]
+    }
+  },
+  9:{
+    wellness:"Connection is medicine. A five-minute conversation with a neighbor or friend can lift your spirits for hours — reach out to someone today.",
+    humor:"Fall weather report: Sweater needed in the morning, tank top by afternoon, mystery by evening.",
+    trivia:{q:"Grandparents Day is celebrated in September. In what year did it become an official U.S. holiday?",a:"1978 — President Jimmy Carter signed it into law, designating the first Sunday after Labor Day as National Grandparents Day."},
+    scramble:{word:"MEMORIES",hint:"What grandparents give in abundance"},
+    history:"In September 1957, the first Chevrolet Impala rolled off the assembly line — becoming one of the most beloved American cars of all time.",
+    rememberWhen:"Remember when grandparents lived nearby and Sunday dinner at their house meant a table so full you needed two sittings — and leftovers for a week?",
+    conversation:"What is the greatest piece of advice your grandparents or elders ever gave you that you still carry with you today?",
+    saying:{phrase:"An apple a day keeps the doctor ___",answer:"away"},
+    sudoku:{
+      puzzle:[[0,4,0,3],[2,0,1,0],[0,2,0,1],[4,0,3,0]],
+      solution:[[1,4,2,3],[2,3,1,4],[3,2,4,1],[4,1,3,2]]
+    }
+  },
+  10:{
+    wellness:"Autumn walks are wonderful for body and soul. Even a short stroll through falling leaves counts as exercise — and the colors are free therapy!",
+    humor:"Why do scarecrows always win awards? Because they're outstanding in their field.",
+    trivia:{q:"How many pounds of candy corn are produced each year in the United States?",a:"About 35 million pounds — enough to circle the moon nearly four times if laid end to end!"},
+    scramble:{word:"PUMPKIN",hint:"The star of fall decorating and pie"},
+    history:"In October 1962, President Kennedy announced the Cuban Missile Crisis to the American public — 13 tense days that brought the world to the edge of nuclear war.",
+    rememberWhen:"Remember when Halloween costumes were homemade — a sheet ghost, a hobo outfit, or a witch hat from the five-and-dime — and you carried a paper bag for candy?",
+    conversation:"What was your favorite Halloween costume as a child, or what candy did you always hope to find in your trick-or-treat bag?",
+    saying:{phrase:"Good things come to those who ___",answer:"wait"},
+    sudoku:{
+      puzzle:[[2,0,4,0],[0,1,0,3],[1,0,3,0],[0,2,0,4]],
+      solution:[[2,3,4,1],[4,1,2,3],[1,4,3,2],[3,2,1,4]]
+    }
+  },
+  11:{
+    wellness:"Gratitude has been shown to reduce stress hormones. Try writing down one thing you are grateful for before Thanksgiving dinner — it makes the meal taste even better!",
+    humor:"Thanksgiving math: One bird + one family + one table = 47 opinions about how it should be cooked.",
+    trivia:{q:"In what year did President Abraham Lincoln declare Thanksgiving a national holiday, and what prompted him to do so?",a:"1863 — during the Civil War. Writer Sarah Josepha Hale campaigned for 40 years to make it official, and Lincoln finally agreed."},
+    scramble:{word:"THANKFUL",hint:"How you feel at a table full of family"},
+    history:"In November 1963, President John F. Kennedy was assassinated in Dallas, Texas — a moment that stopped the nation and marked the end of an era.",
+    rememberWhen:"Remember when Thanksgiving meant waking up to the smell of a turkey that had been roasting since 4 AM, and Grandma's pies cooling on the windowsill?",
+    conversation:"What are you most thankful for this year — and what Thanksgiving tradition do you hope will never change?",
+    saying:{phrase:"Count your blessings, not your ___",answer:"troubles"},
+    sudoku:{
+      puzzle:[[0,2,0,4],[1,0,3,0],[4,0,2,0],[0,1,0,3]],
+      solution:[[3,2,1,4],[1,4,3,2],[4,3,2,1],[2,1,4,3]]
+    }
+  },
+  12:{
+    wellness:"Rest is not laziness — it is a gift you give your body. The holiday season can be busy; give yourself permission to pause, breathe, and simply enjoy.",
+    humor:"Santa's diet secret: He only comes once a year and eats everyone else's cookies.",
+    trivia:{q:"What beloved Christmas song was actually originally written for Thanksgiving — and what is it?",a:"'Jingle Bells!' Composed by James Lord Pierpont in 1857, it was first performed at a Thanksgiving service in Savannah, Georgia."},
+    scramble:{word:"MISTLETOE",hint:"Stand under this and you might get a kiss"},
+    history:"In December 1903, the Wright Brothers made their first successful powered flight at Kitty Hawk, North Carolina — airborne for just 12 seconds, but changing the world forever.",
+    rememberWhen:"Remember when Christmas Eve meant hanging real stockings by the fireplace, and leaving out cookies and milk — and checking in the morning to see if they'd been eaten?",
+    conversation:"What is your most cherished holiday memory — a gift, a person, a tradition, or a moment that still warms your heart today?",
+    saying:{phrase:"Home for the holidays is worth its weight in ___",answer:"gold"},
+    sudoku:{
+      puzzle:[[0,1,0,2],[3,0,4,0],[0,3,0,4],[2,0,1,0]],
+      solution:[[4,1,3,2],[3,2,4,1],[1,3,2,4],[2,4,1,3]]
+    }
+  }
 };
 
 const CS_MONTHLY = {
@@ -4403,27 +4572,23 @@ function renderNewsletter() {
     if (!r.dob) return false;
     const s = String(r.dob).trim();
     const parts = s.split(/[\/\-]/);
-    if (parts.length >= 2) {
-      const m = parseInt(parts[0], 10);
-      return m === monthNum;
-    }
+    if (parts.length >= 2) { const m = parseInt(parts[0], 10); return m === monthNum; }
     return false;
   }).map(r => {
     const parts = String(r.dob).split(/[\/\-]/);
     const day = parseInt(parts[1], 10);
-    const monthNames = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return { name: r.name, dateStr: monthNames[monthNum] + ' ' + day, day };
+    const mn = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return { name: r.name, dateStr: mn[monthNum] + ' ' + day, day };
   }).sort((a,b) => a.day - b.day);
 
   const bdayHtml = bdayResidents.length
     ? bdayResidents.map(r => `<div class="nl-bday-item"><span>🎂</span><span class="nl-bday-name">${escapeHtml(r.name)}</span><span class="nl-bday-date">${escapeHtml(r.dateStr)}</span></div>`).join('')
     : '<div class="nl-bday-none">No birthdays on file this month.<br><small>Upload your resident roster to auto-populate birthdays.</small></div>';
 
-  // ── Activity highlights ──
+  // ── Highlights ──
   const highlightBoxes = [];
   if (DATA.travelDay && DATA.travelDay.day) {
-    const td = DATA.travelDay;
-    const meta = DATA.dayMeta[String(td.day)] || {};
+    const td = DATA.travelDay; const meta = DATA.dayMeta[String(td.day)] || {};
     highlightBoxes.push(`<div class="nl-hl-box"><div class="nl-hl-lbl">✈ Travel Day</div><div class="nl-hl-name">${escapeHtml(td.country)}</div><div class="nl-hl-date">${escapeHtml(meta.date_long||'')}</div></div>`);
   }
   Object.entries(DATA.holidays||{}).slice(0,3).forEach(([day,name]) => {
@@ -4433,15 +4598,12 @@ function renderNewsletter() {
 
   // ── Weekly schedule ──
   const weeks = [
-    {label:'Week 1',days:[1,2,3,4,5,6,7]},
-    {label:'Week 2',days:[8,9,10,11,12,13,14]},
-    {label:'Week 3',days:[15,16,17,18,19,20,21]},
-    {label:'Week 4+',days:[22,23,24,25,26,27,28,29,30,31]}
+    {label:'Week 1',days:[1,2,3,4,5,6,7]},{label:'Week 2',days:[8,9,10,11,12,13,14]},
+    {label:'Week 3',days:[15,16,17,18,19,20,21]},{label:'Week 4+',days:[22,23,24,25,26,27,28,29,30,31]}
   ];
   const schedHtml = weeks.map(w => {
     const rows = w.days.map(day => {
-      const meta = DATA.dayMeta[String(day)];
-      const slots = days[String(day)];
+      const meta = DATA.dayMeta[String(day)]; const slots = days[String(day)];
       if (!meta || !slots) return '';
       const holiday = DATA.holidays[String(day)] || '';
       const isTravel = day === (DATA.travelDay && DATA.travelDay.day);
@@ -4455,9 +4617,31 @@ function renderNewsletter() {
     return `<div class="nl-sched-week"><div class="nl-sched-wk-hd">${w.label}</div>${rows}</div>`;
   }).join('');
 
-  // ── Word scramble — shuffle letters ──
+  // ── Word scramble ──
   const origWord = mc.scramble.word;
-  const shuffled = origWord.split('').sort(() => Math.random()-0.5).join('');
+  let shuffled = origWord.split('').sort(() => Math.random()-0.5).join('');
+  if (shuffled === origWord) shuffled = origWord.split('').reverse().join('');
+  const scrambleBlanks = '_ '.repeat(origWord.length).trim();
+
+  // ── Sudoku grid ──
+  function sudokuGrid(grid, isSolution) {
+    const cellStyle = isSolution
+      ? 'width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#1A2A5C;'
+      : 'width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;';
+    return `<div style="display:inline-grid;grid-template-columns:repeat(4,28px);gap:0;border:2px solid #1A2A5C;border-radius:4px;overflow:hidden;">
+      ${grid.map((row,ri) => row.map((cell,ci) => {
+        const borderR = ci === 1 ? 'border-right:2px solid #1A2A5C;' : 'border-right:1px solid #CBD5E1;';
+        const borderB = ri === 1 ? 'border-bottom:2px solid #1A2A5C;' : 'border-bottom:1px solid #CBD5E1;';
+        const bg = isSolution ? 'background:#EEF4FF;' : (cell === 0 ? 'background:#fff;' : 'background:#EEF4FF;');
+        const val = cell === 0 ? '' : String(cell);
+        const color = isSolution ? 'color:#2E75B6;' : (cell === 0 ? 'color:#000;' : 'color:#1A2A5C;');
+        return `<div style="${cellStyle}${borderR}${borderB}${bg}${color}">${val}</div>`;
+      }).join('')).join('')}
+    </div>`;
+  }
+
+  const sudokuPuzzleHtml = mc.sudoku ? sudokuGrid(mc.sudoku.puzzle, false) : '';
+  const sudokuSolHtml    = mc.sudoku ? sudokuGrid(mc.sudoku.solution, true) : '';
 
   // ── Page 1 ──
   const page1 = `
@@ -4503,7 +4687,7 @@ function renderNewsletter() {
   <div class="nl-page" id="nl-content-p2">
     <div class="nl-p2-hd">
       <div>
-        <div class="nl-p2-title">Fun, Wellness & Conversation</div>
+        <div class="nl-p2-title">Fun, Wellness &amp; Conversation</div>
         <div class="nl-p2-meta">${escapeHtml(DATA.monthName)} ${DATA.year} · ${escapeHtml(communityName)}</div>
       </div>
       <div style="font-size:24px;">🌟</div>
@@ -4521,30 +4705,57 @@ function renderNewsletter() {
       </div>
 
       <div class="nl-fun purple">
-        <div class="nl-fun-title">🧩 Word Scramble</div>
+        <div class="nl-fun-title">🔤 Word Scramble</div>
         <div class="nl-scramble">${escapeHtml(shuffled)}</div>
-        <div class="nl-scramble-hint">Hint: ${escapeHtml(mc.scramble.hint)}</div>
-        <div class="nl-scramble-ans">Answer: ${escapeHtml(origWord)}</div>
+        <div style="font-size:11px;letter-spacing:3px;color:#9CA3AF;margin:4px 0 8px;font-family:monospace;">${scrambleBlanks}</div>
+        <div class="nl-scramble-hint">💡 Hint: ${escapeHtml(mc.scramble.hint)}</div>
       </div>
 
       <div class="nl-fun blue">
         <div class="nl-fun-title">🤔 Did You Know?</div>
         <div class="nl-trivia-q">${escapeHtml(mc.trivia.q)}</div>
-        <div class="nl-fun-body" style="margin-bottom:8px;">Think about it… then flip this paper over!</div>
-        <div class="nl-trivia-a">Answer: ${escapeHtml(mc.trivia.a)}</div>
+        <div style="font-size:11px;color:#93C5FD;font-style:italic;margin-top:6px;">↓ Find the answer at the bottom of this page ↓</div>
       </div>
 
+      ${mc.sudoku ? `
+      <div class="nl-fun navy">
+        <div class="nl-fun-title">🔢 Mini Sudoku — Fill in 1, 2, 3 &amp; 4</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:10px;">Each row, column &amp; 2×2 box must contain the numbers 1–4. No repeats!</div>
+        <div style="display:flex;justify-content:center;">${sudokuPuzzleHtml}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;font-style:italic;">↓ Solution at the bottom of this page ↓</div>
+      </div>` : ''}
+
+      ${mc.saying ? `
+      <div class="nl-fun teal">
+        <div class="nl-fun-title">✏️ Complete the Saying</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;text-align:center;margin:10px 0;line-height:1.6;">"${escapeHtml(mc.saying.phrase)}"</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);text-align:center;font-style:italic;">↓ Answer at the bottom of this page ↓</div>
+      </div>` : ''}
+
       <div class="nl-fun rose full">
-        <div class="nl-fun-title">📰 Remember When… &amp; Historical Fun Facts</div>
+        <div class="nl-fun-title">📰 Remember When… &amp; Historical Fun Fact</div>
         <div class="nl-fun-body">${escapeHtml(mc.history)}<br><br><em>${escapeHtml(mc.rememberWhen)}</em></div>
       </div>
 
-      <div class="nl-fun teal full">
+      <div class="nl-fun navy full">
         <div class="nl-fun-title">💬 Let's Talk! — Conversation Starter</div>
         <div class="nl-conv">"${escapeHtml(mc.conversation)}"</div>
       </div>
 
     </div>
+
+    <!-- ── ANSWERS — upside down ── -->
+    <div class="nl-answers-wrap">
+      <div class="nl-answers-inner">
+        <span class="nl-ans-label">✦ ANSWERS ✦</span>
+        <span class="nl-ans-item"><strong>Word Scramble:</strong> ${escapeHtml(origWord)}</span>
+        <span class="nl-ans-sep">·</span>
+        <span class="nl-ans-item"><strong>Did You Know:</strong> ${escapeHtml(mc.trivia.a)}</span>
+        ${mc.saying ? `<span class="nl-ans-sep">·</span><span class="nl-ans-item"><strong>Complete the Saying:</strong> "${escapeHtml(mc.saying.answer)}"</span>` : ''}
+        ${mc.sudoku ? `<span class="nl-ans-sep">·</span><span class="nl-ans-item" style="display:inline-flex;align-items:center;gap:6px;"><strong>Sudoku:</strong> ${sudokuSolHtml}</span>` : ''}
+      </div>
+    </div>
+
     <div class="nl-footer"><strong>${escapeHtml(nlTitle)}</strong> · Page 2 · ${escapeHtml(DATA.monthName)} ${DATA.year}${footerNote ? '<br>'+escapeHtml(footerNote) : ''}</div>
   </div>`;
 
