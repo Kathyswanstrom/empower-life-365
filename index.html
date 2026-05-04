@@ -1039,6 +1039,41 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 @media print {
   .nl-answers-wrap { page-break-inside: avoid; }
 }
+
+/* ── ACTIVITY LIBRARY ── */
+.lib-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+.lib-filter-btn { padding:6px 16px; border-radius:20px; border:1.5px solid var(--gray-200); background:#fff; font-size:12px; font-weight:700; color:var(--gray-600); cursor:pointer; transition:all .15s; }
+.lib-filter-btn:hover { border-color:var(--navy); color:var(--navy); }
+.lib-filter-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+.lib-search { width:100%; max-width:340px; padding:9px 14px; border-radius:10px; border:1.5px solid var(--gray-200); font-size:13px; outline:none; margin-bottom:18px; }
+.lib-search:focus { border-color:var(--navy); }
+.lib-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+.lib-card { background:#fff; border:1px solid var(--gray-200); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; }
+.lib-card-header { padding:12px 16px 10px; border-bottom:1px solid var(--gray-100); }
+.lib-card-title { font-size:14px; font-weight:800; color:var(--navy); margin-bottom:4px; }
+.lib-card-meta { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.lib-tag { font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:var(--gray-100); color:var(--gray-600); text-transform:uppercase; letter-spacing:0.5px; }
+.lib-duration { font-size:11px; color:var(--gray-500); }
+.lib-card-body { padding:12px 16px; display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; }
+.lib-level { display:flex; flex-direction:column; gap:6px; }
+.lib-level-lbl { font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:2px 8px; border-radius:10px; display:inline-block; width:fit-content; }
+.lib-level-lbl.al { background:#EFF6FF; color:#2E75B6; }
+.lib-level-lbl.mc { background:#F5F3FF; color:#7B4F9E; }
+.lib-level-desc { font-size:12px; color:var(--gray-700); line-height:1.55; }
+.lib-supplies { margin-top:6px; }
+.lib-supplies-hd { font-size:10px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; }
+.lib-supplies-list { font-size:11px; color:var(--gray-600); line-height:1.6; padding-left:14px; margin:0; }
+.lib-card-footer { padding:8px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); display:flex; justify-content:flex-end; }
+.lib-add-btn { font-size:11px; font-weight:700; padding:5px 14px; background:var(--navy); color:#fff; border:none; border-radius:8px; cursor:pointer; }
+.lib-add-btn:hover { background:#2E75B6; }
+.lib-section-hd { font-size:11px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray-500); margin:20px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--gray-200); }
+.lib-empty { text-align:center; padding:40px; color:var(--gray-400); font-style:italic; grid-column:1/-1; }
+/* Day scheduler quick ideas */
+.sch-ideas-wrap { margin-top:14px; border-top:1px solid var(--gray-200); padding-top:12px; }
+.sch-ideas-hd { font-size:11px; font-weight:800; color:var(--gray-500); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.sch-idea-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.sch-idea-chip { font-size:12px; padding:5px 12px; border-radius:20px; border:1.5px solid var(--gray-200); background:#fff; cursor:pointer; color:var(--navy); font-weight:600; transition:all .12s; }
+.sch-idea-chip:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1070,6 +1105,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
     <button class="tab-btn" data-tab="materials">🎵 Materials</button>
     <button class="tab-btn" data-tab="build">🛠️ Build My Cal</button>
+          <button class="tab-btn" data-tab="actlib" id="actlib-tab">📚 Library</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
   </div>
@@ -1585,8 +1621,27 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="supplies-modal-close" onclick="closeScheduler()">×</button>
     </div>
     <div class="supplies-modal-body" id="scheduler-body"></div>
+    <div id="sch-ideas-wrap" class="sch-ideas-wrap"></div>
   </div>
 </div>
+
+<section class="tab-panel" id="panel-actlib">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">📚 Activity Library</h2>
+      <div class="subtitle">Browse ideas by time of day · AL &amp; MC versions · supplies included</div>
+    </div>
+    <input class="lib-search" type="text" placeholder="🔍  Search activities…" oninput="libSearchChanged(this.value)" />
+  </div>
+  <div class="lib-filters">
+    <button class="lib-filter-btn active" data-filter="all"      onclick="setLibFilter('all')">All Ideas</button>
+    <button class="lib-filter-btn"        data-filter="afternoon" onclick="setLibFilter('afternoon')">🎲 Afternoon Games</button>
+    <button class="lib-filter-btn"        data-filter="evening"   onclick="setLibFilter('evening')">🌙 Evening Programs</button>
+    <button class="lib-filter-btn"        data-filter="special"   onclick="setLibFilter('special')">🎉 Special Events</button>
+    <button class="lib-filter-btn"        data-filter="seasonal"  onclick="setLibFilter('seasonal')">🗓️ This Month</button>
+  </div>
+  <div class="lib-grid" id="lib-grid"></div>
+</section>
 
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
@@ -2054,6 +2109,7 @@ function switchTab(name) {
   if (name === 'puzzles') renderPuzzlesPanel();
   if (name === 'settings') renderTimeSettings();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
+  if (name === 'actlib') renderLibrary();
   if (name === 'tv') {
     renderTVDisplay();
     if (tvRefreshInterval) clearInterval(tvRefreshInterval);
@@ -4255,6 +4311,243 @@ const NL_MONTHLY = {
   }
 };
 
+const ACTIVITY_LIBRARY = {
+
+  afternoon: [
+    {
+      id:'bingo', title:'Bingo', tags:['social','classic','easy'], duration:'45–60 min',
+      al:{ desc:'Call numbers with themed cards (seasonal, travel, holidays). Offer small prizes — candy, gift cards, sticker sheets. Great for large groups.', supplies:['Bingo cards (printed or reusable)','Daubers or chips','Number caller cards or cage','Small prizes'] },
+      mc:{ desc:'Use large-print cards with pictures instead of numbers — fruit bingo, color bingo, or animal bingo works great. Keep rounds short (10–15 min).', supplies:['Large-print picture bingo cards','Chips or fabric squares','Picture calling cards','Sticker prizes'] }
+    },
+    {
+      id:'trivia', title:'Trivia Challenge', tags:['brain','social','competitive'], duration:'30–45 min',
+      al:{ desc:'Team trivia with categories: history, music, sports, TV, and pop culture by decade. Teams of 3–4 work well. Offer bonus rounds for extra fun.', supplies:['Trivia question cards or printed sheets','Scoreboard','Buzzers or noisemakers (optional)','Small prizes'] },
+      mc:{ desc:'One-on-one or small group trivia using simple, familiar questions about songs, animals, foods, and famous names. Celebrate every correct answer.', supplies:['Simple trivia question set','Bell or clapper for answers','Sticker rewards','Whiteboard for scores'] }
+    },
+    {
+      id:'cardgames', title:'Card Games', tags:['classic','small-group','brain'], duration:'30–60 min',
+      al:{ desc:'Rummy, Go Fish, Crazy Eights, War, Spades — rotate games weekly to keep it fresh. Poker with chips (no money) adds friendly competition.', supplies:['Standard playing card decks','Poker chips (for poker night)','Score pads','Tables set for 4'] },
+      mc:{ desc:'Go Fish, War, and simple matching card games. Use oversized cards for easier handling. Keep groups to 2–3 players for focus.', supplies:['Oversized playing cards','Simple matching card set','Tray for card display','Timer for short rounds'] }
+    },
+    {
+      id:'boardgames', title:'Board Games', tags:['classic','social','brain'], duration:'45–60 min',
+      al:{ desc:'Scrabble, Yahtzee, Checkers, Monopoly, and Clue are resident favorites. Rotate a weekly "game of the month" for variety.', supplies:['Scrabble / Yahtzee / Checkers sets','Score sheets','Timers','Tables and comfortable seating'] },
+      mc:{ desc:'Checkers, simple dominoes, and color-matching games. Focus on two-player games with large pieces and clear rules. Staff participates alongside residents.', supplies:['Large-piece checkers set','Colorful domino tiles','Simple color-match game','Non-slip mat for table'] }
+    },
+    {
+      id:'beanbag', title:'Bean Bag Toss / Cornhole', tags:['physical','competitive','fun'], duration:'30–45 min',
+      al:{ desc:'Set up cornhole boards or bucket toss in the common room. Run a mini-tournament bracket — residents love the friendly competition.', supplies:['Cornhole boards or toss targets','Bean bags (2 sets of 4)','Tournament bracket sheet','Prizes for top 3'] },
+      mc:{ desc:'Use a large target mat on the floor or table. Seated bean bag toss at close range — focus on the joy of tossing, not scoring. Cheer every toss.', supplies:['Large target mat (floor or table)','Soft bean bags or sandbags','Basket or bin for target','Noisemakers for cheering'] }
+    },
+    {
+      id:'balloon', title:'Balloon Volleyball', tags:['physical','social','laughs'], duration:'20–30 min',
+      al:{ desc:'Seat residents in a circle and keep a balloon in the air as long as possible. Count the hits — try to beat your record each round.', supplies:['Balloons (helium or air, bright colors)','Seating circle setup','Scoreboard','Backup balloons'] },
+      mc:{ desc:'One balloon between 2–4 residents seated at a table. Simply bat the balloon back and forth. Staff cheers and assists. Sensory and joyful.', supplies:['Balloons','Small table setup','Soft music in background'] }
+    },
+    {
+      id:'namethattune', title:'Name That Tune', tags:['music','brain','fun'], duration:'30–40 min',
+      al:{ desc:'Play 5–10 second clips of popular songs from the 1940s–1980s and have residents call out the title or artist. Teams or individual play both work.', supplies:['Bluetooth speaker','Prepared song playlist (Spotify or YouTube)','Score sheet','Prizes'] },
+      mc:{ desc:'Play full song verses of well-known classics and invite residents to sing along or hum. No competitive scoring — just the joy of recognition and music.', supplies:['Speaker','Familiar songs playlist (familiar hymns, big band, classic country)','Song lyric sheets (optional)'] }
+    },
+    {
+      id:'pictionary', title:'Pictionary / Drawing Game', tags:['creative','laughs','teams'], duration:'30–40 min',
+      al:{ desc:'Teams take turns drawing clues on a whiteboard while teammates guess. Use custom word cards themed to seasons or resident interests.', supplies:['Whiteboard or large paper pad','Markers','Pictionary word cards or custom list','Timer'] },
+      mc:{ desc:'Staff draws simple images (house, cat, cake, sun) and residents call out what they see. No competition — just looking, laughing, and recognizing.', supplies:['Large paper or whiteboard','Bold markers','Simple image flashcards for inspiration'] }
+    },
+    {
+      id:'jeopardy', title:'Jeopardy Game Show', tags:['brain','social','teams'], duration:'45–60 min',
+      al:{ desc:'Create a Jeopardy board with 4 categories (history, TV, sports, music) and point values. Host with a buzzer system or hand raise. Residents love the format.', supplies:['Printed or poster-board Jeopardy grid','Category cards','Scoreboard','Buzzers or bells'] },
+      mc:{ desc:'Simplified Jeopardy with yes/no or one-word answers. Use visual cards with images alongside text. Keep to 2–3 categories, 3 questions each.', supplies:['Simple picture-based answer cards','Bell for responses','Whiteboard scores','Small rewards for all'] }
+    },
+    {
+      id:'wii', title:'Wii Sports / Video Games', tags:['physical','tech','fun'], duration:'30–45 min',
+      al:{ desc:'Wii bowling, tennis, and golf are perennial hits. Set up a small tournament — even residents who have never played catch on quickly.', supplies:['Nintendo Wii console + controllers','TV or projector','Wrist straps on all controllers','Scoreboard'] },
+      mc:{ desc:'Wii bowling only — simple, familiar motion. Staff assists with holding and swinging the controller. Focus on the celebration when pins fall.', supplies:['Wii console + 1–2 controllers','TV setup','Wrist straps','Lots of enthusiastic cheering'] }
+    },
+    {
+      id:'horserace', title:'Horse Race Game', tags:['fun','competitive','classic'], duration:'30 min',
+      al:{ desc:'Use playing cards to run a horse race on a floor mat or table track. Residents bet tokens on their horse — totally wholesome, no money involved.', supplies:['Horse race game mat or DIY track','Playing cards','Tokens or chips for betting','Named horse placards'] },
+      mc:{ desc:'Simplified version: each resident picks a color horse. Staff draws cards and moves the horses. Cheer for your color — winner gets a ribbon.', supplies:['Color-coded horse figures or cards','Simple track mat','Ribbons for all finishers'] }
+    },
+    {
+      id:'charades', title:'Charades', tags:['laughs','physical','classic'], duration:'30 min',
+      al:{ desc:'Classic charades with themed card sets — movies, songs, animals, famous people. Keep teams small for maximum participation.', supplies:['Charades card set or custom list','Timer','Scoreboard'] },
+      mc:{ desc:'Staff acts out simple things (eating, sleeping, swimming, brushing teeth) and residents guess. Reverse: staff gives resident a simple thing to act out with lots of encouragement.', supplies:['Simple action prompt cards','Encouraging staff energy','Small prize for every participant'] }
+    },
+    {
+      id:'priceisright', title:'The Price Is Right', tags:['tv','social','fun'], duration:'45 min',
+      al:{ desc:'Recreate classic Price is Right games: Plinko, Higher or Lower, Showcase Showdown. Use printed price cards and prop items from the supply room.', supplies:['Prop items with price tags','Higher/Lower price cards','DIY Plinko board (optional)','Play money or tokens'] },
+      mc:{ desc:'Higher or Lower only — show two items and ask which costs more. Use familiar grocery or household items. Celebrate every answer enthusiastically.', supplies:['Pairs of prop items with visible price tags','Bell for correct answers','Sticker prizes'] }
+    },
+    {
+      id:'crossword', title:'Group Crossword Puzzle', tags:['brain','quiet','classic'], duration:'30–45 min',
+      al:{ desc:'Project or display a large crossword and solve it as a group. Residents call out answers while one person writes. Use NYT Easy or custom themed puzzles.', supplies:['Large printed crossword or projector','Pens / dry-erase markers','Printed copies for residents to follow along'] },
+      mc:{ desc:'Simple 5×5 crossword with picture clues. Staff reads the clue and shows a picture; residents call out the word. Focus on 4–6 letter words.', supplies:['Large-print simple crossword with images','Bold markers','Whiteboard or easel'] }
+    },
+    {
+      id:'bowling', title:'Indoor Bowling', tags:['physical','fun','competitive'], duration:'30–45 min',
+      al:{ desc:'Set up plastic pins in the hallway or common room and roll a foam ball. Run a two-frame tournament — competitive and hilarious.', supplies:['Plastic bowling pin set','Foam ball','Tape for lane markers','Score sheet'] },
+      mc:{ desc:'Seated bowling — roll a soft ball toward pins set up on a table or floor at close range. Focus on the joy of knocking them over, not scoring.', supplies:['Soft ball','Lightweight pins or empty bottles','Table or floor setup','Lots of cheers'] }
+    }
+  ],
+
+  evening: [
+    {
+      id:'movie', title:'Movie Night', tags:['relaxing','social','classic'], duration:'90–120 min',
+      al:{ desc:'Feature film with popcorn, candy, and a cozy setup. Poll residents weekly for the pick — rotate between comedy, classic, musical, and drama.', supplies:['TV or projector and screen','Popcorn maker or microwave bags','Candy and drinks','Dimmed lighting setup'] },
+      mc:{ desc:'Shorter films (60–75 min) or a curated playlist of short clips — musicals, nature docs, or classic cartoon features. Familiar content reduces anxiety.', supplies:['TV setup','Popcorn in small cups','Soft blankets','Familiar film selection'] }
+    },
+    {
+      id:'happyhour', title:'Happy Hour / Social Hour', tags:['social','relaxing','fun'], duration:'60 min',
+      al:{ desc:'Mocktails, sparkling cider, or specialty drinks served with light appetizers. Add soft background music — a lovely way to end the afternoon.', supplies:['Juice, sparkling cider, lemonade','Drink garnishes (fruit, mint, umbrella)','Light snacks','Background music playlist'] },
+      mc:{ desc:'Simple juice bar with two choices. Focus on the social interaction and familiar music in the background. Staff mingles and sits with residents.', supplies:['Two juice options in pitchers','Small snack cups','Familiar background music','Comfortable seating circle'] }
+    },
+    {
+      id:'karaoke', title:'Karaoke Night', tags:['music','laughs','social'], duration:'60–90 min',
+      al:{ desc:'Karaoke mic and screen with lyrics. Staff goes first to break the ice. Encourage duets. Classics from the 1950s–1980s get the best participation.', supplies:['Karaoke machine or app (YouTube karaoke)','Microphone','TV for lyrics','Applause and encouragement'] },
+      mc:{ desc:'Sing-along rather than karaoke. Display large-print lyrics on a screen and sing together as a group. Staff leads with enthusiasm.', supplies:['Large-print lyric sheets or screen display','Familiar song list (hymns, classic country, big band)','Maracas or rhythm instruments for participation'] }
+    },
+    {
+      id:'talent', title:'Resident Talent Show', tags:['performance','social','celebration'], duration:'60 min',
+      al:{ desc:'Residents sign up to perform — sing, recite a poem, tell a joke, demonstrate a skill, or share a story. Staff emcee, applause, and small trophies make it memorable.', supplies:['Sign-up sheet (1 week ahead)','Microphone','Small trophy or medal for all performers','Program printed for audience'] },
+      mc:{ desc:'Staff-facilitated "show and tell" — each resident shares something: a photo, a song they hum, a drawing, or a simple movement. Everyone gets applause.', supplies:['Microphone (even just symbolic)','Photo or item display table','Applause from staff and families','Ribbons for all participants'] }
+    },
+    {
+      id:'storytelling', title:'Storytelling Circle', tags:['memory','social','quiet'], duration:'45 min',
+      al:{ desc:'A guided storytelling circle with a theme — "first job," "best vacation," "how I met my spouse." One resident starts, others add to the conversation.', supplies:['Comfortable seating circle','Theme prompt cards','Optional: recording device (with permission)','Light refreshments'] },
+      mc:{ desc:'Staff shares a short story first, then asks simple single-sentence questions: "Did you ever see snow?" "What\'s your favorite food?" Validate every response warmly.', supplies:['Prompt question cards','Photo or object prompts (old newspaper, vintage items)','Soft background music'] }
+    },
+    {
+      id:'musicnight', title:'Live or Recorded Music Evening', tags:['music','relaxing','social'], duration:'60 min',
+      al:{ desc:'Invite a local musician, student group, or use a high-quality playlist. Create a concert atmosphere — set up rows, dim lights, serve drinks. Residents often dance.', supplies:['Live musician booking OR curated concert playlist','Speaker system','Drink service','Program cards'] },
+      mc:{ desc:'Familiar recorded music from their era (1940s–1970s). Residents may rock, clap, or hum along. Keep the volume comfortable and the vibe warm and unhurried.', supplies:['Speaker','Era-appropriate playlist','Rhythm instruments (maracas, tambourines)','Comfortable seating'] }
+    },
+    {
+      id:'dance', title:'Dance Evening / Sock Hop', tags:['physical','social','music'], duration:'60 min',
+      al:{ desc:'Themed dance night — sock hop, ballroom, line dancing, or disco. Hire a DJ or use a playlist. Staff and family invited to dance with residents.', supplies:['Music playlist (era-themed)','Speaker / DJ setup','Themed decorations','Open floor space'] },
+      mc:{ desc:'Seated rhythm and movement to familiar music. Staff encourages arm movements, hand clapping, and foot tapping. Even chair dancing counts and brings joy.', supplies:['Familiar music playlist','Rhythm instruments','Comfortable seated circle','Enthusiastic staff participation'] }
+    },
+    {
+      id:'devotional', title:'Evening Devotional / Reflection', tags:['spiritual','quiet','community'], duration:'30–45 min',
+      al:{ desc:'Guided reflection, scripture reading, hymn singing, or nondenominational meditation. Chaplain or staff-led. Optional journaling or gratitude sharing.', supplies:['Devotional books or printed readings','Hymnals (optional)','Candle (LED) for atmosphere','Quiet music'] },
+      mc:{ desc:'Simple, familiar hymns sung together, followed by a brief prayer or blessing. Familiar religious music is deeply comforting for memory care residents.', supplies:['Hymnals or large-print lyric sheets','Soft piano music','LED candles','Small prayer cards'] }
+    },
+    {
+      id:'campfire', title:'Indoor Campfire Stories', tags:['fun','social','nostalgia'], duration:'45 min',
+      al:{ desc:'Arrange seating around a projector showing a crackling fireplace video. Serve s\'mores kit (chocolate, graham crackers, marshmallows) and tell stories or ghost stories.', supplies:['Projector or TV fireplace video','S\'mores ingredients','Hot cocoa or cider','Story prompt cards'] },
+      mc:{ desc:'Gather around the "campfire" (TV fireplace) and share simple memory prompts: "Did you ever go camping?" Serve warm cocoa and marshmallows to dip.', supplies:['TV fireplace video','Warm cocoa','Marshmallows for dipping','Cozy blankets'] }
+    },
+    {
+      id:'newsevent', title:'Current Events Discussion', tags:['brain','community','social'], duration:'30–40 min',
+      al:{ desc:'Staff presents 3–4 positive local or national news stories from the week. Residents share opinions and memories the stories spark. Avoid divisive political topics.', supplies:['Printed news summaries or tablet','Discussion prompt cards','Light refreshments','Comfortable seating'] },
+      mc:{ desc:'Simple "Did you know?" facts rather than current events — fun animal facts, local history tidbits, or "On this day in history." Show pictures to accompany each one.', supplies:['Picture-based fact cards','Printed images','Simple yes/no response prompts'] }
+    },
+    {
+      id:'photosharing', title:'Memory & Photo Sharing Evening', tags:['memory','social','emotional'], duration:'45 min',
+      al:{ desc:'Residents bring or display photos and share stories. Staff can print and display a "Memory Wall." Families can contribute photos for a special occasion.', supplies:['Photo display boards','Tape or clips','Resident photo contributions','Light refreshments'] },
+      mc:{ desc:'Staff displays vintage photos (familiar scenes, cars, kitchens, farms) and asks simple connection questions. Familiar images spark wonderful responses.', supplies:['Vintage photo printouts','Display easel or board','Simple prompts: "Does this look familiar?"'] }
+    },
+    {
+      id:'relaxation', title:'Relaxation & Guided Meditation', tags:['wellness','quiet','relaxing'], duration:'30 min',
+      al:{ desc:'Guided meditation or gentle progressive muscle relaxation. Play nature sounds or soft music. Great after a busy day or before dinner.', supplies:['Soft music or nature sounds speaker','Dim lighting','Comfortable reclining chairs or cushions','Guided script or app'] },
+      mc:{ desc:'Simple breathing and gentle hand massage with lotion. Staff guides slowly: "Take a deep breath… let it out slowly…" Lavender lotion enhances calm.', supplies:['Lavender-scented lotion','Soft music','Dim warm lighting','Staff-to-resident ratio of at least 1:4'] }
+    }
+  ],
+
+  special: [
+    {
+      id:'birthday', title:'Monthly Birthday Celebration', tags:['celebration','monthly','community'], duration:'60–90 min',
+      al:{ desc:'Celebrate all residents with birthdays in the month. Decorate with their colors, play their favorite song, serve their chosen cake flavor, and give a small gift.', supplies:['Decorated cake or cupcakes per birthday resident','Balloons and streamers','Birthday crowns / sashes','Small personalized gift (card, plant, lotion)'] },
+      mc:{ desc:'Small birthday celebration at the resident\'s table or in a quiet corner with their favorite people. A single candle, a song, a small treat, and lots of love.', supplies:['Single cupcake with candle','Birthday sash','Familiar song played softly','Photo opportunity'] }
+    },
+    {
+      id:'familynight', title:'Family Potluck / Family Night', tags:['family','celebration','community'], duration:'90–120 min',
+      al:{ desc:'Invite families to bring a dish and share a meal together. Add lawn games, a photo wall, or live music. One of the most beloved events of the year.', supplies:['Sign-up sheet for dishes','Table setup and linens','Decorations (seasonal)','Name tags for guests'] },
+      mc:{ desc:'Smaller family gathering — one family at a time or a small intimate group. Familiar comfort foods, familiar faces, and a calm environment with familiar music.', supplies:['Simple comfort food and beverages','Private or semi-private space','Family photo display','Calm background music'] }
+    },
+    {
+      id:'casinonight', title:'Casino Night', tags:['fun','competitive','social'], duration:'90 min',
+      al:{ desc:'Set up blackjack, roulette, and poker tables with fun chips. Staff deals. Residents cash in chips at the end for prize drawings. Dress up encouraged!', supplies:['Card decks and poker chips','Roulette wheel (optional)','Casino decorations','Prize table for chip redemption'] },
+      mc:{ desc:'Simple slot machine style game — pull a lever (staff manages), see matching symbols, win tokens. All residents "win" something. Focus on the celebration.', supplies:['Simple matching game or slot card','Tokens for all players','Small prizes for everyone','Fun music and festive atmosphere'] }
+    },
+    {
+      id:'luau', title:'Hawaiian Luau', tags:['themed','seasonal','summer'], duration:'90 min',
+      al:{ desc:'Transform the dining room or courtyard into Hawaii: leis, grass skirts, tropical music, tropical punch, pineapple fruit skewers, and a hula demonstration.', supplies:['Leis for all residents and staff','Tropical decorations','Tropical punch and fruit skewers','Hawaiian music playlist','Optional: hula instruction video'] },
+      mc:{ desc:'Simple luau sensory experience — leis around the neck, tropical scented lotion, pineapple juice, and gentle Hawaiian music. Staff in Hawaiian shirts sets the mood.', supplies:['Leis (soft fabric)','Pineapple juice cups','Coconut-scented lotion','Gentle Hawaiian music'] }
+    },
+    {
+      id:'sockhopdance', title:'Sock Hop / 50s Party', tags:['themed','music','dance'], duration:'90 min',
+      al:{ desc:'Poodle skirts, leather jackets, saddle shoes, jukebox music. Serve milkshakes and mini burgers. Residents love the nostalgia — many remember this era vividly.', supplies:['50s music playlist','Milkshakes or floats','Diner-style decorations','Costume props (scarves, glasses, poodle skirt cutouts)'] },
+      mc:{ desc:'Play familiar 1950s hits softly. Pass around saddle shoe cutouts and poodle pictures to hold and talk about. Serve vanilla milkshakes — a powerful memory trigger.', supplies:['Soft 50s music','Vanilla milkshakes or ice cream','50s image cards (cars, jukeboxes, diners)','Simple costumes for staff'] }
+    },
+    {
+      id:'promprom', title:'Prom Night Redux / Gala', tags:['celebration','formal','special'], duration:'90 min',
+      al:{ desc:'A formal dance event — residents dress up, staff greets at the door, dinner and dancing, a prom king and queen voted by residents. Magical and memorable.', supplies:['Formal invitations','Decorations: balloons, lights, centerpieces','Dance music (big band or era-appropriate)','Crowns and sashes','Photo backdrop'] },
+      mc:{ desc:'Elegant table setting with soft music, sparkling cider, and staff wearing formal attire. Residents receive a corsage or boutonniere. Focus on feeling special and seen.', supplies:['Silk corsages or boutonnieres','Sparkling cider','Elegant table settings','Soft formal music','Staff in formal dress'] }
+    },
+    {
+      id:'pettherapy', title:'Pet Therapy Visit', tags:['wellness','animals','joy'], duration:'45–60 min',
+      al:{ desc:'Coordinate a certified therapy animal visit (dogs, cats, rabbits). Residents pet, hold, and interact freely. One of the highest-rated events of the year.', supplies:['Certified therapy animal organization contact','Sign-up for residents who want to participate','Hand sanitizer stations','Optional: animal photos to keep'] },
+      mc:{ desc:'Bring therapy animals directly to residents in common areas or their rooms. Keep the visit calm and slow-paced — even a few minutes with a gentle dog is transformative.', supplies:['Certified therapy animal (calm, well-trained)','Hand sanitizer','Small animal photo cards to give residents','Minimal stimulation — one animal at a time'] }
+    },
+    {
+      id:'statefair', title:'State Fair Day', tags:['themed','fun','summer'], duration:'90 min',
+      al:{ desc:'Set up carnival games (ring toss, duck pond, ball throw), serve fair food (corn dogs, cotton candy, lemonade), and give out tickets to redeem for prizes.', supplies:['Carnival game supplies','Cotton candy machine or bags','Corn dogs / lemonade','Tickets and prize table','Bright decorations'] },
+      mc:{ desc:'Sensory fair experience — cotton candy to taste and touch, lemonade in cups, simple ring toss at a table. Staff in overalls sets the fun mood.', supplies:['Cotton candy (pre-made bags)','Lemonade','Simple ring toss','Bright balloon decorations'] }
+    },
+    {
+      id:'icecream', title:'Ice Cream Social', tags:['food','social','easy'], duration:'45 min',
+      al:{ desc:'Ice cream bar with 4–6 flavors plus toppings: hot fudge, caramel, sprinkles, whipped cream, cherries. A simple event that always delivers pure joy.', supplies:['3–4 ice cream flavors','Toppings bar (fudge, caramel, sprinkles, whipped cream)','Cups and spoons','Napkins and serving scoops'] },
+      mc:{ desc:'Pre-scooped ice cream in small cups with one favorite topping. Staff sits and shares with residents — slow, relaxed, and happy.', supplies:['Pre-scooped ice cream (vanilla, chocolate)','One simple topping per resident choice','Small cups and spoons','Bibs if needed'] }
+    },
+    {
+      id:'cultureday', title:'Cultural Heritage Day', tags:['education','community','food'], duration:'90 min',
+      al:{ desc:'Celebrate the cultural backgrounds of residents — traditional foods, music, crafts, and dress from different cultures. Residents and families contribute.', supplies:['Cultural foods and recipes from resident backgrounds','Cultural music playlist','Traditional craft activity','Display boards with cultural facts'] },
+      mc:{ desc:'Focus on one familiar cultural theme per session — country music and Southern food, polka and German cookies, etc. Familiar cultural touchstones connect deeply.', supplies:['Simple cultural food item','Cultural music (one genre)','Image cards of cultural scenes','Themed decoration'] }
+    },
+    {
+      id:'chefDemo', title:'Chef Demo & Tasting', tags:['food','education','fun'], duration:'60 min',
+      al:{ desc:'Invite the facility chef or a local culinary student to demonstrate a recipe residents suggest. Everyone tastes the result — engagement is off the charts.', supplies:['Cooking demonstration setup','Ingredients for recipe','Tasting cups and spoons','Recipe card to take home'] },
+      mc:{ desc:'Simple sensory tasting — bread baking smell in the kitchen, tasting warm cookies or soup, feeling dough. The process is the experience, not the result.', supplies:['Simple baked item (cookies, bread)','Tasting cups','Sensory prompts: smell, taste, texture talk','Warm, comfortable seating near kitchen'] }
+    },
+    {
+      id:'fashionshow', title:'Resident Fashion Show', tags:['fun','celebration','laughs'], duration:'60 min',
+      al:{ desc:'Residents model their favorite outfits down a "runway" to a song of their choice. Staff emcee announces each resident with an enthusiastic introduction.', supplies:['Taped runway in hallway or common room','Emcee script template','Music for each resident (collected in advance)','Applause and flowers for all models'] },
+      mc:{ desc:'Staff dresses residents in fun hats or scarves and walks them gently down a short runway path. Families and peers applaud. Photo at the end.', supplies:['Collection of fun hats, scarves, boas','Short runway path (taped)','Camera for photos','Flowers or ribbon for all participants'] }
+    },
+    {
+      id:'holidaytea', title:'Holiday Tea Party', tags:['elegant','seasonal','social'], duration:'60 min',
+      al:{ desc:'Elegant tea service with finger sandwiches, scones, and petits fours. Residents dress up. Add a card-making station or holiday music quartet for extra magic.', supplies:['Tea service (pots, cups, saucers)','Finger sandwiches and scones','Tablecloths and florals','Seasonal decorations','Background music'] },
+      mc:{ desc:'Warm herbal tea or juice in pretty teacups with a simple sweet treat. The elegance of china teacups and cloth napkins makes every resident feel honored.', supplies:['Pretty teacups and saucers','Herbal tea or juice','Simple cookies or small cakes','Cloth napkins','Soft music'] }
+    },
+    {
+      id:'pancakebreakfast', title:'Special Pancake Breakfast', tags:['food','community','morning'], duration:'60 min',
+      al:{ desc:'Hot pancake breakfast with a build-your-own topping bar. Staff cooks and serves. Great for a Saturday morning or holiday tradition. Families often join.', supplies:['Pancake batter (from scratch or mix)','Griddles','Toppings: butter, syrup, fruit, whipped cream','Juice and coffee service'] },
+      mc:{ desc:'Serve warm, fluffy pancakes (pre-cut in small pieces) with butter and syrup in a calm, familiar setting. The smell of pancakes cooking is a powerful comfort trigger.', supplies:['Pre-made pancakes (kept warm)','Butter and syrup in easy-pour containers','Small portions','Calm breakfast music'] }
+    },
+    {
+      id:'volunteer', title:'Volunteer & Partner Appreciation', tags:['gratitude','community','celebration'], duration:'60 min',
+      al:{ desc:'Honor facility volunteers, clergy, therapy animals teams, and community partners. Residents present handmade thank-you cards and share testimonials.', supplies:['Handmade thank-you cards (made in advance)','Light refreshments','Program with honoree names','Certificate of appreciation (printed)'] },
+      mc:{ desc:'Residents present a single flower or ribbon to each honored guest with staff support. Simple, meaningful, and residents feel the pride of giving.', supplies:['Silk flowers or ribbons','Simple refresh','Staff facilitation for each resident interaction'] }
+    }
+  ],
+
+  seasonal: {
+    1:[ {id:'s1a',title:'Snowflake Art & Hot Cocoa',tags:['winter','craft'],al:{desc:'Cut paper snowflakes and display in windows, then warm up with hot cocoa bar.',supplies:['White paper','Scissors','String for hanging','Hot cocoa, marshmallows']},mc:{desc:'Fold and tear paper to create snowflake shapes — sensory and satisfying. Staff completes the cutting.',supplies:['Soft paper','Pre-folded templates','Hot cocoa in small cups']}}, {id:'s1b',title:'New Year Resolution Jar',tags:['new year','reflection'],al:{desc:'Write one hope or goal for the year on a paper strip and seal it in a mason jar to open in December.',supplies:['Mason jars','Paper strips','Pens','Ribbon for sealing']},mc:{desc:'Staff writes resident-dictated wishes on paper strips and adds them together to a group jar.',supplies:['Shared jar','Paper strips','Pens','Ribbon']}} ],
+    2:[ {id:'s2a',title:'Valentine\'s Day Dance',tags:['holiday','music'],al:{desc:'A romantic afternoon dance with big band and swing music, sparkling cider, and heart decorations.',supplies:['Big band playlist','Sparkling cider','Heart decorations','Dance floor space']},mc:{desc:'Seated dancing — staff partners with each resident for a gentle waltz or hand-holding sway.',supplies:['Soft romantic music','Sparkling cider cups','Heart-shaped balloons']}}, {id:'s2b',title:'Love Story Sharing',tags:['memory','social'],al:{desc:'Residents share how they met their spouse or best friend — moderator takes notes for a memory book.',supplies:['Story prompt cards','Notebook for recording','Light refreshments']},mc:{desc:'Staff shows vintage wedding photos (community collection) and asks "Did you have a big wedding?"',supplies:['Vintage wedding image cards','Simple question prompts']}} ],
+    3:[ {id:'s3a',title:'St. Patrick\'s Day Parade',tags:['holiday','fun'],al:{desc:'In-house parade around the building with green hats, shamrock banners, and Irish music.',supplies:['Green hats and beads','Shamrock banners','Irish music playlist','Sparkling green punch']},mc:{desc:'Staff wears green and brings a rolling cart decorated with shamrocks to each resident — a parade that comes to them.',supplies:['Green decorations on cart','Shamrock stickers','Irish music playing']}} ],
+    4:[ {id:'s4a',title:'Easter Egg Hunt',tags:['holiday','fun'],al:{desc:'Plastic eggs filled with candy or prize slips hidden around the common room. Residents find as many as they can.',supplies:['Plastic eggs (filled)','Baskets','Small prizes inside eggs','Hiding locations pre-planned']},mc:{desc:'Eggs placed on table or in a sensory bin — residents open each one to find what\'s inside. Focus on discovery and delight.',supplies:['Plastic eggs with treats','Table display','Simple basket']}} ],
+    5:[ {id:'s5a',title:'Mother\'s Day Tea & Corsages',tags:['holiday','elegant'],al:{desc:'Honor all mothers and grandmothers with a corsage, a special tea, and a card from family.',supplies:['Silk corsages','Tea service','Cards mailed to families in advance for signatures']},mc:{desc:'Pin a corsage on each resident and say "Happy Mother\'s Day" personally. Simple and deeply meaningful.',supplies:['Silk corsages','Personalized Mother\'s Day card','Sparkling cider toast']}} ],
+    6:[ {id:'s6a',title:'Father\'s Day Fishing Derby',tags:['holiday','fun'],al:{desc:'Magnetic fishing game tournament — decorate fish with point values. Winner gets a fishing-themed prize.',supplies:['Magnetic fishing set','Point-value fish labels','Blue tablecloth "pond"','Fishing-themed prizes']},mc:{desc:'Simple magnetic fishing at the table — pull a fish, show it off, put it back. Repeat as desired.',supplies:['Magnetic fishing set','Blue cloth "pond"','Enthusiastic cheering from staff']}} ],
+    7:[ {id:'s7a',title:'4th of July Cookout',tags:['holiday','food'],al:{desc:'BBQ setup in the courtyard or common room — hot dogs, watermelon, potato salad, patriotic music, and sparkler photos.',supplies:['Grill or chafing dishes','Hot dogs, watermelon, sides','Patriotic decorations','Patriotic music playlist']},mc:{desc:'Serve a simple patriotic plate: hot dog pieces, watermelon cubes, and a small flag. Wear red, white, and blue bibs.',supplies:['Simple patriotic food plate','Small flags','Red, white, blue tablecloth','Quiet patriotic music']}} ],
+    8:[ {id:'s8a',title:'End of Summer Pool Party (Indoor)',tags:['summer','fun'],al:{desc:'Beach towels, sunglasses, tropical drinks, and beach music in the common room. Foot soaks in warm water optional.',supplies:['Beach towels and sunglasses props','Tropical punch','Beach music playlist','Inflatable beach balls']},mc:{desc:'Cool lemon water, tropical scent lotion, and a beach music playlist. Staff in sunglasses makes it festive and fun.',supplies:['Lemon water','Coconut-scented lotion','Beach music','Sunglasses props']}} ],
+    9:[ {id:'s9a',title:'Fall Harvest Festival',tags:['fall','seasonal'],al:{desc:'Pumpkin decorating (no carving), apple cider, caramel apples, and harvest trivia.',supplies:['Small pumpkins for decorating','Paint and foam stickers','Apple cider','Caramel apples']},mc:{desc:'Touch and smell pumpkins, taste warm apple cider, feel dried corn husks. Pure sensory harvest experience.',supplies:['Small pumpkin','Apple cider','Dried corn and gourds for touching','Cinnamon scent']}} ],
+    10:[ {id:'s10a',title:'Halloween Costume Parade',tags:['holiday','fun'],al:{desc:'Residents and staff wear costumes, parade through the building, and vote on "Best Costume." Candy and spooky treats served.',supplies:['Costume accessories (hats, capes, makeup)','Candy','Voting ballots','Prizes for costume categories']},mc:{desc:'Staff wears fun costumes and visits each resident\'s area to "trick or treat" and leave a small candy gift.',supplies:['Staff costumes (friendly, not scary)','Small candy bags','Friendly fun music']}} ],
+    11:[ {id:'s11a',title:'Thanksgiving Feast & Gratitude Circle',tags:['holiday','food','community'],al:{desc:'Full Thanksgiving feast with resident and family favorites. Before eating, go around the table sharing one thing each person is grateful for.',supplies:['Thanksgiving menu','Gratitude prompt cards','Decorative centerpieces','Printed menu cards for each place setting']},mc:{desc:'Small Thanksgiving plates, warm and familiar. Staff sits alongside residents and shares one gratitude with each person.',supplies:['Familiar Thanksgiving foods in small portions','Gratitude prompt: "What is one thing you love?"','Warm and calm atmosphere']}} ],
+    12:[ {id:'s12a',title:'Holiday Party & Gift Exchange',tags:['holiday','celebration'],al:{desc:'White elephant or Secret Santa gift exchange ($5 limit), holiday music, cookies, eggnog, and community caroling.',supplies:['Gift exchange setup ($5 limit communicated)','Holiday music playlist','Cookies and eggnog','Carol lyric sheets']},mc:{desc:'Staff delivers a wrapped small gift to each resident personally with a warm holiday message. Simple, meaningful, and deeply felt.',supplies:['Small wrapped gifts (lotion, candy, socks)','Holiday card with personal message','Holiday music playing softly']}} ]
+  }
+};
+
 const CS_MONTHLY = {
   1: {
     theme: "Winter Warmth Drive", season: "❄️ January",
@@ -4505,6 +4798,145 @@ const CS_MONTHLY = {
 };
 
 
+
+// ── ACTIVITY LIBRARY ──
+let libFilter = 'all';
+let libSearch = '';
+
+function renderLibrary() {
+  const container = document.getElementById('lib-grid');
+  if (!container) return;
+  const monthNum = DATA.monthNum;
+  const seasonal = ACTIVITY_LIBRARY.seasonal[monthNum] || [];
+
+  // Build full list based on filter
+  let items = [];
+  const addSection = (arr, sectionLabel) => arr.forEach(a => items.push({...a, _section: sectionLabel}));
+
+  if (libFilter === 'all' || libFilter === 'afternoon') addSection(ACTIVITY_LIBRARY.afternoon, '🎲 Afternoon Games');
+  if (libFilter === 'all' || libFilter === 'evening')   addSection(ACTIVITY_LIBRARY.evening,   '🌙 Evening Programs');
+  if (libFilter === 'all' || libFilter === 'special')   addSection(ACTIVITY_LIBRARY.special,   '🎉 Special Events');
+  if (libFilter === 'all' || libFilter === 'seasonal')  addSection(seasonal,                   '🗓️ This Month\'s Seasonal Ideas');
+
+  // Search filter
+  if (libSearch.trim()) {
+    const q = libSearch.toLowerCase();
+    items = items.filter(a =>
+      a.title.toLowerCase().includes(q) ||
+      (a.tags||[]).some(t => t.toLowerCase().includes(q)) ||
+      a.al.desc.toLowerCase().includes(q) ||
+      a.mc.desc.toLowerCase().includes(q)
+    );
+  }
+
+  if (!items.length) {
+    container.innerHTML = '<div class="lib-empty">No activities found. Try a different search or filter.</div>';
+    return;
+  }
+
+  // Group by section
+  const sections = {};
+  items.forEach(a => {
+    if (!sections[a._section]) sections[a._section] = [];
+    sections[a._section].push(a);
+  });
+
+  container.innerHTML = Object.entries(sections).map(([label, acts]) => `
+    <div class="lib-section-hd" style="grid-column:1/-1;">${label}</div>
+    ${acts.map(a => `
+      <div class="lib-card">
+        <div class="lib-card-header">
+          <div class="lib-card-title">${escapeHtml(a.title)}</div>
+          <div class="lib-card-meta">
+            ${(a.tags||[]).map(t => `<span class="lib-tag">${escapeHtml(t)}</span>`).join('')}
+            ${a.duration ? `<span class="lib-duration">⏱ ${escapeHtml(a.duration)}</span>` : ''}
+          </div>
+        </div>
+        <div class="lib-card-body">
+          <div class="lib-level">
+            <span class="lib-level-lbl al">🏠 Assisted Living</span>
+            <div class="lib-level-desc">${escapeHtml(a.al.desc)}</div>
+            <div class="lib-supplies">
+              <div class="lib-supplies-hd">Supplies</div>
+              <ul class="lib-supplies-list">${(a.al.supplies||[]).map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="lib-level">
+            <span class="lib-level-lbl mc">🧩 Memory Care</span>
+            <div class="lib-level-desc">${escapeHtml(a.mc.desc)}</div>
+            <div class="lib-supplies">
+              <div class="lib-supplies-hd">Supplies</div>
+              <ul class="lib-supplies-list">${(a.mc.supplies||[]).map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ul>
+            </div>
+          </div>
+        </div>
+        <div class="lib-card-footer">
+          <button class="lib-add-btn" onclick="libCopyToClipboard('${escapeHtml(a.title)}')">📋 Copy Name</button>
+        </div>
+      </div>`).join('')}
+  `).join('');
+}
+
+function libCopyToClipboard(title) {
+  navigator.clipboard.writeText(title).then(() => {
+    showToast('Copied: ' + title);
+  }).catch(() => showToast(title));
+}
+
+function setLibFilter(f) {
+  libFilter = f;
+  document.querySelectorAll('.lib-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  renderLibrary();
+}
+
+function libSearchChanged(val) {
+  libSearch = val;
+  renderLibrary();
+}
+
+// ── SCHEDULER QUICK IDEAS ── 
+function getSchedulerIdeas(slotKey) {
+  const monthNum = DATA.monthNum;
+  const seasonal = ACTIVITY_LIBRARY.seasonal[monthNum] || [];
+  // Map slot key to time-of-day pool
+  const isEvening  = slotKey && (slotKey.toLowerCase().includes('eve') || slotKey.toLowerCase().includes('night') || slotKey === 'EVENING');
+  const isAfternoon = slotKey && (slotKey.toLowerCase().includes('aft') || slotKey.toLowerCase().includes('pm') || slotKey === 'AFTERNOON');
+  const isSpecial  = slotKey && (slotKey.toLowerCase().includes('spec') || slotKey === 'BIG_GROUP');
+
+  let pool = [];
+  if (isEvening)        pool = [...ACTIVITY_LIBRARY.evening, ...seasonal];
+  else if (isAfternoon) pool = [...ACTIVITY_LIBRARY.afternoon, ...seasonal];
+  else if (isSpecial)   pool = [...ACTIVITY_LIBRARY.special, ...seasonal];
+  else                  pool = [...ACTIVITY_LIBRARY.afternoon, ...seasonal];
+
+  // Return 6 shuffled
+  return pool.sort(() => Math.random() - 0.5).slice(0, 6);
+}
+
+function renderSchedulerIdeas(slotKey, inputEl) {
+  const wrap = document.getElementById('sch-ideas-wrap');
+  if (!wrap || !inputEl) return;
+  const ideas = getSchedulerIdeas(slotKey);
+  wrap.innerHTML = `
+    <div class="sch-ideas-hd">💡 Quick Ideas</div>
+    <div class="sch-idea-chips">
+      ${ideas.map(a => `<button class="sch-idea-chip" onclick="useSchedulerIdea('${escapeHtml(a.title)}',this)">${escapeHtml(a.title)}</button>`).join('')}
+    </div>`;
+}
+
+function useSchedulerIdea(title, btn) {
+  // Find the nearest activity title input and fill it
+  const modal = document.getElementById('day-scheduler-overlay');
+  if (!modal) return;
+  const inputs = modal.querySelectorAll('input[type="text"]');
+  // Find the focused or first empty title input
+  let target = null;
+  inputs.forEach(inp => { if (!target && (!inp.value || inp === document.activeElement)) target = inp; });
+  if (!target && inputs.length) target = inputs[0];
+  if (target) { target.value = title; target.dispatchEvent(new Event('input')); }
+  document.querySelectorAll('.sch-idea-chip').forEach(c => c.style.background = '');
+  btn.style.background = 'var(--navy)'; btn.style.color = '#fff';
+}
 function renderCommunityServiceCard() {
   const m = DATA.month;
   const cs = CS_MONTHLY[m];
