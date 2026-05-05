@@ -1104,7 +1104,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="tv">📺 TV Display</button>
     <button class="tab-btn" data-tab="library">📚 Library</button>
     <button class="tab-btn" data-tab="birthday">🎂 Birthdays</button>
-    <button class="tab-btn" data-tab="empower-moments">📰 Empower Moments</button>
+    <button class="tab-btn" data-tab="empower-moments">🌿 The Empowered Sage</button>
     <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
     <button class="tab-btn" data-tab="materials">🎵 Materials</button>
     <button class="tab-btn" data-tab="build">🛠️ Build My Cal</button>
@@ -1526,8 +1526,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 <section class="tab-panel" id="panel-empower-moments">
   <div class="em-controls" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
     <div>
-      <h2 style="margin:0;">📰 Empower Moments — Daily Sheet</h2>
-      <div class="subtitle">Wellness, Joy, and Purpose – 365 Days a Year</div>
+      <h2 style="margin:0;">🌿 The Empowered Sage — Daily Sheet</h2>
+      <div class="subtitle">Wisdom · Wellness · Wonder — Every Single Day</div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
       <label style="font-size:13px;font-weight:600;color:var(--navy);">Day:</label>
@@ -4309,156 +4309,233 @@ function renderEmpowerMoments() {
   const slots = DATA.daily[currentLevel][String(day)] || {};
   const holiday = DATA.holidays[String(day)] || '';
   const isTravel = day === (DATA.travelDay && DATA.travelDay.day);
+  const monthNum = DATA.monthNum;
+  const mc = NL_MONTHLY[monthNum] || NL_MONTHLY[1];
 
-  // Featured activity from daily data
-  const featSlot = DATA.slotOrder.find(s => s !== 'BIG_GROUP' && s !== 'NEWS' && slots[s] && slots[s].title && slots[s].desc);
-  const featAct = featSlot ? slots[featSlot] : null;
-  const featInfo = featSlot ? DATA.slotInfo[featSlot] : null;
+  // Word of the Day — cycles 1-31
+  const wod = WORD_OF_DAY[(day - 1) % WORD_OF_DAY.length];
 
-  // Puzzle from WORD_GAME slot
-  const puzzle = slots['WORD_GAME'] || {};
-  const trivia = slots['TRIVIA'] || {};
+  // Senior health tip for this month
+  const healthTip = SENIOR_HEALTH_TIPS[monthNum] || SENIOR_HEALTH_TIPS[1];
 
-  // Brain boost content
-  let brainHtml = '';
-  if (em.brain) {
-    const b = em.brain;
-    const typeLabel = b.type === 'trivia' ? '🧠 Trivia Question' : b.type === 'scramble' ? '🔤 Word Scramble' : '✏️ Fill in the Blank';
-    brainHtml = `<div class="em-brain-box">
-      <div class="em-brain-q">${typeLabel}: ${escapeHtml(b.q)}</div>
-      <div class="em-brain-a">Answer: ${escapeHtml(b.a)}</div>
-    </div>`;
-  }
-
-  // Date display
+  // Date strings
   const dateStr = meta.date_long ? meta.date_long.toUpperCase() : 'Day ' + day;
   const dayOfWeek = meta.day_of_week || '';
   const holidayStr = holiday ? ' · ' + holiday : '';
   const travelStr = isTravel ? ' ✈ ' + DATA.travelDay.country : '';
 
-  const frontHtml = `
-  <div class="em-sheet">
-    <div class="em-sheet-header">
-      <div>
-        <div class="em-sheet-brand">📰 Empower Moments</div>
-        <div class="em-sheet-tagline">Wellness, Joy, and Purpose – 365 Days a Year</div>
-      </div>
-      <div class="em-sheet-date">
-        <div style="font-weight:700;font-size:15px;">${escapeHtml(dateStr)}</div>
-        <div style="opacity:0.75;">${escapeHtml(dayOfWeek)}${escapeHtml(holidayStr)}${escapeHtml(travelStr)}</div>
-      </div>
-    </div>
-    <div class="em-side-label front">🟢 Front Side — Lunch-Friendly Engagement</div>
-    <div class="em-body">
+  // Featured activity from daily slots
+  const featSlot = DATA.slotOrder.find(function(s){ return s !== 'BIG_GROUP' && s !== 'NEWS' && slots[s] && slots[s].title && slots[s].desc; });
+  const featAct  = featSlot ? slots[featSlot] : null;
+  const featInfo = featSlot ? DATA.slotInfo[featSlot] : null;
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#2E7D32;">🍽️ Table Talk</div>
-        <div class="em-section-content">
-          ${(em.table_talk || []).map(q => `<div class="em-table-talk-item">${escapeHtml(q)}</div>`).join('')}
-        </div>
-      </div>
+  // Today's schedule — build time-titled activity list
+  var schedRows = '';
+  DATA.slotOrder.forEach(function(s) {
+    if (s === 'BIG_GROUP' || s === 'NEWS') return;
+    var sl = slots[s]; var si = DATA.slotInfo ? DATA.slotInfo[s] : null;
+    if (!sl || !sl.title) return;
+    var timeLabel = si && si.time ? si.time : (si && si.label ? si.label : s);
+    schedRows += '<div style="display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px dashed #E5E7EB;">'
+      + '<span style="font-size:10px;font-weight:700;color:#7030A0;min-width:72px;font-family:sans-serif;">' + escapeHtml(timeLabel) + '</span>'
+      + '<span style="font-size:13px;color:#1F3864;">' + escapeHtml(sl.title) + '</span>'
+      + '</div>';
+  });
+  if (!schedRows) schedRows = '<div style="font-size:12px;color:#9CA3AF;font-style:italic;">Build your calendar to show today\'s schedule here.</div>';
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#1565C0;">🧠 Brain Boost</div>
-        <div class="em-section-content">${brainHtml}</div>
-      </div>
+  // Shared header builder
+  function sheetHeader(pageLabel, pageColor) {
+    return '<div class="em-sheet-header">'
+      + '<div>'
+      + '<div class="em-sheet-brand">🌿 The Empowered Sage</div>'
+      + '<div class="em-sheet-tagline">Wisdom &middot; Wellness &middot; Wonder &mdash; Every Single Day</div>'
+      + '</div>'
+      + '<div class="em-sheet-date">'
+      + '<div style="font-weight:700;font-size:15px;">' + escapeHtml(dateStr) + '</div>'
+      + '<div style="opacity:0.75;">' + escapeHtml(dayOfWeek) + escapeHtml(holidayStr) + escapeHtml(travelStr) + '</div>'
+      + '<div style="margin-top:4px;font-size:10px;background:rgba(255,255,255,0.15);border-radius:4px;padding:2px 8px;letter-spacing:1px;text-transform:uppercase;font-weight:700;color:' + pageColor + ';">' + pageLabel + '</div>'
+      + '</div>'
+      + '</div>';
+  }
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#BF9000;">🎶 Music Moment</div>
-        <div class="em-section-content">
-          <div class="em-music-box">
-            <div class="em-music-icon">🎵</div>
-            <div>
-              <div class="em-music-song">${escapeHtml((em.music || {}).song || '')}</div>
-              <div class="em-music-artist">by ${escapeHtml((em.music || {}).artist || '')}</div>
-              <div class="em-music-fact">${escapeHtml((em.music || {}).fact || '')}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+  // ── PAGE 1 — Front (Morning & Midday) ─────────────────────────────
+  var frontHtml = '<div class="em-sheet">'
+    + sheetHeader('Page 1 · Morning &amp; Midday', '#A5D6A7')
+    + '<div class="em-side-label front">🌅 Front — Morning Engagement &amp; Connection</div>'
+    + '<div class="em-body">'
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#C00000;">😂 Smile Moment</div>
-        <div class="em-section-content">
-          <div class="em-smile-box">${escapeHtml(em.smile || '')}</div>
-        </div>
-      </div>
+    // Two-column layout for page 1
+    + '<div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;">'
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#548235;">🌞 Today's Opportunities</div>
-        <div class="em-section-content">
-          <ul class="em-opps">
-            <li>Join us for an afternoon activity</li>
-            <li>Stop by for social time</li>
-            <li>Evening fun available</li>
-            <li>Ask staff what's happening today</li>
-          </ul>
-          <div style="margin-top:10px;font-size:12px;color:#BF9000;font-weight:700;font-family:sans-serif;text-align:center;">📌 Activities vary – we'd love to have you join us!</div>
-        </div>
-      </div>
+    // LEFT COLUMN
+    + '<div>'
 
-    </div>
-  </div>`;
+    // Table Talk
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#2E7D32;">💬 Table Talk — Start a Conversation</div>'
+    + '<div class="em-section-content">'
+    + (em.table_talk || []).map(function(q){ return '<div class="em-table-talk-item">' + escapeHtml(q) + '</div>'; }).join('')
+    + '</div></div>'
 
-  const backHtml = `
-  <div class="em-sheet">
-    <div class="em-sheet-header">
-      <div>
-        <div class="em-sheet-brand">📰 Empower Moments</div>
-        <div class="em-sheet-tagline">Wellness, Joy, and Purpose – 365 Days a Year</div>
-      </div>
-      <div class="em-sheet-date">
-        <div style="font-weight:700;font-size:15px;">${escapeHtml(dateStr)}</div>
-        <div style="opacity:0.75;">${escapeHtml(dayOfWeek)}${escapeHtml(holidayStr)}</div>
-      </div>
-    </div>
-    <div class="em-side-label back">🔵 Back Side — Afternoon + Independent Engagement</div>
-    <div class="em-body">
+    // On This Day in History
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#1565C0;">📅 On This Day in History</div>'
+    + '<div class="em-section-content">'
+    + '<div style="background:#EFF6FF;border-left:4px solid #2E75B6;border-radius:6px;padding:12px 14px;font-size:13.5px;line-height:1.65;color:#1e3a5f;">'
+    + escapeHtml(mc.history || 'A great moment in history happened on a day just like today. Ask your activity director for today\'s story!')
+    + '</div></div></div>'
 
-      ${featAct ? `
-      <div class="em-section">
-        <div class="em-section-title" style="color:#2E75B6;">🧩 Featured Activity</div>
-        <div class="em-section-content">
-          <div class="em-featured-box">
-            <div class="em-featured-title">${featInfo ? featInfo.icon + ' ' : ''}${escapeHtml(featAct.title)}</div>
-            <div class="em-featured-desc">${escapeHtml((featAct.desc || '').substring(0,180))}${(featAct.desc||'').length>180?'...':''}</div>
-          </div>
-        </div>
-      </div>` : ''}
+    // Word of the Day
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#7030A0;">📖 Word of the Day</div>'
+    + '<div class="em-section-content">'
+    + '<div style="background:#F5F3FF;border-radius:8px;padding:12px 16px;border:1px solid #DDD6FE;">'
+    + '<div style="font-size:20px;font-weight:900;color:#5B21B6;letter-spacing:0.5px;">' + escapeHtml(wod.word) + '</div>'
+    + '<div style="font-size:12px;color:#7C3AED;font-style:italic;margin:3px 0 8px;font-family:sans-serif;">' + escapeHtml(wod.def) + '</div>'
+    + '<div style="font-size:12.5px;color:#4B5563;border-top:1px dashed #DDD6FE;padding-top:8px;">' + escapeHtml(wod.ex) + '</div>'
+    + '</div></div></div>'
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#7030A0;">✍️ Reflection Prompt</div>
-        <div class="em-section-content">
-          <div class="em-reflection-box" style="font-size:15px;font-style:italic;color:#4A235A;">
-            ${escapeHtml(em.reflection || 'What is one thing that brought you joy today?')}
-          </div>
-          <div style="margin-top:8px;border:1px solid #E4E7EC;border-radius:6px;height:50px;background:#FAFAFA;"></div>
-        </div>
-      </div>
+    + '</div>' // end left col
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#1F3864;">🧠 Puzzle / Activity</div>
-        <div class="em-section-content">
-          <div class="em-puzzle-box">
-            <div class="em-puzzle-type">Today's Challenge</div>
-            <div style="font-weight:700;color:#1F3864;font-size:15px;margin-bottom:4px;">${escapeHtml(puzzle.title || trivia.title || 'Brain Challenge')}</div>
-            <div style="color:#344054;font-size:13px;line-height:1.55;">${escapeHtml(((puzzle.desc || trivia.desc || '')).substring(0,200))}${((puzzle.desc||trivia.desc||'')).length>200?'...':''}</div>
-          </div>
-        </div>
-      </div>
+    // RIGHT COLUMN
+    + '<div>'
 
-      <div class="em-section">
-        <div class="em-section-title" style="color:#BF9000;">🌟 Inspiration</div>
-        <div class="em-section-content">
-          <div class="em-inspire-box">
-            <div class="em-inspire-quote">"${escapeHtml((em.inspiration||'').replace(/^['"]|['"]$/g,'').split(' — ')[0])}"</div>
-            ${em.inspiration && em.inspiration.includes(' — ') ? `<div class="em-inspire-attr">— ${escapeHtml(em.inspiration.split(' — ')[1])}</div>` : ''}
-          </div>
-        </div>
-      </div>
+    // Today's Schedule
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#B45309;">🗓 Today\'s Schedule</div>'
+    + '<div class="em-section-content">' + schedRows + '</div></div>'
 
-    </div>
-  </div>`;
+    // Smile Moment
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#C00000;">😄 Smile of the Day</div>'
+    + '<div class="em-section-content">'
+    + '<div class="em-smile-box" style="font-size:13px;">' + escapeHtml(em.smile || 'Why do we love old jokes? Because they never get old!') + '</div>'
+    + '</div></div>'
+
+    + '</div>' // end right col
+    + '</div>' // end grid
+
+    + '</div></div>'; // end body + sheet
+
+  // ── PAGE 2 — Back (Afternoon & Evening) ───────────────────────────
+  var backHtml = '<div class="em-sheet">'
+    + sheetHeader('Page 2 · Afternoon &amp; Evening', '#90CAF9')
+    + '<div class="em-side-label back">🌙 Back — Brain, Body &amp; Spirit</div>'
+    + '<div class="em-body">'
+
+    // Two-column layout for page 2
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">'
+
+    // LEFT COLUMN
+    + '<div>'
+
+    // Brain Boost
+    + (function(){
+        var b = em.brain || {};
+        var typeLabel = b.type === 'scramble' ? '🔤 Word Scramble' : '🧠 Brain Boost Trivia';
+        return '<div class="em-section">'
+          + '<div class="em-section-title" style="color:#1565C0;">' + typeLabel + '</div>'
+          + '<div class="em-section-content">'
+          + '<div class="em-brain-box">'
+          + '<div class="em-brain-q">' + escapeHtml(b.q || 'What is the capital of the United States?') + '</div>'
+          + '<div class="em-brain-a">✅ Answer: ' + escapeHtml(b.a || 'Washington, D.C.') + '</div>'
+          + '</div></div></div>';
+      })()
+
+    // Word Scramble from monthly data
+    + (function(){
+        var s = mc.scramble || {};
+        var word = s.word || '';
+        var scrambled = word.split('').sort(function(){ return Math.random()-0.5; }).join('');
+        var attempts = 0;
+        while (scrambled === word && word && attempts < 10) {
+          scrambled = word.split('').sort(function(){ return Math.random()-0.5; }).join('');
+          attempts++;
+        }
+        return '<div class="em-section">'
+          + '<div class="em-section-title" style="color:#0F766E;">🔤 Monthly Word Scramble</div>'
+          + '<div class="em-section-content">'
+          + '<div style="background:#F0FDFA;border-radius:8px;padding:12px 16px;border:1px solid #99F6E4;">'
+          + '<div style="font-size:22px;font-weight:900;letter-spacing:8px;color:#0F766E;text-align:center;margin-bottom:6px;">' + escapeHtml(scrambled) + '</div>'
+          + '<div style="font-size:11px;color:#6B7280;text-align:center;font-style:italic;margin-bottom:8px;">Hint: ' + escapeHtml(s.hint||'') + '</div>'
+          + '<div style="border-top:1px dashed #99F6E4;padding-top:8px;font-size:11px;color:#0F766E;font-weight:700;text-align:center;">Answer: ' + escapeHtml(word) + '</div>'
+          + '</div></div></div>';
+      })()
+
+    // Health Tip for Older Adults
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#BE185D;">❤️ Senior Health Tip</div>'
+    + '<div class="em-section-content">'
+    + '<div style="background:#FDF2F8;border-left:4px solid #EC4899;border-radius:6px;padding:12px 14px;font-size:13px;line-height:1.65;color:#831843;">'
+    + escapeHtml(healthTip)
+    + '</div></div></div>'
+
+    + '</div>' // end left col
+
+    // RIGHT COLUMN
+    + '<div>'
+
+    // Wellness Tip
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#166534;">🌿 Wellness Tip</div>'
+    + '<div class="em-section-content">'
+    + '<div style="background:#F0FDF4;border-left:4px solid #22C55E;border-radius:6px;padding:12px 14px;font-size:13px;line-height:1.65;color:#14532D;">'
+    + escapeHtml(mc.wellness || 'Take a few slow, deep breaths. Inhale for four counts, hold for four, exhale for four. You\'ll feel calmer in minutes.')
+    + '</div></div></div>'
+
+    // Music Moment
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#B45309;">🎵 Music Moment</div>'
+    + '<div class="em-section-content">'
+    + '<div class="em-music-box">'
+    + '<div class="em-music-icon">🎶</div>'
+    + '<div>'
+    + '<div class="em-music-song">' + escapeHtml((em.music||{}).song||'') + '</div>'
+    + '<div class="em-music-artist">by ' + escapeHtml((em.music||{}).artist||'') + '</div>'
+    + '<div class="em-music-fact">' + escapeHtml((em.music||{}).fact||'') + '</div>'
+    + '</div></div></div></div>'
+
+    // Positive Quote
+    + '<div class="em-section">'
+    + '<div class="em-section-title" style="color:#1F3864;">✨ Positive Quote</div>'
+    + '<div class="em-section-content">'
+    + '<div class="em-inspire-box">'
+    + (function(){
+        var insp = em.inspiration || '"Every day holds the possibility of a miracle."';
+        var parts = insp.replace(/^[\'"]|[\'"]$/g,'').split(' — ');
+        return '<div class="em-inspire-quote">&ldquo;' + escapeHtml(parts[0]) + '&rdquo;</div>'
+          + (parts[1] ? '<div class="em-inspire-attr">&mdash; ' + escapeHtml(parts[1]) + '</div>' : '');
+      })()
+    + '</div></div></div>'
+
+    + '</div>' // end right col
+    + '</div>' // end grid
+
+    // Full-width: Featured Activity
+    + (featAct ? '<div class="em-section" style="margin-top:14px;">'
+      + '<div class="em-section-title" style="color:#2E75B6;">🎯 Featured Activity Today</div>'
+      + '<div class="em-section-content">'
+      + '<div class="em-featured-box">'
+      + '<div class="em-featured-title">' + (featInfo ? featInfo.icon + ' ' : '') + escapeHtml(featAct.title) + '</div>'
+      + '<div class="em-featured-desc">' + escapeHtml((featAct.desc||'').substring(0,220)) + ((featAct.desc||'').length>220?'...':'') + '</div>'
+      + '</div></div></div>' : '')
+
+    // Full-width: Reflection Prompt with writing lines
+    + '<div class="em-section" style="margin-top:14px;">'
+    + '<div class="em-section-title" style="color:#7030A0;">✍️ Reflection — Your Thoughts Today</div>'
+    + '<div class="em-section-content">'
+    + '<div class="em-reflection-box" style="margin-bottom:10px;">' + escapeHtml(em.reflection || 'What is one thing that brought you joy today?') + '</div>'
+    + '<div style="border-bottom:1px solid #DDD;margin-bottom:10px;height:1px;"></div>'
+    + '<div style="border-bottom:1px solid #DDD;margin-bottom:10px;height:1px;"></div>'
+    + '<div style="border-bottom:1px solid #DDD;height:1px;"></div>'
+    + '</div></div>'
+
+    // Footer
+    + '<div style="text-align:center;margin-top:14px;padding-top:10px;border-top:2px solid #E8D5F5;font-size:10px;color:#9CA3AF;font-family:sans-serif;letter-spacing:1px;">'
+    + '🌿 THE EMPOWERED SAGE &nbsp;&middot;&nbsp; ' + escapeHtml(DATA.monthName) + ' ' + DATA.year + ' &nbsp;&middot;&nbsp; Wisdom &middot; Wellness &middot; Wonder'
+    + '</div>'
+
+    + '</div></div>'; // end body + sheet
 
   document.getElementById('em-preview').innerHTML = frontHtml + backHtml;
 }
@@ -4489,6 +4566,58 @@ document.querySelectorAll('.tab-btn').forEach(b => {
 });
 
 // ─────────────────────────────────────────────
+// ── THE EMPOWERED SAGE — Word of the Day (31 entries, cycles by day) ──
+const WORD_OF_DAY = [
+  {word:'Serenity',    def:'A state of calm, peace, and untroubled ease.',           ex:'"She found serenity in the quiet of the morning garden."'},
+  {word:'Gratitude',   def:'The quality of being thankful and ready to show appreciation.',ex:'"His gratitude for every small kindness never faded."'},
+  {word:'Resilience',  def:'The ability to recover from difficulties with strength.',  ex:'"Her resilience through hard times inspired everyone around her."'},
+  {word:'Cherish',     def:'To hold something or someone dear to your heart.',         ex:'"He cherished the letters his children sent from far away."'},
+  {word:'Luminous',    def:'Radiating light, warmth, or inner brightness.',            ex:'"Her smile was luminous even on the cloudiest of days."'},
+  {word:'Steadfast',   def:'Resolutely firm and unwavering in loyalty or purpose.',    ex:'"A steadfast friend is one of life\'s greatest treasures."'},
+  {word:'Jubilant',    def:'Feeling or expressing great happiness and triumph.',       ex:'"The whole room was jubilant when she blew out her candles."'},
+  {word:'Compassion',  def:'Sympathy and concern for the suffering of others.',        ex:'"She showed compassion to everyone who walked through her door."'},
+  {word:'Flourish',    def:'To grow or develop in a healthy, vigorous way.',           ex:'"With good care and good company, people flourish at any age."'},
+  {word:'Tranquil',    def:'Free from disturbance; calm and peaceful.',               ex:'"The tranquil morning air was the best part of her day."'},
+  {word:'Tenacity',    def:'The quality of being determined and persistent.',          ex:'"It was her tenacity that carried her through every challenge."'},
+  {word:'Radiant',     def:'Sending out warmth, joy, or happiness visibly.',           ex:'"She looked radiant as she danced with her grandchildren."'},
+  {word:'Wisdom',      def:'Knowledge and good judgment gained from experience.',      ex:'"True wisdom is knowing what truly matters in life."'},
+  {word:'Delight',     def:'A feeling of great pleasure and satisfaction.',            ex:'"A good story, a warm cup of tea — simple delights."'},
+  {word:'Harmony',     def:'A pleasing combination of elements; peaceful agreement.',  ex:'"They lived together in harmony for over fifty years."'},
+  {word:'Endure',      def:'To remain firm and strong through difficulty over time.',  ex:'"What we endure together makes us stronger together."'},
+  {word:'Soulful',     def:'Expressing deep feeling and genuine emotion.',             ex:'"The singer\'s soulful voice brought the room to tears."'},
+  {word:'Fortitude',   def:'Courage and strength in facing adversity calmly.',        ex:'"It takes fortitude to face life\'s storms and still stand tall."'},
+  {word:'Mirth',       def:'Amusement, laughter, and joyful good humor.',             ex:'"There was always mirth at the family table on Sundays."'},
+  {word:'Steadiness',  def:'The quality of being calm, reliable, and even-tempered.', ex:'"Her steadiness was the anchor everyone leaned on."'},
+  {word:'Abundant',    def:'Existing in large quantities; more than enough.',          ex:'"She had abundant love to give, and gave it freely."'},
+  {word:'Revere',      def:'To feel deep respect and admiration for someone.',         ex:'"We revere those who have lived with courage and kindness."'},
+  {word:'Buoyant',     def:'Cheerful and optimistic; able to stay afloat emotionally.',ex:'"His buoyant spirit kept everyone\'s mood lifted."'},
+  {word:'Legacy',      def:'Something handed down from the past to future generations.',ex:'"A life of love and service is the most lasting legacy."'},
+  {word:'Cherished',   def:'Held in great affection and kept carefully in memory.',    ex:'"Those cherished memories never fade — they only grow warmer."'},
+  {word:'Patience',    def:'The ability to wait calmly without frustration.',          ex:'"Patience is a gift you give yourself as much as others."'},
+  {word:'Nourish',     def:'To care for and help something or someone grow strong.',   ex:'"Good food and good friendship nourish body and soul alike."'},
+  {word:'Kinship',     def:'A feeling of being close and connected, like family.',     ex:'"There was a deep kinship among those who had lived through it together."'},
+  {word:'Persevere',   def:'To continue steadily in the face of difficulty or delay.', ex:'"She persevered through every obstacle life placed in her path."'},
+  {word:'Contentment', def:'A state of peaceful happiness and satisfaction.',          ex:'"Contentment is not having everything — it\'s appreciating what you have."'},
+  {word:'Lively',      def:'Full of life, energy, and enthusiasm.',                    ex:'"Even at ninety, she was the most lively person in the room."'},
+];
+
+// ── THE EMPOWERED SAGE — Senior Health Tips (12 monthly, older-adult focused) ──
+const SENIOR_HEALTH_TIPS = {
+  1:'❄️ Cold weather thickens blood and raises heart attack risk. Stay warm indoors, layer up outside, and limit time in the cold if you have heart concerns.',
+  2:'💧 Older adults feel thirst less strongly — your body may need water before you feel thirsty. Aim for 6–8 small glasses of water throughout the day.',
+  3:'☀️ Just 10–15 minutes of morning sunlight boosts Vitamin D and helps regulate your sleep cycle. Open the curtains or step outside after breakfast.',
+  4:'🚶 Balance exercises like standing on one foot (near a wall) or heel-to-toe walking can significantly reduce fall risk. Practice for just 5 minutes daily.',
+  5:'🌿 Social connection is as important as medicine. Spending time with people you enjoy lowers blood pressure, improves memory, and reduces depression.',
+  6:'🧴 Skin becomes thinner and dries faster as we age. Apply a gentle moisturizer daily and wear SPF when outdoors — even on cloudy days.',
+  7:'💤 A short afternoon rest (20–30 minutes) is healthy for older adults and improves alertness without disrupting nighttime sleep.',
+  8:'🧠 Reading, puzzles, and learning new things build cognitive reserve — a mental buffer against memory decline. Keep your brain active every day.',
+  9:'🍎 Fiber helps digestion, controls blood sugar, and keeps cholesterol in check. Good sources: oatmeal, apples, beans, and whole-grain bread.',
+  10:'🦴 Calcium and Vitamin D work together to keep bones strong. Dairy, leafy greens, and fortified foods are great sources. Ask your doctor about supplements.',
+  11:'🤲 Loneliness increases health risks as much as smoking. Reach out to someone today — a call, a wave, a short visit goes a long way.',
+  12:'😴 Quality sleep is when the brain clears waste products linked to dementia. Keep a regular bedtime, limit screens at night, and keep the room cool and dark.',
+};
+
+
 // NEWSLETTER GENERATOR
 
 // ── Newsletter preferences (localStorage) ──
@@ -5461,7 +5590,7 @@ function renderNewsletter() {
   const days = DATA.daily[level];
   const theme = DATA.monthTheme || '';
   const communityName = prefs.community || 'Your Community';
-  const nlTitle = prefs.title || 'Empower Moments';
+  const nlTitle = prefs.title || 'Sage Moments';
   const directorLine = prefs.director || '';
   const contactLine = prefs.contact || '';
   const customWelcome = prefs.welcome || '';
