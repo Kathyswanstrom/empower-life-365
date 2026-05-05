@@ -1988,12 +1988,25 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 
   <div class="about-card settings-form" style="margin-top:18px;">
-    <h3>Daily Activity Times</h3>
-    <p>Adjust each slot's start time for your home. These show on the Daily Sheets and the Charting headers.</p>
+    <h3>&#128337; Activity Group Names &amp; Times</h3>
+    <p>Rename any group and adjust its start time. Set separately for <strong>Assisted Living</strong> and <strong>Memory Care</strong> &#8212; each calendar uses its own names and times.</p>
+    <!-- Level tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button id="slot-tab-AL" class="btn btn-primary" onclick="switchSlotTab('AL')" style="padding:6px 20px;">Assisted Living</button>
+      <button id="slot-tab-MC" class="btn btn-secondary" onclick="switchSlotTab('MC')" style="padding:6px 20px;">Memory Care</button>
+    </div>
+    <div id="slot-level-label" style="font-size:12px;color:var(--gray-500);margin-bottom:10px;font-style:italic;"></div>
+    <!-- Column headers -->
+    <div style="display:grid;grid-template-columns:36px 1fr 160px 160px;gap:8px;align-items:center;padding:0 4px;margin-bottom:4px;">
+      <div></div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;">Group Name</div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;">Start Time</div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;">Default</div>
+    </div>
     <div id="time-settings"></div>
-    <div class="btn-row">
-      <button class="btn" onclick="saveTimes()">Save Times</button>
-      <button class="btn btn-secondary" onclick="resetTimes()">Reset to defaults</button>
+    <div class="btn-row" style="margin-top:14px;">
+      <button class="btn" onclick="saveTimes()">&#10003; Save Changes</button>
+      <button class="btn btn-secondary" onclick="resetTimes()">Reset to Defaults</button>
       <span id="times-saved" style="color:var(--green);font-weight:600;align-self:center;"></span>
     </div>
   </div>
@@ -2663,7 +2676,7 @@ function renderDailySheet() {
     const info = DATA.slotInfo[s];
     const a = slots[s];
     const currentTime = getDayTime(currentDay, s);
-    const defaultTime = slotTimes[s] || info.default_time;
+    const defaultTime = getSlotTime(s, currentLevel);
     const isBig = s === 'BIG_GROUP';
     const deleted = !isBig && isSlotDeleted(currentDay, s);
     const custom  = !isBig && !deleted && getSlotCustom(currentDay, s);
@@ -2711,7 +2724,7 @@ function renderDailySheet() {
       <div class="slot-row">
         <div class="slot-label-box" style="background:${info.color};">
           <div class="slot-icon">${info.icon}</div>
-          <div class="slot-name">${escapeHtml(info.name)}</div>
+          <div class="slot-name">${escapeHtml(getSlotName(s, currentLevel))}</div>
           <input type="text" class="slot-time-input" value="${escapeAttr(currentTime)}"
                  onchange="onTimeChange('${s}', this.value)" title="Edit this day's time"/>
           <div class="slot-time-default">Default: ${escapeHtml(defaultTime)}</div>
@@ -2831,7 +2844,7 @@ function buildPrintHeader(meta, info, time, holiday, isTravel, levelName) {
       ${holidayLine}${travelLine}
     </div>
     <div style="text-align:right;">
-      <div style="display:inline-block;background:${info.color};color:white;padding:7px 16px;border-radius:20px;font-weight:700;font-size:14px;">${info.icon} ${escapeHtml(info.name)}</div>
+      <div style="display:inline-block;background:${info.color};color:white;padding:7px 16px;border-radius:20px;font-weight:700;font-size:14px;">${info.icon} ${escapeHtml(getSlotName(s, currentLevel))}</div>
       <div style="display:inline-block;background:#1F3864;color:white;padding:7px 14px;border-radius:20px;font-weight:700;font-size:13px;margin-left:6px;">${escapeHtml(time)}</div>
     </div>
   </div>`;
@@ -2989,7 +3002,7 @@ function exportSlotPDF(slot) {
   const meta = DATA.dayMeta[String(day)];
   const info = DATA.slotInfo[slot];
   const levelName = DATA.levelNames[currentLevel].replace(/\s+/g,'_');
-  const filename = `EmpowerLife365_${info.name.replace(/\s+/g,'_')}_Day${day}_${DATA.monthName}_${DATA.year}.pdf`;
+  const filename = `EmpowerLife365_${getSlotName(s, currentLevel).replace(/\s+/g,'_')}_Day${day}_${DATA.monthName}_${DATA.year}.pdf`;
   const html = buildSlotPrintHtml(slot, day);
   const wrapper = document.createElement('div');
   wrapper.innerHTML = html;
@@ -3140,7 +3153,7 @@ function renderTVDisplay() {
       <div class="tv-slot ${isNow ? 'now' : ''}" style="--slot-color:${info.color};">
         <div class="tv-slot-time">${escapeHtml(time)}</div>
         <div>
-          <div class="tv-slot-name">${info.icon} ${escapeHtml(info.name)}</div>
+          <div class="tv-slot-name">${info.icon} ${escapeHtml(getSlotName(s, currentLevel))}</div>
           <div class="tv-slot-title">${escapeHtml(title)}${isNow ? '<span class="tv-now-tag">NOW</span>' : ''}</div>
         </div>
       </div>`;
@@ -4136,33 +4149,114 @@ function revealRiddle() {
 }
 
 function renderTimeSettings() {
+  // Active level for the slot editor (default AL)
+  if (!renderTimeSettings._level) renderTimeSettings._level = 'AL';
+  switchSlotTab(renderTimeSettings._level);
+}
+
+function switchSlotTab(level) {
+  renderTimeSettings._level = level;
+  // Highlight active tab
+  ['AL','MC'].forEach(lv => {
+    const btn = document.getElementById('slot-tab-' + lv);
+    if (btn) {
+      btn.className = lv === level ? 'btn btn-primary' : 'btn btn-secondary';
+      btn.style.padding = '6px 20px';
+    }
+  });
+  const lbl = document.getElementById('slot-level-label');
+  if (lbl) lbl.textContent = level === 'AL' ? 'Editing: Assisted Living calendar' : 'Editing: Memory Care calendar';
+
+  // Load saved custom names & times for this level
+  const savedNames = JSON.parse(localStorage.getItem('el365_slot_names_' + level) || '{}');
+  const savedTimes = JSON.parse(localStorage.getItem('el365_slot_times_' + level) || '{}');
+
   const container = document.getElementById('time-settings');
+  if (!container) return;
   container.innerHTML = DATA.slotOrder.map(s => {
     const info = DATA.slotInfo[s];
+    const customName = savedNames[s] || '';
+    const customTime = savedTimes[s] || '';
     return `
-      <div class="time-edit-grid">
-        <div class="slot-icon" style="color:${info.color};">${info.icon}</div>
-        <div class="slot-name">${escapeHtml(info.name)} <span style="color:var(--gray-500);font-weight:400;font-size:12px;">(default ${info.default_time})</span></div>
-        <input type="text" data-slot="${s}" value="${escapeAttr(slotTimes[s] || info.default_time)}">
+      <div style="display:grid;grid-template-columns:36px 1fr 160px 160px;gap:8px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--gray-100);">
+        <div style="font-size:20px;text-align:center;">${info.icon}</div>
+        <div>
+          <input type="text" data-slot="${s}" data-field="name"
+            value="${escapeAttr(customName)}"
+            placeholder="${escapeAttr(info.name)}"
+            style="width:100%;font-size:13px;border:1px solid var(--gray-200);border-radius:6px;padding:5px 8px;"
+            title="Custom name (leave blank to use default)" />
+        </div>
+        <div>
+          <input type="text" data-slot="${s}" data-field="time"
+            value="${escapeAttr(customTime)}"
+            placeholder="${escapeAttr(info.default_time)}"
+            style="width:100%;font-size:13px;border:1px solid var(--gray-200);border-radius:6px;padding:5px 8px;"
+            title="Custom time (leave blank to use default)" />
+        </div>
+        <div style="font-size:12px;color:var(--gray-400);">${escapeHtml(info.name)}<br><span style="font-size:11px;">${info.default_time}</span></div>
       </div>`;
   }).join('');
-  document.getElementById('setting-password').value = settings.residentPassword;
+
+  // Also keep password and theme loaded
+  const pwEl = document.getElementById('setting-password');
+  if (pwEl) pwEl.value = settings.residentPassword || '';
   const themeSel = document.getElementById('setting-theme');
   if (themeSel) themeSel.value = lsGet(KEY_PREFIX + 'theme', 'auto');
 }
+
 function saveTimes() {
-  document.querySelectorAll('#time-settings input').forEach(inp => {
-    slotTimes[inp.dataset.slot] = inp.value || DATA.slotInfo[inp.dataset.slot].default_time;
+  const level = renderTimeSettings._level || 'AL';
+  const names = {}, times = {};
+  document.querySelectorAll('#time-settings input[data-slot]').forEach(inp => {
+    const s = inp.dataset.slot;
+    const val = inp.value.trim();
+    if (inp.dataset.field === 'name') { if (val) names[s] = val; }
+    else if (inp.dataset.field === 'time') { if (val) times[s] = val; }
   });
-  lsSet(TIMES_KEY, slotTimes);
-  const m = document.getElementById('times-saved'); m.textContent = 'Saved'; setTimeout(() => m.textContent = '', 2000);
+  localStorage.setItem('el365_slot_names_' + level, JSON.stringify(names));
+  localStorage.setItem('el365_slot_times_' + level, JSON.stringify(times));
+
+  // Also update legacy slotTimes so existing calcs still work for current level
+  if (level === currentLevel) {
+    DATA.slotOrder.forEach(s => { slotTimes[s] = times[s] || DATA.slotInfo[s].default_time; });
+    lsSet(TIMES_KEY, slotTimes);
+  }
+
+  const m = document.getElementById('times-saved');
+  if (m) { m.textContent = '✓ Saved for ' + (level === 'AL' ? 'Assisted Living' : 'Memory Care'); setTimeout(() => m.textContent = '', 2500); }
   renderCalendar(); renderDailySheet();
 }
+
 function resetTimes() {
-  slotTimes = Object.fromEntries(DATA.slotOrder.map(s => [s, DATA.slotInfo[s].default_time]));
-  lsSet(TIMES_KEY, slotTimes);
-  renderTimeSettings(); renderCalendar(); renderDailySheet();
+  const level = renderTimeSettings._level || 'AL';
+  localStorage.removeItem('el365_slot_names_' + level);
+  localStorage.removeItem('el365_slot_times_' + level);
+  if (level === currentLevel) {
+    slotTimes = Object.fromEntries(DATA.slotOrder.map(s => [s, DATA.slotInfo[s].default_time]));
+    lsSet(TIMES_KEY, slotTimes);
+  }
+  switchSlotTab(level);
+  renderCalendar(); renderDailySheet();
 }
+
+// ── Helper: get display name for a slot, respecting per-level customization ──
+function getSlotName(slot, level) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('el365_slot_names_' + (level || currentLevel)) || '{}');
+    return saved[slot] || DATA.slotInfo[slot].name;
+  } catch(e) { return DATA.slotInfo[slot].name; }
+}
+
+// ── Helper: get time for a slot, respecting per-level customization ──
+function getSlotTime(slot, level) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('el365_slot_times_' + (level || currentLevel)) || '{}');
+    return saved[slot] || slotTimes[slot] || DATA.slotInfo[slot].default_time;
+  } catch(e) { return slotTimes[slot] || DATA.slotInfo[slot].default_time; }
+}
+
+
 function savePassword() {
   settings.residentPassword = document.getElementById('setting-password').value || DATA.defaultPassword;
   lsSet(SETTINGS_KEY, settings);
@@ -6477,13 +6571,13 @@ function exportFullPlanPDF() {
       if (s === 'BIG_GROUP') {
         const chosen = getDayChoice(day);
         html += `<div style="margin-bottom:6px; font-size:12px;">
-          <span style="font-weight:700; color:${info.color};">${info.icon} ${escapeHtml(info.name)}</span>
+          <span style="font-weight:700; color:${info.color};">${info.icon} ${escapeHtml(getSlotName(s, level))}</span>
           <span style="color:#667085; margin-left:6px;">${escapeHtml(time)}</span>
           ${chosen ? `<span style="margin-left:8px; color:#548235; font-weight:600;">✓ ${escapeHtml(chosen)}: ${escapeHtml((a[chosen]||{}).title||'')}</span>` : '<span style="color:#999; font-style:italic; margin-left:8px;">Choice pending</span>'}
         </div>`;
       } else {
         html += `<div style="margin-bottom:6px; font-size:12px;">
-          <span style="font-weight:700; color:${info.color};">${info.icon} ${escapeHtml(info.name)}</span>
+          <span style="font-weight:700; color:${info.color};">${info.icon} ${escapeHtml(getSlotName(s, level))}</span>
           <span style="color:#667085; margin-left:6px;">${escapeHtml(time)}</span>
           <span style="margin-left:8px; color:#1F3864; font-weight:600;">${escapeHtml(a.title||'')}</span>
         </div>`;
