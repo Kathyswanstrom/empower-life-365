@@ -1543,79 +1543,153 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 <section class="tab-panel" id="panel-newsletter">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
     <div>
-      <h2 style="margin:0;">📰 Newsletter Generator</h2>
+      <h2 style="margin:0;">&#128240; Newsletter Generator</h2>
       <div class="subtitle">Customize and export your resident newsletter.</div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn btn-gold" onclick="exportNewsletterPDF()">📄 Export PDF</button>
-      <button class="btn btn-secondary" onclick="renderNewsletter()">🔄 Refresh Preview</button>
-      <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
+      <button class="btn btn-gold" onclick="exportNewsletterPDF()">&#128196; Export PDF</button>
+      <button class="btn btn-secondary" onclick="printNewsletter()">&#128424; Print</button>
     </div>
   </div>
 
-  <!-- Customization panel -->
-  <div style="background:white;border-radius:10px;padding:20px 24px;box-shadow:var(--shadow);margin-bottom:20px;border:1px solid var(--gray-200);">
-    <div style="font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">✏️ Customize Your Newsletter</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
-      <div>
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Community Name</label>
-        <input id="nl-community" type="text" placeholder="e.g. Sunrise Gardens" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+    <!-- Card 1: Newsletter Identity -->
+    <div class="about-card" style="grid-column:1/-1;">
+      <h3 style="margin-top:0;">&#127991; Newsletter Identity</h3>
+      <p style="color:var(--gray-500);font-size:13px;margin-top:0;">Community name, logo, and contact info pull from your <strong>Community Profile</strong> in Settings. Override just for this newsletter if needed.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label>Newsletter Title</label>
+          <input type="text" id="nl-title" placeholder="e.g. The Maple Leaf Monthly" />
+        </div>
+        <div>
+          <label>Tagline / Subtitle</label>
+          <input type="text" id="nl-tagline" placeholder="e.g. Connecting Hearts &amp; Community" />
+        </div>
       </div>
-      <div>
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Newsletter Title</label>
-        <input id="nl-title" type="text" placeholder="e.g. The Garden Gazette" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-      </div>
-      <div>
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Director Name</label>
-        <input id="nl-director" type="text" placeholder="e.g. Jane Smith, Activity Director" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-      </div>
-      <div>
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Phone / Contact</label>
-        <input id="nl-contact" type="text" placeholder="e.g. (555) 123-4567" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-      </div>
-      <div style="grid-column:1/-1;">
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Welcome Message (optional — leave blank to use default)</label>
-        <textarea id="nl-welcome-msg" rows="3" placeholder="Write a personal welcome note from the activity director..." style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;"></textarea>
-      </div>
-      <div>
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Community Tagline</label>
-        <input id="nl-tagline" type="text" placeholder="e.g. Where Every Day Matters" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-      </div>
-      <div>
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Community Address</label>
-        <input id="nl-address" type="text" placeholder="e.g. 123 Main St, Denver, CO 80201" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-      </div>
-      <div style="grid-column:1/-1;">
-        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Footer Note (optional)</label>
-        <input id="nl-footer-note" type="text" placeholder="e.g. Activities subject to change. Please check the bulletin board daily." style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-      </div>
-      <div style="grid-column:1/-1;border-top:1px solid var(--gray-200);padding-top:14px;margin-top:4px;">
-        <div style="font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">⭐ Resident Spotlight</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
-          <div>
-            <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Spotlight Resident Name</label>
-            <input id="nl-spotlight-name" type="text" placeholder="e.g. Margaret Johnson" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-          </div>
-          <div>
-            <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Resident Room / Unit</label>
-            <input id="nl-spotlight-room" type="text" placeholder="e.g. Room 14 · 3 years with us" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
-          </div>
-          <div style="grid-column:1/-1;">
-            <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Spotlight Story / Quote</label>
-            <textarea id="nl-spotlight-story" rows="3" placeholder="Share something special about this resident — a hobby, a memory, a quote they love, or something that makes them unique..." style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;"></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+        <div>
+          <label>Month / Year Override</label>
+          <input type="text" id="nl-month-override" placeholder="Leave blank to use current month" />
+        </div>
+        <div>
+          <label>Newsletter Logo <span style="font-size:11px;color:var(--gray-500);">(overrides Community logo)</span></label>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+            <img id="nl-logo-img" src="" alt="" style="max-height:48px;max-width:100px;display:none;border:1px solid var(--gray-200);border-radius:4px;padding:2px;" />
+            <label class="btn btn-secondary" style="cursor:pointer;font-size:12px;padding:5px 12px;margin:0;">
+              &#128193; Upload Logo <input type="file" accept="image/*" onchange="handleNlLogo(this)" style="display:none;" />
+            </label>
+            <button class="btn btn-danger" onclick="clearNlLogo()" style="font-size:12px;padding:5px 10px;">&#10005;</button>
           </div>
         </div>
       </div>
     </div>
-    <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
-      <button class="btn btn-gold" onclick="saveNlPrefs();renderNewsletter();" style="padding:8px 18px;">✓ Apply & Preview</button>
-      <span style="font-size:12px;color:var(--gray-500);font-style:italic;">Changes save automatically in your browser.</span>
+
+    <!-- Card 2: Welcome Message -->
+    <div class="about-card">
+      <h3 style="margin-top:0;">&#128075; Welcome Message</h3>
+      <label>From the Director (optional)</label>
+      <textarea id="nl-welcome" rows="6" placeholder="Dear Residents and Families,&#10;&#10;Write your welcome message here..."></textarea>
     </div>
+
+    <!-- Card 3: Sections to Include -->
+    <div class="about-card">
+      <h3 style="margin-top:0;">&#128203; Sections to Include</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-welcome" checked /> Welcome Message</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-schedule" checked /> Activity Schedule</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-birthdays" checked /> Birthdays</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-highlights" checked /> Activity Highlights</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-wellness" checked /> Wellness Corner</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-word_games" /> Word Game / Puzzle</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-humor" /> Humor Corner</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-remember" /> Memory Lane</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-conversation" /> Conversation Starters</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-spotlight" checked /> Resident Spotlight</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-staff" checked /> Staff Spotlight</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-announcements" checked /> Announcements</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-custom_boxes" /> Custom Content Boxes</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:normal;"><input type="checkbox" id="nl-sec-poem" /> Poem / Inspiration</label>
+      </div>
+    </div>
+
+    <!-- Card 4: Resident Spotlight -->
+    <div class="about-card">
+      <h3 style="margin-top:0;">&#11088; Resident Spotlight</h3>
+      <div style="display:grid;gap:8px;">
+        <div>
+          <label>Resident Name</label>
+          <input type="text" id="nl-spotlight-name" placeholder="e.g. Margaret Johnson" />
+        </div>
+        <div>
+          <label>Room / Unit</label>
+          <input type="text" id="nl-spotlight-room" placeholder="e.g. Room 14B" />
+        </div>
+        <div>
+          <label>Spotlight Story</label>
+          <textarea id="nl-spotlight-story" rows="4" placeholder="Share something wonderful about this resident..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Staff Spotlight -->
+    <div class="about-card">
+      <h3 style="margin-top:0;">&#128105;&#8205;&#9877;&#65039; Staff Spotlight</h3>
+      <div style="display:grid;gap:8px;">
+        <div>
+          <label>Staff Name</label>
+          <input type="text" id="nl-staff-name" placeholder="e.g. Susan Martinez" />
+        </div>
+        <div>
+          <label>Role / Title</label>
+          <input type="text" id="nl-staff-role" placeholder="e.g. Activities Director" />
+        </div>
+        <div>
+          <label>Fun Fact or Quote</label>
+          <textarea id="nl-staff-fact" rows="3" placeholder="Share something fun about this staff member..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: Community Announcements -->
+    <div class="about-card">
+      <h3 style="margin-top:0;">&#128227; Community Announcements</h3>
+      <textarea id="nl-announcements" rows="7" placeholder="Enter announcements, reminders, upcoming events...&#10;&#10;&#8226; Family Night &#8212; Friday the 15th at 6pm&#10;&#8226; Flu shots available in the clinic&#10;&#8226; New art class starting next week!"></textarea>
+    </div>
+
+    <!-- Card 7: Custom Content Boxes -->
+    <div class="about-card">
+      <h3 style="margin-top:0;">&#128230; Custom Content Boxes</h3>
+      <p style="font-size:12px;color:var(--gray-500);margin-top:0;">Add up to 3 custom sections. Enable them in Sections above.</p>
+      <div style="display:grid;gap:14px;">
+        <div>
+          <label>Box 1 Title</label>
+          <input type="text" id="nl-box1-title" placeholder="e.g. Recipe of the Month" />
+          <textarea id="nl-box1-content" rows="3" placeholder="Content for box 1..." style="margin-top:4px;"></textarea>
+        </div>
+        <div>
+          <label>Box 2 Title</label>
+          <input type="text" id="nl-box2-title" placeholder="e.g. Did You Know?" />
+          <textarea id="nl-box2-content" rows="3" placeholder="Content for box 2..." style="margin-top:4px;"></textarea>
+        </div>
+        <div>
+          <label>Box 3 Title</label>
+          <input type="text" id="nl-box3-title" placeholder="e.g. From the Garden" />
+          <textarea id="nl-box3-content" rows="3" placeholder="Content for box 3..." style="margin-top:4px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+    <button class="btn btn-primary" onclick="saveNlPrefs();renderNewsletter();" style="padding:8px 18px;">&#10003; Apply &amp; Preview</button>
+    <span style="font-size:12px;color:var(--gray-500);font-style:italic;">Changes save automatically in your browser.</span>
   </div>
 
   <div id="newsletter-preview"></div>
 </section>
-
 <section class="tab-panel" id="panel-build">
   <!-- Program banner – matches AL/MC calendar style -->
   <div id="build-program-banner" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1F3864,#2E75B6);color:#FFD700;padding:8px 18px;border-radius:20px;font-weight:800;font-size:13px;letter-spacing:0.6px;margin-bottom:14px;">
@@ -1743,6 +1817,56 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
   <p class="subtitle">Configuration for staff and administrators.</p>
+
+  <!-- ═══ COMMUNITY PROFILE CARD ═══ -->
+  <div class="about-card settings-form" style="border:2px solid var(--gold);background:linear-gradient(135deg,#FFFBEB,#FFF8DC);">
+    <h3 style="margin-top:0;color:#92400E;">&#127968; Community Profile</h3>
+    <p style="color:#78350F;font-size:13px;margin-top:0;">Set your community information once — it auto-populates the newsletter, daily sheet, calendar, and anywhere your name and logo appear.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <label>Community / Facility Name</label>
+        <input type="text" id="cp-name" placeholder="e.g. Maple Ridge Senior Living" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>Tagline</label>
+        <input type="text" id="cp-tagline" placeholder="e.g. Where Every Day Matters" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>Street Address</label>
+        <input type="text" id="cp-address" placeholder="e.g. 123 Elm Street" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>City, State, ZIP</label>
+        <input type="text" id="cp-citystatezip" placeholder="e.g. Springfield, IL 62701" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>Phone Number</label>
+        <input type="text" id="cp-phone" placeholder="e.g. (555) 867-5309" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="text" id="cp-email" placeholder="e.g. activities@mapleridge.com" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>Director / Administrator Name</label>
+        <input type="text" id="cp-director" placeholder="e.g. Jane Smith, Activity Director" oninput="saveCommunityProfile()" />
+      </div>
+      <div>
+        <label>Community Logo</label>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <img id="cp-logo-img" src="" alt="" style="max-height:54px;max-width:120px;display:none;border:1px solid var(--gray-200);border-radius:6px;padding:2px;background:#fff;" />
+          <label class="btn btn-secondary" style="cursor:pointer;font-size:12px;padding:5px 12px;margin:0;">
+            &#128193; Upload Logo <input type="file" accept="image/*" onchange="handleProfileLogo(this)" style="display:none;" />
+          </label>
+          <button class="btn btn-danger" onclick="clearProfileLogo()" style="font-size:12px;padding:5px 10px;">&#10005; Remove</button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-primary" onclick="saveCommunityProfile(true)">&#10003; Save Profile</button>
+      <span id="cp-saved-msg" style="color:var(--green);font-weight:600;display:none;">&#10003; Saved!</span>
+    </div>
+  </div>
 
   <div class="about-card settings-form">
     <h3>Calendar Seasonal Theme</h3>
@@ -2270,7 +2394,8 @@ function switchTab(name) {
   if (name === 'charting') renderChart();
   if (name === 'daily') renderDailySheet();
   if (name === 'puzzles') renderPuzzlesPanel();
-  if (name === 'settings') renderTimeSettings();
+  if (name === 'settings') { renderTimeSettings(); loadCommunityProfile(); }
+  if (name === 'newsletter') { loadNlPrefs(); renderNewsletter(); }
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
   if (name === 'attlog') renderAttLogs();
@@ -4623,48 +4748,180 @@ const SENIOR_HEALTH_TIPS = {
 // ── Newsletter preferences (localStorage) ──
 const NL_KEY = 'el365_nl_prefs';
 function saveNlPrefs() {
+  const sec = (id) => { const el = document.getElementById(id); return el ? el.checked : true; };
+  const val = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const prefs = {
-    community: document.getElementById('nl-community')?.value || '',
-    title: document.getElementById('nl-title')?.value || '',
-    director: document.getElementById('nl-director')?.value || '',
-    contact: document.getElementById('nl-contact')?.value || '',
-    welcome: document.getElementById('nl-welcome-msg')?.value || '',
-    footer: document.getElementById('nl-footer-note')?.value || '',
-    tagline: document.getElementById('nl-tagline')?.value || '',
-    address: document.getElementById('nl-address')?.value || '',
-    spotlightName: document.getElementById('nl-spotlight-name')?.value || '',
-    spotlightRoom: document.getElementById('nl-spotlight-room')?.value || '',
-    spotlightStory: document.getElementById('nl-spotlight-story')?.value || '',
+    title:          val('nl-title'),
+    tagline:        val('nl-tagline'),
+    monthOverride:  val('nl-month-override'),
+    welcome:        val('nl-welcome'),
+    spotlightName:  val('nl-spotlight-name'),
+    spotlightRoom:  val('nl-spotlight-room'),
+    spotlightStory: val('nl-spotlight-story'),
+    staffName:      val('nl-staff-name'),
+    staffRole:      val('nl-staff-role'),
+    staffFact:      val('nl-staff-fact'),
+    announcements:  val('nl-announcements'),
+    box1Title:      val('nl-box1-title'),
+    box1Content:    val('nl-box1-content'),
+    box2Title:      val('nl-box2-title'),
+    box2Content:    val('nl-box2-content'),
+    box3Title:      val('nl-box3-title'),
+    box3Content:    val('nl-box3-content'),
+    secWelcome:       sec('nl-sec-welcome'),
+    secSchedule:      sec('nl-sec-schedule'),
+    secBirthdays:     sec('nl-sec-birthdays'),
+    secHighlights:    sec('nl-sec-highlights'),
+    secWellness:      sec('nl-sec-wellness'),
+    secWordGames:     sec('nl-sec-word_games'),
+    secHumor:         sec('nl-sec-humor'),
+    secRemember:      sec('nl-sec-remember'),
+    secConversation:  sec('nl-sec-conversation'),
+    secSpotlight:     sec('nl-sec-spotlight'),
+    secStaff:         sec('nl-sec-staff'),
+    secAnnouncements: sec('nl-sec-announcements'),
+    secCustomBoxes:   sec('nl-sec-custom_boxes'),
+    secPoem:          sec('nl-sec-poem'),
   };
   localStorage.setItem(NL_KEY, JSON.stringify(prefs));
 }
+
+
 function loadNlPrefs() {
   try {
-    const prefs = JSON.parse(localStorage.getItem(NL_KEY) || '{}');
-    if (document.getElementById('nl-community')) {
-      document.getElementById('nl-community').value = prefs.community || '';
-      document.getElementById('nl-title').value = prefs.title || '';
-      document.getElementById('nl-director').value = prefs.director || '';
-      document.getElementById('nl-contact').value = prefs.contact || '';
-      document.getElementById('nl-welcome-msg').value = prefs.welcome || '';
-      document.getElementById('nl-footer-note').value = prefs.footer || '';
-      if (document.getElementById('nl-tagline')) {
-        document.getElementById('nl-tagline').value = prefs.tagline || '';
-        document.getElementById('nl-address').value = prefs.address || '';
-        document.getElementById('nl-spotlight-name').value = prefs.spotlightName || '';
-        document.getElementById('nl-spotlight-room').value = prefs.spotlightRoom || '';
-        document.getElementById('nl-spotlight-story').value = prefs.spotlightStory || '';
-      }
+    const p = JSON.parse(localStorage.getItem(NL_KEY) || '{}');
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    const chk = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val !== false; };
+    set('nl-title',           p.title);
+    set('nl-tagline',         p.tagline);
+    set('nl-month-override',  p.monthOverride);
+    set('nl-welcome',         p.welcome);
+    set('nl-spotlight-name',  p.spotlightName);
+    set('nl-spotlight-room',  p.spotlightRoom);
+    set('nl-spotlight-story', p.spotlightStory);
+    set('nl-staff-name',      p.staffName);
+    set('nl-staff-role',      p.staffRole);
+    set('nl-staff-fact',      p.staffFact);
+    set('nl-announcements',   p.announcements);
+    set('nl-box1-title',      p.box1Title);
+    set('nl-box1-content',    p.box1Content);
+    set('nl-box2-title',      p.box2Title);
+    set('nl-box2-content',    p.box2Content);
+    set('nl-box3-title',      p.box3Title);
+    set('nl-box3-content',    p.box3Content);
+    chk('nl-sec-welcome',       p.secWelcome);
+    chk('nl-sec-schedule',      p.secSchedule);
+    chk('nl-sec-birthdays',     p.secBirthdays);
+    chk('nl-sec-highlights',    p.secHighlights);
+    chk('nl-sec-wellness',      p.secWellness);
+    chk('nl-sec-word_games',    p.secWordGames);
+    chk('nl-sec-humor',         p.secHumor);
+    chk('nl-sec-remember',      p.secRemember);
+    chk('nl-sec-conversation',  p.secConversation);
+    chk('nl-sec-spotlight',     p.secSpotlight);
+    chk('nl-sec-staff',         p.secStaff);
+    chk('nl-sec-announcements', p.secAnnouncements);
+    chk('nl-sec-custom_boxes',  p.secCustomBoxes);
+    chk('nl-sec-poem',          p.secPoem);
+    // Restore newsletter logo
+    const nlLogo = localStorage.getItem('el365_nl_logo');
+    if (nlLogo) {
+      const img = document.getElementById('nl-logo-img');
+      if (img) { img.src = nlLogo; img.style.display = 'block'; }
     }
-    return prefs;
+    return p;
   } catch(e) { return {}; }
 }
-// Auto-save on input change
+
+// Auto-save newsletter prefs on input change
 document.addEventListener('input', e => {
-  if (['nl-community','nl-title','nl-director','nl-contact','nl-welcome-msg','nl-footer-note'].includes(e.target.id)) {
-    saveNlPrefs();
-  }
+  const nlIds = ['nl-title','nl-tagline','nl-month-override','nl-welcome',
+    'nl-spotlight-name','nl-spotlight-room','nl-spotlight-story',
+    'nl-staff-name','nl-staff-role','nl-staff-fact','nl-announcements',
+    'nl-box1-title','nl-box1-content','nl-box2-title','nl-box2-content',
+    'nl-box3-title','nl-box3-content'];
+  const nlSecs = ['nl-sec-welcome','nl-sec-schedule','nl-sec-birthdays','nl-sec-highlights',
+    'nl-sec-wellness','nl-sec-word_games','nl-sec-humor','nl-sec-remember',
+    'nl-sec-conversation','nl-sec-spotlight','nl-sec-staff','nl-sec-announcements',
+    'nl-sec-custom_boxes','nl-sec-poem'];
+  if (nlIds.includes(e.target.id) || nlSecs.includes(e.target.id)) saveNlPrefs();
 });
+
+// Newsletter logo handlers
+function handleNlLogo(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    localStorage.setItem('el365_nl_logo', ev.target.result);
+    const img = document.getElementById('nl-logo-img');
+    if (img) { img.src = ev.target.result; img.style.display = 'block'; }
+  };
+  reader.readAsDataURL(file);
+}
+function clearNlLogo() {
+  localStorage.removeItem('el365_nl_logo');
+  const img = document.getElementById('nl-logo-img');
+  if (img) { img.src = ''; img.style.display = 'none'; }
+}
+
+// Community Profile — save / load / logo
+const CP_KEY = 'el365_community_profile';
+function saveCommunityProfile(showMsg) {
+  const val = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const profile = {
+    name:       val('cp-name'),
+    tagline:    val('cp-tagline'),
+    address:    val('cp-address'),
+    cityStateZip: val('cp-citystatezip'),
+    phone:      val('cp-phone'),
+    email:      val('cp-email'),
+    director:   val('cp-director'),
+  };
+  localStorage.setItem(CP_KEY, JSON.stringify(profile));
+  if (showMsg) {
+    const msg = document.getElementById('cp-saved-msg');
+    if (msg) { msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2500); }
+  }
+}
+function loadCommunityProfile() {
+  try {
+    const p = JSON.parse(localStorage.getItem(CP_KEY) || '{}');
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    set('cp-name',        p.name);
+    set('cp-tagline',     p.tagline);
+    set('cp-address',     p.address);
+    set('cp-citystatezip', p.cityStateZip);
+    set('cp-phone',       p.phone);
+    set('cp-email',       p.email);
+    set('cp-director',    p.director);
+    // Logo
+    const cpLogo = localStorage.getItem('el365_cp_logo');
+    if (cpLogo) {
+      const img = document.getElementById('cp-logo-img');
+      if (img) { img.src = cpLogo; img.style.display = 'block'; }
+    }
+    return p;
+  } catch(e) { return {}; }
+}
+function handleProfileLogo(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    localStorage.setItem('el365_cp_logo', ev.target.result);
+    const img = document.getElementById('cp-logo-img');
+    if (img) { img.src = ev.target.result; img.style.display = 'block'; }
+    saveCommunityProfile();
+  };
+  reader.readAsDataURL(file);
+}
+function clearProfileLogo() {
+  localStorage.removeItem('el365_cp_logo');
+  const img = document.getElementById('cp-logo-img');
+  if (img) { img.src = ''; img.style.display = 'none'; }
+}
+
 
 // ─────────────────────────────────────────────
 const NL_MONTHLY = {
@@ -5585,55 +5842,99 @@ function renderCommunityServiceCard() {
 function renderNewsletter() {
   loadNlPrefs();
   const prefs = JSON.parse(localStorage.getItem(NL_KEY) || '{}');
+  const cp    = JSON.parse(localStorage.getItem(CP_KEY) || '{}');
+  const sec   = (key, dflt) => (prefs[key] !== undefined ? prefs[key] : dflt);
+
+  // Community identity — newsletter overrides fall through to Community Profile
+  const communityName = cp.name       || 'Your Community';
+  const tagline       = prefs.tagline || cp.tagline || 'Wellness · Joy · Purpose';
+  const nlTitle       = prefs.title   || 'Sage Moments';
+  const directorLine  = cp.director   || '';
+  const addressLine   = cp.address    ? (cp.address + (cp.cityStateZip ? ', ' + cp.cityStateZip : '')) : '';
+  const phoneLine     = cp.phone      || '';
+  const emailLine     = cp.email      || '';
+  const contactBlock  = [phoneLine, emailLine].filter(Boolean).join('  ·  ');
+  const customWelcome = prefs.welcome || '';
+  const spotlightName = prefs.spotlightName || '';
+  const spotlightRoom = prefs.spotlightRoom || '';
+  const spotlightStory= prefs.spotlightStory|| '';
+  const staffName     = prefs.staffName     || '';
+  const staffRole     = prefs.staffRole     || '';
+  const staffFact     = prefs.staffFact     || '';
+  const announcements = prefs.announcements || '';
+  const monthOverride = prefs.monthOverride || '';
+
+  // Logo: newsletter-specific overrides community profile
+  const nlLogoSrc = localStorage.getItem('el365_nl_logo') || localStorage.getItem('el365_cp_logo') || '';
+  const initials  = communityName.split(' ').map(w => w[0]||'').join('').slice(0,3).toUpperCase() || 'EL';
+  const logoBlock = nlLogoSrc
+    ? `<img src="${nlLogoSrc}" style="max-height:58px;max-width:110px;border-radius:8px;object-fit:contain;background:rgba(255,255,255,0.15);padding:4px;" />`
+    : `<div style="flex-shrink:0;width:58px;height:58px;border-radius:12px;background:rgba(255,255,255,0.18);border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#FFD700;font-family:serif;letter-spacing:-1px;">${escapeHtml(initials)}</div>`;
+  const logoBlockSm = nlLogoSrc
+    ? `<img src="${nlLogoSrc}" style="max-height:40px;max-width:80px;border-radius:6px;object-fit:contain;background:rgba(255,255,255,0.15);padding:2px;" />`
+    : `<div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#FFD700;font-family:serif;">${escapeHtml(initials)}</div>`;
+
+  // Month/year display
+  const monthDisplay = monthOverride || (escapeHtml(DATA.monthName) + ' ' + DATA.year);
   const level = currentLevel;
   const levelName = DATA.levelNames[level];
   const days = DATA.daily[level];
   const theme = DATA.monthTheme || '';
-  const communityName = prefs.community || 'Your Community';
-  const nlTitle = prefs.title || 'Sage Moments';
-  const directorLine = prefs.director || '';
-  const contactLine = prefs.contact || '';
-  const customWelcome = prefs.welcome || '';
-  const footerNote = prefs.footer || '';
-  const tagline = prefs.tagline || 'Wellness · Joy · Purpose';
-  const address = prefs.address || '';
-  const spotlightName = prefs.spotlightName || '';
-  const spotlightRoom = prefs.spotlightRoom || '';
-  const spotlightStory = prefs.spotlightStory || '';
-  const initials = communityName.split(' ').map(function(w){return w[0]||'';}).join('').slice(0,3).toUpperCase() || 'EL';
   const monthNum = DATA.monthNum;
   const mc = NL_MONTHLY[monthNum] || NL_MONTHLY[1];
 
-  // ── Birthdays from roster ──
+  // Section flags
+  const showWelcome      = sec('secWelcome', true);
+  const showSchedule     = sec('secSchedule', true);
+  const showBirthdays    = sec('secBirthdays', true);
+  const showHighlights   = sec('secHighlights', true);
+  const showWellness     = sec('secWellness', true);
+  const showWordGames    = sec('secWordGames', false);
+  const showHumor        = sec('secHumor', false);
+  const showRemember     = sec('secRemember', false);
+  const showConversation = sec('secConversation', false);
+  const showSpotlight    = sec('secSpotlight', true);
+  const showStaff        = sec('secStaff', true);
+  const showAnnouncements= sec('secAnnouncements', true);
+  const showCustomBoxes  = sec('secCustomBoxes', false);
+  const showPoem         = sec('secPoem', false);
+
+  // ── Birthdays ──
   const bdayResidents = roster.filter(r => {
     if (!r.dob) return false;
-    const s = String(r.dob).trim();
-    const parts = s.split(/[\/\-]/);
+    const s = String(r.dob).trim(); const parts = s.split(/[\/\-]/);
     if (parts.length >= 2) { const m = parseInt(parts[0], 10); return m === monthNum; }
     return false;
   }).map(r => {
-    const parts = String(r.dob).split(/[\/\-]/);
-    const day = parseInt(parts[1], 10);
+    const parts = String(r.dob).split(/[\/\-]/); const day = parseInt(parts[1], 10);
     const mn = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return { name: r.name, dateStr: mn[monthNum] + ' ' + day, day };
   }).sort((a,b) => a.day - b.day);
 
   const bdayHtml = bdayResidents.length
-    ? bdayResidents.map(r => `<div class="nl-bday-item"><span>🎂</span><span class="nl-bday-name">${escapeHtml(r.name)}</span><span class="nl-bday-date">${escapeHtml(r.dateStr)}</span></div>`).join('')
+    ? bdayResidents.map(r => `<div class="nl-bday-item"><span>&#127874;</span><span class="nl-bday-name">${escapeHtml(r.name)}</span><span class="nl-bday-date">${escapeHtml(r.dateStr)}</span></div>`).join('')
     : '<div class="nl-bday-none">No birthdays on file this month.<br><small>Upload your resident roster to auto-populate birthdays.</small></div>';
 
   // ── Highlights ──
-  const highlightBoxes = [];
+  const topHighlights = [];
   if (DATA.travelDay && DATA.travelDay.day) {
     const td = DATA.travelDay; const meta = DATA.dayMeta[String(td.day)] || {};
-    highlightBoxes.push(`<div class="nl-hl-box"><div class="nl-hl-lbl">✈ Travel Day</div><div class="nl-hl-name">${escapeHtml(td.country)}</div><div class="nl-hl-date">${escapeHtml(meta.date_long||'')}</div></div>`);
+    topHighlights.unshift({ day: String(td.day), name: '✈️ Travel Day — ' + td.country, date: meta.date_long || ('Day ' + td.day), act: '' });
   }
-  Object.entries(DATA.holidays||{}).slice(0,3).forEach(([day,name]) => {
-    const meta = DATA.dayMeta[day] || {};
-    highlightBoxes.push(`<div class="nl-hl-box" style="background:#F5F3FF;border-color:#DDD6FE;"><div class="nl-hl-lbl" style="color:#6D28D9;">🎉 Special Event</div><div class="nl-hl-name">${escapeHtml(name)}</div><div class="nl-hl-date">${escapeHtml(meta.date_long||'')}</div></div>`);
+  Object.entries(DATA.holidays||{}).slice(0,4).forEach(([day,name]) => {
+    const meta = DATA.dayMeta[day] || {}; const slots = days[String(day)] || {};
+    const mSlot = DATA.slotOrder.find(s => s !== 'BIG_GROUP' && slots[s] && slots[s].title);
+    topHighlights.push({ day, name, date: meta.date_long || ('Day ' + day), act: mSlot ? slots[mSlot].title : '' });
   });
+  const hlBoxHtml = topHighlights.slice(0,4).map(h =>
+    `<div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:8px;border-left:4px solid #7030A0;box-shadow:0 1px 4px rgba(0,0,0,.08);">`
+    + `<div style="font-size:10px;font-weight:700;color:#7030A0;text-transform:uppercase;letter-spacing:1px;">${escapeHtml(h.date)}</div>`
+    + `<div style="font-size:13px;font-weight:700;color:#1A2A5C;margin:2px 0;">${escapeHtml(h.name)}</div>`
+    + (h.act ? `<div style="font-size:11px;color:#6B7280;">${escapeHtml(h.act)}</div>` : '')
+    + '</div>'
+  ).join('');
 
-  // ── Weekly schedule ──
+  // ── Schedule ──
   const weeks = [
     {label:'Week 1',days:[1,2,3,4,5,6,7]},{label:'Week 2',days:[8,9,10,11,12,13,14]},
     {label:'Week 3',days:[15,16,17,18,19,20,21]},{label:'Week 4+',days:[22,23,24,25,26,27,28,29,30,31]}
@@ -5644,11 +5945,11 @@ function renderNewsletter() {
       if (!meta || !slots) return '';
       const holiday = DATA.holidays[String(day)] || '';
       const isTravel = day === (DATA.travelDay && DATA.travelDay.day);
-      const morningSlot = DATA.slotOrder.find(s => s !== 'BIG_GROUP' && slots[s] && slots[s].title);
-      const mainAct = morningSlot ? slots[morningSlot].title : '';
+      const mSlot = DATA.slotOrder.find(s => s !== 'BIG_GROUP' && slots[s] && slots[s].title);
+      const mainAct = mSlot ? slots[mSlot].title : '';
       if (!mainAct && !holiday && !isTravel) return '';
-      const special = holiday ? holiday : (isTravel ? ('✈ '+DATA.travelDay.country) : '');
-      return `<div class="nl-sched-row"><span class="nl-sched-day">${escapeHtml(meta.date_short||('Day '+day))}</span><span class="nl-sched-act">${escapeHtml(mainAct)}</span>${special?`<span class="nl-sched-spec"> · ${escapeHtml(special)}</span>`:''}</div>`;
+      const special = holiday ? holiday : (isTravel ? ('✈ ' + DATA.travelDay.country) : '');
+      return `<div class="nl-sched-row"><span class="nl-sched-day">${escapeHtml(meta.date_short||('Day '+day))}</span><span class="nl-sched-act">${escapeHtml(mainAct)}</span>${special ? `<span class="nl-sched-spec"> · ${escapeHtml(special)}</span>` : ''}</div>`;
     }).join('');
     if (!rows.trim()) return '';
     return `<div class="nl-sched-week"><div class="nl-sched-wk-hd">${w.label}</div>${rows}</div>`;
@@ -5660,236 +5961,259 @@ function renderNewsletter() {
   if (shuffled === origWord) shuffled = origWord.split('').reverse().join('');
   const scrambleBlanks = '_ '.repeat(origWord.length).trim();
 
-  // ── Sudoku grid ──
+  // ── Sudoku ──
   function sudokuGrid(grid, isSolution) {
-    const cellStyle = isSolution
+    const cs = isSolution
       ? 'width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#1A2A5C;'
       : 'width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;';
     return `<div style="display:inline-grid;grid-template-columns:repeat(4,28px);gap:0;border:2px solid #1A2A5C;border-radius:4px;overflow:hidden;">
       ${grid.map((row,ri) => row.map((cell,ci) => {
-        const borderR = ci === 1 ? 'border-right:2px solid #1A2A5C;' : 'border-right:1px solid #CBD5E1;';
-        const borderB = ri === 1 ? 'border-bottom:2px solid #1A2A5C;' : 'border-bottom:1px solid #CBD5E1;';
-        const bg = isSolution ? 'background:#EEF4FF;' : (cell === 0 ? 'background:#fff;' : 'background:#EEF4FF;');
-        const val = cell === 0 ? '' : String(cell);
-        const color = isSolution ? 'color:#2E75B6;' : (cell === 0 ? 'color:#000;' : 'color:#1A2A5C;');
-        return `<div style="${cellStyle}${borderR}${borderB}${bg}${color}">${val}</div>`;
-      }).join('')).join('')}
-    </div>`;
+        const bR = ci===1?'border-right:2px solid #1A2A5C;':'border-right:1px solid #CBD5E1;';
+        const bB = ri===1?'border-bottom:2px solid #1A2A5C;':'border-bottom:1px solid #CBD5E1;';
+        const bg = isSolution?'background:#EEF4FF;':(cell===0?'background:#fff;':'background:#EEF4FF;');
+        const color = isSolution?'color:#2E75B6;':(cell===0?'color:#000;':'color:#1A2A5C;');
+        return `<div style="${cs}${bR}${bB}${bg}${color}">${cell===0?'':cell}</div>`;
+      }).join('')).join('')}</div>`;
   }
-
   const sudokuPuzzleHtml = mc.sudoku ? sudokuGrid(mc.sudoku.puzzle, false) : '';
   const sudokuSolHtml    = mc.sudoku ? sudokuGrid(mc.sudoku.solution, true) : '';
 
-  // ── Resident spotlight HTML ──
-  const spotlightHtml = spotlightName ? `
+  // ── Resident Spotlight ──
+  const spotlightHtml = (showSpotlight && spotlightName) ? `
     <div style="background:linear-gradient(135deg,#FFF8E7,#FFF3CD);border:2px solid #F59E0B;border-radius:12px;padding:16px;margin-top:18px;">
       <div style="font-size:10px;font-weight:800;color:#B45309;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">⭐ Resident Spotlight</div>
       <div style="display:flex;align-items:flex-start;gap:14px;">
         <div style="flex-shrink:0;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#7030A0,#2E75B6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.18);">
-          ${escapeHtml(spotlightName.split(' ').map(function(w){return w[0]||'';}).join('').slice(0,2).toUpperCase())}
+          ${escapeHtml(spotlightName.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase())}
         </div>
         <div style="flex:1;">
           <div style="font-size:15px;font-weight:800;color:#1A2A5C;">${escapeHtml(spotlightName)}</div>
-          ${spotlightRoom ? '<div style="font-size:11px;color:#6B7280;margin-bottom:6px;">'+escapeHtml(spotlightRoom)+'</div>' : ''}
-          <div style="font-size:12.5px;color:#374151;line-height:1.6;font-style:italic;">"${escapeHtml(spotlightStory)}"</div>
+          ${spotlightRoom ? `<div style="font-size:11px;color:#6B7280;margin-bottom:6px;">${escapeHtml(spotlightRoom)}</div>` : ''}
+          <div style="font-size:12.5px;color:#374151;line-height:1.6;font-style:italic;">&ldquo;${escapeHtml(spotlightStory)}&rdquo;</div>
         </div>
       </div>
     </div>` : '';
 
-  // ── Activity highlights (top 3 special events/holidays) ──
-  const topHighlights = [];
-  Object.entries(DATA.holidays||{}).slice(0,4).forEach(function([day,name]) {
-    const meta = DATA.dayMeta[day] || {};
-    const slots = days[String(day)] || {};
-    const morningSlot = DATA.slotOrder.find(function(s){ return s !== 'BIG_GROUP' && slots[s] && slots[s].title; });
-    topHighlights.push({ day: day, name: name, date: meta.date_long||('Day '+day), act: morningSlot ? slots[morningSlot].title : '' });
-  });
-  if (DATA.travelDay && DATA.travelDay.day) {
-    const td = DATA.travelDay; const meta = DATA.dayMeta[String(td.day)] || {};
-    topHighlights.unshift({ day: String(td.day), name: '✈️ Travel Day — '+td.country, date: meta.date_long||('Day '+td.day), act: '' });
+  // ── Staff Spotlight ──
+  const staffHtml = (showStaff && staffName) ? `
+    <div class="nl-fun" style="background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:2px solid #93C5FD;border-radius:12px;padding:16px;">
+      <div class="nl-fun-title" style="color:#1E3A5F;">👩‍⚕️ Staff Spotlight</div>
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-top:8px;">
+        <div style="flex-shrink:0;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2E75B6,#1A2A5C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;">
+          ${escapeHtml(staffName.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase())}
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#1A2A5C;">${escapeHtml(staffName)}</div>
+          ${staffRole ? `<div style="font-size:11px;color:#6B7280;margin-bottom:4px;">${escapeHtml(staffRole)}</div>` : ''}
+          ${staffFact ? `<div style="font-size:12px;color:#374151;font-style:italic;">&ldquo;${escapeHtml(staffFact)}&rdquo;</div>` : ''}
+        </div>
+      </div>
+    </div>` : '';
+
+  // ── Announcements ──
+  const announcementsHtml = (showAnnouncements && announcements) ? `
+    <div class="nl-fun full" style="background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border:2px solid #FB923C;border-radius:12px;padding:16px;">
+      <div class="nl-fun-title" style="color:#9A3412;">📣 Community Announcements</div>
+      <div style="font-size:12.5px;color:#374151;line-height:1.8;margin-top:8px;white-space:pre-line;">${escapeHtml(announcements)}</div>
+    </div>` : '';
+
+  // ── Custom Boxes ──
+  function customBox(title, body, colorClass) {
+    if (!title && !body) return '';
+    const colors = {
+      teal: 'background:linear-gradient(135deg,#F0FDFA,#CCFBF1);border:2px solid #5EEAD4;',
+      rose: 'background:linear-gradient(135deg,#FFF1F2,#FFE4E6);border:2px solid #FDA4AF;',
+      purple: 'background:linear-gradient(135deg,#FAF5FF,#EDE9FE);border:2px solid #C4B5FD;',
+    };
+    const style = colors[colorClass] || colors.teal;
+    return `<div class="nl-fun" style="${style}border-radius:12px;padding:16px;">
+      <div class="nl-fun-title" style="color:#1A2A5C;">${escapeHtml(title || 'Community Corner')}</div>
+      <div style="font-size:12.5px;color:#374151;line-height:1.7;margin-top:8px;white-space:pre-line;">${escapeHtml(body || '')}</div>
+    </div>`;
   }
-  const hlBoxHtml = topHighlights.slice(0,4).map(function(h) {
-    return '<div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:8px;border-left:4px solid #7030A0;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
-      + '<div style="font-size:10px;font-weight:700;color:#7030A0;text-transform:uppercase;letter-spacing:1px;">'+escapeHtml(h.date)+'</div>'
-      + '<div style="font-size:13px;font-weight:700;color:#1A2A5C;margin:2px 0;">'+escapeHtml(h.name)+'</div>'
-      + (h.act ? '<div style="font-size:11px;color:#6B7280;">'+escapeHtml(h.act)+'</div>' : '')
-      + '</div>';
-  }).join('');
+  const customBoxesHtml = showCustomBoxes ? (
+    customBox(prefs.box1Title, prefs.box1Content, 'teal') +
+    customBox(prefs.box2Title, prefs.box2Content, 'rose') +
+    customBox(prefs.box3Title, prefs.box3Content, 'purple')
+  ) : '';
 
   // ── Page 1 ──
   const page1 = `
   <div class="nl-page" id="nl-content-p1">
-
-    <!-- ═══ HEADER ═══ -->
     <div class="nl-masthead">
       <div class="nl-masthead-row" style="align-items:flex-start;">
-        <!-- Logo block + title -->
         <div style="display:flex;align-items:center;gap:14px;">
-          <div style="flex-shrink:0;width:58px;height:58px;border-radius:12px;background:rgba(255,255,255,0.18);border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#FFD700;font-family:serif;letter-spacing:-1px;">
-            ${escapeHtml(initials)}
-          </div>
+          ${logoBlock}
           <div>
             <div class="nl-masthead-title" style="line-height:1.1;">${escapeHtml(nlTitle)}</div>
             <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;font-family:sans-serif;letter-spacing:1px;text-transform:uppercase;">${escapeHtml(tagline)}</div>
           </div>
         </div>
-        <!-- Community info -->
         <div class="nl-masthead-right" style="text-align:right;">
           <div class="nl-masthead-comm">${escapeHtml(communityName)}</div>
-          <div class="nl-masthead-date">${escapeHtml(DATA.monthName)} ${DATA.year}</div>
+          <div class="nl-masthead-date">${monthDisplay}</div>
           <div class="nl-masthead-track">${escapeHtml(levelName)} Program Track</div>
-          ${theme ? '<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;font-style:italic;">Theme: '+escapeHtml(theme)+'</div>' : ''}
+          ${theme ? `<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;font-style:italic;">Theme: ${escapeHtml(theme)}</div>` : ''}
         </div>
       </div>
       <div class="nl-gold-bar">
         <span>${directorLine ? escapeHtml(directorLine) : 'Activity Department'}</span>
-        <span>${contactLine ? escapeHtml(contactLine) : 'empowerlife365.app'}</span>
+        <span>${contactBlock || 'empowerlife365.app'}</span>
       </div>
     </div>
 
-    <!-- ═══ BODY ═══ -->
     <div class="nl-cols">
       <div class="nl-col-main">
 
+        ${showWelcome ? `
         <div class="nl-sec-hd gold">Welcome Message</div>
-        <div class="nl-welcome-txt">${customWelcome ? escapeHtml(customWelcome) : 'Welcome to <strong>'+escapeHtml(DATA.monthName)+' '+DATA.year+'</strong>! This month\'s theme is <em>'+escapeHtml(theme||'Wellness & Joy')+'</em>. We have a wonderful lineup of activities planned — morning fitness, creative arts, afternoon socials, and special events. Every single day is designed with you in mind. We are so glad you are here!'}</div>
-        ${directorLine ? '<div class="nl-director-sig">Warmly, '+escapeHtml(directorLine)+(contactLine ? ' &nbsp;&middot;&nbsp; '+escapeHtml(contactLine) : '')+'</div>' : ''}
+        <div class="nl-welcome-txt">${customWelcome
+          ? escapeHtml(customWelcome).replace(/\n/g,'<br>')
+          : 'Welcome to <strong>' + monthDisplay + '</strong>!' + (theme ? ' This month\'s theme is <em>' + escapeHtml(theme) + '</em>.' : '') + ' We have a wonderful lineup of activities planned this month. Every day is designed with you in mind. We are so glad you are here!'}</div>
+        ${directorLine ? `<div class="nl-director-sig">Warmly, ${escapeHtml(directorLine)}</div>` : ''}
+        ` : ''}
 
+        ${showSchedule ? `
         <div style="margin-top:18px;"><div class="nl-sec-hd">Monthly Schedule</div></div>
         ${schedHtml || '<div style="font-size:13px;color:#9CA3AF;font-style:italic;padding:10px 0;">Build your calendar first to populate the schedule here.</div>'}
+        ` : ''}
 
         ${spotlightHtml}
 
       </div>
       <div class="nl-col-side">
 
+        ${showBirthdays ? `
         <div class="nl-bday-box">
-          <div class="nl-bday-hd">🎂 Birthdays This Month</div>
+          <div class="nl-bday-hd">&#127874; Birthdays This Month</div>
           ${bdayHtml}
         </div>
+        ` : ''}
 
-        ${hlBoxHtml ? '<div style="margin-top:16px;"><div class="nl-sec-hd teal" style="margin-bottom:10px;">📅 Don&#39;t Miss These!</div>'+hlBoxHtml+'</div>' : (highlightBoxes.length ? '<div style="margin-top:16px;"><div class="nl-sec-hd teal" style="margin-bottom:10px;">Month Highlights</div>'+highlightBoxes.join('')+'</div>' : '')}
+        ${showHighlights && hlBoxHtml ? `
+        <div style="margin-top:16px;">
+          <div class="nl-sec-hd teal" style="margin-bottom:10px;">&#128197; Don&#39;t Miss These!</div>
+          ${hlBoxHtml}
+        </div>
+        ` : ''}
+
+        ${announcementsHtml ? `<div style="margin-top:16px;">${announcementsHtml}</div>` : ''}
 
       </div>
     </div>
 
-    <!-- ═══ FOOTER ═══ -->
     <div style="margin-top:auto;border-top:3px solid #E8D5F5;padding-top:12px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;font-size:11px;color:#6B7280;">
         <div>
           <div style="font-weight:700;color:#1A2A5C;font-size:12px;">${escapeHtml(communityName)}</div>
-          ${address ? '<div>'+escapeHtml(address)+'</div>' : ''}
-          ${contactLine ? '<div>'+escapeHtml(contactLine)+'</div>' : ''}
+          ${addressLine ? `<div>${escapeHtml(addressLine)}</div>` : ''}
+          ${contactBlock ? `<div>${escapeHtml(contactBlock)}</div>` : ''}
         </div>
         <div style="text-align:center;">
           <div style="font-weight:700;color:#7030A0;font-size:13px;">${escapeHtml(nlTitle)}</div>
-          <div>${escapeHtml(DATA.monthName)} ${DATA.year} &nbsp;&middot;&nbsp; Page 1 of 2</div>
+          <div>${monthDisplay} &nbsp;&middot;&nbsp; Page 1 of 2</div>
         </div>
         <div style="text-align:right;">
           <div style="font-weight:600;color:#1A2A5C;">Powered by Empower Life 365</div>
           <div>empowerlife365.app</div>
-          ${footerNote ? '<div style="color:#9CA3AF;font-style:italic;margin-top:3px;">'+escapeHtml(footerNote)+'</div>' : ''}
         </div>
       </div>
     </div>
-
   </div>`;
 
   // ── Page 2 ──
   const page2 = `
   <div class="nl-page" id="nl-content-p2">
-    <!-- Page 2 Header -->
     <div style="background:linear-gradient(135deg,#1A2A5C,#2E75B6);color:#fff;border-radius:10px;padding:14px 20px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
       <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#FFD700;font-family:serif;">
-          ${escapeHtml(initials)}
-        </div>
+        ${logoBlockSm}
         <div>
           <div style="font-size:17px;font-weight:800;font-style:italic;letter-spacing:0.5px;">${escapeHtml(nlTitle)}</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">Fun, Wellness &amp; Conversation</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">Fun, Wellness &amp; Community</div>
         </div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:13px;font-weight:700;">${escapeHtml(communityName)}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.7);">${escapeHtml(DATA.monthName)} ${DATA.year} &nbsp;&middot;&nbsp; Page 2 of 2</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.7);">${monthDisplay} &nbsp;&middot;&nbsp; Page 2 of 2</div>
       </div>
     </div>
     <div class="nl-fun-grid">
 
+      ${showWellness ? `
       <div class="nl-fun green">
-        <div class="nl-fun-title">💚 Wellness Tip of the Month</div>
+        <div class="nl-fun-title">&#128154; Wellness Tip of the Month</div>
         <div class="nl-fun-body">${escapeHtml(mc.wellness)}</div>
-      </div>
+      </div>` : ''}
 
+      ${showHumor ? `
       <div class="nl-fun amber">
-        <div class="nl-fun-title">😄 Humor Corner</div>
-        <div class="nl-fun-body" style="font-style:italic;">"${escapeHtml(mc.humor)}"</div>
-      </div>
+        <div class="nl-fun-title">&#128514; Humor Corner</div>
+        <div class="nl-fun-body" style="font-style:italic;">&ldquo;${escapeHtml(mc.humor)}&rdquo;</div>
+      </div>` : ''}
 
+      ${showWordGames ? `
       <div class="nl-fun purple">
-        <div class="nl-fun-title">🔤 Word Scramble</div>
+        <div class="nl-fun-title">&#128288; Word Scramble</div>
         <div class="nl-scramble">${escapeHtml(shuffled)}</div>
         <div style="font-size:11px;letter-spacing:3px;color:#9CA3AF;margin:4px 0 8px;font-family:monospace;">${scrambleBlanks}</div>
-        <div class="nl-scramble-hint">💡 Hint: ${escapeHtml(mc.scramble.hint)}</div>
+        <div class="nl-scramble-hint">&#128161; Hint: ${escapeHtml(mc.scramble.hint)}</div>
       </div>
-
       <div class="nl-fun blue">
-        <div class="nl-fun-title">🤔 Did You Know?</div>
+        <div class="nl-fun-title">&#129300; Did You Know?</div>
         <div class="nl-trivia-q">${escapeHtml(mc.trivia.q)}</div>
-        <div style="font-size:11px;color:#93C5FD;font-style:italic;margin-top:6px;">↓ Find the answer at the bottom of this page ↓</div>
+        <div style="font-size:11px;color:#93C5FD;font-style:italic;margin-top:6px;">&darr; Answer at the bottom of this page &darr;</div>
       </div>
-
-      ${mc.sudoku ? `
-      <div class="nl-fun navy">
-        <div class="nl-fun-title">🔢 Mini Sudoku — Fill in 1, 2, 3 &amp; 4</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:10px;">Each row, column &amp; 2×2 box must contain the numbers 1–4. No repeats!</div>
+      ${mc.sudoku ? `<div class="nl-fun navy">
+        <div class="nl-fun-title">&#128290; Mini Sudoku &mdash; Fill in 1, 2, 3 &amp; 4</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:10px;">Each row, column &amp; 2&times;2 box must contain 1&ndash;4. No repeats!</div>
         <div style="display:flex;justify-content:center;">${sudokuPuzzleHtml}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;font-style:italic;">↓ Solution at the bottom of this page ↓</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;font-style:italic;">&darr; Solution at the bottom &darr;</div>
       </div>` : ''}
+      ${mc.saying ? `<div class="nl-fun teal">
+        <div class="nl-fun-title">&#9999;&#65039; Complete the Saying</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;text-align:center;margin:10px 0;line-height:1.6;">&ldquo;${escapeHtml(mc.saying.phrase)}&rdquo;</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);text-align:center;font-style:italic;">&darr; Answer at the bottom &darr;</div>
+      </div>` : ''}` : ''}
 
-      ${mc.saying ? `
-      <div class="nl-fun teal">
-        <div class="nl-fun-title">✏️ Complete the Saying</div>
-        <div style="font-size:16px;font-weight:700;color:#fff;text-align:center;margin:10px 0;line-height:1.6;">"${escapeHtml(mc.saying.phrase)}"</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.6);text-align:center;font-style:italic;">↓ Answer at the bottom of this page ↓</div>
-      </div>` : ''}
-
+      ${showRemember ? `
       <div class="nl-fun rose full">
-        <div class="nl-fun-title">📰 Remember When… &amp; Historical Fun Fact</div>
+        <div class="nl-fun-title">&#128240; Remember When&hellip; &amp; Historical Fun Fact</div>
         <div class="nl-fun-body">${escapeHtml(mc.history)}<br><br><em>${escapeHtml(mc.rememberWhen)}</em></div>
-      </div>
+      </div>` : ''}
 
+      ${showConversation ? `
       <div class="nl-fun navy full">
-        <div class="nl-fun-title">💬 Let's Talk! — Conversation Starter</div>
-        <div class="nl-conv">"${escapeHtml(mc.conversation)}"</div>
-      </div>
+        <div class="nl-fun-title">&#128172; Let&rsquo;s Talk! &mdash; Conversation Starter</div>
+        <div class="nl-conv">&ldquo;${escapeHtml(mc.conversation)}&rdquo;</div>
+      </div>` : ''}
+
+      ${staffHtml}
+      ${customBoxesHtml}
 
     </div>
 
-    <!-- ── ANSWERS — upside down ── -->
+    ${showWordGames ? `
     <div class="nl-answers-wrap">
       <div class="nl-answers-inner">
-        <span class="nl-ans-label">✦ ANSWERS ✦</span>
+        <span class="nl-ans-label">&#10022; ANSWERS &#10022;</span>
         <span class="nl-ans-item"><strong>Word Scramble:</strong> ${escapeHtml(origWord)}</span>
-        <span class="nl-ans-sep">·</span>
+        <span class="nl-ans-sep">&middot;</span>
         <span class="nl-ans-item"><strong>Did You Know:</strong> ${escapeHtml(mc.trivia.a)}</span>
-        ${mc.saying ? `<span class="nl-ans-sep">·</span><span class="nl-ans-item"><strong>Complete the Saying:</strong> "${escapeHtml(mc.saying.answer)}"</span>` : ''}
-        ${mc.sudoku ? `<span class="nl-ans-sep">·</span><span class="nl-ans-item" style="display:inline-flex;align-items:center;gap:6px;"><strong>Sudoku:</strong> ${sudokuSolHtml}</span>` : ''}
+        ${mc.saying ? `<span class="nl-ans-sep">&middot;</span><span class="nl-ans-item"><strong>Complete the Saying:</strong> &ldquo;${escapeHtml(mc.saying.answer)}&rdquo;</span>` : ''}
+        ${mc.sudoku ? `<span class="nl-ans-sep">&middot;</span><span class="nl-ans-item" style="display:inline-flex;align-items:center;gap:6px;"><strong>Sudoku:</strong> ${sudokuSolHtml}</span>` : ''}
       </div>
-    </div>
+    </div>` : ''}
 
-    <!-- Page 2 Footer -->
     <div style="margin-top:16px;border-top:3px solid #E8D5F5;padding-top:12px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;font-size:11px;color:#6B7280;">
         <div>
           <div style="font-weight:700;color:#1A2A5C;font-size:12px;">${escapeHtml(communityName)}</div>
-          ${address ? '<div>'+escapeHtml(address)+'</div>' : ''}
-          ${directorLine ? '<div>'+escapeHtml(directorLine)+'</div>' : ''}
+          ${addressLine ? `<div>${escapeHtml(addressLine)}</div>` : ''}
+          ${directorLine ? `<div>${escapeHtml(directorLine)}</div>` : ''}
         </div>
         <div style="text-align:center;">
           <div style="font-weight:700;color:#7030A0;font-size:13px;">${escapeHtml(nlTitle)}</div>
-          <div>${escapeHtml(DATA.monthName)} ${DATA.year} &nbsp;&middot;&nbsp; Page 2 of 2</div>
-          ${footerNote ? '<div style="font-style:italic;color:#9CA3AF;margin-top:2px;">'+escapeHtml(footerNote)+'</div>' : ''}
+          <div>${monthDisplay} &nbsp;&middot;&nbsp; Page 2 of 2</div>
         </div>
         <div style="text-align:right;">
           <div style="font-weight:600;color:#1A2A5C;">Powered by Empower Life 365</div>
