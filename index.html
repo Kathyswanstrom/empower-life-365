@@ -1077,6 +1077,11 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .sch-idea-chips { display:flex; flex-wrap:wrap; gap:6px; }
 .sch-idea-chip { font-size:12px; padding:5px 12px; border-radius:20px; border:1.5px solid var(--gray-200); background:#fff; cursor:pointer; color:var(--navy); font-weight:600; transition:all .12s; }
 .sch-idea-chip:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+.tv-subtab { padding:8px 16px;border:2px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#374151;transition:all 0.15s; }
+.tv-subtab:hover { border-color:var(--primary);color:var(--primary); }
+.tv-subtab-active { border-color:var(--primary)!important;background:var(--primary)!important;color:#fff!important; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1114,6 +1119,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
     <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
+    <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
@@ -2099,6 +2105,194 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
     </div>
   </div>
+</section>
+
+
+<section class="tab-panel" id="panel-travel" style="display:none;">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">✈️ Travel Hub</h2>
+      <div class="subtitle">Virtual destinations, day trips, memories & miles — all themed for the month.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <label style="font-size:13px;font-weight:600;color:var(--gray-500);">This Month's Theme:</label>
+      <select id="tv-theme-select" onchange="setTravelTheme(this.value)" style="padding:6px 12px;border:2px solid var(--primary);border-radius:8px;font-size:14px;font-weight:700;color:var(--primary);background:#fff;cursor:pointer;"></select>
+    </div>
+  </div>
+
+  <!-- Destination Hero Banner -->
+  <div id="tv-hero" style="border-radius:16px;padding:28px 32px;margin-bottom:22px;background:linear-gradient(135deg,#1A2A5C,#2E75B6);color:#fff;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.18;" id="tv-hero-emoji"></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:6px;">DESTINATION OF THE MONTH</div>
+    <div id="tv-hero-name" style="font-size:32px;font-weight:900;margin-bottom:6px;"></div>
+    <div id="tv-hero-tagline" style="font-size:15px;opacity:0.8;"></div>
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;" id="tv-hero-tags"></div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div style="display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="tvtab-virtual" onclick="switchTravelTab('virtual')" class="tv-subtab tv-subtab-active">🗺️ Virtual Visit</button>
+    <button id="tvtab-walk"    onclick="switchTravelTab('walk')"    class="tv-subtab">🚶 Walk the World</button>
+    <button id="tvtab-trivia"  onclick="switchTravelTab('trivia')"  class="tv-subtab">🧠 Travel Trivia</button>
+    <button id="tvtab-daytrip" onclick="switchTravelTab('daytrip')" class="tv-subtab">🗓️ Day Trip Planner</button>
+    <button id="tvtab-memory"  onclick="switchTravelTab('memory')"  class="tv-subtab">💭 Memory Lane</button>
+  </div>
+
+  <!-- ═══ VIRTUAL VISIT ═══ -->
+  <div id="tvpanel-virtual">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;">
+      <!-- Fun Facts -->
+      <div style="background:#F8FAFF;border:1px solid #DCE8FF;border-radius:12px;padding:20px;">
+        <div style="font-weight:800;font-size:15px;color:var(--primary);margin-bottom:12px;">📌 Fun Facts</div>
+        <ul id="tv-facts" style="margin:0;padding-left:18px;line-height:1.9;color:#374151;font-size:14px;"></ul>
+      </div>
+      <!-- Activities -->
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:20px;">
+        <div style="font-weight:800;font-size:15px;color:#92400E;margin-bottom:12px;">🎨 Themed Activities</div>
+        <ul id="tv-activities" style="margin:0;padding-left:18px;line-height:1.9;color:#374151;font-size:14px;"></ul>
+      </div>
+    </div>
+    <!-- Recipes & Crafts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;">
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:20px;">
+        <div style="font-weight:800;font-size:15px;color:#065F46;margin-bottom:12px;">🍽️ Try a Taste</div>
+        <div id="tv-food" style="color:#374151;font-size:14px;line-height:1.8;"></div>
+      </div>
+      <div style="background:#FDF4FF;border:1px solid #E9D5FF;border-radius:12px;padding:20px;">
+        <div style="font-weight:800;font-size:15px;color:#6B21A8;margin-bottom:12px;">🎬 Watch & Listen</div>
+        <div id="tv-media" style="color:#374151;font-size:14px;line-height:1.8;"></div>
+      </div>
+    </div>
+    <!-- Print button -->
+    <div style="text-align:right;">
+      <button onclick="printVirtualVisit()" class="btn btn-primary">🖨️ Print Virtual Visit Sheet</button>
+    </div>
+  </div>
+
+  <!-- ═══ WALK THE WORLD ═══ -->
+  <div id="tvpanel-walk" style="display:none;">
+    <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:2px solid #86EFAC;border-radius:14px;padding:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#065F46;text-transform:uppercase;letter-spacing:1px;">🎯 Monthly Goal</div>
+        <div id="ww-goal-label" style="font-size:22px;font-weight:900;color:#14532D;margin-top:4px;"></div>
+        <div id="ww-goal-sub" style="font-size:13px;color:#166534;margin-top:2px;"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="openLogMiles()" class="btn btn-primary">+ Log Miles</button>
+        <button onclick="printWalkLeaderboard()" class="btn btn-secondary">🖨️ Print Leaderboard</button>
+        <button onclick="resetWalkMiles()" class="btn" style="background:#FEE2E2;color:#B91C1C;border:1px solid #FCA5A5;">🗑️ Reset Month</button>
+      </div>
+    </div>
+
+    <!-- Community total bar -->
+    <div id="ww-community-bar" style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:16px 20px;margin-bottom:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-weight:700;font-size:14px;">🏘️ Community Total</span>
+        <span id="ww-community-label" style="font-weight:700;color:var(--primary);font-size:14px;"></span>
+      </div>
+      <div style="background:#E5E7EB;border-radius:99px;height:12px;">
+        <div id="ww-community-progress" style="height:12px;border-radius:99px;background:linear-gradient(90deg,#22C55E,#16A34A);transition:width 0.5s;width:0%;"></div>
+      </div>
+    </div>
+
+    <!-- Resident leaderboard -->
+    <div id="ww-resident-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
+
+    <!-- Log Miles Modal -->
+    <div id="ww-log-modal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closeLogMiles()">
+      <div style="background:#fff;border-radius:16px;padding:28px;width:360px;max-width:94vw;">
+        <h3 style="margin:0 0 16px;">🚶 Log Miles</h3>
+        <label style="font-size:13px;font-weight:600;">Resident</label>
+        <select id="ww-log-resident" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:12px;font-size:14px;"></select>
+        <label style="font-size:13px;font-weight:600;">Miles walked today</label>
+        <input type="number" id="ww-log-miles" min="0.1" max="50" step="0.1" value="1" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:12px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Date</label>
+        <input type="date" id="ww-log-date" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:18px;font-size:14px;box-sizing:border-box;" />
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button onclick="closeLogMiles()" style="padding:9px 20px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer;">Cancel</button>
+          <button onclick="saveLogMiles()" class="btn btn-primary">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TRAVEL TRIVIA ═══ -->
+  <div id="tvpanel-trivia" style="display:none;">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap;">
+      <div style="font-size:14px;font-weight:600;color:#374151;">Category:</div>
+      <button onclick="loadTravelTrivia('destination')" class="btn btn-secondary" id="ttcat-destination">🌍 Destination</button>
+      <button onclick="loadTravelTrivia('geography')" class="btn btn-secondary" id="ttcat-geography">🗺️ Geography</button>
+      <button onclick="loadTravelTrivia('landmarks')" class="btn btn-secondary" id="ttcat-landmarks">🗼 Landmarks</button>
+      <button onclick="loadTravelTrivia('food')" class="btn btn-secondary" id="ttcat-food">🍜 Food & Culture</button>
+      <button onclick="printTravelTrivia()" class="btn" style="margin-left:auto;background:#E0E7FF;color:#3730A3;border:1px solid #C7D2FE;">🖨️ Print Quiz</button>
+    </div>
+    <div id="tv-trivia-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;"></div>
+  </div>
+
+  <!-- ═══ DAY TRIP PLANNER ═══ -->
+  <div id="tvpanel-daytrip" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+      <!-- Form -->
+      <div style="background:#F8FAFF;border:1px solid #DCE8FF;border-radius:12px;padding:22px;">
+        <div style="font-weight:800;font-size:15px;color:var(--primary);margin-bottom:16px;">📋 Plan a Trip</div>
+        <label style="font-size:13px;font-weight:600;">Destination Name</label>
+        <input type="text" id="dt-destination" placeholder="e.g. City Park, Local Museum" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Date</label>
+        <input type="date" id="dt-date" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Departure Time</label>
+        <input type="time" id="dt-time" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Transport</label>
+        <select id="dt-transport" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;">
+          <option>Community Van</option><option>Charter Bus</option><option>Walking</option><option>Family/Staff Cars</option>
+        </select>
+        <label style="font-size:13px;font-weight:600;">Theme / Category</label>
+        <select id="dt-category" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;">
+          <option>🌿 Nature & Parks</option><option>🏛️ Museum & Culture</option><option>🍽️ Restaurant Outing</option><option>🛒 Shopping</option><option>⛪ Faith & Spiritual</option><option>🎭 Entertainment</option><option>🏖️ Beach / Lake</option>
+        </select>
+        <label style="font-size:13px;font-weight:600;">Notes / Itinerary Details</label>
+        <textarea id="dt-notes" rows="3" placeholder="Stops, what to bring, accessibility notes..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:14px;font-size:14px;box-sizing:border-box;resize:vertical;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button onclick="saveDayTrip()" class="btn btn-primary">💾 Save Trip</button>
+          <button onclick="printDayTripItinerary()" class="btn btn-secondary">🖨️ Print Itinerary</button>
+        </div>
+      </div>
+      <!-- Saved trips list -->
+      <div>
+        <div style="font-weight:800;font-size:15px;color:var(--primary);margin-bottom:14px;">🗓️ Upcoming & Past Trips</div>
+        <div id="dt-trip-list" style="display:flex;flex-direction:column;gap:10px;max-height:480px;overflow-y:auto;"></div>
+        <div id="dt-empty" style="text-align:center;padding:40px;color:#aaa;font-size:14px;">No trips planned yet. Fill in the form to add one!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MEMORY LANE ═══ -->
+  <div id="tvpanel-memory" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+      <!-- Add memory form -->
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:22px;">
+        <div style="font-weight:800;font-size:15px;color:#92400E;margin-bottom:16px;">✍️ Share a Travel Memory</div>
+        <label style="font-size:13px;font-weight:600;">Resident Name</label>
+        <select id="mem-resident" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;"></select>
+        <label style="font-size:13px;font-weight:600;">Place Visited</label>
+        <input type="text" id="mem-place" placeholder="e.g. Paris, France" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Approx. Year</label>
+        <input type="number" id="mem-year" placeholder="e.g. 1968" min="1920" max="2024" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Their Story</label>
+        <textarea id="mem-story" rows="4" placeholder="What do they remember most? Who did they go with? A funny moment?" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:14px;font-size:14px;box-sizing:border-box;resize:vertical;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button onclick="saveMemory()" class="btn btn-primary">💾 Save Memory</button>
+          <button onclick="printMemoryBook()" class="btn btn-secondary">🖨️ Print Memory Book</button>
+        </div>
+      </div>
+      <!-- Memory cards -->
+      <div>
+        <div style="font-weight:800;font-size:15px;color:#92400E;margin-bottom:14px;">💭 Memory Collection</div>
+        <div id="mem-list" style="display:flex;flex-direction:column;gap:12px;max-height:480px;overflow-y:auto;"></div>
+        <div id="mem-empty" style="text-align:center;padding:40px;color:#aaa;font-size:14px;">No memories yet. Ask residents about their favorite trips!</div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <section class="tab-panel" id="panel-settings">
@@ -10660,6 +10854,514 @@ function printAllPunchCards() {
     </div>
   </div>
 </div>
+
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// TRAVEL HUB
+// ═══════════════════════════════════════════════════════════════
+const TV_KEY   = 'anchor_engage_v3_travel_theme';
+const WW_KEY   = 'anchor_engage_v3_walk_miles';
+const DT_KEY   = 'anchor_engage_v3_daytrips';
+const MEM_KEY  = 'anchor_engage_v3_memories';
+
+const TV_DESTINATIONS = [
+  { id:'hawaii',   label:'🌺 Hawaii, USA',        emoji:'🌺',
+    tagline:'Aloha! Sun, volcanoes, and hula on the Pacific islands.',
+    tags:['🌊 Beach','🌋 Volcanoes','🌸 Flowers','🎵 Music'],
+    walkMiles:2471, walkLabel:'Walk across the Pacific (Honolulu to LA)',
+    facts:['Hawaii is the only US state made entirely of islands.','The Hawaiian alphabet has only 13 letters.','Hawaii has the world\'s most active volcano — Kīlauea.','Hula dance tells stories of nature, history, and legends.','Hawaii grows 1/3 of the world\'s commercial supply of pineapples.'],
+    activities:['Lei-making with paper flowers','Hawaiian luau themed lunch','Learn to hula — YouTube video party','Paint a tropical sunset','Hawaiian music listening hour'],
+    food:'Try: Pineapple upside-down cake, coconut rice, or a tropical fruit salad with mango and papaya.',
+    media:'Watch: Blue Hawaii (1961), Lilo & Stitch (2002). Listen: Somewhere Over the Rainbow by Israel Kamakawiwoʻole.' },
+  { id:'paris',    label:'🗼 Paris, France',       emoji:'🗼',
+    tagline:'The City of Light — art, fashion, and the finest cuisine.',
+    tags:['🎨 Art','🥐 Cuisine','🗼 Landmarks','💃 Romance'],
+    walkMiles:3628, walkLabel:'Walk to Paris (NY to Paris)',
+    facts:['The Eiffel Tower was built in 1889 and was meant to be temporary.','The Louvre is the world\'s largest art museum.','Paris has over 40,000 restaurants and cafés.','The city is called "La Ville Lumière" — The City of Light.','Baguettes: Parisians eat about 30 million per day.'],
+    activities:['Beret decorating craft','French café breakfast — croissants & café au lait','Watch an Impressionist art slideshow','Write a postcard "from Paris"','Learn a few French phrases together'],
+    food:'Try: Quiche Lorraine, French onion soup, or simple crepes with jam and powdered sugar.',
+    media:'Watch: An American in Paris (1951), Midnight in Paris (2011). Listen: La Vie en Rose by Édith Piaf.' },
+  { id:'italy',    label:'🍕 Italy',               emoji:'🏛️',
+    tagline:'Where ancient history meets the world\'s greatest food.',
+    tags:['🍝 Pasta','🏛️ History','🎭 Opera','🌅 Scenery'],
+    walkMiles:4400, walkLabel:'Walk to Rome (NY to Rome)',
+    facts:['Italy has more UNESCO World Heritage Sites than any other country.','The Colosseum could hold 50,000–80,000 spectators.','Pizza was invented in Naples in the 18th century.','Italy produces more wine than any other country in the world.','The Italian flag colors stand for hope, faith, and charity.'],
+    activities:['Make paper Roman columns craft','Italian opera listening hour','Pizza-topping voting & pizza party','Draw or paint the Leaning Tower of Pisa','Learn to say numbers & greetings in Italian'],
+    food:'Try: Pasta with marinara sauce, bruschetta, or an Italian herb focaccia bread.',
+    media:'Watch: Roman Holiday (1953), Three Coins in the Fountain (1954). Listen: Nessun Dorma by Puccini.' },
+  { id:'japan',    label:'🌸 Japan',               emoji:'⛩️',
+    tagline:'Ancient temples, cherry blossoms, and bullet trains.',
+    tags:['🌸 Cherry Blossoms','🍣 Sushi','⛩️ Temples','🤖 Technology'],
+    walkMiles:6745, walkLabel:'Walk to Tokyo (LA to Tokyo)',
+    facts:['Japan has the world\'s oldest company, Kongo Gumi, founded in 578 AD.','Cherry blossom season (hanami) is a national celebration.','Japan has over 6,800 islands.','The bullet train (Shinkansen) travels up to 200 mph.','Japan is home to 5 of the world\'s 10 most visited amusement parks.'],
+    activities:['Paper origami crane folding','Japanese tea ceremony discussion','Try chopsticks with candy or marshmallows','Draw cherry blossoms on paper','Watch a Sumo wrestling video clip'],
+    food:'Try: Rice bowls with teriyaki sauce, miso soup, or green tea ice cream.',
+    media:'Watch: Spirited Away (2001), Lost in Translation (2003). Listen: Traditional koto music.' },
+  { id:'caribbean',label:'🌊 Caribbean Islands',  emoji:'🌴',
+    tagline:'Turquoise water, reggae rhythms, and white-sand beaches.',
+    tags:['🌊 Ocean','🎵 Reggae','🦜 Wildlife','🏖️ Beaches'],
+    walkMiles:1500, walkLabel:'Walk to the Caribbean (Miami to Jamaica)',
+    facts:['The Caribbean Sea has over 7,000 islands, islets, and cays.','Bob Marley was born in Jamaica and popularized reggae worldwide.','The Caribbean is home to the hawksbill sea turtle.','Christopher Columbus first landed in the Bahamas in 1492.','Carnival celebrations in Trinidad are among the world\'s largest.'],
+    activities:['Limbo contest with pool noodle or broomstick','Steel drum music listening party','Tropical flower arrangement craft','Caribbean cooking demo — jerk seasoning discussion','Beach-themed photo backdrop fun'],
+    food:'Try: Coconut rice and beans, plantain chips, or a tropical fruit punch (non-alcoholic).',
+    media:'Watch: The Mighty Quinn (1989), Cool Runnings (1993). Listen: Three Little Birds by Bob Marley.' },
+  { id:'africa',   label:'🦁 African Safari',     emoji:'🦁',
+    tagline:'Majestic wildlife, vast savannahs, and stunning sunsets.',
+    tags:['🦁 Wildlife','🌅 Savannah','🥁 Culture','🌍 Nature'],
+    walkMiles:5300, walkLabel:'Walk to Nairobi (NY to Nairobi)',
+    facts:['Africa is the world\'s second-largest continent.','The Serengeti hosts the largest land animal migration on Earth.','Mount Kilimanjaro is Africa\'s highest peak at 19,341 feet.','Africa has over 2,000 recognized languages.','Victoria Falls is the world\'s largest sheet of falling water.'],
+    activities:['African animal trivia & bingo','Safari photo guessing game — which animal?','African drum beat rhythm circle','Paint or draw your favorite safari animal','Watch a National Geographic wildlife clip'],
+    food:'Try: Peanut soup, plantains, or a simple injera flatbread with hummus.',
+    media:'Watch: The Lion King (1994), Born Free (1966). Listen: The Circle of Life, traditional African drumming.' },
+  { id:'australia',label:'🦘 Australia',          emoji:'🦘',
+    tagline:'Stunning outback, the Great Barrier Reef, and unique wildlife.',
+    tags:['🦘 Kangaroos','🐠 Reef','🌊 Surfing','🎨 Aboriginal Art'],
+    walkMiles:9900, walkLabel:'Walk to Sydney (LA to Sydney)',
+    facts:['Australia is both a country and a continent.','The Great Barrier Reef is the world\'s largest living structure.','Kangaroos and koalas are found only in Australia.','The Sydney Opera House took 14 years to build.','Australia has the world\'s longest fence — the Dingo Fence at 3,488 miles.'],
+    activities:['Australian animal matching game','Boomerang craft (cardboard)','Watch a short clip on the Great Barrier Reef','Australian "G\'day!" phrase learning','Try Vegemite discussion — would you eat it?'],
+    food:'Try: Lamington cakes (sponge with coconut), Anzac biscuits (oat cookies), or a simple pavlova.',
+    media:'Watch: Crocodile Dundee (1986), Finding Nemo (2003). Listen: Waltzing Matilda, traditional Australian folk songs.' },
+  { id:'newengland',label:'🍂 New England, USA',  emoji:'🍁',
+    tagline:'Fall foliage, charming lighthouses, and seafood on the coast.',
+    tags:['🍂 Fall Colors','🦞 Lobster','⛵ Sailing','🏘️ History'],
+    walkMiles:300, walkLabel:'Walk the Appalachian Trail section (300 miles)',
+    facts:['New England includes 6 US states: MA, CT, RI, VT, NH, and ME.','Plymouth, MA was settled by Pilgrims in 1620.','Vermont is the largest maple syrup producer in the US.','Fenway Park in Boston is the oldest MLB stadium (1912).','Maine has the most lighthouses of any US state — over 60!'],
+    activities:['Leaf rubbings with crayons and real or paper leaves','New England clam chowder tasting or recipe reading','Lighthouse watercolor painting','Boston Tea Party history discussion','State capitals quiz — can you name them all?'],
+    food:'Try: Clam chowder, apple cider donuts, or cranberry muffins.',
+    media:'Watch: On Golden Pond (1981), The Cider House Rules (1999). Listen: Classic patriotic songs.' },
+  { id:'greece',   label:'🏛️ Greece',             emoji:'🏛️',
+    tagline:'Birthplace of democracy, mythology, and the Olympic Games.',
+    tags:['🏛️ Ancient History','🌊 Islands','🍋 Cuisine','🧿 Mythology'],
+    walkMiles:5100, walkLabel:'Walk to Athens (NY to Athens)',
+    facts:['Greece is the birthplace of the Olympic Games (776 BC).','The Greek alphabet is the origin of Latin and other alphabets.','Greece has over 6,000 islands, with about 227 inhabited.','The Parthenon has stood for over 2,400 years.','Greece produces about 20% of the world\'s olive oil.'],
+    activities:['Greek mythology trivia — Zeus, Athena, Poseidon','Olive oil tasting with bread','Make paper columns & architecture craft','Discussion: Would you rather visit Athens or Santorini?','Learn to say "Opa!" and why Greeks say it'],
+    food:'Try: Hummus and pita, Greek salad, or honey-drizzled yogurt with walnuts.',
+    media:'Watch: Mamma Mia! (2008), My Big Fat Greek Wedding (2002). Listen: Traditional Greek bouzouki music.' },
+  { id:'amazon',   label:'🌿 Amazon Rainforest',  emoji:'🦜',
+    tagline:'Earth\'s lungs — a world of color, life, and mystery.',
+    tags:['🌿 Nature','🦜 Birds','🐍 Wildlife','💧 Rivers'],
+    walkMiles:3000, walkLabel:'Walk the Amazon River length (3,000 miles)',
+    facts:['The Amazon produces 20% of Earth\'s oxygen.','The Amazon River discharges more water than any other river.','Over 3,000 species of fish live in the Amazon.','The rainforest is home to 10% of all species on Earth.','Some Amazon trees are over 1,000 years old.'],
+    activities:['Tropical bird coloring sheets','Rain stick craft with paper towel tube & rice','Amazon ecosystem discussion — food chain game','Identify the animal by sound (YouTube clips)','Paint a rainforest scene'],
+    food:'Try: Mango salsa, black bean and rice bowls, or passion fruit juice.',
+    media:'Watch: Rio (2011), The Mission (1986). Listen: Brazilian samba or bossa nova music.' },
+  { id:'chicago',  label:'🌆 Chicago, USA',       emoji:'🌆',
+    tagline:'The Windy City — jazz, deep dish pizza, and lakefront beauty.',
+    tags:['🎷 Jazz','🍕 Deep Dish','🏙️ Skyline','⚾ Baseball'],
+    walkMiles:790, walkLabel:'Walk Chicago to New York (790 miles)',
+    facts:['Chicago is nicknamed "The Windy City" — originally about politics, not weather!','The Chicago deep dish pizza was invented at Pizzeria Uno in 1943.','The Chicago River is dyed green every St. Patrick\'s Day.','Wrigley Field (opened 1914) is one of the oldest MLB stadiums.','Chicago has the world\'s first skyscraper — the Home Insurance Building (1885).'],
+    activities:['Chicago-style deep dish pizza party','Jazz music hour — Louis Armstrong, Ella Fitzgerald','Name that Chicago landmark — photo quiz','Blues Brothers dance clip viewing','Chicago flag & history trivia'],
+    food:'Try: Deep dish pizza (store-bought or homemade), Chicago-style hot dogs, or popcorn mix.',
+    media:'Watch: Ferris Bueller\'s Day Off (1986), Chicago (2002). Listen: Chicago blues and jazz classics.' },
+  { id:'natlparks',label:'🏔️ US National Parks',  emoji:'🏕️',
+    tagline:'Yellowstone, Grand Canyon, Yosemite — America\'s best idea.',
+    tags:['🏔️ Mountains','🌋 Geysers','🦅 Wildlife','🌲 Forests'],
+    walkMiles:500, walkLabel:'Walk the Appalachian Trail section (500 miles)',
+    facts:['The US has 63 designated National Parks covering 52 million acres.','Old Faithful geyser erupts roughly every 90 minutes.','The Grand Canyon is over 270 miles long and 1 mile deep.','Yosemite\'s Half Dome took about 87 million years to form.','Theodore Roosevelt established the National Park Service tradition.'],
+    activities:['National Park passport stamp craft','Grand Canyon vs Yosemite — which would you visit?','Wildlife identification card game','Campfire story circle','Pine cone bird feeder craft'],
+    food:'Try: S\'mores, trail mix, or campfire baked apples with cinnamon.',
+    media:'Watch: Ken Burns National Parks documentary clips. Listen: America the Beautiful, folk songs.' }
+];
+
+const TV_TRIVIA = {
+  destination:[
+    {q:'What city is known as "The Eternal City"?', a:'Rome, Italy', choices:['Athens','Rome, Italy','Cairo','Istanbul']},
+    {q:'The Eiffel Tower is located in which city?', a:'Paris', choices:['Brussels','London','Paris','Berlin']},
+    {q:'What country has the most UNESCO World Heritage Sites?', a:'Italy', choices:['China','France','Italy','Spain']},
+    {q:'The Taj Mahal is located in which country?', a:'India', choices:['Pakistan','Bangladesh','India','Nepal']},
+    {q:'Which city is called "The Big Apple"?', a:'New York City', choices:['Chicago','Los Angeles','New York City','Boston']},
+    {q:'The Great Barrier Reef is found off the coast of which country?', a:'Australia', choices:['New Zealand','Philippines','Australia','Indonesia']},
+    {q:'Which country are the pyramids of Giza located in?', a:'Egypt', choices:['Sudan','Morocco','Libya','Egypt']},
+    {q:'What is the capital of Australia?', a:'Canberra', choices:['Sydney','Melbourne','Brisbane','Canberra']},
+    {q:'The Amazon River runs through which continent?', a:'South America', choices:['Africa','Asia','South America','North America']},
+    {q:'Which US state is made up entirely of islands?', a:'Hawaii', choices:['Alaska','Florida','Hawaii','Rhode Island']}
+  ],
+  geography:[
+    {q:'What is the longest river in the world?', a:'The Nile', choices:['The Amazon','The Mississippi','The Nile','The Yangtze']},
+    {q:'Which ocean is the largest?', a:'Pacific Ocean', choices:['Atlantic Ocean','Indian Ocean','Pacific Ocean','Arctic Ocean']},
+    {q:'What is the smallest country in the world?', a:'Vatican City', choices:['Monaco','San Marino','Vatican City','Liechtenstein']},
+    {q:'How many continents are there on Earth?', a:'7', choices:['5','6','7','8']},
+    {q:'What is the tallest mountain in the world?', a:'Mount Everest', choices:['K2','Kangchenjunga','Mount Everest','Lhotse']},
+    {q:'Which country has the most natural lakes?', a:'Canada', choices:['Russia','USA','Canada','Finland']},
+    {q:'What is the largest desert in the world?', a:'Antarctica', choices:['Sahara','Gobi','Arabian','Antarctica']},
+    {q:'The Sahara Desert is located on which continent?', a:'Africa', choices:['Asia','Australia','Africa','South America']},
+    {q:'What is the capital of Canada?', a:'Ottawa', choices:['Toronto','Vancouver','Montreal','Ottawa']},
+    {q:'Which country has the longest coastline in the world?', a:'Canada', choices:['Russia','Australia','Norway','Canada']}
+  ],
+  landmarks:[
+    {q:'The Statue of Liberty was a gift from which country?', a:'France', choices:['England','France','Italy','Spain']},
+    {q:'The Colosseum is located in which city?', a:'Rome', choices:['Venice','Florence','Naples','Rome']},
+    {q:'Big Ben is located in which city?', a:'London', choices:['Paris','London','Dublin','Edinburgh']},
+    {q:'The Leaning Tower of Pisa is in which country?', a:'Italy', choices:['Spain','France','Greece','Italy']},
+    {q:'The Parthenon sits on which famous hill?', a:'The Acropolis', choices:['Olympus','The Acropolis','The Pantheon','The Agora']},
+    {q:'Christ the Redeemer overlooks which city?', a:'Rio de Janeiro', choices:['São Paulo','Lima','Buenos Aires','Rio de Janeiro']},
+    {q:'Stonehenge is located in which country?', a:'England', choices:['Ireland','Scotland','Wales','England']},
+    {q:'The Sagrada Família cathedral is in which city?', a:'Barcelona', choices:['Madrid','Seville','Barcelona','Lisbon']},
+    {q:'Mount Rushmore features how many presidents?', a:'4', choices:['2','3','4','5']},
+    {q:'The Great Wall of China was built primarily to protect against whom?', a:'Northern invaders', choices:['Southern armies','Eastern pirates','Northern invaders','Western traders']}
+  ],
+  food:[
+    {q:'Which country invented pizza?', a:'Italy', choices:['Greece','Spain','Italy','France']},
+    {q:'Sushi originated in which country?', a:'Japan', choices:['China','Korea','Thailand','Japan']},
+    {q:'Croissants are most associated with which country?', a:'France', choices:['Austria','Belgium','France','Switzerland']},
+    {q:'Which country is known for inventing chocolate chip cookies?', a:'United States', choices:['Belgium','Switzerland','United States','Netherlands']},
+    {q:'Paella is a famous dish from which country?', a:'Spain', choices:['Portugal','Italy','France','Spain']},
+    {q:'Which spice was once worth more than gold?', a:'Saffron', choices:['Pepper','Cinnamon','Saffron','Vanilla']},
+    {q:'Fish and chips is the national dish of which country?', a:'England', choices:['Ireland','Scotland','England','Canada']},
+    {q:'Which fruit is the national symbol of Canada?', a:'Maple leaf (maple tree)', choices:['Blueberry','Apple','Maple leaf (maple tree)','Cranberry']},
+    {q:'Dim sum is associated with which cuisine?', a:'Chinese', choices:['Japanese','Vietnamese','Thai','Chinese']},
+    {q:'Which country produces the most coffee?', a:'Brazil', choices:['Colombia','Ethiopia','Vietnam','Brazil']}
+  ]
+};
+
+let tvState = {
+  activeTheme: lsGet(TV_KEY, 'paris'),
+  activeSubTab: 'virtual',
+  triviaCategory: 'destination',
+  triviaAnswered: {}
+};
+
+function initTravel() {
+  // Populate theme selector
+  const sel = document.getElementById('tv-theme-select');
+  if (!sel) return;
+  sel.innerHTML = TV_DESTINATIONS.map(d => `<option value="${d.id}">${d.label}</option>`).join('');
+  sel.value = tvState.activeTheme;
+  renderTravelHero();
+  renderVirtualVisit();
+  loadTravelTrivia('destination');
+  renderDayTrips();
+  renderMemories();
+  renderWalkTheWorld();
+  // Set default dates
+  const today = new Date().toISOString().split('T')[0];
+  const dtDate = document.getElementById('dt-date');
+  if (dtDate) dtDate.value = today;
+  const wwDate = document.getElementById('ww-log-date');
+  if (wwDate) wwDate.value = today;
+  // Populate memory resident dropdown
+  const memSel = document.getElementById('mem-resident');
+  const wwSel = document.getElementById('ww-log-resident');
+  const names = roster.map(r => r.name).filter(Boolean).sort();
+  [memSel, wwSel].forEach(s => {
+    if (!s) return;
+    s.innerHTML = names.length
+      ? names.map(n => `<option>${n}</option>`).join('')
+      : '<option>-- Add residents first --</option>';
+  });
+}
+
+function setTravelTheme(id) {
+  tvState.activeTheme = id;
+  lsSet(TV_KEY, id);
+  renderTravelHero();
+  renderVirtualVisit();
+  renderWalkTheWorld();
+}
+
+function getDestination() {
+  return TV_DESTINATIONS.find(d => d.id === tvState.activeTheme) || TV_DESTINATIONS[0];
+}
+
+function renderTravelHero() {
+  const d = getDestination();
+  document.getElementById('tv-hero-emoji').textContent = d.emoji;
+  document.getElementById('tv-hero-name').textContent = d.label;
+  document.getElementById('tv-hero-tagline').textContent = d.tagline;
+  document.getElementById('tv-hero-tags').innerHTML = d.tags.map(t =>
+    `<span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:600;">${t}</span>`
+  ).join('');
+}
+
+function renderVirtualVisit() {
+  const d = getDestination();
+  document.getElementById('tv-facts').innerHTML = d.facts.map(f => `<li>${f}</li>`).join('');
+  document.getElementById('tv-activities').innerHTML = d.activities.map(a => `<li>${a}</li>`).join('');
+  document.getElementById('tv-food').innerHTML = d.food;
+  document.getElementById('tv-media').innerHTML = d.media;
+}
+
+function switchTravelTab(tab) {
+  tvState.activeSubTab = tab;
+  ['virtual','walk','trivia','daytrip','memory'].forEach(t => {
+    const btn = document.getElementById('tvtab-' + t);
+    const panel = document.getElementById('tvpanel-' + t);
+    if (btn) btn.classList.toggle('tv-subtab-active', t === tab);
+    if (panel) panel.style.display = t === tab ? '' : 'none';
+  });
+  if (tab === 'walk') renderWalkTheWorld();
+}
+
+// ── WALK THE WORLD ────────────────────────────────────────────────
+function getWalkData() { return lsGet(WW_KEY, {}); }
+function saveWalkData(d) { lsSet(WW_KEY, d); }
+
+function renderWalkTheWorld() {
+  const dest = getDestination();
+  const data = getWalkData();
+  const goal = dest.walkMiles;
+  document.getElementById('ww-goal-label').textContent = `Walk to ${dest.label.replace(/^[^\w]+/,'').split(',')[0]} — ${goal.toLocaleString()} miles`;
+  document.getElementById('ww-goal-sub').textContent = dest.walkLabel;
+
+  // Community total
+  const names = roster.map(r => r.name).filter(Boolean);
+  let communityTotal = 0;
+  names.forEach(n => { communityTotal += (data[n] || 0); });
+  const communityPct = Math.min(100, (communityTotal / (goal * Math.max(1, names.length))) * 100);
+  document.getElementById('ww-community-label').textContent = `${communityTotal.toFixed(1)} miles combined`;
+  document.getElementById('ww-community-progress').style.width = communityPct + '%';
+
+  // Individual cards
+  const list = document.getElementById('ww-resident-list');
+  if (!names.length) {
+    list.innerHTML = '<p style="color:#aaa;font-size:14px;grid-column:1/-1;">Add residents on the Residents tab first.</p>';
+    return;
+  }
+  const sorted = [...names].sort((a,b) => (data[b]||0) - (data[a]||0));
+  list.innerHTML = sorted.map((name, i) => {
+    const miles = data[name] || 0;
+    const pct = Math.min(100, (miles / goal) * 100);
+    const medal = i === 0 && miles > 0 ? '🥇' : i === 1 && miles > 0 ? '🥈' : i === 2 && miles > 0 ? '🥉' : '';
+    return `<div style="background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-weight:700;font-size:14px;">${medal} ${name}</span>
+        <span style="font-size:13px;color:var(--primary);font-weight:700;">${miles.toFixed(1)} mi</span>
+      </div>
+      <div style="background:#E5E7EB;border-radius:99px;height:8px;margin-bottom:6px;">
+        <div style="height:8px;border-radius:99px;background:linear-gradient(90deg,#3B82F6,#1D4ED8);width:${pct}%;transition:width 0.5s;"></div>
+      </div>
+      <div style="font-size:11px;color:#9CA3AF;">${pct.toFixed(1)}% of goal · ${Math.max(0, goal - miles).toFixed(0)} miles to go</div>
+    </div>`;
+  }).join('');
+}
+
+function openLogMiles() {
+  const modal = document.getElementById('ww-log-modal');
+  modal.style.display = 'flex';
+  const sel = document.getElementById('ww-log-resident');
+  const names = roster.map(r => r.name).filter(Boolean).sort();
+  sel.innerHTML = names.map(n => `<option>${n}</option>`).join('');
+  document.getElementById('ww-log-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('ww-log-miles').value = '1';
+}
+
+function closeLogMiles() {
+  document.getElementById('ww-log-modal').style.display = 'none';
+}
+
+function saveLogMiles() {
+  const resident = document.getElementById('ww-log-resident').value;
+  const miles = parseFloat(document.getElementById('ww-log-miles').value) || 0;
+  if (!resident || miles <= 0) return alert('Please select a resident and enter valid miles.');
+  const data = getWalkData();
+  data[resident] = (data[resident] || 0) + miles;
+  saveWalkData(data);
+  closeLogMiles();
+  renderWalkTheWorld();
+}
+
+function resetWalkMiles() {
+  if (!confirm('Reset all Walk the World miles for this month?')) return;
+  saveWalkData({});
+  renderWalkTheWorld();
+}
+
+function printWalkLeaderboard() {
+  const dest = getDestination();
+  const data = getWalkData();
+  const names = roster.map(r => r.name).filter(Boolean).sort((a,b)=>(data[b]||0)-(data[a]||0));
+  const rows = names.map((n,i) => `<tr><td>${i+1}</td><td>${n}</td><td>${(data[n]||0).toFixed(1)}</td><td>${Math.min(100,(((data[n]||0)/dest.walkMiles)*100)).toFixed(1)}%</td></tr>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Walk Leaderboard</title><style>body{font-family:Arial,sans-serif;padding:30px}h1{color:#1A2A5C}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:10px;text-align:left}th{background:#1A2A5C;color:#fff}tr:nth-child(even){background:#f9f9f9}</style></head><body><h1>🚶 Walk the World Leaderboard</h1><h3>Destination: ${dest.label} — Goal: ${dest.walkMiles.toLocaleString()} miles</h3><table><thead><tr><th>Rank</th><th>Resident</th><th>Miles</th><th>Progress</th></tr></thead><tbody>${rows}</tbody></table><script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// ── TRAVEL TRIVIA ─────────────────────────────────────────────────
+function loadTravelTrivia(cat) {
+  tvState.triviaCategory = cat;
+  tvState.triviaAnswered = {};
+  ['destination','geography','landmarks','food'].forEach(c => {
+    const btn = document.getElementById('ttcat-' + c);
+    if (btn) btn.className = 'btn ' + (c === cat ? 'btn-primary' : 'btn-secondary');
+  });
+  const questions = TV_TRIVIA[cat] || [];
+  const container = document.getElementById('tv-trivia-container');
+  container.innerHTML = questions.map((q, i) => `
+    <div id="tt-card-${i}" style="background:#fff;border:2px solid #E5E7EB;border-radius:12px;padding:18px;transition:border-color 0.2s;">
+      <div style="font-size:12px;font-weight:700;color:#9CA3AF;margin-bottom:6px;">Q${i+1}</div>
+      <div style="font-weight:700;font-size:15px;color:#111827;margin-bottom:12px;">${q.q}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="tt-choices-${i}">
+        ${q.choices.map(c => `<button onclick="answerTrivia(${i},'${c.replace(/'/g,"\\'")}','${q.a.replace(/'/g,"\\'")}',this)" style="padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;background:#F9FAFB;font-size:13px;cursor:pointer;text-align:left;">${c}</button>`).join('')}
+      </div>
+      <div id="tt-result-${i}" style="margin-top:8px;font-size:13px;font-weight:700;display:none;"></div>
+    </div>`).join('');
+}
+
+function answerTrivia(idx, chosen, correct, btn) {
+  if (tvState.triviaAnswered[idx]) return;
+  tvState.triviaAnswered[idx] = true;
+  const card = document.getElementById('tt-card-' + idx);
+  const result = document.getElementById('tt-result-' + idx);
+  const btns = document.querySelectorAll(`#tt-choices-${idx} button`);
+  btns.forEach(b => {
+    b.style.pointerEvents = 'none';
+    if (b.textContent.trim() === correct) { b.style.background='#D1FAE5';b.style.borderColor='#10B981'; }
+  });
+  if (chosen === correct) {
+    btn.style.background = '#D1FAE5'; btn.style.borderColor = '#10B981';
+    result.textContent = '✅ Correct!'; result.style.color = '#065F46';
+    card.style.borderColor = '#10B981';
+  } else {
+    btn.style.background = '#FEE2E2'; btn.style.borderColor = '#EF4444';
+    result.textContent = `❌ Correct answer: ${correct}`; result.style.color = '#B91C1C';
+    card.style.borderColor = '#EF4444';
+  }
+  result.style.display = 'block';
+}
+
+function printTravelTrivia() {
+  const cat = tvState.triviaCategory;
+  const questions = TV_TRIVIA[cat] || [];
+  const qHtml = questions.map((q,i) => `<div style="margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:16px;"><b>Q${i+1}.</b> ${q.q}<br><div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">${q.choices.map((c,j)=>`<span>${String.fromCharCode(65+j)}. ${c}</span>`).join('')}</div></div>`).join('');
+  const ansHtml = questions.map((q,i) => `<b>Q${i+1}:</b> ${q.a}`).join(' &nbsp;|&nbsp; ');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Travel Trivia</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:700px}h1{color:#1A2A5C}h3{font-style:italic;color:#555}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:13px;margin-top:30px;}</style></head><body><h1>✈️ Travel Trivia — ${cat.charAt(0).toUpperCase()+cat.slice(1)}</h1><h3>Empower Life 365 · ${new Date().toLocaleDateString()}</h3>${qHtml}<div class="answers"><b>ANSWER KEY:</b><br>${ansHtml}</div><script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// ── DAY TRIP PLANNER ──────────────────────────────────────────────
+function getDayTrips() { return lsGet(DT_KEY, []); }
+
+function saveDayTrip() {
+  const dest = document.getElementById('dt-destination').value.trim();
+  if (!dest) return alert('Please enter a destination.');
+  const trip = {
+    id: Date.now(),
+    destination: dest,
+    date: document.getElementById('dt-date').value,
+    time: document.getElementById('dt-time').value,
+    transport: document.getElementById('dt-transport').value,
+    category: document.getElementById('dt-category').value,
+    notes: document.getElementById('dt-notes').value.trim()
+  };
+  const trips = getDayTrips();
+  trips.unshift(trip);
+  lsSet(DT_KEY, trips);
+  renderDayTrips();
+  document.getElementById('dt-destination').value = '';
+  document.getElementById('dt-notes').value = '';
+}
+
+function deleteDayTrip(id) {
+  if (!confirm('Delete this trip?')) return;
+  lsSet(DT_KEY, getDayTrips().filter(t => t.id !== id));
+  renderDayTrips();
+}
+
+function renderDayTrips() {
+  const trips = getDayTrips();
+  const list = document.getElementById('dt-trip-list');
+  const empty = document.getElementById('dt-empty');
+  if (!trips.length) { list.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = trips.map(t => `
+    <div style="background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <div>
+          <div style="font-weight:800;font-size:15px;">${t.category} ${t.destination}</div>
+          <div style="font-size:13px;color:#6B7280;margin-top:3px;">${t.date ? '📅 ' + t.date : ''} ${t.time ? '· ⏰ ' + t.time : ''} · 🚌 ${t.transport}</div>
+          ${t.notes ? `<div style="font-size:13px;color:#374151;margin-top:6px;font-style:italic;">${t.notes}</div>` : ''}
+        </div>
+        <button onclick="deleteDayTrip(${t.id})" style="background:none;border:none;color:#EF4444;font-size:18px;cursor:pointer;padding:0;">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function printDayTripItinerary() {
+  const dest = document.getElementById('dt-destination').value.trim() || 'Our Day Trip';
+  const date = document.getElementById('dt-date').value;
+  const time = document.getElementById('dt-time').value;
+  const transport = document.getElementById('dt-transport').value;
+  const category = document.getElementById('dt-category').value;
+  const notes = document.getElementById('dt-notes').value.trim();
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Day Trip Itinerary</title><style>body{font-family:Arial,sans-serif;padding:40px;max-width:600px}h1{color:#1A2A5C;font-size:28px}hr{border:2px solid #1A2A5C;}.row{margin:12px 0;font-size:15px}.label{font-weight:700;color:#555}.notes{background:#FFFBEB;padding:16px;border-radius:8px;margin-top:20px;}</style></head><body><h1>🗓️ Day Trip Itinerary</h1><hr><div class="row"><span class="label">Destination:</span> ${category} ${dest}</div><div class="row"><span class="label">Date:</span> ${date || '___________'}</div><div class="row"><span class="label">Departure Time:</span> ${time || '___________'}</div><div class="row"><span class="label">Transportation:</span> ${transport}</div>${notes ? `<div class="notes"><b>Notes &amp; Details:</b><br>${notes}</div>` : ''}<div style="margin-top:40px;font-size:13px;color:#888;">What to bring: _________________________ · Emergency contact: _________________________</div><script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// ── MEMORY LANE ───────────────────────────────────────────────────
+function getMemories() { return lsGet(MEM_KEY, []); }
+
+function saveMemory() {
+  const resident = document.getElementById('mem-resident').value;
+  const place = document.getElementById('mem-place').value.trim();
+  const story = document.getElementById('mem-story').value.trim();
+  if (!place || !story) return alert('Please fill in the place and story.');
+  const mem = {
+    id: Date.now(),
+    resident,
+    place,
+    year: document.getElementById('mem-year').value,
+    story
+  };
+  const mems = getMemories();
+  mems.unshift(mem);
+  lsSet(MEM_KEY, mems);
+  renderMemories();
+  document.getElementById('mem-place').value = '';
+  document.getElementById('mem-year').value = '';
+  document.getElementById('mem-story').value = '';
+}
+
+function deleteMemory(id) {
+  if (!confirm('Delete this memory?')) return;
+  lsSet(MEM_KEY, getMemories().filter(m => m.id !== id));
+  renderMemories();
+}
+
+function renderMemories() {
+  const mems = getMemories();
+  const list = document.getElementById('mem-list');
+  const empty = document.getElementById('mem-empty');
+  if (!mems.length) { list.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = mems.map(m => `
+    <div style="background:#fff;border:1px solid #FDE68A;border-radius:10px;padding:14px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <div style="font-weight:800;font-size:14px;color:#92400E;">📍 ${m.place}${m.year ? ' · ' + m.year : ''}</div>
+          <div style="font-size:13px;color:#B45309;margin-bottom:6px;">${m.resident}</div>
+          <div style="font-size:14px;color:#374151;line-height:1.6;font-style:italic;">"${m.story}"</div>
+        </div>
+        <button onclick="deleteMemory(${m.id})" style="background:none;border:none;color:#EF4444;font-size:18px;cursor:pointer;padding:0;margin-left:8px;">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function printMemoryBook() {
+  const mems = getMemories();
+  if (!mems.length) return alert('No memories to print yet!');
+  const entries = mems.map(m => `<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #eee;"><div style="font-size:18px;font-weight:700;color:#92400E;">📍 ${m.place}${m.year ? ' (' + m.year + ')' : ''}</div><div style="font-style:italic;color:#555;margin:4px 0;">${m.resident}</div><div style="font-size:15px;color:#374151;line-height:1.7;">"${m.story}"</div></div>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Memory Lane</title><style>body{font-family:Georgia,serif;padding:40px;max-width:650px}h1{color:#92400E;font-size:32px;text-align:center}h3{text-align:center;color:#B45309;font-style:italic;}</style></head><body><h1>💭 Memory Lane</h1><h3>Travel Memories from Our Residents</h3><hr style="margin:24px 0;border-color:#FDE68A;border-width:2px;">${entries}<script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+function printVirtualVisit() {
+  const d = getDestination();
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Virtual Visit: ${d.label}</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#1A2A5C}h2{color:#2E75B6;font-size:18px;border-bottom:2px solid #2E75B6;padding-bottom:6px}ul{line-height:2}p{line-height:1.7}</style></head><body><h1>✈️ Virtual Visit: ${d.label}</h1><p><i>${d.tagline}</i></p><h2>📌 Fun Facts</h2><ul>${d.facts.map(f=>`<li>${f}</li>`).join('')}</ul><h2>🎨 Themed Activities</h2><ul>${d.activities.map(a=>`<li>${a}</li>`).join('')}</ul><h2>🍽️ Try a Taste</h2><p>${d.food}</p><h2>🎬 Watch &amp; Listen</h2><p>${d.media}</p><script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// Hook into tab switch
+const _origSwitchTab = switchTab;
+function switchTab(name) {
+  _origSwitchTab(name);
+  if (name === 'travel') initTravel();
+}
+</script>
 
 </body>
 </html>
