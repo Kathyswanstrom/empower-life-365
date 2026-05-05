@@ -2892,6 +2892,7 @@ function switchTab(name) {
   if (name === 'newsletter') { loadNlPrefs(); renderNewsletter(); }
   if (name === 'punchcard') renderPunchCardsPanel();
   if (name === 'biggames') renderBigGames();
+  if (name === 'travel') initTravel();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
   if (name === 'attlog') renderAttLogs();
@@ -11355,12 +11356,6 @@ function printVirtualVisit() {
   w.document.close();
 }
 
-// Hook into tab switch
-const _origSwitchTab = switchTab;
-function switchTab(name) {
-  _origSwitchTab(name);
-  if (name === 'travel') initTravel();
-}
 </script>
 
 </body>
