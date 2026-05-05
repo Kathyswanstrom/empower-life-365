@@ -1112,6 +1112,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="attlog" id="attlog-tab" onclick="switchTab('attlog')">📋 Log</button>
     <button class="tab-btn" data-tab="busters" id="busters-tab" onclick="switchTab('busters')">🎉 Boredom Busters</button>
     <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
+    <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
+    <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
@@ -1815,6 +1817,211 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <div id="bb-log-list"></div>
 </section>
 
+<section class="tab-panel" id="panel-ratings">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;">⭐ Activity Ratings</h2>
+      <div class="subtitle">Staff-rated activity scores — see what your residents love, flag what isn't working, and build smarter calendars.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-gold" onclick="printRatingsReport()">📄 Print Monthly Report</button>
+      <button class="btn btn-secondary" onclick="exportRatingsCSV()">📊 Export CSV</button>
+    </div>
+  </div>
+
+  <!-- Summary stat bar -->
+  <div id="ratings-stat-bar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;"></div>
+
+  <!-- Low-rated alerts -->
+  <div id="ratings-alerts-wrap" style="margin-bottom:20px;"></div>
+
+  <!-- Tabs: Leaderboard | Monthly | All Ratings -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;border-bottom:2px solid var(--gray-100);padding-bottom:8px;">
+    <button id="rtab-leaderboard" class="btn btn-primary" onclick="switchRatingsView('leaderboard')" style="padding:6px 18px;">🏆 Leaderboard</button>
+    <button id="rtab-monthly"     class="btn btn-secondary" onclick="switchRatingsView('monthly')"     style="padding:6px 18px;">📅 This Month</button>
+    <button id="rtab-all"         class="btn btn-secondary" onclick="switchRatingsView('all')"         style="padding:6px 18px;">📋 All Ratings</button>
+  </div>
+
+  <div id="ratings-view-content"></div>
+</section>
+
+<!-- ── Rating Modal Overlay ── -->
+<div id="rating-modal" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(0,0,0,0.65);display:none;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:32px;max-width:480px;width:94%;box-shadow:0 24px 64px rgba(0,0,0,0.3);position:relative;">
+    <button onclick="closeRatingModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#9CA3AF;">✕</button>
+    <div style="font-size:13px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Rate This Activity</div>
+    <div id="rm-activity-name" style="font-size:20px;font-weight:800;color:#1A2A5C;margin-bottom:4px;"></div>
+    <div id="rm-activity-meta" style="font-size:12px;color:var(--gray-500);margin-bottom:20px;"></div>
+
+    <!-- Stars -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:10px;">How did it go?</div>
+      <div id="rm-stars" style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="setRatingStar(1)" data-star="1" class="rm-star-btn" style="font-size:38px;background:none;border:none;cursor:pointer;opacity:0.3;transition:all .15s;">⭐</button>
+        <button onclick="setRatingStar(2)" data-star="2" class="rm-star-btn" style="font-size:38px;background:none;border:none;cursor:pointer;opacity:0.3;transition:all .15s;">⭐</button>
+        <button onclick="setRatingStar(3)" data-star="3" class="rm-star-btn" style="font-size:38px;background:none;border:none;cursor:pointer;opacity:0.3;transition:all .15s;">⭐</button>
+        <button onclick="setRatingStar(4)" data-star="4" class="rm-star-btn" style="font-size:38px;background:none;border:none;cursor:pointer;opacity:0.3;transition:all .15s;">⭐</button>
+        <button onclick="setRatingStar(5)" data-star="5" class="rm-star-btn" style="font-size:38px;background:none;border:none;cursor:pointer;opacity:0.3;transition:all .15s;">⭐</button>
+      </div>
+      <div id="rm-star-label" style="text-align:center;font-size:13px;font-weight:600;color:var(--gray-500);margin-top:8px;">Tap a star to rate</div>
+    </div>
+
+    <!-- Notes -->
+    <div style="margin-bottom:20px;">
+      <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:6px;">Staff Notes <span style="font-weight:400;color:var(--gray-500);">(optional)</span></label>
+      <textarea id="rm-notes" rows="3" placeholder="e.g. Residents loved this! High energy. Would repeat next month." style="width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:10px;font-size:13px;resize:vertical;"></textarea>
+    </div>
+
+    <!-- Level tag -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <span style="font-size:12px;color:var(--gray-500);">Program level:</span>
+      <span id="rm-level-badge" style="font-size:12px;font-weight:700;padding:3px 12px;border-radius:99px;background:#EEF4FF;color:#1A2A5C;"></span>
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <button onclick="submitRating()" class="btn btn-primary" style="flex:1;padding:12px;font-size:15px;">⭐ Save Rating</button>
+      <button onclick="closeRatingModal()" class="btn btn-secondary" style="padding:12px 20px;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<section class="tab-panel" id="panel-punchcard" style="display:none">
+  <div class="container-xl py-4">
+    <div id="pc-stat-bar" class="row g-3 mb-4"></div>
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+      <h4 class="fw-bold mb-0">🎟️ Resident Punch Cards</h4>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-sm btn-outline-secondary" onclick="printAllPunchCards()">🖨️ Print All Cards</button>
+        <button class="btn btn-sm btn-outline-success" onclick="printBlankCard()">📄 Blank Template</button>
+        <button class="btn btn-sm btn-outline-info" onclick="togglePrizeIdeas()">💡 Ideas &amp; Templates</button>
+        <button class="btn btn-sm btn-warning fw-bold" onclick="openAddResident()">+ Add Resident</button>
+      </div>
+    </div>
+
+    <!-- Ideas & Templates collapsible -->
+    <div id="pc-prize-ideas" style="display:none" class="card border-warning shadow-sm mb-4">
+      <div class="card-header d-flex align-items-center justify-content-between" style="background:#fef3c7">
+        <span class="fw-bold">💡 Punch Card Ideas, Prize Suggestions &amp; Templates</span>
+        <button class="btn btn-sm btn-outline-secondary" onclick="togglePrizeIdeas()">✕</button>
+      </div>
+      <div class="card-body">
+        <ul class="nav nav-tabs mb-3" id="pc-ideas-tabs">
+          <li class="nav-item"><a class="nav-link active" href="#" onclick="switchPCIdeasTab('howto',this);return false">📋 How to Run It</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="switchPCIdeasTab('prizes',this);return false">🏆 Prize Ideas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="switchPCIdeasTab('programs',this);return false">🌟 Program Ideas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="switchPCIdeasTab('templates',this);return false">📄 Print Templates</a></li>
+        </ul>
+        <div id="pc-ideas-content"></div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row g-2 mb-3">
+      <div class="col-md-5"><input type="text" id="pc-search" class="form-control form-control-sm" placeholder="🔍 Search residents..." oninput="renderPCGrid()"></div>
+      <div class="col-md-3">
+        <select id="pc-filter-level" class="form-select form-select-sm" onchange="renderPCGrid()">
+          <option value="">All Levels</option>
+          <option value="AL">Assisted Living</option>
+          <option value="MC">Memory Care</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select id="pc-filter-status" class="form-select form-select-sm" onchange="renderPCGrid()">
+          <option value="">All Status</option>
+          <option value="active">Active Cards</option>
+          <option value="ready">Ready to Redeem 🎉</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="pc-resident-grid" class="row g-3">
+      <div class="col-12 text-center text-muted py-5">
+        <div style="font-size:3rem">🎟️</div>
+        <p>No residents added yet. Click <strong>+ Add Resident</strong> to get started!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add/Edit Resident Modal -->
+<div id="pc-add-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1060;overflow-y:auto">
+  <div style="max-width:420px;margin:2rem auto;padding:0 12px">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header" style="background:#fef3c7">
+        <h5 class="modal-title fw-bold" id="pc-modal-title">Add Resident</h5>
+        <button class="btn-close" onclick="closeAddResident()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <input type="hidden" id="pc-edit-id">
+        <div class="mb-3"><label class="form-label fw-bold">Resident Name *</label><input type="text" id="pc-res-name" class="form-control" placeholder="e.g. Margaret Johnson"></div>
+        <div class="mb-3"><label class="form-label fw-bold">Room Number</label><input type="text" id="pc-res-room" class="form-control" placeholder="e.g. 214"></div>
+        <div class="mb-3"><label class="form-label fw-bold">Care Level</label>
+          <select id="pc-res-level" class="form-select"><option value="AL">Assisted Living</option><option value="MC">Memory Care</option></select>
+        </div>
+        <div class="mb-3"><label class="form-label fw-bold">Punch Card Size</label>
+          <div class="d-flex gap-4 mt-1">
+            <div class="form-check"><input class="form-check-input" type="radio" name="pc-card-size" id="pc-size-10" value="10" checked><label class="form-check-label" for="pc-size-10">10 Punches <small class="text-muted">(standard)</small></label></div>
+            <div class="form-check"><input class="form-check-input" type="radio" name="pc-card-size" id="pc-size-5" value="5"><label class="form-check-label" for="pc-size-5">5 Punches <small class="text-muted">(memory care)</small></label></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer gap-2">
+        <button class="btn btn-sm btn-outline-danger" id="pc-delete-btn" onclick="deleteResident()" style="display:none">🗑️ Remove</button>
+        <button class="btn btn-sm btn-secondary ms-auto" onclick="closeAddResident()">Cancel</button>
+        <button class="btn btn-sm btn-warning fw-bold" onclick="saveResident()">Save Resident</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Punch Modal -->
+<div id="pc-punch-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1060">
+  <div style="max-width:400px;margin:4rem auto;padding:0 12px">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header" style="background:#fbbf24">
+        <h5 class="modal-title fw-bold">✊ Log Activity Punch</h5>
+        <button class="btn-close" onclick="closePunchModal()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <input type="hidden" id="pm-res-id">
+        <p class="fw-bold mb-0" id="pm-res-name"></p>
+        <p class="text-muted small mb-3" id="pm-card-status"></p>
+        <div class="mb-3"><label class="form-label fw-bold">Activity Name *</label><input type="text" id="pm-activity" class="form-control" placeholder="e.g. Morning Stretch, Bingo, Art Class"></div>
+        <div class="mb-3"><label class="form-label fw-bold">Date</label><input type="date" id="pm-date" class="form-control"></div>
+        <div class="mb-3"><label class="form-label fw-bold">Time Slot <span class="text-muted fw-normal">(optional)</span></label><input type="text" id="pm-slot" class="form-control" placeholder="e.g. Morning, Afternoon"></div>
+      </div>
+      <div class="modal-footer gap-2">
+        <button class="btn btn-sm btn-secondary" onclick="closePunchModal()">Cancel</button>
+        <button class="btn btn-sm btn-warning fw-bold px-4" onclick="submitPunch()">✊ Punch It!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reward Modal -->
+<div id="pc-reward-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1060">
+  <div style="max-width:420px;margin:4rem auto;padding:0 12px">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header" style="background:linear-gradient(135deg,#f59e0b,#fcd34d)">
+        <h5 class="modal-title fw-bold">🎉 Award Reward!</h5>
+        <button class="btn-close" onclick="closeRewardModal()"></button>
+      </div>
+      <div class="modal-body p-4 text-center">
+        <div style="font-size:3rem">🏆</div>
+        <h5 class="fw-bold mt-2" id="pc-rm-name"></h5>
+        <p class="text-muted mb-3">has completed their punch card!</p>
+        <div class="text-start mb-3"><label class="form-label fw-bold">Reward Given <span class="text-muted fw-normal">(optional note)</span></label><input type="text" id="pc-rm-reward" class="form-control" placeholder="e.g. Gift card, Newsletter spotlight, Movie pick..."></div>
+        <p class="small text-muted">After awarding, a fresh new card starts automatically.</p>
+      </div>
+      <div class="modal-footer justify-content-center gap-2">
+        <button class="btn btn-sm btn-secondary" onclick="closeRewardModal()">Cancel</button>
+        <button class="btn btn-sm btn-warning fw-bold" onclick="submitReward()">🎉 Award &amp; Start New Card</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="tab-panel" id="panel-biggames">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
     <div>
@@ -2489,6 +2696,7 @@ function switchTab(name) {
   if (name === 'puzzles') renderPuzzlesPanel();
   if (name === 'settings') { renderTimeSettings(); loadCommunityProfile(); }
   if (name === 'newsletter') { loadNlPrefs(); renderNewsletter(); }
+  if (name === 'punchcard') renderPunchCardsPanel();
   if (name === 'biggames') renderBigGames();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
@@ -2719,6 +2927,9 @@ function renderDailySheet() {
     const matBtn = matSec ? `<button class="slot-mat-btn" onclick="event.stopPropagation(); openMaterials('${matSec}')" title="Open printable materials for this activity">📄 Materials</button>` : '';
     const delBtn = !isBig && !deleted ? `<button class="slot-del-btn" onclick="event.stopPropagation(); deleteSlot('${s}')" title="Remove this activity for today">🗑 Delete</button>` : '';
     const otherBtn = !isBig && !deleted ? `<button class="slot-other-btn" onclick="event.stopPropagation(); openSlotOther('${s}')" title="Enter a different activity">✏ Other</button>` : '';
+    const _rateTitle = encodeURIComponent(custom ? custom.title : (a && a.title ? a.title : ''));
+    const _rateSlot  = encodeURIComponent(getSlotName(s, currentLevel));
+    const rateBtn = !deleted ? `<button class="slot-rate-btn" onclick="event.stopPropagation(); openRatingModal(decodeURIComponent('${_rateTitle}'), decodeURIComponent('${_rateSlot}'), ${currentDay}, '${currentLevel}')" title="Rate this activity" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;border:1px solid #F59E0B;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;">⭐ Rate</button>` : '';
 
     return `
       <div class="slot-row">
@@ -2735,6 +2946,7 @@ function renderDailySheet() {
           ${body}
           ${!deleted ? `<span class="slot-print-hint">🖨 click to print</span>` : ''}
           ${otherBtn}
+          ${rateBtn}
           ${delBtn}
         </div>
       </div>`;
@@ -9573,6 +9785,839 @@ function printCurrentBigGame() {
   </body></html>`);
   win.document.close();
   setTimeout(() => win.print(), 400);
+}
+
+
+// ─── RATINGS ENGINE ───
+
+// ════════════════════════════════════════════════════════════
+//  ACTIVITY RATINGS ENGINE
+// ════════════════════════════════════════════════════════════
+const RATINGS_KEY = 'el365_activity_ratings';
+
+// ── Data helpers ─────────────────────────────────────────────
+function getAllRatings() {
+  try { return JSON.parse(localStorage.getItem(RATINGS_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveAllRatings(data) {
+  localStorage.setItem(RATINGS_KEY, JSON.stringify(data));
+}
+
+// Normalise activity name as a key (trim, lower, collapse spaces)
+function ratingKey(name) {
+  return (name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+// ── Modal state ───────────────────────────────────────────────
+let _rmState = { activityName:'', slotName:'', day:0, level:'AL', stars:0 };
+
+function openRatingModal(activityName, slotName, day, level) {
+  if (!activityName) return;
+  _rmState = { activityName, slotName, day: parseInt(day)||0, level: level||currentLevel, stars:0 };
+
+  document.getElementById('rm-activity-name').textContent = activityName;
+  document.getElementById('rm-activity-meta').textContent =
+    slotName + (day ? '  ·  Day ' + day : '') + '  ·  ' + (level === 'MC' ? 'Memory Care' : 'Assisted Living');
+  document.getElementById('rm-level-badge').textContent = level === 'MC' ? 'Memory Care' : 'Assisted Living';
+  document.getElementById('rm-notes').value = '';
+  document.getElementById('rm-star-label').textContent = 'Tap a star to rate';
+
+  // Check if already rated — prefill
+  const all = getAllRatings();
+  const key = ratingKey(activityName);
+  if (all[key]) {
+    const last = all[key].entries && all[key].entries[all[key].entries.length-1];
+    if (last) {
+      setRatingStar(last.stars);
+      document.getElementById('rm-notes').value = last.note || '';
+    }
+  }
+
+  document.querySelectorAll('.rm-star-btn').forEach(b => {
+    b.style.opacity = b.dataset.star <= _rmState.stars ? '1' : '0.25';
+  });
+
+  document.getElementById('rating-modal').style.display = 'flex';
+}
+
+function closeRatingModal() {
+  document.getElementById('rating-modal').style.display = 'none';
+  _rmState = { activityName:'', slotName:'', day:0, level:'AL', stars:0 };
+}
+
+const STAR_LABELS = ['','😞 Didn\'t land','😐 So-so','😊 Pretty good','😄 Residents loved it!','🌟 Absolute hit — repeat!'];
+
+function setRatingStar(n) {
+  _rmState.stars = parseInt(n);
+  document.querySelectorAll('.rm-star-btn').forEach(b => {
+    b.style.opacity = parseInt(b.dataset.star) <= _rmState.stars ? '1' : '0.25';
+    b.style.transform = parseInt(b.dataset.star) <= _rmState.stars ? 'scale(1.15)' : 'scale(1)';
+  });
+  document.getElementById('rm-star-label').textContent = STAR_LABELS[_rmState.stars] || 'Tap a star to rate';
+}
+
+function submitRating() {
+  if (!_rmState.stars) {
+    document.getElementById('rm-star-label').textContent = '⚠ Please select a star rating first';
+    document.getElementById('rm-star-label').style.color = '#DC2626';
+    return;
+  }
+  const all = getAllRatings();
+  const key = ratingKey(_rmState.activityName);
+  if (!all[key]) {
+    all[key] = { name: _rmState.activityName, entries: [], totalStars: 0, count: 0 };
+  }
+  const entry = {
+    stars:  _rmState.stars,
+    note:   document.getElementById('rm-notes').value.trim(),
+    slot:   _rmState.slotName,
+    day:    _rmState.day,
+    level:  _rmState.level,
+    month:  DATA.monthNum,
+    year:   DATA.year,
+    ts:     Date.now(),
+  };
+  all[key].entries.push(entry);
+  all[key].totalStars = all[key].entries.reduce((s,e) => s + e.stars, 0);
+  all[key].count      = all[key].entries.length;
+  all[key].avg        = Math.round((all[key].totalStars / all[key].count) * 10) / 10;
+  all[key].name       = _rmState.activityName; // keep canonical casing
+  saveAllRatings(all);
+  closeRatingModal();
+  showToast('⭐ Rating saved for "' + _rmState.activityName + '"');
+  // Refresh ratings view if open
+  if (document.getElementById('panel-ratings').classList.contains('active')) renderRatingsPanel();
+}
+
+// ── Toast helper ──────────────────────────────────────────────
+function showToast(msg) {
+  let t = document.getElementById('el365-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'el365-toast';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1A2A5C;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:opacity .3s;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.opacity = '0', 2800);
+}
+
+// ── Ratings panel ─────────────────────────────────────────────
+let _ratingsView = 'leaderboard';
+
+function renderRatingsPanel() {
+  const all = getAllRatings();
+  const entries = Object.values(all);
+
+  // Stat bar
+  const totalRatings = entries.reduce((s,a) => s + a.count, 0);
+  const allStars     = entries.reduce((s,a) => s + a.totalStars, 0);
+  const avgAll       = totalRatings ? (allStars / totalRatings).toFixed(1) : '—';
+  const topHit       = entries.filter(a => a.count >= 2).sort((a,b) => b.avg - a.avg)[0];
+  const lowAlert     = entries.filter(a => a.count >= 2 && a.avg < 3).length;
+
+  document.getElementById('ratings-stat-bar').innerHTML = [
+    { icon:'📝', label:'Total Ratings',    val: totalRatings || '0' },
+    { icon:'⭐', label:'Overall Average',  val: avgAll + (totalRatings ? ' / 5' : '') },
+    { icon:'🏆', label:'Top Activity',     val: topHit ? topHit.name.slice(0,22) + (topHit.name.length>22?'…':'') : '—' },
+    { icon:'⚠️', label:'Low-Rated Alerts', val: lowAlert || '0' },
+  ].map(s => `
+    <div style="background:#fff;border-radius:12px;padding:16px 18px;border:1px solid var(--gray-100);box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div style="font-size:22px;margin-bottom:4px;">${s.icon}</div>
+      <div style="font-size:22px;font-weight:900;color:#1A2A5C;">${escapeHtml(String(s.val))}</div>
+      <div style="font-size:11px;color:var(--gray-500);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">${s.label}</div>
+    </div>`).join('');
+
+  // Low-rated alerts
+  const lowOnes = entries.filter(a => a.count >= 2 && a.avg < 3).sort((a,b) => a.avg - b.avg);
+  document.getElementById('ratings-alerts-wrap').innerHTML = lowOnes.length ? `
+    <div style="background:#FEF2F2;border:2px solid #FECACA;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:#991B1B;margin-bottom:10px;font-size:14px;">⚠️ Low-Rated Activities (avg below 3 stars, rated 2+ times)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${lowOnes.map(a => `
+          <div style="background:#fff;border:1px solid #FECACA;border-radius:8px;padding:8px 14px;font-size:13px;">
+            <strong>${escapeHtml(a.name)}</strong>
+            <span style="margin-left:8px;color:#DC2626;font-weight:700;">${starsDisplay(a.avg)} ${a.avg}/5</span>
+            <span style="margin-left:6px;color:#9CA3AF;font-size:11px;">(${a.count} ratings)</span>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  switchRatingsView(_ratingsView);
+}
+
+function switchRatingsView(view) {
+  _ratingsView = view;
+  ['leaderboard','monthly','all'].forEach(v => {
+    const btn = document.getElementById('rtab-' + v);
+    if (btn) btn.className = v === view ? 'btn btn-primary' : 'btn btn-secondary';
+    if (btn) btn.style.padding = '6px 18px';
+  });
+
+  const all = getAllRatings();
+  const entries = Object.values(all);
+  const el = document.getElementById('ratings-view-content');
+
+  if (view === 'leaderboard') {
+    const ranked = entries.filter(a => a.count > 0).sort((a,b) => b.avg - a.avg || b.count - a.count);
+    if (!ranked.length) { el.innerHTML = emptyRatings(); return; }
+    el.innerHTML = `
+      <div style="display:grid;gap:10px;">
+        ${ranked.map((a,i) => ratingRow(a, i+1)).join('')}
+      </div>`;
+
+  } else if (view === 'monthly') {
+    const mo = DATA.monthNum, yr = DATA.year;
+    const moEntries = [];
+    entries.forEach(a => {
+      const thisMonth = (a.entries||[]).filter(e => e.month === mo && e.year === yr);
+      if (thisMonth.length) {
+        const tot = thisMonth.reduce((s,e) => s+e.stars,0);
+        moEntries.push({ ...a, moCount: thisMonth.length, moAvg: Math.round(tot/thisMonth.length*10)/10, moEntries: thisMonth });
+      }
+    });
+    moEntries.sort((a,b) => b.moAvg - a.moAvg || b.moCount - a.moCount);
+    if (!moEntries.length) { el.innerHTML = emptyRatings('No ratings for this month yet. Use ⭐ Rate on daily sheet activities.'); return; }
+    el.innerHTML = `
+      <div style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">Showing ratings entered for <strong>${DATA.monthName} ${DATA.year}</strong></div>
+      <div style="display:grid;gap:10px;">
+        ${moEntries.map((a,i) => ratingRow({...a, avg:a.moAvg, count:a.moCount}, i+1, a.moEntries)).join('')}
+      </div>`;
+
+  } else {
+    // All ratings — sortable list with notes
+    const allEntries = [];
+    entries.forEach(a => (a.entries||[]).forEach(e => allEntries.push({...e, actName: a.name})));
+    allEntries.sort((a,b) => b.ts - a.ts);
+    if (!allEntries.length) { el.innerHTML = emptyRatings(); return; }
+    const mn = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    el.innerHTML = `
+      <div style="display:grid;gap:8px;">
+        ${allEntries.map(e => `
+          <div style="background:#fff;border-radius:10px;padding:14px 18px;border:1px solid var(--gray-100);display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:24px;min-width:44px;text-align:center;line-height:1.2;">${starsDisplay(e.stars)}<div style="font-size:11px;color:var(--gray-500);margin-top:2px;">${e.stars}/5</div></div>
+            <div style="flex:1;">
+              <div style="font-weight:700;color:#1A2A5C;font-size:14px;">${escapeHtml(e.actName)}</div>
+              <div style="font-size:11px;color:var(--gray-500);margin:2px 0 4px;">
+                ${escapeHtml(e.slot||'')} &nbsp;·&nbsp; Day ${e.day||'?'} &nbsp;·&nbsp; ${mn[e.month]||''} ${e.year||''} &nbsp;·&nbsp; ${e.level==='MC'?'Memory Care':'Assisted Living'}
+              </div>
+              ${e.note ? `<div style="font-size:13px;color:#374151;font-style:italic;">"${escapeHtml(e.note)}"</div>` : ''}
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+}
+
+function starsDisplay(avg) {
+  const full = Math.round(avg);
+  return '⭐'.repeat(Math.max(0, Math.min(5, full)));
+}
+
+function ratingRow(a, rank, entries) {
+  const rankColors = ['#FFD700','#C0C0C0','#CD7F32'];
+  const rankColor = rankColors[rank-1] || 'var(--gray-200)';
+  const notes = (entries || a.entries || []).filter(e=>e.note).map(e=>e.note);
+  const levelCounts = {};
+  (a.entries||[]).forEach(e => { levelCounts[e.level] = (levelCounts[e.level]||0)+1; });
+  return `
+    <div style="background:#fff;border-radius:12px;padding:16px 18px;border:1px solid var(--gray-100);box-shadow:0 2px 6px rgba(0,0,0,.05);display:flex;align-items:flex-start;gap:16px;">
+      <div style="flex-shrink:0;width:40px;height:40px;border-radius:10px;background:${rankColor};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#1A2A5C;">${rank}</div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div style="font-size:15px;font-weight:800;color:#1A2A5C;">${escapeHtml(a.name)}</div>
+          <div style="font-size:20px;">${starsDisplay(a.avg)}</div>
+          <div style="font-size:13px;font-weight:700;color:#92400E;">${a.avg}/5</div>
+          <div style="font-size:11px;color:var(--gray-500);">(${a.count} rating${a.count===1?'':'s'})</div>
+          ${Object.entries(levelCounts).map(([lv,ct]) => `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:${lv==='MC'?'#F5F3FF':'#EFF6FF'};color:${lv==='MC'?'#6D28D9':'#1D4ED8'};">${lv==='MC'?'MC':'AL'}: ${ct}</span>`).join('')}
+        </div>
+        ${notes.length ? `<div style="margin-top:6px;font-size:12px;color:#6B7280;font-style:italic;">"${escapeHtml(notes[notes.length-1])}"</div>` : ''}
+      </div>
+      <div style="flex-shrink:0;">
+        <div style="width:56px;height:8px;background:var(--gray-100);border-radius:99px;overflow:hidden;">
+          <div style="height:8px;background:linear-gradient(90deg,#F59E0B,#10B981);border-radius:99px;width:${Math.round((a.avg/5)*100)}%;"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function emptyRatings(msg) {
+  return `<div style="text-align:center;padding:48px 24px;color:var(--gray-400);">
+    <div style="font-size:48px;margin-bottom:12px;">⭐</div>
+    <div style="font-size:16px;font-weight:700;color:var(--gray-500);">No ratings yet</div>
+    <div style="font-size:13px;margin-top:6px;">${msg||'Open the Daily Sheet, run an activity, then tap ⭐ Rate to get started.'}</div>
+  </div>`;
+}
+
+// ── Smart suggestion badge for Activity Library ───────────────
+function getRatingBadge(activityTitle) {
+  const all = getAllRatings();
+  const key = ratingKey(activityTitle);
+  const r   = all[key];
+  if (!r || r.count < 2) return '';
+  if (r.avg >= 4.5) return '<span style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:6px;">🌟 Top Rated</span>';
+  if (r.avg >= 4)   return '<span style="background:#ECFDF5;color:#065F46;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:6px;">⭐ ' + r.avg + '</span>';
+  if (r.avg < 2.5)  return '<span style="background:#FEF2F2;color:#991B1B;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:6px;">⚠️ Low Rated</span>';
+  return '<span style="font-size:10px;color:var(--gray-400);margin-left:6px;">★ ' + r.avg + '</span>';
+}
+
+// ── Print monthly report ──────────────────────────────────────
+function printRatingsReport() {
+  const all = getAllRatings();
+  const mo = DATA.monthNum, yr = DATA.year;
+  const mn = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+  const moEntries = [];
+  Object.values(all).forEach(a => {
+    const thisMonth = (a.entries||[]).filter(e => e.month === mo && e.year === yr);
+    if (thisMonth.length) {
+      const tot = thisMonth.reduce((s,e)=>s+e.stars,0);
+      moEntries.push({ name:a.name, count:thisMonth.length, avg:Math.round(tot/thisMonth.length*10)/10, entries:thisMonth });
+    }
+  });
+  moEntries.sort((a,b) => b.avg - a.avg);
+  const allEntries = [];
+  Object.values(all).forEach(a => (a.entries||[]).forEach(e => allEntries.push({...e, actName:a.name})));
+  const allMonth = allEntries.filter(e=>e.month===mo&&e.year===yr).sort((a,b)=>b.ts-a.ts);
+  const cp = JSON.parse(localStorage.getItem(CP_KEY)||'{}');
+  const stars = n => '★'.repeat(Math.round(n||0)) + '☆'.repeat(5-Math.round(n||0));
+
+  const win = window.open('','_blank','width=900,height=700');
+  win.document.write(`<!DOCTYPE html><html><head><title>Activity Ratings Report</title>
+  <style>
+    body{font-family:Arial,sans-serif;padding:32px;color:#1A2A5C;font-size:13px;}
+    h1{font-size:22px;margin:0;}h2{font-size:15px;margin:20px 0 8px;border-bottom:2px solid #E8D5F5;padding-bottom:4px;}
+    .meta{font-size:12px;color:#6B7280;margin-bottom:24px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:16px;}
+    th{background:#1A2A5C;color:#fff;padding:8px 10px;text-align:left;font-size:12px;}
+    td{padding:7px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;}
+    tr:nth-child(even){background:#F9FAFB;}
+    .stars{color:#F59E0B;font-size:14px;letter-spacing:1px;}
+    .low{background:#FEF2F2!important;color:#991B1B;}
+    .top{background:#ECFDF5!important;color:#065F46;}
+    footer{margin-top:32px;font-size:10px;color:#9CA3AF;text-align:center;border-top:1px solid #E5E7EB;padding-top:12px;}
+    @media print{@page{margin:0.6in;}}
+  </style></head><body>
+  <h1>⭐ Activity Ratings Report</h1>
+  <div class="meta">${cp.name||'Your Community'} &nbsp;·&nbsp; ${mn[mo]} ${yr} &nbsp;·&nbsp; Generated ${new Date().toLocaleDateString()}</div>
+
+  <h2>🏆 Monthly Leaderboard — ${mn[mo]} ${yr}</h2>
+  ${moEntries.length ? `<table><thead><tr><th>#</th><th>Activity</th><th>Rating</th><th>Times Rated</th><th>Staff Notes</th></tr></thead><tbody>
+    ${moEntries.map((a,i) => `<tr class="${a.avg>=4.5?'top':a.avg<2.5?'low':''}">
+      <td><strong>${i+1}</strong></td>
+      <td><strong>${a.name}</strong></td>
+      <td><span class="stars">${stars(a.avg)}</span> <strong>${a.avg}/5</strong></td>
+      <td>${a.count}</td>
+      <td style="font-style:italic;color:#6B7280;">${a.entries.filter(e=>e.note).map(e=>'"'+e.note+'"').join(' / ')||'—'}</td>
+    </tr>`).join('')}</tbody></table>` : '<p style="color:#9CA3AF;">No ratings recorded for this month.</p>'}
+
+  <h2>📋 All Individual Ratings — ${mn[mo]} ${yr}</h2>
+  ${allMonth.length ? `<table><thead><tr><th>Activity</th><th>Stars</th><th>Group Slot</th><th>Level</th><th>Day</th><th>Notes</th></tr></thead><tbody>
+    ${allMonth.map(e => `<tr>
+      <td>${e.actName}</td>
+      <td><span class="stars">${stars(e.stars)}</span></td>
+      <td>${e.slot||'—'}</td>
+      <td>${e.level==='MC'?'Memory Care':'Assisted Living'}</td>
+      <td>Day ${e.day||'?'}</td>
+      <td style="font-style:italic;color:#6B7280;">${e.note||'—'}</td>
+    </tr>`).join('')}</tbody></table>` : '<p style="color:#9CA3AF;">No individual ratings this month.</p>'}
+
+  <footer>Empower Life 365 · empowerlife365.app · Activity planning for senior living</footer>
+  </body></html>`);
+  win.document.close();
+  setTimeout(() => win.print(), 400);
+}
+
+// ── Export CSV ────────────────────────────────────────────────
+function exportRatingsCSV() {
+  const all = getAllRatings();
+  const mn = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rows = [['Activity','Stars','Group Slot','Level','Day','Month','Year','Notes']];
+  Object.values(all).forEach(a => {
+    (a.entries||[]).forEach(e => {
+      rows.push([a.name, e.stars, e.slot||'', e.level==='MC'?'Memory Care':'Assisted Living',
+                 e.day||'', mn[e.month]||'', e.year||'', (e.note||'').replace(/"/g,"'")]);
+    });
+  });
+  const csv = rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `ActivityRatings_${DATA.monthName}_${DATA.year}.csv`; a.click();
+}
+
+// ── Wire into switchTab ──────────────────────────────────────
+// (handled in switchTab block via 'ratings' case)
+
+
+// ─── PUNCH CARD ENGINE ───
+// ─── PUNCH CARD ENGINE ───
+const PC_KEY = 'el365_punch_cards';
+
+function getPCData() { try { return JSON.parse(localStorage.getItem(PC_KEY)||'{}'); } catch(e) { return {}; } }
+function savePCData(d) { localStorage.setItem(PC_KEY, JSON.stringify(d)); }
+
+function pcNewCard(sz) {
+  return { id: 'c'+Date.now(), started: new Date().toISOString().slice(0,10), cardSize: sz, punches: [], completed: false, completedDate: null, rewardGiven: false, rewardNote: '' };
+}
+
+function pcActiveCard(res) {
+  if (!res.cards) res.cards = [];
+  let c = res.cards.find(x => !x.rewardGiven);
+  if (!c) { c = pcNewCard(res.cardSize||10); res.cards.push(c); }
+  return c;
+}
+
+function renderPunchCardsPanel() { pcStatBar(); renderPCGrid(); switchPCIdeasTab('howto', null); }
+
+function pcStatBar() {
+  const bar = document.getElementById('pc-stat-bar');
+  if (!bar) return;
+  const data = getPCData(), res = Object.values(data);
+  const today = new Date().toISOString().slice(0,10), thisMonth = today.slice(0,7);
+  let doneMonth=0, todayPunches=0, readyRedeem=0;
+  res.forEach(r => {
+    if (!r.cards) return;
+    r.cards.forEach(c => {
+      if (c.rewardGiven && (c.completedDate||'').startsWith(thisMonth)) doneMonth++;
+      if (!c.rewardGiven) {
+        c.punches.forEach(p => { if(p.date===today) todayPunches++; });
+        if (c.punches.length>=(c.cardSize||10)) readyRedeem++;
+      }
+    });
+  });
+  bar.innerHTML = [
+    {icon:'👥',val:res.length,label:'Residents Enrolled'},
+    {icon:'✊',val:todayPunches,label:'Punches Today'},
+    {icon:'🏆',val:doneMonth,label:'Completed This Month'},
+    {icon:'🎉',val:readyRedeem,label:'Ready to Redeem'}
+  ].map(s=>`<div class="col-6 col-md-3"><div class="card border-0 shadow-sm text-center py-3"><div style="font-size:1.6rem">${s.icon}</div><div class="fw-bold fs-4">${s.val}</div><div class="text-muted small">${s.label}</div></div></div>`).join('');
+}
+
+function renderPCGrid() {
+  const grid = document.getElementById('pc-resident-grid');
+  if (!grid) return;
+  const data = getPCData();
+  const search = (document.getElementById('pc-search')?.value||'').toLowerCase();
+  const lvl = document.getElementById('pc-filter-level')?.value||'';
+  const status = document.getElementById('pc-filter-status')?.value||'';
+  let rows = Object.entries(data);
+  if (search) rows = rows.filter(([,r])=>(r.name||'').toLowerCase().includes(search)||(r.room||'').toLowerCase().includes(search));
+  if (lvl) rows = rows.filter(([,r])=>r.level===lvl);
+  if (status==='ready') rows = rows.filter(([,r])=>{ const c=pcActiveCard(r); return c.punches.length>=(c.cardSize||r.cardSize||10); });
+  else if (status==='active') rows = rows.filter(([,r])=>{ const c=pcActiveCard(r); return c.punches.length<(c.cardSize||r.cardSize||10); });
+  rows.sort(([,a],[,b])=>{
+    const aR=pcActiveCard(a).punches.length>=(pcActiveCard(a).cardSize||a.cardSize||10)?0:1;
+    const bR=pcActiveCard(b).punches.length>=(pcActiveCard(b).cardSize||b.cardSize||10)?0:1;
+    if(aR!==bR) return aR-bR;
+    return (a.name||'').localeCompare(b.name||'');
+  });
+  if (!rows.length) {
+    grid.innerHTML=`<div class="col-12 text-center text-muted py-5"><div style="font-size:3rem">🎟️</div><p>${search||lvl||status?'No residents match your filters.':'No residents added yet. Click <strong>+ Add Resident</strong> to get started!'}</p></div>`;
+    return;
+  }
+  grid.innerHTML = rows.map(([id,res])=>pcCardHTML(id,res)).join('');
+}
+
+function pcHoles(filled, total) {
+  let h='';
+  for(let i=0;i<total;i++){
+    const ok=i<filled;
+    const sz=total<=5?'44px':'36px';
+    h+=`<span style="display:inline-flex;align-items:center;justify-content:center;width:${sz};height:${sz};border-radius:50%;background:${ok?'linear-gradient(135deg,#f59e0b,#fbbf24)':'#e5e7eb'};border:2px solid ${ok?'#d97706':'#d1d5db'};font-size:${total<=5?'1.1rem':'.9rem'};margin:2px;box-shadow:${ok?'0 2px 8px rgba(251,191,36,.5)':'inset 0 2px 4px rgba(0,0,0,.07)'}">${ok?'⭐':''}</span>`;
+  }
+  return `<div class="d-flex flex-wrap justify-content-center" style="gap:3px;max-width:260px;margin:0 auto">${h}</div>`;
+}
+
+function pcCardHTML(id, res) {
+  const card = pcActiveCard(res), sz = card.cardSize||res.cardSize||10;
+  const filled = card.punches.length, isReady = filled>=sz;
+  const pct = Math.min(100,Math.round(filled/sz*100));
+  const lvlColor = res.level==='MC'?'#7c3aed':'#0284c7';
+  const lvlLabel = res.level==='MC'?'Memory Care':'Assisted Living';
+  const totalDone = (res.cards||[]).filter(c=>c.rewardGiven).length;
+  const lastPunch = card.punches.length?card.punches[card.punches.length-1].date:'None yet';
+  return `
+<div class="col-md-6 col-lg-4">
+  <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden${isReady?' border border-warning':''}" style="${isReady?'box-shadow:0 0 20px rgba(251,191,36,.4)!important':''}">
+    <div class="card-header d-flex align-items-center justify-content-between py-2 px-3" style="background:${isReady?'linear-gradient(135deg,#fef3c7,#fde68a)':'#f8f9fa'}">
+      <div>
+        <div class="fw-bold">${res.name||'Unknown'}</div>
+        <div class="small text-muted">Room ${res.room||'—'} &nbsp;·&nbsp; <span style="color:${lvlColor};font-weight:600">${lvlLabel}</span></div>
+      </div>
+      <div class="d-flex gap-1">
+        <button class="btn btn-sm btn-outline-secondary" style="font-size:.7rem;padding:2px 6px" onclick="openAddResident('${id}')" title="Edit">✏️</button>
+        <button class="btn btn-sm btn-outline-secondary" style="font-size:.7rem;padding:2px 6px" onclick="printPunchCard('${id}')" title="Print Card">🖨️</button>
+      </div>
+    </div>
+    <div class="card-body p-3 text-center">
+      ${isReady?`<div class="alert alert-warning py-1 px-2 mb-2 fw-bold" style="font-size:.82rem">🎉 Card Complete — Ready to Redeem!</div>`:''}
+      <div class="mb-2 text-muted small">${filled} of ${sz} punches</div>
+      ${pcHoles(filled, sz)}
+      <div class="progress mt-2 mb-2" style="height:5px;border-radius:3px"><div class="progress-bar" style="width:${pct}%;background:${isReady?'#f59e0b':'#3b82f6'}"></div></div>
+      ${totalDone?`<div class="small text-muted">🏆 ${totalDone} card${totalDone===1?'':'s'} completed</div>`:''}
+      <div class="small text-muted">Last punch: ${lastPunch}</div>
+    </div>
+    <div class="card-footer bg-transparent border-0 pb-3 px-3">
+      ${isReady
+        ? `<button class="btn btn-warning fw-bold btn-sm w-100" onclick="openRewardModal('${id}')">🎉 Award Reward!</button>`
+        : `<button class="btn btn-primary btn-sm w-100" onclick="openPunchModal('${id}')">✊ Punch It!</button>`
+      }
+    </div>
+  </div>
+</div>`;
+}
+
+// ── Add/Edit Resident ──
+function openAddResident(resId) {
+  const data = getPCData();
+  document.getElementById('pc-modal-title').textContent = resId?'Edit Resident':'Add Resident';
+  document.getElementById('pc-edit-id').value = resId||'';
+  document.getElementById('pc-delete-btn').style.display = resId?'inline-block':'none';
+  if (resId && data[resId]) {
+    const r=data[resId];
+    document.getElementById('pc-res-name').value=r.name||'';
+    document.getElementById('pc-res-room').value=r.room||'';
+    document.getElementById('pc-res-level').value=r.level||'AL';
+    const sz=r.cardSize||10;
+    document.getElementById('pc-size-10').checked=sz===10;
+    document.getElementById('pc-size-5').checked=sz===5;
+  } else {
+    document.getElementById('pc-res-name').value='';
+    document.getElementById('pc-res-room').value='';
+    document.getElementById('pc-res-level').value='AL';
+    document.getElementById('pc-size-10').checked=true;
+    document.getElementById('pc-size-5').checked=false;
+  }
+  document.getElementById('pc-add-modal').style.display='block';
+  setTimeout(()=>document.getElementById('pc-res-name').focus(),100);
+}
+function closeAddResident() { document.getElementById('pc-add-modal').style.display='none'; }
+
+function saveResident() {
+  const name = document.getElementById('pc-res-name').value.trim();
+  if (!name) { alert('Please enter a resident name.'); return; }
+  const data=getPCData(), editId=document.getElementById('pc-edit-id').value;
+  const id=editId||('res_'+Date.now()), sz=document.getElementById('pc-size-5').checked?5:10;
+  if (editId && data[editId]) {
+    Object.assign(data[editId],{name,room:document.getElementById('pc-res-room').value.trim(),level:document.getElementById('pc-res-level').value,cardSize:sz});
+  } else {
+    data[id]={name,room:document.getElementById('pc-res-room').value.trim(),level:document.getElementById('pc-res-level').value,cardSize:sz,cards:[pcNewCard(sz)]};
+  }
+  savePCData(data); closeAddResident(); renderPunchCardsPanel();
+}
+
+function deleteResident() {
+  const editId=document.getElementById('pc-edit-id').value;
+  if (!editId||!confirm('Remove this resident and all their punch card history?')) return;
+  const data=getPCData(); delete data[editId]; savePCData(data); closeAddResident(); renderPunchCardsPanel();
+}
+
+// ── Punch Modal ──
+function openPunchModal(resId) {
+  const data=getPCData(), res=data[resId]; if(!res) return;
+  const card=pcActiveCard(res), sz=card.cardSize||res.cardSize||10;
+  document.getElementById('pm-res-id').value=resId;
+  document.getElementById('pm-res-name').textContent=res.name;
+  document.getElementById('pm-card-status').textContent=`${card.punches.length} of ${sz} punches filled`;
+  document.getElementById('pm-activity').value='';
+  document.getElementById('pm-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('pm-slot').value='';
+  document.getElementById('pc-punch-modal').style.display='block';
+  setTimeout(()=>document.getElementById('pm-activity').focus(),100);
+}
+function closePunchModal() { document.getElementById('pc-punch-modal').style.display='none'; }
+
+function submitPunch() {
+  const resId=document.getElementById('pm-res-id').value;
+  const activity=document.getElementById('pm-activity').value.trim();
+  if(!activity){alert('Please enter an activity name.');return;}
+  const data=getPCData(), res=data[resId], card=pcActiveCard(res), sz=card.cardSize||res.cardSize||10;
+  if(card.punches.length>=sz){alert('Card is already full! Award the reward first.');closePunchModal();return;}
+  card.punches.push({date:document.getElementById('pm-date').value,activity,slot:document.getElementById('pm-slot').value.trim()});
+  if(card.punches.length>=sz){card.completed=true;card.completedDate=new Date().toISOString().slice(0,10);}
+  savePCData(data); closePunchModal(); renderPunchCardsPanel();
+  if(card.completed){setTimeout(()=>{if(confirm(`🎉 ${res.name} just filled their card! Award their reward now?`))openRewardModal(resId);},300);}
+  else{showPCToast(`✊ Punched! ${sz-card.punches.length} more to go for ${res.name}`);}
+}
+
+// ── Reward Modal ──
+function openRewardModal(resId) {
+  const res=getPCData()[resId]; if(!res) return;
+  document.getElementById('pc-rm-name').textContent=res.name;
+  document.getElementById('pc-rm-reward').value='';
+  document.getElementById('pc-reward-modal').dataset.resId=resId;
+  document.getElementById('pc-reward-modal').style.display='block';
+}
+function closeRewardModal() { document.getElementById('pc-reward-modal').style.display='none'; }
+
+function submitReward() {
+  const resId=document.getElementById('pc-reward-modal').dataset.resId;
+  const data=getPCData(), res=data[resId]; if(!res) return;
+  const card=pcActiveCard(res);
+  card.rewardGiven=true;
+  card.rewardNote=document.getElementById('pc-rm-reward').value.trim();
+  card.completedDate=card.completedDate||new Date().toISOString().slice(0,10);
+  res.cards.push(pcNewCard(res.cardSize||10));
+  savePCData(data); closeRewardModal(); renderPunchCardsPanel();
+  showPCToast(`🏆 Reward awarded to ${res.name}! Fresh card started.`);
+}
+
+// ── Prize Ideas / Templates Tabs ──
+function togglePrizeIdeas() {
+  const el=document.getElementById('pc-prize-ideas');
+  el.style.display=el.style.display==='none'?'block':'none';
+  if(el.style.display==='block') switchPCIdeasTab('howto',null);
+}
+
+function switchPCIdeasTab(tab, el) {
+  document.querySelectorAll('#pc-ideas-tabs .nav-link').forEach(a=>a.classList.remove('active'));
+  if(el) el.classList.add('active');
+  else { const links=document.querySelectorAll('#pc-ideas-tabs .nav-link'); if(links[0]) links[0].classList.add('active'); }
+  const c=document.getElementById('pc-ideas-content');
+  if(!c) return;
+
+  if(tab==='howto') c.innerHTML=`
+    <h6 class="fw-bold mb-3">📋 How to Run a Punch Card Program at Your Community</h6>
+    <div class="row g-3">
+      <div class="col-md-6"><div class="p-3 rounded" style="background:#f0fdf4;border-left:4px solid #22c55e"><strong>Step 1 — Enroll Residents</strong><br><small>Add each resident here and choose their card size (5 for MC, 10 for AL). Print their card from the app to keep at the activities desk.</small></div></div>
+      <div class="col-md-6"><div class="p-3 rounded" style="background:#eff6ff;border-left:4px solid #3b82f6"><strong>Step 2 — Log Punches</strong><br><small>After each activity, tap "Punch It!" and enter the activity name. The app tracks every punch with the date — no paper needed!</small></div></div>
+      <div class="col-md-6"><div class="p-3 rounded" style="background:#fefce8;border-left:4px solid #eab308"><strong>Step 3 — Monthly Redemption Day</strong><br><small>Host a fun "Punch Card Party" on the last Friday of each month. Residents cash in completed cards together — it becomes a community event!</small></div></div>
+      <div class="col-md-6"><div class="p-3 rounded" style="background:#fdf4ff;border-left:4px solid #a855f7"><strong>Step 4 — Celebrate Publicly</strong><br><small>Post a leaderboard in the common area showing who is closest to completing their card. Recognition motivates!</small></div></div>
+      <div class="col-md-6"><div class="p-3 rounded" style="background:#fff7ed;border-left:4px solid #f97316"><strong>Memory Care Tip</strong><br><small>Use 5-punch cards for MC residents. Use tactile stamps or stickers in real life alongside the digital version. Involve family in the celebration!</small></div></div>
+      <div class="col-md-6"><div class="p-3 rounded" style="background:#f0f9ff;border-left:4px solid #0ea5e9"><strong>Seasonal Themes</strong><br><small>Refresh the prize theme each quarter — Summer BBQ Basket, Holiday Wish List, Spring Garden Kit, Fall Cozy Pack. Keeps excitement fresh year-round.</small></div></div>
+    </div>
+    <div class="mt-3 p-3 rounded" style="background:#fefce8;border:1px dashed #fbbf24">
+      <strong>💡 Pro Tip — Double Punch Days:</strong> Announce a surprise "Double Punch Day" once a month. Any resident who attends an activity on that day gets 2 punches instead of 1. It dramatically boosts attendance!
+    </div>`;
+
+  else if(tab==='prizes') c.innerHTML=`
+    <h6 class="fw-bold mb-3">🏆 Prize &amp; Reward Ideas</h6>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card h-100 border-warning"><div class="card-header fw-bold" style="background:#fef9c3">🛍️ Gift Shop &amp; Snack Items</div><div class="card-body small">
+          <ul class="mb-0"><li>Favorite candy or snack pack</li><li>$5–$10 gift card (Amazon, Walmart, pharmacy)</li><li>Travel-size lotion, soap, or toiletries</li><li>Small potted plant or fresh flower arrangement</li><li>Puzzle book, word search pad, or crossword collection</li><li>Cozy socks or a soft lap blanket</li><li>Card or board game for their room</li></ul>
+        </div></div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 border-info"><div class="card-header fw-bold" style="background:#e0f2fe">⭐ Special Privileges</div><div class="card-body small">
+          <ul class="mb-0"><li>Front-row seat at the next entertainment event</li><li>Movie Night pick — they choose the film!</li><li>"Activity Director for a Day" — help co-plan an activity</li><li>First in line at a special dining event</li><li>Guest of honor at a future activity</li><li>Choose the theme for next month's party</li><li>VIP table at the next holiday dinner</li></ul>
+        </div></div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 border-success"><div class="card-header fw-bold" style="background:#dcfce7">🏅 Recognition &amp; Certificates</div><div class="card-body small">
+          <ul class="mb-0"><li>Printed "Activity Star" certificate (print from Templates tab!)</li><li>Name &amp; photo on the community bulletin board</li><li>Resident Spotlight in the monthly newsletter</li><li>Custom ribbon, medal, or trophy for their room</li><li>Recognition announcement at the next community meeting</li><li>"Wall of Champions" seasonal display</li></ul>
+        </div></div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100" style="border-color:#7c3aed"><div class="card-header fw-bold" style="background:#ede9fe">💰 Community Dollars &amp; Points</div><div class="card-body small">
+          <ul class="mb-0"><li>Earn "Community Bucks" — play money redeemable at monthly store events</li><li>Extra Bingo cards or raffle tickets per completed card</li><li>Accumulate points toward a big seasonal prize</li><li>Bid in a "Punch Card Auction" at end of quarter</li><li>Bonus entries into a quarterly grand prize drawing</li></ul>
+        </div></div>
+      </div>
+    </div>`;
+
+  else if(tab==='programs') c.innerHTML=`
+    <h6 class="fw-bold mb-3">🌟 Creative Program Ideas Using Punch Cards</h6>
+    <div class="row g-3">
+      <div class="col-md-6"><div class="card h-100"><div class="card-body">
+        <h6 class="fw-bold text-warning">🏆 Hall of Fame</h6>
+        <p class="small mb-0">Residents who complete 5 or more cards in a year get inducted into the community "Activity Hall of Fame" with a framed photo in the common area. Families love seeing their loved ones recognized!</p>
+      </div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body">
+        <h6 class="fw-bold text-info">🤝 Buddy System</h6>
+        <p class="small mb-0">Pair a more active resident with a less engaged one. When both complete their cards together, they both earn a bonus punch or a shared prize like an ice cream outing. Builds community bonds!</p>
+      </div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body">
+        <h6 class="fw-bold text-success">🎯 Challenge Cards</h6>
+        <p class="small mb-0">Create a special "Challenge Card" once a quarter — residents must attend one activity from each category (Creative, Physical, Social, Educational) to earn a bonus punch. Great for encouraging variety.</p>
+      </div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body">
+        <h6 class="fw-bold text-purple" style="color:#7c3aed">👨‍👩‍👧 Family Involvement</h6>
+        <p class="small mb-0">Send families a monthly update showing how many punches their loved one has earned. When a card is completed, email or call the family to celebrate together. Many families will attend the award moment!</p>
+      </div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body">
+        <h6 class="fw-bold text-danger">🎲 Themed Monthly Cards</h6>
+        <p class="small mb-0">In January it's "New Year New You" (focus on physical activities). In February it's "Heart Full of Joy" (social and creative). Monthly themes give residents a fresh reason to engage every month.</p>
+      </div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body">
+        <h6 class="fw-bold text-primary">📊 Staff Leaderboard</h6>
+        <p class="small mb-0">Track which staff member logs the most activity punches each month. Winner gets a small prize or public recognition. Staff engagement drives resident engagement!</p>
+      </div></div></div>
+    </div>`;
+
+  else if(tab==='templates') c.innerHTML=`
+    <h6 class="fw-bold mb-3">📄 Printable Templates</h6>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card h-100 text-center p-3">
+        <div style="font-size:2.5rem">🎟️</div>
+        <h6 class="fw-bold mt-2">Blank 10-Punch Card</h6>
+        <p class="small text-muted">Standard card for Assisted Living — fill in resident name and stamp/hole-punch each visit.</p>
+        <button class="btn btn-outline-warning btn-sm mt-auto" onclick="printBlankCard(10)">🖨️ Print 10-Punch</button>
+      </div></div>
+      <div class="col-md-4"><div class="card h-100 text-center p-3">
+        <div style="font-size:2.5rem">🎟️</div>
+        <h6 class="fw-bold mt-2">Blank 5-Punch Card</h6>
+        <p class="small text-muted">Simplified card for Memory Care — larger holes, easier to understand visual progress.</p>
+        <button class="btn btn-outline-warning btn-sm mt-auto" onclick="printBlankCard(5)">🖨️ Print 5-Punch</button>
+      </div></div>
+      <div class="col-md-4"><div class="card h-100 text-center p-3">
+        <div style="font-size:2.5rem">🏅</div>
+        <h6 class="fw-bold mt-2">Activity Star Certificate</h6>
+        <p class="small text-muted">Award-worthy certificate to print and present when a resident completes their card.</p>
+        <button class="btn btn-outline-success btn-sm mt-auto" onclick="printStarCertificate()">🖨️ Print Certificate</button>
+      </div></div>
+      <div class="col-md-4"><div class="card h-100 text-center p-3">
+        <div style="font-size:2.5rem">📋</div>
+        <h6 class="fw-bold mt-2">All Resident Cards</h6>
+        <p class="small text-muted">Print current punch status for every enrolled resident — great for a weekly paper backup.</p>
+        <button class="btn btn-outline-secondary btn-sm mt-auto" onclick="printAllPunchCards()">🖨️ Print All</button>
+      </div></div>
+      <div class="col-md-4"><div class="card h-100 text-center p-3">
+        <div style="font-size:2.5rem">🗓️</div>
+        <h6 class="fw-bold mt-2">Program Intro Flyer</h6>
+        <p class="small text-muted">One-page flyer to introduce the punch card program to residents and post on the bulletin board.</p>
+        <button class="btn btn-outline-primary btn-sm mt-auto" onclick="printProgramFlyer()">🖨️ Print Flyer</button>
+      </div></div>
+      <div class="col-md-4"><div class="card h-100 text-center p-3">
+        <div style="font-size:2.5rem">📊</div>
+        <h6 class="fw-bold mt-2">Leaderboard Sheet</h6>
+        <p class="small text-muted">Printable leaderboard showing all residents ranked by current punch count — post in the common area!</p>
+        <button class="btn btn-outline-info btn-sm mt-auto" onclick="printPCLeaderboard()">🖨️ Print Leaderboard</button>
+      </div></div>
+    </div>`;
+}
+
+// ── Toast ──
+function showPCToast(msg) {
+  let t=document.getElementById('pc-toast');
+  if(!t){t=document.createElement('div');t.id='pc-toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:30px;font-size:.9rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transition:opacity .3s;pointer-events:none';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>t.style.opacity='0',3200);
+}
+
+// ── Print Individual Card ──
+function printPunchCard(resId) {
+  const data=getPCData(), res=data[resId]; if(!res) return;
+  const card=pcActiveCard(res), sz=card.cardSize||res.cardSize||10, filled=card.punches.length;
+  const cp=JSON.parse(localStorage.getItem('el365_community_profile')||'{}');
+  let holesHTML='';
+  for(let i=0;i<sz;i++){
+    const ok=i<filled,punch=ok?card.punches[i]:null;
+    const w=sz<=5?'90px':'72px',h=sz<=5?'90px':'72px';
+    holesHTML+=`<div style="width:${w};height:${h};border-radius:50%;border:3px solid ${ok?'#d97706':'#d1d5db'};background:${ok?'#fef3c7':'#f9fafb'};display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:${ok?'1.8rem':'.8rem'};color:${ok?'#d97706':'#9ca3af'};text-align:center;padding:6px;box-sizing:border-box">${ok?'⭐':`<span style="color:#d1d5db;font-size:1.1rem">${i+1}</span>`}${ok&&punch?`<div style="font-size:.42rem;color:#92400e;margin-top:3px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${punch.activity}</div>`:''}${ok&&punch?`<div style="font-size:.38rem;color:#b45309">${punch.date}</div>`:''}</div>`;
+  }
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Punch Card – ${res.name}</title><style>body{font-family:Georgia,serif;background:#fffbeb;margin:0;padding:24px}@media print{body{background:#fff;padding:10px}}.card{border:4px solid #f59e0b;border-radius:20px;padding:28px;max-width:560px;margin:0 auto;background:#fff}.holes{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:24px 0}.footer{text-align:center;color:#6b7280;font-size:.78rem;border-top:1px dashed #fcd34d;padding-top:14px;margin-top:10px}</style></head><body>
+  <div class="card">
+    <div style="text-align:center"><div style="font-size:2rem">🎟️</div><h2 style="color:#92400e;margin:4px 0">Activity Punch Card</h2>
+    <div style="color:#6b7280;font-size:.9rem">${cp.name||'Our Community'}</div>
+    <div style="font-size:1rem;font-weight:bold;margin:6px 0">${res.name} &nbsp;·&nbsp; Room ${res.room||'—'}</div>
+    <div style="color:#6b7280;font-size:.85rem">Collect ${sz} punches to earn a reward! &nbsp;·&nbsp; ${res.level==='MC'?'Memory Care':'Assisted Living'}</div></div>
+    <div class="holes">${holesHTML}</div>
+    <div class="footer"><strong>Card Started:</strong> ${card.started||'—'} &nbsp;·&nbsp; <strong>${filled}/${sz} Punches</strong> &nbsp;·&nbsp; Powered by Empower Life 365</div>
+  </div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+// ── Print Blank Card ──
+function printBlankCard(sz) {
+  if(!sz) sz=10;
+  const cp=JSON.parse(localStorage.getItem('el365_community_profile')||'{}');
+  let holesHTML='';
+  const w=sz<=5?'90px':'72px';
+  for(let i=0;i<sz;i++) holesHTML+=`<div style="width:${w};height:${w};border-radius:50%;border:3px solid #d1d5db;background:#f9fafb;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#d1d5db">${i+1}</div>`;
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Blank Punch Card</title><style>body{font-family:Georgia,serif;background:#fffbeb;margin:0;padding:24px}@media print{body{background:#fff;padding:10px}}.card{border:4px solid #f59e0b;border-radius:20px;padding:28px;max-width:560px;margin:0 auto;background:#fff}.line{border-bottom:1px solid #e5e7eb;margin:12px 0 4px;height:24px}.holes{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:24px 0}.footer{text-align:center;color:#6b7280;font-size:.78rem;border-top:1px dashed #fcd34d;padding-top:14px;margin-top:10px}</style></head><body>
+  <div class="card">
+    <div style="text-align:center"><div style="font-size:2rem">🎟️</div><h2 style="color:#92400e;margin:4px 0">Activity Punch Card</h2><div style="color:#6b7280;font-size:.9rem">${cp.name||'Our Community'} — Collect ${sz} punches to earn a reward!</div></div>
+    <div style="margin:16px 0"><div style="display:flex;gap:16px;font-size:.85rem;color:#374151"><div style="flex:1">Resident Name: <div class="line"></div></div><div style="width:80px">Room: <div class="line"></div></div></div></div>
+    <div class="holes">${holesHTML}</div>
+    <div style="font-size:.78rem;color:#9ca3af;text-align:center;margin-bottom:8px">Staff initials each punch: _____ _____ _____ _____ _____${sz>5?' _____ _____ _____ _____ _____':''}</div>
+    <div class="footer">Powered by Empower Life 365 &nbsp;·&nbsp; Present this card to staff after each activity</div>
+  </div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+// ── Print Star Certificate ──
+function printStarCertificate() {
+  const cp=JSON.parse(localStorage.getItem('el365_community_profile')||'{}');
+  const today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Activity Star Certificate</title><style>body{font-family:Georgia,serif;background:#fffbeb;margin:0;padding:32px;display:flex;align-items:center;justify-content:center;min-height:100vh}@media print{body{background:#fff;padding:0}}.cert{border:6px double #f59e0b;border-radius:20px;padding:40px 48px;max-width:600px;text-align:center;background:#fff;box-shadow:0 0 40px rgba(245,158,11,.2)}.stars{font-size:2.5rem;letter-spacing:8px}.title{font-size:2rem;color:#92400e;margin:12px 0 4px;font-weight:bold}.sub{color:#6b7280;font-size:.9rem}.name-line{border-bottom:2px solid #f59e0b;min-width:240px;display:inline-block;margin:16px 8px;height:32px;font-size:1.3rem;color:#1e293b;font-style:italic}.footer{margin-top:24px;color:#6b7280;font-size:.82rem;border-top:1px dashed #fcd34d;padding-top:12px}.sig-line{border-bottom:1px solid #d1d5db;width:180px;display:inline-block;margin:24px 12px 4px;height:24px}</style></head><body>
+  <div class="cert">
+    <div class="stars">⭐ 🏆 ⭐</div>
+    <div class="title">Activity Star Award</div>
+    <div class="sub">${cp.name||'Our Community'} &nbsp;·&nbsp; Activity &amp; Engagement Program</div>
+    <div style="margin:20px 0;color:#374151">This certificate is proudly awarded to</div>
+    <div class="name-line">&nbsp;</div>
+    <div style="margin:12px 0;color:#374151">for completing their Activity Punch Card<br>and showing outstanding community spirit!</div>
+    <div style="font-size:2rem;margin:12px 0">🎉 🌟 🎉</div>
+    <div style="display:flex;justify-content:center;gap:32px;margin-top:20px">
+      <div><div class="sig-line"></div><div style="font-size:.78rem;color:#6b7280">Activity Director</div></div>
+      <div><div class="sig-line">${today}</div><div style="font-size:.78rem;color:#6b7280">Date Awarded</div></div>
+    </div>
+    <div class="footer">Powered by Empower Life 365 &nbsp;·&nbsp; Celebrating Active &amp; Engaged Living</div>
+  </div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+// ── Print Program Flyer ──
+function printProgramFlyer() {
+  const cp=JSON.parse(localStorage.getItem('el365_community_profile')||'{}');
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Punch Card Program Flyer</title><style>body{font-family:Georgia,serif;background:#fffbeb;margin:0;padding:32px}@media print{body{background:#fff;padding:16px}}.flyer{border:5px solid #f59e0b;border-radius:20px;padding:36px;max-width:600px;margin:0 auto;background:#fff}.step{display:flex;align-items:flex-start;gap:12px;margin:12px 0;padding:10px;background:#fef9c3;border-radius:10px}.num{background:#f59e0b;color:#fff;font-weight:bold;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}</style></head><body>
+  <div class="flyer">
+    <div style="text-align:center"><div style="font-size:3rem">🎟️</div><h2 style="color:#92400e;margin:4px 0">Activity Punch Card Program</h2><div style="color:#6b7280">${cp.name||'Our Community'}</div></div>
+    <p style="text-align:center;font-size:1.05rem;color:#374151;margin:20px 0">Attend activities, collect punches, and <strong>earn fun rewards!</strong></p>
+    <div class="step"><div class="num">1</div><div><strong>Pick up your punch card</strong> from the activities office. Each card has space for ${''} punches.</div></div>
+    <div class="step"><div class="num">2</div><div><strong>Attend any activity</strong> and ask the activities staff to log your punch in the app.</div></div>
+    <div class="step"><div class="num">3</div><div><strong>Fill your card</strong> and redeem it for a fun prize — gift items, special privileges, certificates, and more!</div></div>
+    <div class="step"><div class="num">4</div><div><strong>Start a new card</strong> and keep going! Top participants are recognized on our bulletin board and in the newsletter.</div></div>
+    <div style="background:#f0fdf4;border-radius:12px;padding:16px;margin-top:20px;text-align:center">
+      <strong>🎉 Redemption Days</strong> are held the last Friday of each month!<br>
+      <span style="color:#6b7280;font-size:.9rem">Questions? See the Activities Director.</span>
+    </div>
+    <div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:.78rem">Powered by Empower Life 365</div>
+  </div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+// ── Print Leaderboard ──
+function printPCLeaderboard() {
+  const data=getPCData(), res=Object.entries(data);
+  if(!res.length){alert('No residents to display.');return;}
+  const cp=JSON.parse(localStorage.getItem('el365_community_profile')||'{}');
+  const sorted=res.map(([,r])=>{const c=pcActiveCard(r);return{name:r.name,room:r.room,level:r.level,punches:c.punches.length,sz:c.cardSize||r.cardSize||10,done:(r.cards||[]).filter(x=>x.rewardGiven).length};}).sort((a,b)=>b.punches-a.punches||b.done-a.done);
+  const rows=sorted.map((r,i)=>`<tr style="background:${i===0?'#fef9c3':i===1?'#f1f5f9':i===2?'#fff7ed':''}"><td style="padding:8px;font-weight:bold">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td><td style="padding:8px">${r.name}</td><td style="padding:8px">${r.room||'—'}</td><td style="padding:8px">${r.level}</td><td style="padding:8px;font-weight:bold">${r.punches}/${r.sz}</td><td style="padding:8px">${r.done}</td></tr>`).join('');
+  const win=window.open('','_blank');
+  const today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  win.document.write(`<!DOCTYPE html><html><head><title>Punch Card Leaderboard</title><style>body{font-family:Arial,sans-serif;padding:24px}table{width:100%;border-collapse:collapse}th{background:#f59e0b;color:#fff;padding:10px;text-align:left}tr:nth-child(even){background:#f9fafb}@media print{body{padding:8px}}</style></head><body>
+  <h2 style="text-align:center;color:#92400e">🏆 Activity Punch Card Leaderboard</h2>
+  <p style="text-align:center;color:#6b7280">${cp.name||'Our Community'} &nbsp;·&nbsp; ${today}</p>
+  <table><thead><tr><th>#</th><th>Resident</th><th>Room</th><th>Level</th><th>Punches</th><th>Cards Completed</th></tr></thead><tbody>${rows}</tbody></table>
+  <p style="text-align:center;color:#9ca3af;font-size:.78rem;margin-top:16px">Powered by Empower Life 365</p>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+// ── Print All Cards ──
+function printAllPunchCards() {
+  const data=getPCData(), res=Object.entries(data);
+  if(!res.length){alert('No residents to print.');return;}
+  const cp=JSON.parse(localStorage.getItem('el365_community_profile')||'{}');
+  const cards=res.map(([,r])=>{
+    const card=pcActiveCard(r),sz=card.cardSize||r.cardSize||10,filled=card.punches.length;
+    let h='';for(let i=0;i<sz;i++){const ok=i<filled;h+=`<div style="width:48px;height:48px;border-radius:50%;border:2px solid ${ok?'#d97706':'#d1d5db'};background:${ok?'#fef3c7':'#f9fafb'};display:flex;align-items:center;justify-content:center;font-size:${ok?'1.2rem':'.75rem'};color:${ok?'#d97706':'#9ca3af'}">${ok?'⭐':i+1}</div>`;}
+    return `<div style="border:3px solid #f59e0b;border-radius:14px;padding:14px;background:#fff;page-break-inside:avoid"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><strong>${r.name}</strong><br><span style="font-size:.8rem;color:#6b7280">Room ${r.room||'—'} · ${r.level}</span></div><div style="font-size:.85rem;font-weight:bold;color:#f59e0b">${filled}/${sz}</div></div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${h}</div></div>`;
+  }).join('');
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>All Cards</title><style>body{font-family:Georgia,sans-serif;padding:20px;background:#fffbeb}@media print{body{background:#fff;padding:8px}}</style></head><body>
+  <h2 style="text-align:center;color:#92400e">🎟️ Punch Cards — ${cp.name||'Our Community'}</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">${cards}</div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
 }
 
 </script>
