@@ -1577,9 +1577,34 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Welcome Message (optional — leave blank to use default)</label>
         <textarea id="nl-welcome-msg" rows="3" placeholder="Write a personal welcome note from the activity director..." style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;"></textarea>
       </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Community Tagline</label>
+        <input id="nl-tagline" type="text" placeholder="e.g. Where Every Day Matters" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Community Address</label>
+        <input id="nl-address" type="text" placeholder="e.g. 123 Main St, Denver, CO 80201" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
+      </div>
       <div style="grid-column:1/-1;">
         <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Footer Note (optional)</label>
         <input id="nl-footer-note" type="text" placeholder="e.g. Activities subject to change. Please check the bulletin board daily." style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
+      </div>
+      <div style="grid-column:1/-1;border-top:1px solid var(--gray-200);padding-top:14px;margin-top:4px;">
+        <div style="font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">⭐ Resident Spotlight</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+          <div>
+            <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Spotlight Resident Name</label>
+            <input id="nl-spotlight-name" type="text" placeholder="e.g. Margaret Johnson" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Resident Room / Unit</label>
+            <input id="nl-spotlight-room" type="text" placeholder="e.g. Room 14 · 3 years with us" style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Spotlight Story / Quote</label>
+            <textarea id="nl-spotlight-story" rows="3" placeholder="Share something special about this resident — a hobby, a memory, a quote they love, or something that makes them unique..." style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;"></textarea>
+          </div>
+        </div>
       </div>
     </div>
     <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
@@ -4476,6 +4501,11 @@ function saveNlPrefs() {
     contact: document.getElementById('nl-contact')?.value || '',
     welcome: document.getElementById('nl-welcome-msg')?.value || '',
     footer: document.getElementById('nl-footer-note')?.value || '',
+    tagline: document.getElementById('nl-tagline')?.value || '',
+    address: document.getElementById('nl-address')?.value || '',
+    spotlightName: document.getElementById('nl-spotlight-name')?.value || '',
+    spotlightRoom: document.getElementById('nl-spotlight-room')?.value || '',
+    spotlightStory: document.getElementById('nl-spotlight-story')?.value || '',
   };
   localStorage.setItem(NL_KEY, JSON.stringify(prefs));
 }
@@ -4489,6 +4519,13 @@ function loadNlPrefs() {
       document.getElementById('nl-contact').value = prefs.contact || '';
       document.getElementById('nl-welcome-msg').value = prefs.welcome || '';
       document.getElementById('nl-footer-note').value = prefs.footer || '';
+      if (document.getElementById('nl-tagline')) {
+        document.getElementById('nl-tagline').value = prefs.tagline || '';
+        document.getElementById('nl-address').value = prefs.address || '';
+        document.getElementById('nl-spotlight-name').value = prefs.spotlightName || '';
+        document.getElementById('nl-spotlight-room').value = prefs.spotlightRoom || '';
+        document.getElementById('nl-spotlight-story').value = prefs.spotlightStory || '';
+      }
     }
     return prefs;
   } catch(e) { return {}; }
@@ -5429,6 +5466,12 @@ function renderNewsletter() {
   const contactLine = prefs.contact || '';
   const customWelcome = prefs.welcome || '';
   const footerNote = prefs.footer || '';
+  const tagline = prefs.tagline || 'Wellness · Joy · Purpose';
+  const address = prefs.address || '';
+  const spotlightName = prefs.spotlightName || '';
+  const spotlightRoom = prefs.spotlightRoom || '';
+  const spotlightStory = prefs.spotlightStory || '';
+  const initials = communityName.split(' ').map(function(w){return w[0]||'';}).join('').slice(0,3).toUpperCase() || 'EL';
   const monthNum = DATA.monthNum;
   const mc = NL_MONTHLY[monthNum] || NL_MONTHLY[1];
 
@@ -5508,54 +5551,139 @@ function renderNewsletter() {
   const sudokuPuzzleHtml = mc.sudoku ? sudokuGrid(mc.sudoku.puzzle, false) : '';
   const sudokuSolHtml    = mc.sudoku ? sudokuGrid(mc.sudoku.solution, true) : '';
 
+  // ── Resident spotlight HTML ──
+  const spotlightHtml = spotlightName ? `
+    <div style="background:linear-gradient(135deg,#FFF8E7,#FFF3CD);border:2px solid #F59E0B;border-radius:12px;padding:16px;margin-top:18px;">
+      <div style="font-size:10px;font-weight:800;color:#B45309;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">⭐ Resident Spotlight</div>
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div style="flex-shrink:0;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#7030A0,#2E75B6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.18);">
+          ${escapeHtml(spotlightName.split(' ').map(function(w){return w[0]||'';}).join('').slice(0,2).toUpperCase())}
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:800;color:#1A2A5C;">${escapeHtml(spotlightName)}</div>
+          ${spotlightRoom ? '<div style="font-size:11px;color:#6B7280;margin-bottom:6px;">'+escapeHtml(spotlightRoom)+'</div>' : ''}
+          <div style="font-size:12.5px;color:#374151;line-height:1.6;font-style:italic;">"${escapeHtml(spotlightStory)}"</div>
+        </div>
+      </div>
+    </div>` : '';
+
+  // ── Activity highlights (top 3 special events/holidays) ──
+  const topHighlights = [];
+  Object.entries(DATA.holidays||{}).slice(0,4).forEach(function([day,name]) {
+    const meta = DATA.dayMeta[day] || {};
+    const slots = days[String(day)] || {};
+    const morningSlot = DATA.slotOrder.find(function(s){ return s !== 'BIG_GROUP' && slots[s] && slots[s].title; });
+    topHighlights.push({ day: day, name: name, date: meta.date_long||('Day '+day), act: morningSlot ? slots[morningSlot].title : '' });
+  });
+  if (DATA.travelDay && DATA.travelDay.day) {
+    const td = DATA.travelDay; const meta = DATA.dayMeta[String(td.day)] || {};
+    topHighlights.unshift({ day: String(td.day), name: '✈️ Travel Day — '+td.country, date: meta.date_long||('Day '+td.day), act: '' });
+  }
+  const hlBoxHtml = topHighlights.slice(0,4).map(function(h) {
+    return '<div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:8px;border-left:4px solid #7030A0;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+      + '<div style="font-size:10px;font-weight:700;color:#7030A0;text-transform:uppercase;letter-spacing:1px;">'+escapeHtml(h.date)+'</div>'
+      + '<div style="font-size:13px;font-weight:700;color:#1A2A5C;margin:2px 0;">'+escapeHtml(h.name)+'</div>'
+      + (h.act ? '<div style="font-size:11px;color:#6B7280;">'+escapeHtml(h.act)+'</div>' : '')
+      + '</div>';
+  }).join('');
+
   // ── Page 1 ──
   const page1 = `
   <div class="nl-page" id="nl-content-p1">
+
+    <!-- ═══ HEADER ═══ -->
     <div class="nl-masthead">
-      <div class="nl-masthead-row">
-        <div>
-          <div class="nl-masthead-title"><em class="nl-masthead-cursive">Empower</em> Moments</div>
-          <div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;font-family:sans-serif;letter-spacing:0.5px;">${escapeHtml(theme)}</div>
+      <div class="nl-masthead-row" style="align-items:flex-start;">
+        <!-- Logo block + title -->
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="flex-shrink:0;width:58px;height:58px;border-radius:12px;background:rgba(255,255,255,0.18);border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#FFD700;font-family:serif;letter-spacing:-1px;">
+            ${escapeHtml(initials)}
+          </div>
+          <div>
+            <div class="nl-masthead-title" style="line-height:1.1;">${escapeHtml(nlTitle)}</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;font-family:sans-serif;letter-spacing:1px;text-transform:uppercase;">${escapeHtml(tagline)}</div>
+          </div>
         </div>
-        <div class="nl-masthead-right">
+        <!-- Community info -->
+        <div class="nl-masthead-right" style="text-align:right;">
           <div class="nl-masthead-comm">${escapeHtml(communityName)}</div>
           <div class="nl-masthead-date">${escapeHtml(DATA.monthName)} ${DATA.year}</div>
-          <div class="nl-masthead-track">${escapeHtml(levelName)} Track</div>
+          <div class="nl-masthead-track">${escapeHtml(levelName)} Program Track</div>
+          ${theme ? '<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;font-style:italic;">Theme: '+escapeHtml(theme)+'</div>' : ''}
         </div>
       </div>
       <div class="nl-gold-bar">
-        <span>Wellness · Joy · Purpose — 365 Days a Year</span>
-        <span>${directorLine ? escapeHtml(directorLine) : 'empowerlife365.app'}</span>
+        <span>${directorLine ? escapeHtml(directorLine) : 'Activity Department'}</span>
+        <span>${contactLine ? escapeHtml(contactLine) : 'empowerlife365.app'}</span>
       </div>
     </div>
+
+    <!-- ═══ BODY ═══ -->
     <div class="nl-cols">
       <div class="nl-col-main">
-        <div class="nl-sec-hd gold">Welcome</div>
-        <div class="nl-welcome-txt">${customWelcome ? escapeHtml(customWelcome) : 'Welcome to <strong>'+escapeHtml(DATA.monthName)+' '+DATA.year+'</strong>! This month\'s theme is <em>'+escapeHtml(theme)+'</em>. We have a wonderful lineup of activities planned — from morning fitness and creative arts to afternoon socials and special events. Every single day is designed with you in mind. We are so glad you are here!'}</div>
-        ${directorLine ? `<div class="nl-director-sig">Warmly, ${escapeHtml(directorLine)}${contactLine ? ' · '+escapeHtml(contactLine) : ''}</div>` : ''}
+
+        <div class="nl-sec-hd gold">Welcome Message</div>
+        <div class="nl-welcome-txt">${customWelcome ? escapeHtml(customWelcome) : 'Welcome to <strong>'+escapeHtml(DATA.monthName)+' '+DATA.year+'</strong>! This month\'s theme is <em>'+escapeHtml(theme||'Wellness & Joy')+'</em>. We have a wonderful lineup of activities planned — morning fitness, creative arts, afternoon socials, and special events. Every single day is designed with you in mind. We are so glad you are here!'}</div>
+        ${directorLine ? '<div class="nl-director-sig">Warmly, '+escapeHtml(directorLine)+(contactLine ? ' &nbsp;&middot;&nbsp; '+escapeHtml(contactLine) : '')+'</div>' : ''}
+
         <div style="margin-top:18px;"><div class="nl-sec-hd">Monthly Schedule</div></div>
-        ${schedHtml || '<div style="font-size:13px;color:#9CA3AF;font-style:italic;">Build your calendar to populate the schedule here.</div>'}
+        ${schedHtml || '<div style="font-size:13px;color:#9CA3AF;font-style:italic;padding:10px 0;">Build your calendar first to populate the schedule here.</div>'}
+
+        ${spotlightHtml}
+
       </div>
       <div class="nl-col-side">
+
         <div class="nl-bday-box">
           <div class="nl-bday-hd">🎂 Birthdays This Month</div>
           ${bdayHtml}
         </div>
-        ${highlightBoxes.length ? `<div><div class="nl-sec-hd teal" style="margin-bottom:10px;">Month Highlights</div>${highlightBoxes.join('')}</div>` : ''}
+
+        ${hlBoxHtml ? '<div style="margin-top:16px;"><div class="nl-sec-hd teal" style="margin-bottom:10px;">📅 Don&#39;t Miss These!</div>'+hlBoxHtml+'</div>' : (highlightBoxes.length ? '<div style="margin-top:16px;"><div class="nl-sec-hd teal" style="margin-bottom:10px;">Month Highlights</div>'+highlightBoxes.join('')+'</div>' : '')}
+
       </div>
     </div>
-    <div class="nl-footer"><strong>${escapeHtml(nlTitle)}</strong> · ${escapeHtml(communityName)} · ${escapeHtml(DATA.monthName)} ${DATA.year}${footerNote ? '<br>'+escapeHtml(footerNote) : ''}<br>empowerlife365.app</div>
+
+    <!-- ═══ FOOTER ═══ -->
+    <div style="margin-top:auto;border-top:3px solid #E8D5F5;padding-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;font-size:11px;color:#6B7280;">
+        <div>
+          <div style="font-weight:700;color:#1A2A5C;font-size:12px;">${escapeHtml(communityName)}</div>
+          ${address ? '<div>'+escapeHtml(address)+'</div>' : ''}
+          ${contactLine ? '<div>'+escapeHtml(contactLine)+'</div>' : ''}
+        </div>
+        <div style="text-align:center;">
+          <div style="font-weight:700;color:#7030A0;font-size:13px;">${escapeHtml(nlTitle)}</div>
+          <div>${escapeHtml(DATA.monthName)} ${DATA.year} &nbsp;&middot;&nbsp; Page 1 of 2</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:600;color:#1A2A5C;">Powered by Empower Life 365</div>
+          <div>empowerlife365.app</div>
+          ${footerNote ? '<div style="color:#9CA3AF;font-style:italic;margin-top:3px;">'+escapeHtml(footerNote)+'</div>' : ''}
+        </div>
+      </div>
+    </div>
+
   </div>`;
 
   // ── Page 2 ──
   const page2 = `
   <div class="nl-page" id="nl-content-p2">
-    <div class="nl-p2-hd">
-      <div>
-        <div class="nl-p2-title">Fun, Wellness &amp; Conversation</div>
-        <div class="nl-p2-meta">${escapeHtml(DATA.monthName)} ${DATA.year} · ${escapeHtml(communityName)}</div>
+    <!-- Page 2 Header -->
+    <div style="background:linear-gradient(135deg,#1A2A5C,#2E75B6);color:#fff;border-radius:10px;padding:14px 20px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,215,0,0.5);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#FFD700;font-family:serif;">
+          ${escapeHtml(initials)}
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:800;font-style:italic;letter-spacing:0.5px;">${escapeHtml(nlTitle)}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">Fun, Wellness &amp; Conversation</div>
+        </div>
       </div>
-      <div style="font-size:24px;">🌟</div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;font-weight:700;">${escapeHtml(communityName)}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.7);">${escapeHtml(DATA.monthName)} ${DATA.year} &nbsp;&middot;&nbsp; Page 2 of 2</div>
+      </div>
     </div>
     <div class="nl-fun-grid">
 
@@ -5621,7 +5749,26 @@ function renderNewsletter() {
       </div>
     </div>
 
-    <div class="nl-footer"><strong>${escapeHtml(nlTitle)}</strong> · Page 2 · ${escapeHtml(DATA.monthName)} ${DATA.year}${footerNote ? '<br>'+escapeHtml(footerNote) : ''}</div>
+    <!-- Page 2 Footer -->
+    <div style="margin-top:16px;border-top:3px solid #E8D5F5;padding-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;font-size:11px;color:#6B7280;">
+        <div>
+          <div style="font-weight:700;color:#1A2A5C;font-size:12px;">${escapeHtml(communityName)}</div>
+          ${address ? '<div>'+escapeHtml(address)+'</div>' : ''}
+          ${directorLine ? '<div>'+escapeHtml(directorLine)+'</div>' : ''}
+        </div>
+        <div style="text-align:center;">
+          <div style="font-weight:700;color:#7030A0;font-size:13px;">${escapeHtml(nlTitle)}</div>
+          <div>${escapeHtml(DATA.monthName)} ${DATA.year} &nbsp;&middot;&nbsp; Page 2 of 2</div>
+          ${footerNote ? '<div style="font-style:italic;color:#9CA3AF;margin-top:2px;">'+escapeHtml(footerNote)+'</div>' : ''}
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:600;color:#1A2A5C;">Powered by Empower Life 365</div>
+          <div>empowerlife365.app</div>
+          <div style="margin-top:3px;color:#9CA3AF;">Activities subject to change.</div>
+        </div>
+      </div>
+    </div>
   </div>`;
 
   document.getElementById('newsletter-preview').innerHTML = page1 + page2;
