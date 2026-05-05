@@ -1066,6 +1066,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .lib-card-footer { padding:8px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); display:flex; justify-content:flex-end; }
 .lib-add-btn { font-size:11px; font-weight:700; padding:5px 14px; background:var(--navy); color:#fff; border:none; border-radius:8px; cursor:pointer; }
 .lib-add-btn:hover { background:#2E75B6; }
+.att-card { padding:10px 12px; border:2px solid #ddd; border-radius:10px; cursor:pointer; font-size:14px; font-weight:600; text-align:center; transition:all .15s; user-select:none; background:#fff; color:#1a1a40; }
+.att-card.present { background:#7030A0; border-color:#7030A0; color:#fff; }
+.att-card:hover { border-color:#7030A0; }
 .lib-section-hd { font-size:11px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray-500); margin:20px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--gray-200); }
 .lib-empty { text-align:center; padding:40px; color:var(--gray-400); font-style:italic; grid-column:1/-1; }
 /* Day scheduler quick ideas */
@@ -1106,6 +1109,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="materials">🎵 Materials</button>
     <button class="tab-btn" data-tab="build">🛠️ Build My Cal</button>
           <button class="tab-btn" data-tab="actlib" id="actlib-tab">📚 Library</button>
+    <button class="tab-btn" data-tab="attlog" id="attlog-tab" onclick="switchTab('attlog')">📋 Log</button>
+    <button class="tab-btn" data-tab="busters" id="busters-tab" onclick="switchTab('busters')">🎒 Busters</button>
+    <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
   </div>
@@ -1647,6 +1653,68 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <div class="lib-grid" id="lib-grid"></div>
 </section>
 
+<section class="tab-panel" id="panel-attlog" style="display:none;">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">📋 Participation Log</h2>
+      <div class="subtitle">Activity attendance records · Most recent first</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-secondary" style="font-size:12px;" onclick="exportAttLogs()">⬇ Export CSV</button>
+      <button class="btn btn-secondary" style="font-size:12px;color:#c00;" onclick="clearAttLogs()">🗑 Clear All</button>
+    </div>
+  </div>
+  <div id="att-log-list"></div>
+</section>
+
+<section class="tab-panel" id="panel-busters">
+  <h1>🎒 Boredom Buster Packs</h1>
+  <p class="subtitle">30 themed activity packs — perfect for evenings, weekends, or any time a resident needs something to do.</p>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
+    <button class="btn-primary" onclick="openGivePack()">🎁 Give a Pack to a Resident</button>
+    <button class="btn-secondary" onclick="switchTab('bblog')">📋 View Distribution Log</button>
+  </div>
+
+  <div style="margin-bottom:12px;">
+    <input type="text" id="buster-search" placeholder="Search packs by theme..." oninput="renderBusterGrid()" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:15px;">
+  </div>
+
+  <div id="buster-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;"></div>
+</section>
+
+<!-- Give-a-Pack Modal -->
+<div id="give-pack-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:520px;width:95%;max-height:90vh;overflow-y:auto;">
+    <h2 style="margin:0 0 6px;color:#7030A0;">🎁 Give a Buster Pack</h2>
+    <p style="margin:0 0 16px;color:#666;font-size:14px;">Select a resident and a pack. Packs already given to that resident are grayed out.</p>
+
+    <label style="font-weight:600;display:block;margin-bottom:4px;">Resident</label>
+    <select id="gp-resident" onchange="refreshPackPicker()" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:8px;font-size:15px;margin-bottom:14px;">
+      <option value="">-- Select Resident --</option>
+    </select>
+
+    <label style="font-weight:600;display:block;margin-bottom:6px;">Pack</label>
+    <div id="gp-pack-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:260px;overflow-y:auto;margin-bottom:16px;"></div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn-secondary" onclick="closeGivePack()">Cancel</button>
+      <button class="btn-primary" id="gp-save-btn" onclick="saveGivePack()" disabled>✅ Record &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- BB Distribution Log Tab -->
+<section class="tab-panel" id="panel-bblog">
+  <h1>📋 Buster Pack Log</h1>
+  <p class="subtitle">Track which packs have been given to each resident.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+    <button class="btn-primary" onclick="exportBBLogs()">⬇ Export CSV</button>
+    <button class="btn-secondary" style="color:#c00;" onclick="clearBBLogs()">🗑 Clear All</button>
+  </div>
+  <div id="bb-log-list"></div>
+</section>
+
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
   <p class="subtitle">Configuration for staff and administrators.</p>
@@ -2180,6 +2248,9 @@ function switchTab(name) {
   if (name === 'settings') renderTimeSettings();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
+  if (name === 'attlog') renderAttLogs();
+  if (name === 'busters') renderBusterGrid();
+  if (name === 'bblog') renderBBLogs();
   if (name === 'tv') {
     renderTVDisplay();
     if (tvRefreshInterval) clearInterval(tvRefreshInterval);
@@ -3302,7 +3373,7 @@ function downloadSampleCSV() {
 
 function addResident() { roster.push({name: '', level: 'AL', notes: ''}); lsSet(ROSTER_KEY, roster); renderRoster(); }
 
-function renderLibrary() {
+function renderLegacyLibrary() {
   document.getElementById('lib-movies').innerHTML = DATA.movies.map(m => `<div class="lib-card movie"><div class="lib-card-title">${escapeHtml(m.title)}</div><div class="lib-card-meta">${escapeHtml(m.rating)}</div><div class="lib-card-desc">${escapeHtml(m.why)}</div></div>`).join('');
   document.getElementById('lib-games').innerHTML = DATA.games.map(g => `<div class="lib-card game"><div class="lib-card-title">${escapeHtml(g.name)}</div><div class="lib-card-desc">${escapeHtml(g.how)}</div></div>`).join('');
   document.getElementById('lib-word').innerHTML = DATA.wordGames.map(w => `<div class="lib-card word"><div class="lib-card-title">${escapeHtml(w.name)}</div><div class="lib-card-desc">${escapeHtml(w.theme)}</div></div>`).join('');
@@ -3907,7 +3978,6 @@ try {
   renderDailySheet();
   renderBonus();
   renderRoster();
-  renderLibrary();
   renderTimeSettings();
   renderAboutSlots();
 } catch(e) {
@@ -5233,6 +5303,8 @@ function renderLibrary() {
         </div>
         <div class="lib-card-footer">
           <button class="lib-add-btn" onclick="libCopyToClipboard('${escapeHtml(a.title)}')">📋 Copy Name</button>
+          <button class="lib-add-btn" style="background:#548235;margin-left:6px;" onclick="printActivityPack('${escapeAttr(a.id)}')">📄 Print Pack</button>
+          <button class="lib-add-btn" style="background:#C65B8A;margin-left:6px;" onclick="openAttendance('${escapeAttr(a.id)}','${escapeAttr(a.title)}')">▶ Run</button>
         </div>
       </div>`).join('')}
   `).join('');
@@ -7821,6 +7893,744 @@ function printRosaryGuide() {
   w.document.close(); w.print();
 }
 
+
+// ═══════════════════════════════════════════════════════════════
+// ACTIVITY PACK PRINT
+// ═══════════════════════════════════════════════════════════════
+
+function findActivityById(id) {
+  const pools = [
+    ACTIVITY_LIBRARY.afternoon || [],
+    ACTIVITY_LIBRARY.evening   || [],
+    ACTIVITY_LIBRARY.special   || [],
+    ACTIVITY_LIBRARY.spiritual || []
+  ];
+  // also check seasonal (object of arrays)
+  const seasonal = ACTIVITY_LIBRARY.seasonal || {};
+  Object.values(seasonal).forEach(arr => pools.push(arr));
+  for (const pool of pools) {
+    const found = pool.find(a => a.id === id);
+    if (found) return found;
+  }
+  return null;
+}
+
+function printActivityPack(id) {
+  const a = findActivityById(id);
+  if (!a) { showToast('Activity not found'); return; }
+
+  // Build resident sign-in rows from roster
+  const residents = (DATA.residents || []).slice().sort((x,y) => (x.lastName||'').localeCompare(y.lastName||''));
+  const hasResidents = residents.length > 0;
+  const signInRows = hasResidents
+    ? residents.map(r => {
+        const name = ((r.lastName||'') + ', ' + (r.firstName||'')).trim().replace(/^,\s*/, r.firstName || '');
+        const room = r.room ? ' — Rm ' + r.room : '';
+        return '<tr><td style="padding:7px 12px;border-bottom:1px solid #eee;font-size:15px;">' + name + room + '</td><td style="padding:7px 12px;border-bottom:1px solid #eee;text-align:center;width:60px;"><span style="display:inline-block;width:22px;height:22px;border:2px solid #333;border-radius:4px;"></span></td><td style="padding:7px 12px;border-bottom:1px solid #eee;font-size:13px;color:#888;">________</td></tr>';
+      }).join('')
+    : '<tr><td colspan="3" style="padding:12px;font-size:13px;color:#888;font-style:italic;">Upload your resident roster on the Residents tab to auto-populate this list.</td></tr>';
+
+  const alSupplies = (a.al.supplies||[]).map(s => '<li style="margin-bottom:5px;">' + s + '</li>').join('');
+  const mcSupplies = (a.mc.supplies||[]).map(s => '<li style="margin-bottom:5px;">' + s + '</li>').join('');
+
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Activity Pack — ${a.title}</title><style>
+    @media print { body { margin:0; } .no-print { display:none; } }
+    * { box-sizing:border-box; }
+    body { font-family:Arial,sans-serif; margin:0; color:#1a1a40; }
+    .page { max-width:720px; margin:0 auto; padding:36px 40px; }
+    .page-break { page-break-after:always; }
+    .pack-header { background:#1a1a40; color:#fff; padding:18px 24px; border-radius:10px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:flex-start; }
+    .pack-title { font-size:24px; font-weight:800; margin:0 0 4px; }
+    .pack-meta { font-size:13px; opacity:.8; }
+    .pack-date { font-size:12px; opacity:.7; text-align:right; }
+    .level-block { border:2px solid #e0e0f0; border-radius:10px; margin-bottom:18px; overflow:hidden; }
+    .level-head { padding:10px 16px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+    .al-head { background:#E8F5E9; color:#2E7D32; }
+    .mc-head { background:#E3F2FD; color:#1565C0; }
+    .level-body { padding:14px 18px; }
+    .level-desc { font-size:15px; line-height:1.7; margin-bottom:12px; }
+    .supplies-head { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#666; margin-bottom:6px; }
+    .supplies-list { margin:0; padding-left:20px; }
+    .supplies-list li { font-size:14px; line-height:1.6; }
+    .section-title { font-size:15px; font-weight:700; color:#1a1a40; border-bottom:2px solid #7030A0; padding-bottom:6px; margin:22px 0 14px; }
+    .sign-in-table { width:100%; border-collapse:collapse; font-family:Arial,sans-serif; }
+    .sign-in-table th { background:#1a1a40; color:#fff; padding:8px 12px; font-size:12px; text-align:left; }
+    .notes-box { border:2px solid #ddd; border-radius:8px; padding:16px; min-height:140px; margin-top:10px; }
+    .notes-line { border-bottom:1px solid #eee; margin-bottom:18px; height:1px; }
+    .tag { display:inline-block; background:#f0eaff; color:#7030A0; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:700; margin-right:4px; }
+    .footer { font-size:11px; color:#aaa; text-align:center; padding-top:12px; border-top:1px solid #eee; margin-top:24px; }
+  </style></head><body>
+
+  <!-- PAGE 1: Instructions + Supplies -->
+  <div class="page page-break">
+    <div class="pack-header">
+      <div>
+        <div class="pack-title">${a.title}</div>
+        <div class="pack-meta">⏱ ${a.duration || '—'} &nbsp;·&nbsp; ${(a.tags||[]).map(t => '<span class="tag">'+t+'</span>').join('')}</div>
+      </div>
+      <div class="pack-date">📄 Activity Pack<br>${dateStr}</div>
+    </div>
+
+    <div class="level-block">
+      <div class="level-head al-head">🏠 Assisted Living</div>
+      <div class="level-body">
+        <div class="level-desc">${a.al.desc}</div>
+        <div class="supplies-head">✅ Supplies Needed</div>
+        <ul class="supplies-list">${alSupplies || '<li style="color:#888;font-style:italic;">None listed</li>'}</ul>
+      </div>
+    </div>
+
+    <div class="level-block">
+      <div class="level-head mc-head">🧩 Memory Care</div>
+      <div class="level-body">
+        <div class="level-desc">${a.mc.desc}</div>
+        <div class="supplies-head">✅ Supplies Needed</div>
+        <ul class="supplies-list">${mcSupplies || '<li style="color:#888;font-style:italic;">None listed</li>'}</ul>
+      </div>
+    </div>
+
+    <div class="footer">Empower Life 365 · empowerlife365.app · Page 1 of 2</div>
+  </div>
+
+  <!-- PAGE 2: Sign-In Sheet + Staff Notes -->
+  <div class="page">
+    <div class="pack-header">
+      <div>
+        <div class="pack-title">${a.title} — Attendance</div>
+        <div class="pack-meta">Date: _________________ &nbsp; Time: _____________ &nbsp; Staff: _________________</div>
+      </div>
+      <div class="pack-date">📋 Sign-In Sheet<br>${dateStr}</div>
+    </div>
+
+    <table class="sign-in-table">
+      <thead>
+        <tr>
+          <th>Resident Name</th>
+          <th style="text-align:center;width:60px;">Present</th>
+          <th style="width:160px;">Initials / Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${signInRows}
+      </tbody>
+    </table>
+
+    <div class="section-title">📝 Staff Observations</div>
+    <div style="font-size:13px;color:#555;margin-bottom:10px;">Engagement level &nbsp;·&nbsp; Mood &nbsp;·&nbsp; Notable moments &nbsp;·&nbsp; Follow-up needed</div>
+    <div class="notes-box">
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+    </div>
+
+    <div style="display:flex;gap:24px;margin-top:14px;">
+      <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">TOTAL ATTENDANCE</div><div style="border:2px solid #333;border-radius:6px;padding:8px 14px;font-size:20px;font-weight:700;text-align:center;min-width:60px;">_____</div></div>
+      <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">OVERALL RATING</div><div style="border:2px solid #333;border-radius:6px;padding:8px 14px;font-size:18px;text-align:center;">⭐ ⭐ ⭐ ⭐ ⭐</div></div>
+      <div style="flex:2;"><div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">RUN THIS AGAIN?</div><div style="border:2px solid #333;border-radius:6px;padding:8px 14px;font-size:15px;display:flex;gap:20px;justify-content:center;align-items:center;"><span>☐ Yes</span><span>☐ No</span><span>☐ With changes</span></div></div>
+    </div>
+
+    <div class="footer">Empower Life 365 · empowerlife365.app · Page 2 of 2</div>
+  </div>
+
+  </body></html>`);
+  w.document.close();
+  w.print();
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// LIVE ATTENDANCE
+// ═══════════════════════════════════════════════════════════════
+
+let _attActivityId   = '';
+let _attActivityTitle = '';
+let _attPresent      = new Set();
+
+function openAttendance(id, title) {
+  _attActivityId    = id;
+  _attActivityTitle = title;
+  _attPresent       = new Set();
+
+  document.getElementById('att-title').textContent = title;
+  document.getElementById('att-meta').textContent  = 'Tap each resident who attended';
+
+  // Set today's date and current time as defaults
+  const now = new Date();
+  document.getElementById('att-date').value = now.toISOString().slice(0,10);
+  document.getElementById('att-time').value = now.toTimeString().slice(0,5);
+
+  _renderAttGrid();
+  document.getElementById('attendance-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAttendance() {
+  document.getElementById('attendance-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function _renderAttGrid() {
+  const residents = (DATA.residents || []).slice().sort((a,b) =>
+    (a.lastName||'').localeCompare(b.lastName||'')
+  );
+  const grid  = document.getElementById('att-grid');
+  const empty = document.getElementById('att-empty');
+
+  if (!residents.length) {
+    grid.style.display  = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  grid.style.display  = '';
+  empty.style.display = 'none';
+
+  grid.innerHTML = residents.map(r => {
+    const id   = r.id || (r.firstName + '_' + r.lastName);
+    const name = (r.firstName || '') + ' ' + (r.lastName || '');
+    const room = r.room ? '<div style="font-size:11px;opacity:.8;">Rm ' + r.room + '</div>' : '';
+    const present = _attPresent.has(id);
+    return '<div class="att-card' + (present ? ' present' : '') + '" data-rid="' + escapeHtml(id) + '">' +
+           '<div>' + escapeHtml(name.trim()) + '</div>' + room + '</div>';
+  }).join('');
+  grid.querySelectorAll('.att-card').forEach(function(card) {
+    card.addEventListener('click', function() { _toggleResident(card, card.dataset.rid); });
+  });
+
+  _updateAttCount();
+}
+
+function _toggleResident(el, id) {
+  if (_attPresent.has(id)) {
+    _attPresent.delete(id);
+    el.classList.remove('present');
+  } else {
+    _attPresent.add(id);
+    el.classList.add('present');
+  }
+  _updateAttCount();
+}
+
+function selectAllAttendance() {
+  const residents = DATA.residents || [];
+  const cards = document.querySelectorAll('#att-grid .att-card');
+  const allSelected = _attPresent.size === residents.length;
+  if (allSelected) {
+    _attPresent.clear();
+    cards.forEach(c => c.classList.remove('present'));
+  } else {
+    residents.forEach(r => _attPresent.add(r.id || (r.firstName + '_' + r.lastName)));
+    cards.forEach(c => c.classList.add('present'));
+  }
+  _updateAttCount();
+}
+
+function _updateAttCount() {
+  document.getElementById('att-count').textContent = _attPresent.size + ' present';
+}
+
+function saveAttendance() {
+  const date   = document.getElementById('att-date').value;
+  const time   = document.getElementById('att-time').value;
+  if (!date) { showToast('Please select a date'); return; }
+
+  const residents = DATA.residents || [];
+  const presentResidents = residents.filter(r => _attPresent.has(r.id || (r.firstName + '_' + r.lastName)));
+
+  const log = {
+    id:        Date.now(),
+    activityId:    _attActivityId,
+    activityTitle: _attActivityTitle,
+    date, time,
+    count:    _attPresent.size,
+    residents: presentResidents.map(r => ({
+      id:        r.id || (r.firstName + '_' + r.lastName),
+      firstName: r.firstName || '',
+      lastName:  r.lastName  || '',
+      room:      r.room      || ''
+    }))
+  };
+
+  // Save to localStorage
+  const logs = JSON.parse(localStorage.getItem('actLogs') || '[]');
+  logs.unshift(log);
+  localStorage.setItem('actLogs', JSON.stringify(logs));
+
+  closeAttendance();
+  showToast('✓ Attendance saved — ' + log.count + ' resident' + (log.count !== 1 ? 's' : '') + ' logged');
+
+  // Refresh log panel if visible
+  if (document.getElementById('att-log-list')) renderAttLogs();
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// PARTICIPATION LOG
+// ═══════════════════════════════════════════════════════════════
+
+function renderAttLogs() {
+  const container = document.getElementById('att-log-list');
+  if (!container) return;
+  const logs = JSON.parse(localStorage.getItem('actLogs') || '[]');
+
+  if (!logs.length) {
+    container.innerHTML = '<div style="text-align:center;padding:48px;color:#aaa;"><div style="font-size:40px;margin-bottom:12px;">📋</div><div style="font-size:15px;">No activity logs yet.<br>Hit <strong>▶ Run</strong> on any Library card to log attendance.</div></div>';
+    return;
+  }
+
+  container.innerHTML = logs.map(log => {
+    const dateObj = new Date(log.date + 'T12:00:00');
+    const dateStr = dateObj.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'});
+    const names   = (log.residents || []).map(r => (r.firstName + ' ' + r.lastName).trim()).join(', ') || '—';
+    return `<div style="border:1px solid #e0e0f0;border-radius:12px;overflow:hidden;margin-bottom:14px;">
+      <div style="background:#f5f2ff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="font-size:16px;font-weight:700;color:#1a1a40;">${escapeHtml(log.activityTitle)}</span>
+          <span style="font-size:12px;color:#666;margin-left:12px;">${dateStr}${log.time ? ' · ' + log.time : ''}</span>
+        </div>
+        <div style="background:#7030A0;color:#fff;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700;">${log.count} present</div>
+      </div>
+      <div style="padding:10px 18px;font-size:13px;color:#444;line-height:1.6;">
+        <strong>Residents:</strong> ${escapeHtml(names)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function exportAttLogs() {
+  const logs = JSON.parse(localStorage.getItem('actLogs') || '[]');
+  if (!logs.length) { showToast('No logs to export'); return; }
+
+  const rows = [['Date','Time','Activity','Count','Residents']];
+  logs.forEach(log => {
+    const names = (log.residents||[]).map(r => (r.firstName+' '+r.lastName).trim()).join('; ');
+    rows.push([log.date, log.time||'', log.activityTitle, log.count, names]);
+  });
+
+  const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'activity_log_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearAttLogs() {
+  if (!confirm('Clear all activity logs? This cannot be undone.')) return;
+  localStorage.removeItem('actLogs');
+  renderAttLogs();
+  showToast('Logs cleared');
+}
+
+
+function printBusterPack(num) {
+  var pk = BUSTER_PACKS.find(function(p){ return p.num === num; });
+  if (!pk) { alert('Pack not found.'); return; }
+  var w = window.open('', '_blank');
+  if (!w) { alert('Allow pop-ups to print packs.'); return; }
+  w.document.write(buildBusterPrintHTML(pk, true));
+  w.document.close();
+  w.focus();
+  setTimeout(function(){ w.print(); }, 600);
+}
+
+function buildBusterPrintHTML(pk, forPrint) {
+  var css = '<style>'
+    + 'body{font-family:Georgia,serif;margin:0;padding:0;color:#222;}'
+    + '.page{width:7.5in;min-height:10in;padding:.5in .6in;box-sizing:border-box;}'
+    + (forPrint ? '@media print{.page{page-break-after:always;}.no-break{page-break-inside:avoid;}}' : '.page{border-bottom:3px dashed #ccc;margin-bottom:20px;}')
+    + 'h1{font-size:26pt;color:#7030A0;margin:0 0 2px;}'
+    + 'h2{font-size:14pt;color:#7030A0;margin:18px 0 6px;border-bottom:2px solid #e0d0f0;padding-bottom:3px;}'
+    + 'h3{font-size:12pt;color:#555;margin:12px 0 4px;}'
+    + '.badge{display:inline-block;background:#7030A0;color:#fff;border-radius:20px;padding:3px 14px;font-size:11pt;margin-bottom:8px;}'
+    + '.scramble-word{font-size:20pt;font-weight:bold;letter-spacing:6px;color:#7030A0;}'
+    + '.line{border-bottom:1px solid #bbb;margin:6px 0 14px;}'
+    + 'table{width:100%;border-collapse:collapse;margin:6px 0;}'
+    + 'td,th{padding:6px 8px;border:1px solid #ddd;font-size:11pt;}'
+    + 'th{background:#f0e8ff;color:#7030A0;}'
+    + '.trivia-q{margin-bottom:12px;}'
+    + '.trivia-q p{margin:0 0 3px;font-weight:bold;}'
+    + '.trivia-opts{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;padding-left:10px;}'
+    + '.story-box{background:#faf7ff;border-left:4px solid #7030A0;padding:12px 14px;border-radius:4px;font-style:italic;line-height:1.6;}'
+    + '.prompt-box{background:#fff8e1;border:1px solid #f0c040;border-radius:6px;padding:10px 14px;margin-top:8px;}'
+    + '.ans-correct{color:#2e7d32;font-weight:bold;}'
+    + '.footer{text-align:center;font-size:9pt;color:#aaa;margin-top:24px;}'
+    + '</style>';
+
+  // Page 1: scrambles + trivia
+  var p1 = '<div class="page">'
+    + '<h1>' + pk.emoji + ' Pack #' + pk.num + ' — ' + pk.theme + '</h1>'
+    + '<div class="badge">Boredom Buster Pack</div>'
+    + '<h2>🔤 Word Scramble</h2>'
+    + '<p style="font-size:10pt;color:#666;margin:0 0 10px;">Unscramble each word. A hint is provided.</p>';
+  pk.scrambles.forEach(function(s, i) {
+    var scrambled = s.word.split('').sort(function(){ return Math.random()-.5; }).join('');
+    // Ensure it's actually scrambled
+    var attempts = 0;
+    while (scrambled === s.word && attempts < 10) {
+      scrambled = s.word.split('').sort(function(){ return Math.random()-.5; }).join('');
+      attempts++;
+    }
+    p1 += '<div class="no-break" style="margin-bottom:10px;">'
+      + '<span style="font-size:10pt;color:#555;">' + (i+1) + '. Hint: <em>' + s.hint + '</em></span><br>'
+      + '<span class="scramble-word">' + scrambled + '</span>'
+      + '<div class="line"></div>'
+      + '</div>';
+  });
+
+  p1 += '<h2>❓ Trivia Challenge</h2>'
+    + '<p style="font-size:10pt;color:#666;margin:0 0 10px;">Circle the best answer.</p>';
+  pk.trivia.forEach(function(t, i) {
+    p1 += '<div class="trivia-q no-break">'
+      + '<p>' + (i+1) + '. ' + t.q + '</p>'
+      + '<div class="trivia-opts">'
+      + '<span>' + t.a + '</span>'
+      + '<span>' + t.b + '</span>'
+      + '<span>' + t.c + '</span>'
+      + '<span>' + t.d + '</span>'
+      + '</div></div>';
+  });
+  p1 += '<div class="footer">Pack #' + pk.num + ' · ' + pk.theme + ' · Empower Life 365</div></div>';
+
+  // Page 2: story + sayings + fill-in
+  var p2 = '<div class="page">'
+    + '<h1>' + pk.emoji + ' Pack #' + pk.num + ' — ' + pk.theme + '</h1>'
+    + '<h2>📖 Short Story &amp; Reflection</h2>'
+    + '<h3>' + pk.story.title + '</h3>'
+    + '<div class="story-box">' + pk.story.text + '</div>'
+    + '<div class="prompt-box"><strong>Reflection:</strong> ' + pk.story.prompt + '</div>'
+    + '<div style="margin-top:8px;"><div class="line"></div><div class="line" style="margin-top:16px;"></div><div class="line" style="margin-top:16px;"></div></div>'
+    + '<h2>💬 Complete the Saying</h2>'
+    + '<p style="font-size:10pt;color:#666;margin:0 0 8px;">Fill in the blank to finish each familiar phrase.</p>';
+  pk.sayings.forEach(function(s, i) {
+    p2 += '<div class="no-break" style="margin-bottom:8px;">'
+      + '<span style="font-size:11pt;">' + (i+1) + '. ' + s.prompt + ' _______________</span>'
+      + '</div>';
+  });
+  p2 += '<h2>✏️ Fill in the Blank</h2>'
+    + '<p style="font-size:10pt;color:#666;margin:0 0 8px;">Complete each sentence with the correct word.</p>';
+  pk.fillIn.forEach(function(f, i) {
+    p2 += '<div class="no-break" style="margin-bottom:8px;">'
+      + '<span style="font-size:11pt;">' + (i+1) + '. ' + f.prompt + '</span>'
+      + '</div>';
+  });
+  p2 += '<div class="footer">Pack #' + pk.num + ' · ' + pk.theme + ' · Empower Life 365</div></div>';
+
+  // Page 3: conversation starters + resident space
+  var p3 = '<div class="page">'
+    + '<h1>' + pk.emoji + ' Pack #' + pk.num + ' — ' + pk.theme + '</h1>'
+    + '<h2>💡 Conversation Starters</h2>'
+    + '<p style="font-size:10pt;color:#666;margin:0 0 8px;">Share these with a friend, staff member, or family visitor!</p>';
+  pk.chat.forEach(function(c, i) {
+    p3 += '<div class="no-break" style="margin:0 0 28px;">'
+      + '<p style="font-size:13pt;font-weight:bold;color:#7030A0;margin:0 0 4px;">' + (i+1) + '. ' + c + '</p>'
+      + '<div class="line"></div><div class="line"></div>'
+      + '</div>';
+  });
+  p3 += '<h2>⭐ My Thoughts Today</h2>'
+    + '<p style="font-size:10pt;color:#666;margin:0 0 6px;">Write anything on your mind — a memory, a feeling, or just a few words.</p>'
+    + '<div class="line"></div><div class="line" style="margin-top:20px;"></div>'
+    + '<div class="line" style="margin-top:20px;"></div><div class="line" style="margin-top:20px;"></div>'
+    + '<div class="line" style="margin-top:20px;"></div>'
+    + '<p style="text-align:right;font-size:10pt;color:#aaa;margin-top:12px;">Date: ___________________</p>'
+    + '<div class="footer">Pack #' + pk.num + ' · ' + pk.theme + ' · Empower Life 365 | empowerlife365.app</div></div>';
+
+  // Page 4: Answers
+  var p4 = '<div class="page">'
+    + '<h1>✅ Answer Key — Pack #' + pk.num + ' · ' + pk.theme + '</h1>'
+    + '<h2>🔤 Word Scramble Answers</h2>'
+    + '<table><tr>';
+  pk.scrambles.forEach(function(s, i) {
+    p4 += '<td><strong>' + (i+1) + '.</strong> ' + s.word + '</td>';
+  });
+  p4 += '</tr></table>'
+    + '<h2>❓ Trivia Answers</h2>'
+    + '<table><thead><tr><th>#</th><th>Question</th><th>Answer</th></tr></thead><tbody>';
+  pk.trivia.forEach(function(t, i) {
+    var ansText = t[t.ans.toLowerCase()];
+    p4 += '<tr><td>' + (i+1) + '</td><td>' + t.q + '</td><td class="ans-correct">' + t.ans + '. ' + (ansText||'') + '</td></tr>';
+  });
+  p4 += '</tbody></table>'
+    + '<h2>💬 Saying Answers</h2>'
+    + '<table><thead><tr><th>#</th><th>Saying</th><th>Answer</th></tr></thead><tbody>';
+  pk.sayings.forEach(function(s, i) {
+    p4 += '<tr><td>' + (i+1) + '</td><td>' + s.prompt + '</td><td class="ans-correct">' + s.ans + '</td></tr>';
+  });
+  p4 += '</tbody></table>'
+    + '<h2>✏️ Fill in the Blank Answers</h2>'
+    + '<table><thead><tr><th>#</th><th>Sentence</th><th>Answer</th></tr></thead><tbody>';
+  pk.fillIn.forEach(function(f, i) {
+    p4 += '<tr><td>' + (i+1) + '</td><td>' + f.prompt + '</td><td class="ans-correct">' + f.ans + '</td></tr>';
+  });
+  p4 += '</tbody></table>'
+    + '<div class="footer" style="margin-top:30px;">Empower Life 365 | empowerlife365.app — Staff Answer Key</div></div>';
+
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pack #' + pk.num + ' — ' + pk.theme + '</title>'
+    + css + '</head><body>' + p1 + p2 + p3 + p4 + '</body></html>';
+}
+
+
+/* ═══════════════════════════════════════════════
+   BOREDOM BUSTER PACKS
+   ═══════════════════════════════════════════════ */
+
+var _gpSelectedResident = null;
+var _gpSelectedPackNum = null;
+
+function getBBLogs() {
+  try { return JSON.parse(localStorage.getItem('bbLogs') || '[]'); } catch(e) { return []; }
+}
+function saveBBLogs(logs) {
+  localStorage.setItem('bbLogs', JSON.stringify(logs));
+}
+
+function getPacksGivenTo(residentId) {
+  var logs = getBBLogs();
+  return logs.filter(function(l){ return l.residentId === residentId; }).map(function(l){ return l.packNum; });
+}
+
+function renderBusterGrid() {
+  var grid = document.getElementById('buster-grid');
+  if (!grid) return;
+  var query = (document.getElementById('buster-search') || {}).value || '';
+  query = query.toLowerCase();
+  var filtered = BUSTER_PACKS.filter(function(p){
+    return !query || p.theme.toLowerCase().includes(query) || String(p.num).includes(query);
+  });
+  if (!filtered.length) { grid.innerHTML = '<p style="color:#888;">No packs match your search.</p>'; return; }
+  grid.innerHTML = filtered.map(function(p) {
+    return '<div style="border:2px solid #e0d0f0;border-radius:12px;padding:14px;background:#faf7ff;cursor:pointer;" onclick="previewBusterPack(' + p.num + ')">'
+      + '<div style="font-size:28px;margin-bottom:4px;">' + p.emoji + '</div>'
+      + '<div style="font-weight:700;color:#7030A0;font-size:16px;">Pack #' + p.num + '</div>'
+      + '<div style="color:#444;font-size:14px;margin-bottom:10px;">' + p.theme + '</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+      + '<button class="btn-primary" style="font-size:12px;padding:5px 10px;" onclick="event.stopPropagation();printBusterPack(' + p.num + ')">🖨 Print</button>'
+      + '<button class="btn-secondary" style="font-size:12px;padding:5px 10px;" onclick="event.stopPropagation();openGivePack(' + p.num + ')">🎁 Give</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function previewBusterPack(num) {
+  var pk = BUSTER_PACKS.find(function(p){ return p.num === num; });
+  if (!pk) return;
+  var w = window.open('', '_blank');
+  if (!w) { alert('Allow pop-ups to preview packs.'); return; }
+  w.document.write(buildBusterPrintHTML(pk, false));
+  w.document.close();
+}
+
+function openGivePack(preSelectNum) {
+  _gpSelectedResident = null;
+  _gpSelectedPackNum = preSelectNum || null;
+  // Populate resident dropdown
+  var sel = document.getElementById('gp-resident');
+  sel.innerHTML = '<option value="">-- Select Resident --</option>';
+  var residents = (DATA && DATA.residents) ? DATA.residents.slice().sort(function(a,b){
+    return (a.lastName||'').localeCompare(b.lastName||'');
+  }) : [];
+  residents.forEach(function(r) {
+    var opt = document.createElement('option');
+    opt.value = r.id;
+    opt.textContent = r.lastName + ', ' + r.firstName + (r.room ? ' (Rm ' + r.room + ')' : '');
+    sel.appendChild(opt);
+  });
+  refreshPackPicker();
+  var overlay = document.getElementById('give-pack-overlay');
+  overlay.style.display = 'flex';
+}
+
+function closeGivePack() {
+  document.getElementById('give-pack-overlay').style.display = 'none';
+  _gpSelectedResident = null;
+  _gpSelectedPackNum = null;
+}
+
+function refreshPackPicker() {
+  var sel = document.getElementById('gp-resident');
+  _gpSelectedResident = sel.value || null;
+  var given = _gpSelectedResident ? getPacksGivenTo(_gpSelectedResident) : [];
+  var grid = document.getElementById('gp-pack-grid');
+  grid.innerHTML = BUSTER_PACKS.map(function(p) {
+    var alreadyGiven = given.indexOf(p.num) !== -1;
+    var isSelected = _gpSelectedPackNum === p.num;
+    var border = isSelected ? '2px solid #7030A0' : '2px solid #e0d0f0';
+    var bg = alreadyGiven ? '#f0f0f0' : (isSelected ? '#ede0ff' : '#faf7ff');
+    var color = alreadyGiven ? '#aaa' : '#333';
+    return '<div style="border:' + border + ';border-radius:8px;padding:8px 6px;text-align:center;cursor:' + (alreadyGiven?'not-allowed':'pointer') + ';background:' + bg + ';color:' + color + ';" '
+      + (alreadyGiven ? '' : 'onclick="selectGPPack(' + p.num + ')"')
+      + ' title="' + (alreadyGiven ? 'Already given' : p.theme) + '">'
+      + '<div style="font-size:18px;">' + p.emoji + '</div>'
+      + '<div style="font-size:11px;font-weight:700;">#' + p.num + '</div>'
+      + '<div style="font-size:10px;">' + p.theme.split(' ').slice(0,2).join(' ') + '</div>'
+      + (alreadyGiven ? '<div style="font-size:9px;color:#c00;">✓ Given</div>' : '')
+      + '</div>';
+  }).join('');
+  _updateGPSaveBtn();
+}
+
+function selectGPPack(num) {
+  _gpSelectedPackNum = num;
+  refreshPackPicker();
+}
+
+function _updateGPSaveBtn() {
+  var btn = document.getElementById('gp-save-btn');
+  if (btn) btn.disabled = !(_gpSelectedResident && _gpSelectedPackNum);
+}
+
+function saveGivePack() {
+  if (!_gpSelectedResident || !_gpSelectedPackNum) return;
+  var logs = getBBLogs();
+  var resident = DATA.residents.find(function(r){ return r.id === _gpSelectedResident; });
+  var pk = BUSTER_PACKS.find(function(p){ return p.num === _gpSelectedPackNum; });
+  logs.push({
+    id: 'bb_' + Date.now(),
+    residentId: _gpSelectedResident,
+    residentName: resident ? (resident.lastName + ', ' + resident.firstName) : _gpSelectedResident,
+    residentRoom: resident ? (resident.room || '') : '',
+    packNum: _gpSelectedPackNum,
+    packTheme: pk ? pk.theme : '',
+    packEmoji: pk ? pk.emoji : '',
+    date: new Date().toLocaleDateString(),
+    time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+  });
+  saveBBLogs(logs);
+  closeGivePack();
+  showToast('Pack #' + _gpSelectedPackNum + ' recorded for ' + (resident ? resident.firstName : '') + '!');
+  if (pk) printBusterPack(pk.num);
+}
+
+function renderBBLogs() {
+  var list = document.getElementById('bb-log-list');
+  if (!list) return;
+  var logs = getBBLogs().slice().reverse();
+  if (!logs.length) { list.innerHTML = '<p style="color:#888;padding:20px;">No packs recorded yet.</p>'; return; }
+  // Group by resident
+  var byResident = {};
+  logs.forEach(function(l) {
+    if (!byResident[l.residentId]) byResident[l.residentId] = {name: l.residentName, room: l.residentRoom, entries: []};
+    byResident[l.residentId].entries.push(l);
+  });
+  var html = '';
+  Object.keys(byResident).sort().forEach(function(rid) {
+    var r = byResident[rid];
+    html += '<div style="margin-bottom:18px;border:1px solid #e0d0f0;border-radius:10px;overflow:hidden;">';
+    html += '<div style="background:#7030A0;color:#fff;padding:10px 14px;font-weight:700;">'
+      + r.name + (r.room ? ' — Rm ' + r.room : '') + ' <span style="font-weight:400;opacity:.8;">(' + r.entries.length + ' packs given)</span></div>';
+    html += '<div style="padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;">';
+    r.entries.forEach(function(e) {
+      html += '<span style="background:#ede0ff;border-radius:6px;padding:4px 10px;font-size:13px;">'
+        + e.packEmoji + ' #' + e.packNum + ' ' + e.packTheme + ' <span style="color:#999;font-size:11px;">(' + e.date + ')</span></span>';
+    });
+    html += '</div></div>';
+  });
+  list.innerHTML = html;
+}
+
+function exportBBLogs() {
+  var logs = getBBLogs();
+  if (!logs.length) { showToast('No logs to export.'); return; }
+  var rows = [['Date','Time','Resident','Room','Pack #','Theme']];
+  logs.forEach(function(l) {
+    rows.push([l.date, l.time, l.residentName, l.residentRoom, l.packNum, l.packTheme]);
+  });
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'buster_pack_log.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearBBLogs() {
+  if (!confirm('Clear all Buster Pack logs? This cannot be undone.')) return;
+  localStorage.removeItem('bbLogs');
+  renderBBLogs();
+  showToast('Buster Pack logs cleared.');
+}
+
+
+const BUSTER_PACKS = [
+{num:1,theme:"Spring & Gardens",emoji:"\u1f338",scrambles:[{word:"TULIP",hint:"A spring flower"},{word:"GARDEN",hint:"Where flowers grow"},{word:"SEEDS",hint:"You plant these"},{word:"SHOVEL",hint:"Digging tool"},{word:"BLOOM",hint:"Flowers do this"},{word:"MULCH",hint:"Protects the soil"}],trivia:[{q:"What color are most daffodils?",a:"A. Red",b:"B. Yellow",c:"C. Blue",d:"D. Purple",ans:"B"},{q:"Which season follows spring?",a:"A. Winter",b:"B. Fall",c:"C. Summer",d:"D. Monsoon",ans:"C"},{q:"What do plants need to grow?",a:"A. Wind only",b:"B. Darkness",c:"C. Sunlight and water",d:"D. Snow",ans:"C"},{q:"What is a perennial?",a:"A. A plant that dies each year",b:"B. A plant that grows every year",c:"C. A type of soil",d:"D. A garden tool",ans:"B"},{q:"Roses belong to which family?",a:"A. Daisy",b:"B. Lily",c:"C. Rosaceae",d:"D. Fern",ans:"C"}],story:{title:"A Garden Remembered",text:"Every spring, Eleanor walked to her backyard to check on her roses. No matter how cold the winter had been, they always came back, just like hope.",prompt:"What is something in your life that keeps coming back, like a spring flower?"},sayings:[{prompt:"Every rose has its ___",ans:"thorn"},{prompt:"Bloom where you are ___",ans:"planted"},{prompt:"Stop and smell the ___",ans:"roses"},{prompt:"April showers bring May ___",ans:"flowers"},{prompt:"A thing of beauty is a joy ___",ans:"forever"}],fillIn:[{prompt:"Gardeners use a ___ to water plants.",ans:"hose"},{prompt:"A ___ is a beautiful spring flower that comes in many colors.",ans:"tulip"},{prompt:"To keep weeds away, gardeners spread ___ on the soil.",ans:"mulch"},{prompt:"Seeds need ___ and water to sprout.",ans:"sunlight"},{prompt:"A garden fence keeps animals ___ plants.",ans:"away from"}],chat:["What is your favorite flower and why?","Did you ever have a garden? What did you grow?","What does spring remind you of?"]},
+{num:2,theme:"American History",emoji:"\u1f5fd",scrambles:[{word:"LIBERTY",hint:"Freedom"},{word:"EAGLE",hint:"National bird"},{word:"CONGRESS",hint:"Makes the laws"},{word:"PATRIOT",hint:"Loves their country"},{word:"COLONY",hint:"Early settlement"},{word:"FOUNDING",hint:"Beginning, as in ___ Fathers"}],trivia:[{q:"How many original colonies were there?",a:"A. 10",b:"B. 13",c:"C. 15",d:"D. 50",ans:"B"},{q:"What year did the U.S. declare independence?",a:"A. 1776",b:"B. 1812",c:"C. 1620",d:"D. 1865",ans:"A"},{q:"Who was the first president?",a:"A. Lincoln",b:"B. Jefferson",c:"C. Washington",d:"D. Adams",ans:"C"},{q:"The Civil War ended in which year?",a:"A. 1845",b:"B. 1865",c:"C. 1900",d:"D. 1776",ans:"B"},{q:"What does the Statue of Liberty hold in her right hand?",a:"A. A book",b:"B. A sword",c:"C. A torch",d:"D. A flag",ans:"C"}],story:{title:"The Letter Home",text:"During World War II, a young soldier named Thomas wrote letters home every week. His mother kept every one and read them aloud to the whole family each Sunday after church.",prompt:"Did you or someone you love serve in the military? What do you remember most?"},sayings:[{prompt:"Home of the brave, land of the ___",ans:"free"},{prompt:"Give me liberty or give me ___",ans:"death"},{prompt:"One nation, under ___",ans:"God"},{prompt:"United we stand, divided we ___",ans:"fall"},{prompt:"Ask not what your country can do for you ___",ans:"ask what you can do for your country"}],fillIn:[{prompt:"The American flag has ___ stripes.",ans:"13"},{prompt:"The national bird of the United States is the bald ___.",ans:"eagle"},{prompt:"The president lives in the ___ House.",ans:"White"},{prompt:"Americans celebrate independence on July ___.",ans:"4th"},{prompt:"The first ten amendments are called the Bill of ___.",ans:"Rights"}],chat:["What is your favorite American holiday and why?","What historical event do you remember most clearly?","What does freedom mean to you?"]},
+{num:3,theme:"Music & Song",emoji:"\u1f3b5",scrambles:[{word:"MELODY",hint:"A tune you can hum"},{word:"RHYTHM",hint:"The beat of music"},{word:"CHORUS",hint:"Repeated part of a song"},{word:"PIANO",hint:"An 88-key instrument"},{word:"BALLAD",hint:"A slow, story song"},{word:"TEMPO",hint:"Speed of music"}],trivia:[{q:"How many strings does a standard guitar have?",a:"A. 4",b:"B. 5",c:"C. 6",d:"D. 8",ans:"C"},{q:"What is the highest female singing voice called?",a:"A. Alto",b:"B. Tenor",c:"C. Bass",d:"D. Soprano",ans:"D"},{q:"Who is the King of Rock and Roll?",a:"A. Frank Sinatra",b:"B. Elvis Presley",c:"C. Chuck Berry",d:"D. Jerry Lee Lewis",ans:"B"},{q:"What instrument does a drummer play?",a:"A. Strings",b:"B. Keys",c:"C. Percussion",d:"D. Wind",ans:"C"},{q:"A group of musicians playing together is called a?",a:"A. Choir",b:"B. Band or Orchestra",c:"C. Quartet",d:"D. Duet",ans:"B"}],story:{title:"The Dancing Years",text:"Ruth could always tell what year it was by the music. Big band in the 40s, crooners in the 50s. Every song held a memory, a face, a moment she thought she had forgotten.",prompt:"What song takes you back to a special time in your life? What do you remember?"},sayings:[{prompt:"Music soothes the savage ___",ans:"beast"},{prompt:"If music be the food of love, play ___",ans:"on"},{prompt:"When the music hits you, you feel no ___",ans:"pain"},{prompt:"Life is a song, love is the ___",ans:"music"},{prompt:"Without music, life would be a ___",ans:"mistake"}],fillIn:[{prompt:"A person who writes music is called a ___.",ans:"composer"},{prompt:"Music written for one performer is called a ___.",ans:"solo"},{prompt:"The ___ keeps everyone playing at the same speed.",ans:"conductor"},{prompt:"A group of four singers or musicians is a ___.",ans:"quartet"},{prompt:"Sheet music uses a set of five lines called a ___.",ans:"staff"}],chat:["What kind of music did you love when you were young?","Can you name a song from every decade of your life?","Who is your all-time favorite singer or band?"]},
+{num:4,theme:"Animals & Pets",emoji:"\u1f43e",scrambles:[{word:"KITTEN",hint:"Baby cat"},{word:"BURROW",hint:"Animal tunnel home"},{word:"MIGRATE",hint:"What birds do in winter"},{word:"PUPPY",hint:"Baby dog"},{word:"FEATHER",hint:"Bird covering"},{word:"HABITAT",hint:"Where an animal lives"}],trivia:[{q:"What is the fastest land animal?",a:"A. Lion",b:"B. Horse",c:"C. Cheetah",d:"D. Greyhound",ans:"C"},{q:"How many legs does a spider have?",a:"A. 6",b:"B. 8",c:"C. 10",d:"D. 4",ans:"B"},{q:"What do butterflies start as?",a:"A. Eggs and larvae",b:"B. Fully formed",c:"C. Seeds",d:"D. Pollen",ans:"A"},{q:"Which animal is known for its black and white stripes?",a:"A. Cheetah",b:"B. Giraffe",c:"C. Zebra",d:"D. Panda",ans:"C"},{q:"A group of wolves is called a?",a:"A. Herd",b:"B. Pack",c:"C. Flock",d:"D. Colony",ans:"B"}],story:{title:"Old Dog, New Days",text:"When Harold turned 80, his daughter brought him a beagle named Scout. Scout slept at his feet, walked slowly beside him, and seemed to understand that Harold needed a quiet, steady friend.",prompt:"Have you ever had a pet that meant a great deal to you? Tell us about them."},sayings:[{prompt:"Let sleeping dogs ___",ans:"lie"},{prompt:"Every dog has its ___",ans:"day"},{prompt:"You can't teach an old dog new ___",ans:"tricks"},{prompt:"Curiosity killed the ___",ans:"cat"},{prompt:"Birds of a feather flock ___",ans:"together"}],fillIn:[{prompt:"A baby cat is called a ___.",ans:"kitten"},{prompt:"Dogs are sometimes called a person's best ___.",ans:"friend"},{prompt:"Animals that only eat plants are called ___.",ans:"herbivores"},{prompt:"A bird uses its ___ to fly.",ans:"wings"},{prompt:"Fish breathe through their ___.",ans:"gills"}],chat:["What was your favorite pet growing up?","Do you have a funny animal story to share?","If you could have any animal as a pet, what would you choose?"]},
+{num:5,theme:"Famous Women",emoji:"\u1f451",scrambles:[{word:"PIONEER",hint:"First to do something"},{word:"COURAGE",hint:"Bravery"},{word:"LEADER",hint:"Someone others follow"},{word:"ACHIEVE",hint:"To accomplish"},{word:"INSPIRE",hint:"To motivate others"},{word:"LEGACY",hint:"What you leave behind"}],trivia:[{q:"Who was the first woman to fly solo across the Atlantic?",a:"A. Bessie Coleman",b:"B. Amelia Earhart",c:"C. Harriet Quimby",d:"D. Jacqueline Cochran",ans:"B"},{q:"What did Marie Curie win two Nobel Prizes for?",a:"A. Literature and Peace",b:"B. Physics and Chemistry",c:"C. Medicine and Math",d:"D. Biology and Economics",ans:"B"},{q:"Who refused to give up her bus seat in 1955?",a:"A. Harriet Tubman",b:"B. Sojourner Truth",c:"C. Rosa Parks",d:"D. Maya Angelou",ans:"C"},{q:"Who wrote the novel Little Women?",a:"A. Jane Austen",b:"B. Louisa May Alcott",c:"C. Emily Bronte",d:"D. Virginia Woolf",ans:"B"},{q:"Who was the first female Secretary of State?",a:"A. Hillary Clinton",b:"B. Condoleezza Rice",c:"C. Madeleine Albright",d:"D. Susan Rice",ans:"C"}],story:{title:"The Quilt Makers",text:"In a small town, a group of women met every Thursday to quilt. They were teachers, nurses, and mothers. Together, they made something warmer and more beautiful than any of them could alone.",prompt:"Who is a woman in your life who inspired you? What did she teach you?"},sayings:[{prompt:"Behind every great man is a great ___",ans:"woman"},{prompt:"Well-behaved women seldom make ___",ans:"history"},{prompt:"A woman is like a tea bag ___",ans:"you never know how strong she is until she is in hot water"},{prompt:"The hand that rocks the cradle rules the ___",ans:"world"},{prompt:"There is no limit to what we, as women, can ___",ans:"accomplish"}],fillIn:[{prompt:"Florence Nightingale was famous for being a ___.",ans:"nurse"},{prompt:"The first woman in space was ___ Tereshkova.",ans:"Valentina"},{prompt:"Eleanor Roosevelt was the wife of President ___.",ans:"Franklin D. Roosevelt"},{prompt:"Helen Keller was both blind and ___.",ans:"deaf"},{prompt:"Harriet Tubman helped enslaved people escape using the Underground ___.",ans:"Railroad"}],chat:["Name a woman who changed the world in your lifetime.","What is the greatest challenge women have overcome in your lifetime?","Who was the most important woman in your family?"]},
+{num:6,theme:"Travel & Places",emoji:"\u2708\ufe0f",scrambles:[{word:"PASSPORT",hint:"Travel document"},{word:"JOURNEY",hint:"A long trip"},{word:"SOUVENIR",hint:"A keepsake from travel"},{word:"LANDMARK",hint:"Famous site"},{word:"HOTEL",hint:"A place to stay"},{word:"COMPASS",hint:"Navigation tool"}],trivia:[{q:"What is the tallest mountain in the world?",a:"A. K2",b:"B. Kilimanjaro",c:"C. Everest",d:"D. Denali",ans:"C"},{q:"The Eiffel Tower is located in?",a:"A. London",b:"B. Rome",c:"C. Berlin",d:"D. Paris",ans:"D"},{q:"The Amazon River flows through which continent?",a:"A. Africa",b:"B. Asia",c:"C. South America",d:"D. Australia",ans:"C"},{q:"What country has the most natural lakes?",a:"A. USA",b:"B. Russia",c:"C. Canada",d:"D. Finland",ans:"C"},{q:"The Great Wall was built in?",a:"A. Japan",b:"B. Korea",c:"C. India",d:"D. China",ans:"D"}],story:{title:"The Long Way Home",text:"After the war, Gene took three weeks to drive home, stopping at diners and small towns across America. He never forgot those wide roads, those small kindnesses, and the feeling that the country was very large and very good.",prompt:"What is the most memorable trip you ever took? What made it special?"},sayings:[{prompt:"The world is a book and those who do not travel read only one ___",ans:"page"},{prompt:"Not all those who wander are ___",ans:"lost"},{prompt:"Home is where the heart ___",ans:"is"},{prompt:"Travel is the only thing you buy that makes you ___",ans:"richer"},{prompt:"The journey of a thousand miles begins with one ___",ans:"step"}],fillIn:[{prompt:"People need a ___ to travel to other countries.",ans:"passport"},{prompt:"The ___ Tower is one of the most famous landmarks in France.",ans:"Eiffel"},{prompt:"A person who shows tourists around a city is called a ___.",ans:"guide"},{prompt:"The currency used in the United Kingdom is the ___.",ans:"pound"},{prompt:"The largest ocean in the world is the ___ Ocean.",ans:"Pacific"}],chat:["Where is the most beautiful place you have ever been?","If you could travel anywhere tomorrow, where would you go?","What is the farthest from home you have ever been?"]},
+{num:7,theme:"Food & Cooking",emoji:"\u1f373",scrambles:[{word:"RECIPE",hint:"Cooking instructions"},{word:"SIMMER",hint:"Cook gently in liquid"},{word:"KNEAD",hint:"Work dough with hands"},{word:"BATTER",hint:"Liquid cake mixture"},{word:"SPICE",hint:"Adds flavor"},{word:"HARVEST",hint:"Gathering crops"}],trivia:[{q:"What grain is most bread made from?",a:"A. Rice",b:"B. Oats",c:"C. Wheat",d:"D. Corn",ans:"C"},{q:"At what temperature does water boil?",a:"A. 98 degrees",b:"B. 212 degrees F",c:"C. 100 degrees F",d:"D. 180 degrees F",ans:"B"},{q:"What is the main ingredient in guacamole?",a:"A. Tomato",b:"B. Pepper",c:"C. Avocado",d:"D. Onion",ans:"C"},{q:"What do we call an egg cooked in its shell in boiling water?",a:"A. Fried",b:"B. Scrambled",c:"C. Poached",d:"D. Hard-boiled",ans:"D"},{q:"Parmesan cheese originally comes from?",a:"A. France",b:"B. Spain",c:"C. Greece",d:"D. Italy",ans:"D"}],story:{title:"Sunday Dinner",text:"Every Sunday, Grandma Rose started cooking at 7 in the morning. By noon, the whole family was at the table. It was not just food she was making. It was the thing that held them all together.",prompt:"What is your favorite meal someone made for you? Who made it and what was the occasion?"},sayings:[{prompt:"Too many cooks spoil the ___",ans:"broth"},{prompt:"The way to a man's heart is through his ___",ans:"stomach"},{prompt:"You reap what you ___",ans:"sow"},{prompt:"An apple a day keeps the doctor ___",ans:"away"},{prompt:"Waste not, want ___",ans:"not"}],fillIn:[{prompt:"A recipe tells you the ___ and steps to make a dish.",ans:"ingredients"},{prompt:"Bread rises because of a living ingredient called ___.",ans:"yeast"},{prompt:"You bake a cake in an ___.",ans:"oven"},{prompt:"Soup is often made by simmering vegetables in ___.",ans:"broth or water"},{prompt:"A kitchen tool used to flip pancakes is called a ___.",ans:"spatula"}],chat:["What is a dish you made that everyone asked for the recipe?","What food reminds you most of home?","Did you have a special family recipe passed down?"]},
+{num:8,theme:"Movies & Hollywood",emoji:"\u1f3ac",scrambles:[{word:"DIRECTOR",hint:"Person who makes films"},{word:"SEQUEL",hint:"A follow-up movie"},{word:"SCRIPT",hint:"Movie dialogue on paper"},{word:"PREMIERE",hint:"First showing"},{word:"CINEMA",hint:"A movie theater"},{word:"COSTUME",hint:"Actor's outfit"}],trivia:[{q:"Who played Scarlett in Gone with the Wind?",a:"A. Bette Davis",b:"B. Katharine Hepburn",c:"C. Vivien Leigh",d:"D. Joan Crawford",ans:"C"},{q:"What award do actors win at the Oscars?",a:"A. Emmy",b:"B. Golden Globe",c:"C. Grammy",d:"D. Academy Award",ans:"D"},{q:"Which film features Dorothy and Toto?",a:"A. Snow White",b:"B. The Wizard of Oz",c:"C. Cinderella",d:"D. Alice in Wonderland",ans:"B"},{q:"Casablanca was set during?",a:"A. World War I",b:"B. The Depression",c:"C. World War II",d:"D. The Korean War",ans:"C"},{q:"In It's a Wonderful Life, who plays George Bailey?",a:"A. Cary Grant",b:"B. Jimmy Stewart",c:"C. Clark Gable",d:"D. Henry Fonda",ans:"B"}],story:{title:"The Saturday Matinee",text:"Diane and her sister would save their dimes all week just to go to the Saturday matinee. For twenty-five cents they got a double feature, a cartoon, and two hours of pure magic.",prompt:"What is your all-time favorite movie and what made it so special to you?"},sayings:[{prompt:"Lights, camera, ___",ans:"action"},{prompt:"Go ahead, make my ___",ans:"day"},{prompt:"There is no place like ___",ans:"home"},{prompt:"May the force be with ___",ans:"you"},{prompt:"Life is like a box of ___",ans:"chocolates"}],fillIn:[{prompt:"The director says this word to start a film scene: ___.",ans:"action"},{prompt:"Movies that make you cry are often called ___.",ans:"tearjerkers"},{prompt:"A movie made from a book is called an ___.",ans:"adaptation"},{prompt:"The main character in a story is the ___.",ans:"protagonist"},{prompt:"Silent movies had no ___, only music and title cards.",ans:"sound or dialogue"}],chat:["What movie did you see on a first date?","Who was your favorite movie star when you were young?","What movie do you think everyone should see?"]},
+{num:9,theme:"Faith & Inspiration",emoji:"\u271d\ufe0f",scrambles:[{word:"PRAYER",hint:"Talking with God"},{word:"GRACE",hint:"God's unearned love"},{word:"MERCY",hint:"Forgiveness and kindness"},{word:"FAITH",hint:"Belief in what is unseen"},{word:"SERMON",hint:"Preacher's message"},{word:"BLESSING",hint:"A gift from God"}],trivia:[{q:"The Bible has how many books?",a:"A. 46",b:"B. 56",c:"C. 66",d:"D. 76",ans:"C"},{q:"Who built the ark in the Bible?",a:"A. Moses",b:"B. Abraham",c:"C. David",d:"D. Noah",ans:"D"},{q:"What is the first book of the Bible?",a:"A. Psalms",b:"B. Genesis",c:"C. Matthew",d:"D. Exodus",ans:"B"},{q:"What were the Ten Commandments written on?",a:"A. Papyrus",b:"B. Clay",c:"C. Wood",d:"D. Stone tablets",ans:"D"},{q:"Who led the Israelites out of Egypt?",a:"A. Joshua",b:"B. Joseph",c:"C. Moses",d:"D. Aaron",ans:"C"}],story:{title:"A Still Small Voice",text:"Agnes did not always hear from God in the big moments. It was in the quiet ones, washing dishes after supper, watching the first snow fall, that she felt a peace that was hard to explain but impossible to deny.",prompt:"Describe a moment when you felt something greater than yourself at work in your life."},sayings:[{prompt:"Faith can move ___",ans:"mountains"},{prompt:"The Lord is my shepherd, I shall not ___",ans:"want"},{prompt:"This little light of mine, I'm gonna let it ___",ans:"shine"},{prompt:"Amazing grace, how sweet the ___",ans:"sound"},{prompt:"Let your light so shine before men ___",ans:"that they may see your good works"}],fillIn:[{prompt:"Christians believe Jesus rose from the dead on ___.",ans:"Easter"},{prompt:"The holy book of Christianity is called the ___.",ans:"Bible"},{prompt:"A place of Christian worship is called a ___ or church.",ans:"cathedral"},{prompt:"The Lord's Prayer begins with the words: Our Father, who art in ___.",ans:"heaven"},{prompt:"A person who leads a church congregation is often called a ___.",ans:"pastor or minister"}],chat:["What Bible verse or prayer has stayed with you your whole life?","How has your faith helped you through a hard time?","What do you want future generations to know about faith?"]},
+{num:10,theme:"Sports & Games",emoji:"\u1f3c6",scrambles:[{word:"INNING",hint:"Baseball time unit"},{word:"REFEREE",hint:"Game official"},{word:"CHAMPION",hint:"Contest winner"},{word:"STADIUM",hint:"Where games are played"},{word:"TROPHY",hint:"Award for winning"},{word:"OVERTIME",hint:"Extra play time"}],trivia:[{q:"How many players are on a baseball team on the field?",a:"A. 8",b:"B. 9",c:"C. 10",d:"D. 11",ans:"B"},{q:"What sport uses a puck?",a:"A. Tennis",b:"B. Soccer",c:"C. Hockey",d:"D. Polo",ans:"C"},{q:"The Olympics began in which country?",a:"A. Rome",b:"B. Egypt",c:"C. Greece",d:"D. Turkey",ans:"C"},{q:"How many points is a touchdown worth?",a:"A. 3",b:"B. 5",c:"C. 6",d:"D. 7",ans:"C"},{q:"What is the diameter of a basketball hoop in inches?",a:"A. 14",b:"B. 16",c:"C. 18",d:"D. 20",ans:"C"}],story:{title:"The Catch",text:"Of all the things his father had given him, the old leather baseball glove was the one Ralph kept longest. Long after both his father and his own playing days were gone, he still oiled it every spring.",prompt:"What sport or game did you love most when you were young? Do you still play?"},sayings:[{prompt:"It ain't over till it's ___",ans:"over"},{prompt:"Play ball ___",ans:"let the games begin"},{prompt:"No pain, no ___",ans:"gain"},{prompt:"A good sport wins with grace and loses with ___",ans:"dignity"},{prompt:"Practice makes ___",ans:"perfect"}],fillIn:[{prompt:"A grand slam in baseball scores ___ runs.",ans:"four"},{prompt:"In bowling, knocking all pins down on the first ball is called a ___.",ans:"strike"},{prompt:"The Super Bowl is the championship game of ___.",ans:"football"},{prompt:"A basketball player who scores 3 points from behind the line made a ___.",ans:"three-pointer"},{prompt:"In chess, the goal is to capture the opponent's ___.",ans:"king"}],chat:["What is your best sports memory, playing or watching?","Did you have a sports hero growing up?","What game are you best at?"]},
+{num:11,theme:"Science & Discovery",emoji:"\u1f52c",scrambles:[{word:"GRAVITY",hint:"Force that pulls down"},{word:"ORBIT",hint:"Path around a planet"},{word:"ELEMENT",hint:"Pure chemical substance"},{word:"FOSSIL",hint:"Preserved ancient remain"},{word:"THEORY",hint:"Scientific explanation"},{word:"NUCLEUS",hint:"Center of an atom"}],trivia:[{q:"What planet is closest to the Sun?",a:"A. Venus",b:"B. Earth",c:"C. Mars",d:"D. Mercury",ans:"D"},{q:"What is the chemical symbol for water?",a:"A. WO",b:"B. H2O",c:"C. HO",d:"D. W2O",ans:"B"},{q:"Who developed the theory of relativity?",a:"A. Newton",b:"B. Darwin",c:"C. Einstein",d:"D. Hawking",ans:"C"},{q:"How many planets are in our solar system?",a:"A. 7",b:"B. 8",c:"C. 9",d:"D. 10",ans:"B"},{q:"What gas do plants breathe in?",a:"A. Oxygen",b:"B. Hydrogen",c:"C. Carbon dioxide",d:"D. Nitrogen",ans:"C"}],story:{title:"The Night Sky",text:"On clear summer nights, old Henry would bring his chair to the yard and stare at the stars for hours. He never had formal training, but he knew every constellation and felt somehow that the sky was keeping him company.",prompt:"What mystery about life or the universe have you always wondered about?"},sayings:[{prompt:"Necessity is the mother of ___",ans:"invention"},{prompt:"Eureka! I have ___",ans:"found it"},{prompt:"Look before you ___",ans:"leap"},{prompt:"The early bird catches the ___",ans:"worm"},{prompt:"Knowledge is ___",ans:"power"}],fillIn:[{prompt:"The force that keeps planets in orbit around the Sun is called ___.",ans:"gravity"},{prompt:"A scientist who studies stars is called an ___.",ans:"astronomer"},{prompt:"The human body has ___ bones.",ans:"206"},{prompt:"DNA stands for deoxyribonucleic ___.",ans:"acid"},{prompt:"The speed of light is approximately ___ miles per second.",ans:"186,000"}],chat:["What scientific discovery in your lifetime amazed you most?","Do you prefer science or art? Why?","What invention do you think changed the world the most?"]},
+{num:12,theme:"Home & Hearth",emoji:"\u1f3e0",scrambles:[{word:"PORCH",hint:"Covered front sitting area"},{word:"PANTRY",hint:"Food storage room"},{word:"CHIMNEY",hint:"Smoke exit from fireplace"},{word:"CELLAR",hint:"Underground storage space"},{word:"ATTIC",hint:"Top storage area of house"},{word:"HEARTH",hint:"Fireplace floor area"}],trivia:[{q:"What room did families traditionally gather in most?",a:"A. Bedroom",b:"B. Basement",c:"C. Kitchen",d:"D. Attic",ans:"C"},{q:"What does a weather vane show?",a:"A. Temperature",b:"B. Wind direction",c:"C. Rain amount",d:"D. Humidity",ans:"B"},{q:"A house with one story is often called a?",a:"A. Bungalow",b:"B. Duplex",c:"C. Mansion",d:"D. Villa",ans:"A"},{q:"What keeps a house warm in winter?",a:"A. Plumbing",b:"B. Heating system",c:"C. Electricity",d:"D. Foundation",ans:"B"},{q:"A craftsman-style home typically features a?",a:"A. Flat roof",b:"B. Covered porch",c:"C. Circular drive",d:"D. Tall columns",ans:"B"}],story:{title:"The Old House",text:"When Marian walked through her childhood home for the last time before it was sold, she ran her hand along the banister her father had carved and was surprised to find she was smiling. The house had been full of life, and somehow it still felt that way.",prompt:"Describe your childhood home. What did it look, smell, or sound like?"},sayings:[{prompt:"Home is where the heart ___",ans:"is"},{prompt:"An Englishman's home is his ___",ans:"castle"},{prompt:"There is no place like ___",ans:"home"},{prompt:"Good fences make good ___",ans:"neighbors"},{prompt:"The lights are on but nobody's ___",ans:"home"}],fillIn:[{prompt:"A room where the family gathers and watches TV is often called the ___ room.",ans:"living"},{prompt:"The room where guests sleep when visiting is a ___ room.",ans:"guest"},{prompt:"The space under the stairs is sometimes used as a ___ closet.",ans:"storage"},{prompt:"A garage is used to park a ___.",ans:"car"},{prompt:"In older homes, milk and butter were kept cold in an ___.",ans:"icebox"}],chat:["What is your favorite memory from a home you lived in?","What made your house feel like a home?","If you could live anywhere, what kind of home would it be?"]},
+{num:13,theme:"Summer Days",emoji:"\u2600\ufe0f",scrambles:[{word:"LEMONADE",hint:"Cool sweet drink"},{word:"HAMMOCK",hint:"Swinging outdoor rest spot"},{word:"SUNBURN",hint:"Too much sun on skin"},{word:"FIREFLY",hint:"Glowing summer insect"},{word:"PICNIC",hint:"Outdoor meal on a blanket"},{word:"TWILIGHT",hint:"Just after sunset"}],trivia:[{q:"What holiday falls on July 4th?",a:"A. Memorial Day",b:"B. Labor Day",c:"C. Independence Day",d:"D. Flag Day",ans:"C"},{q:"What is the hottest month on average in the U.S.?",a:"A. June",b:"B. July",c:"C. August",d:"D. September",ans:"B"},{q:"What game is played at summer barbecues with bags?",a:"A. Horseshoes",b:"B. Bocce",c:"C. Cornhole",d:"D. Croquet",ans:"C"},{q:"What insect is known for singing on hot summer days?",a:"A. Cricket",b:"B. Cicada",c:"C. Locust",d:"D. Firefly",ans:"B"},{q:"What summer food is eaten off a stick at the fair?",a:"A. Pie",b:"B. Corn dog",c:"C. Sausage",d:"D. Pretzel",ans:"B"}],story:{title:"The Swimming Hole",text:"Every summer afternoon, all the kids in the neighborhood met at the old quarry to swim. No one owned it, but everyone felt it was theirs. Those were the days when summer seemed to last forever.",prompt:"What is your strongest summer memory? Where were you and who were you with?"},sayings:[{prompt:"Make hay while the sun ___",ans:"shines"},{prompt:"Long summer days make for sweet ___",ans:"memories"},{prompt:"Every day is a good day when the sun is ___",ans:"shining"},{prompt:"School's out for ___",ans:"summer"},{prompt:"Life is better at the ___",ans:"lake"}],fillIn:[{prompt:"A tool people use to cool off by moving air back and forth is a ___.",ans:"fan"},{prompt:"People watch fireworks on the ___ of July.",ans:"4th"},{prompt:"The summer solstice is the ___ day of the year.",ans:"longest"},{prompt:"Cotton ___ are traditional summer clothes.",ans:"shorts or dresses"},{prompt:"Ice cream eaten on a cone or in a cup is a popular ___ treat.",ans:"summer"}],chat:["What was your favorite summer activity as a child?","Where did your family go on summer vacation?","What do you miss most about summers when you were young?"]},
+{num:14,theme:"Presidents & Leaders",emoji:"\u1f985",scrambles:[{word:"VETO",hint:"Reject a bill"},{word:"CABINET",hint:"Presidential advisors"},{word:"SENATE",hint:"Part of Congress"},{word:"INAUGURAL",hint:"First speech as president"},{word:"DEMOCRACY",hint:"People elect leaders"},{word:"CAMPAIGN",hint:"Running for office"}],trivia:[{q:"Who was the 16th President?",a:"A. Ulysses Grant",b:"B. Andrew Jackson",c:"C. Abraham Lincoln",d:"D. James Polk",ans:"C"},{q:"Which president served four terms?",a:"A. Woodrow Wilson",b:"B. FDR",c:"C. Harry Truman",d:"D. Teddy Roosevelt",ans:"B"},{q:"What is the term length for a U.S. president?",a:"A. 2 years",b:"B. 4 years",c:"C. 6 years",d:"D. 8 years",ans:"B"},{q:"Who was the youngest elected U.S. president?",a:"A. Bill Clinton",b:"B. Barack Obama",c:"C. JFK",d:"D. Jimmy Carter",ans:"C"},{q:"Where does the President live and work?",a:"A. Capitol Building",b:"B. Congress",c:"C. White House",d:"D. Pentagon",ans:"C"}],story:{title:"The Vote",text:"The first time Lillian voted, she dressed in her Sunday best and walked to the polls. She said nothing was ever so important as that walk, and she voted in every election for the next sixty years.",prompt:"Do you remember the first time you voted? Who or what were you voting for?"},sayings:[{prompt:"Ask not what your country can do for you ___",ans:"ask what you can do for your country"},{prompt:"Government of the people, by the people, for the ___",ans:"people"},{prompt:"The buck stops ___",ans:"here"},{prompt:"With great power comes great ___",ans:"responsibility"},{prompt:"One vote can make a ___",ans:"difference"}],fillIn:[{prompt:"The President lives in the ___ House.",ans:"White"},{prompt:"The U.S. has ___ branches of government.",ans:"three"},{prompt:"Congress is made up of the Senate and the House of ___.",ans:"Representatives"},{prompt:"A president can only serve ___ terms.",ans:"two"},{prompt:"The Vice President becomes president if the president is unable to ___.",ans:"serve"}],chat:["Which president do you admire most and why?","What is the most important quality in a leader?","How has the presidency changed in your lifetime?"]},
+{num:15,theme:"Birds & Flowers",emoji:"\u1f33a",scrambles:[{word:"CARDINAL",hint:"Red state bird"},{word:"PETAL",hint:"Part of a flower"},{word:"MIGRATE",hint:"Birds do this in fall"},{word:"PERENNIAL",hint:"Comes back each year"},{word:"NECTAR",hint:"Flower sweetness"},{word:"PLUMAGE",hint:"Bird feathers"}],trivia:[{q:"What is the national flower of the United States?",a:"A. Rose",b:"B. Daisy",c:"C. Lily",d:"D. Sunflower",ans:"A"},{q:"Which bird is known for its colorful tail display?",a:"A. Peacock",b:"B. Flamingo",c:"C. Parrot",d:"D. Macaw",ans:"A"},{q:"What is a group of crows called?",a:"A. Flock",b:"B. Gaggle",c:"C. Murder",d:"D. Colony",ans:"C"},{q:"What flower is used to make chamomile tea?",a:"A. Daisy",b:"B. Chamomile",c:"C. Lavender",d:"D. Mint",ans:"B"},{q:"A robin's egg is famous for what color?",a:"A. White",b:"B. Speckled",c:"C. Blue",d:"D. Yellow",ans:"C"}],story:{title:"The Bird Feeder",text:"After she retired, Helen kept a bird feeder outside her kitchen window. She knew every bird by name. The morning finches and the cardinal were her favorites. She said they reminded her to notice the small, beautiful things.",prompt:"What is your favorite bird or flower and what memory does it bring?"},sayings:[{prompt:"A bird in hand is worth two in the ___",ans:"bush"},{prompt:"Flowers are the music of the ___",ans:"ground"},{prompt:"Every flower is a soul blossoming in ___",ans:"nature"},{prompt:"The early bird catches the ___",ans:"worm"},{prompt:"To plant a garden is to believe in ___",ans:"tomorrow"}],fillIn:[{prompt:"A robin is often a sign that ___ has arrived.",ans:"spring"},{prompt:"The part of a plant that grows underground is the ___.",ans:"root"},{prompt:"Bees carry ___ from flower to flower to help plants reproduce.",ans:"pollen"},{prompt:"The bright colors of a flower help attract ___.",ans:"insects or birds"},{prompt:"A sunflower always faces the ___.",ans:"sun"}],chat:["What flowers did your mother or grandmother grow?","Have you ever watched birds for a long time? What did you notice?","What is your favorite thing about nature?"]},
+{num:16,theme:"Books & Stories",emoji:"\u1f4da",scrambles:[{word:"NOVEL",hint:"Long fiction book"},{word:"CHAPTER",hint:"Division of a book"},{word:"AUTHOR",hint:"Person who writes"},{word:"LIBRARY",hint:"Book lending place"},{word:"MEMOIR",hint:"Personal life story"},{word:"CLASSIC",hint:"Timeless famous work"}],trivia:[{q:"Who wrote Pride and Prejudice?",a:"A. Charlotte Bronte",b:"B. Jane Austen",c:"C. George Eliot",d:"D. Mary Shelley",ans:"B"},{q:"What is a biography?",a:"A. A made-up story",b:"B. A science book",c:"C. A true life story",d:"D. A collection of poems",ans:"C"},{q:"What is the most widely read book in the world?",a:"A. The Quran",b:"B. Don Quixote",c:"C. The Bible",d:"D. Harry Potter",ans:"C"},{q:"Who wrote The Grapes of Wrath?",a:"A. Ernest Hemingway",b:"B. F. Scott Fitzgerald",c:"C. John Steinbeck",d:"D. Mark Twain",ans:"C"},{q:"A book that tells a made-up story is called?",a:"A. Non-fiction",b:"B. An essay",c:"C. Fiction",d:"D. A manual",ans:"C"}],story:{title:"A Book for All Seasons",text:"Margaret had a book for every season. Cozy mysteries in winter, adventures in summer, and poetry in spring and fall. She said the right book at the right moment was like finding a friend who understood everything.",prompt:"What is the best book you have ever read and why did it stay with you?"},sayings:[{prompt:"You can't judge a book by its ___",ans:"cover"},{prompt:"The pen is mightier than the ___",ans:"sword"},{prompt:"Once upon a ___",ans:"time"},{prompt:"A word to the wise is ___",ans:"sufficient"},{prompt:"The more that you read, the more things you will ___",ans:"know"}],fillIn:[{prompt:"A person who loves books is sometimes called a ___.",ans:"bibliophile"},{prompt:"The introduction at the beginning of a book is called a ___.",ans:"preface or foreword"},{prompt:"When a book is made into a movie, it is called an ___.",ans:"adaptation"},{prompt:"A series of books with the same characters is called a ___.",ans:"series"},{prompt:"Books are organized in a library using the ___ decimal system.",ans:"Dewey"}],chat:["What book did you read as a child that you still remember?","Do you prefer fiction or non-fiction? Why?","If someone were to write a book about your life, what would it be called?"]},
+{num:17,theme:"Weather & Seasons",emoji:"\u1f324\ufe0f",scrambles:[{word:"BLIZZARD",hint:"Severe snowstorm"},{word:"DROUGHT",hint:"Long dry period"},{word:"HUMIDITY",hint:"Moisture in air"},{word:"FORECAST",hint:"Weather prediction"},{word:"THUNDER",hint:"Storm sound"},{word:"SOLSTICE",hint:"Longest or shortest day"}],trivia:[{q:"What tool measures temperature?",a:"A. Barometer",b:"B. Thermometer",c:"C. Hygrometer",d:"D. Anemometer",ans:"B"},{q:"What causes thunder?",a:"A. Clouds colliding",b:"B. Rapid expansion of air from lightning",c:"C. Wind hitting mountains",d:"D. Ice crystals",ans:"B"},{q:"The first day of fall is around?",a:"A. August 21",b:"B. September 1",c:"C. September 22",d:"D. October 1",ans:"C"},{q:"A tornado is also called a?",a:"A. Cyclone",b:"B. Waterspout",c:"C. Twister",d:"D. Gale",ans:"C"},{q:"What is the most rain-soaked city in the U.S.?",a:"A. Miami",b:"B. Seattle",c:"C. New Orleans",d:"D. Mobile, Alabama",ans:"D"}],story:{title:"After the Storm",text:"The ice storm had kept them inside for three days. But on the fourth morning, the sun came out and turned every tree into crystal. Vera said she had never seen anything more beautiful, and she had lived eighty-two years.",prompt:"What is the most dramatic or memorable weather event you have witnessed?"},sayings:[{prompt:"Every cloud has a silver ___",ans:"lining"},{prompt:"Into every life some rain must ___",ans:"fall"},{prompt:"April showers bring May ___",ans:"flowers"},{prompt:"Under the weather is another way of saying you are ___",ans:"not feeling well"},{prompt:"When it rains, it ___",ans:"pours"}],fillIn:[{prompt:"Snow is formed from tiny ice ___ in clouds.",ans:"crystals"},{prompt:"A rainbow appears when sunlight passes through ___.",ans:"water droplets"},{prompt:"The season between summer and winter is called ___.",ans:"fall or autumn"},{prompt:"A weather ___ tells us what the weather will be like.",ans:"forecast"},{prompt:"The eye of a hurricane is the ___ part of the storm.",ans:"calm or quiet"}],chat:["What is your favorite season and why?","Did you ever get caught in a bad storm? What happened?","How has the weather where you live changed over your lifetime?"]},
+{num:18,theme:"Family & Friendship",emoji:"\u2764\ufe0f",scrambles:[{word:"REUNION",hint:"Family gathering"},{word:"ANCESTOR",hint:"Family member before you"},{word:"SIBLING",hint:"Brother or sister"},{word:"KINDRED",hint:"Similar spirit"},{word:"LOYALTY",hint:"Faithful support"},{word:"CHERISH",hint:"Hold dear"}],trivia:[{q:"What is the word for your parent's parent?",a:"A. Ancestor",b:"B. Grandparent",c:"C. Elder",d:"D. Senior",ans:"B"},{q:"What is a godparent?",a:"A. A legal guardian",b:"B. A sponsor at baptism",c:"C. An adopted parent",d:"D. A foster parent",ans:"B"},{q:"What do people often do at a family reunion?",a:"A. Work",b:"B. Argue",c:"C. Eat, share stories, reconnect",d:"D. Move",ans:"C"},{q:"What is a family tree?",a:"A. A decoration",b:"B. A record of relatives",c:"C. A legal document",d:"D. A house type",ans:"B"},{q:"Siblings share the same?",a:"A. Birthday",b:"B. Friends",c:"C. Parents",d:"D. Home always",ans:"C"}],story:{title:"The Long Table",text:"At holiday time, the table in the Nelson family stretched from the dining room into the hallway. There was never quite enough room, and it was always perfect. Dorothy said the noise and the laughter were the best sounds she ever heard.",prompt:"What family gathering do you remember most fondly? Who was there?"},sayings:[{prompt:"Blood is thicker than ___",ans:"water"},{prompt:"A friend in need is a friend ___",ans:"indeed"},{prompt:"You can choose your friends but not your ___",ans:"family"},{prompt:"Friends are the family you choose ___",ans:"for yourself"},{prompt:"Laughter is the shortest distance between two ___",ans:"people"}],fillIn:[{prompt:"A person's children, grandchildren, and beyond are their ___.",ans:"descendants"},{prompt:"A close friend is sometimes called a ___ friend.",ans:"lifelong or dear"},{prompt:"When family members look alike, they are said to be the ___ image of each other.",ans:"spitting"},{prompt:"Brothers and sisters are called ___.",ans:"siblings"},{prompt:"A gathering of family members from many places is called a ___.",ans:"reunion"}],chat:["Who is the person in your family you feel closest to?","Tell us about a lifelong friend.","What do you hope your family remembers about you?"]},
+{num:19,theme:"Ocean & Water",emoji:"\u1f30a",scrambles:[{word:"TIDEPOL",hint:"Rocky ocean pools"},{word:"CURRENT",hint:"Moving water flow"},{word:"SHORELINE",hint:"Where water meets land"},{word:"PELICAN",hint:"Large diving seabird"},{word:"DRIFTWOOD",hint:"Wood carried by ocean"},{word:"HORIZON",hint:"Where sea meets sky"}],trivia:[{q:"What percentage of Earth is covered by water?",a:"A. 50%",b:"B. 61%",c:"C. 71%",d:"D. 81%",ans:"C"},{q:"What is the largest ocean?",a:"A. Atlantic",b:"B. Indian",c:"C. Arctic",d:"D. Pacific",ans:"D"},{q:"What is the Great Barrier Reef made of?",a:"A. Sand",b:"B. Rock",c:"C. Coral",d:"D. Algae",ans:"C"},{q:"What animal is the largest in the ocean?",a:"A. Great white shark",b:"B. Giant squid",c:"C. Blue whale",d:"D. Orca",ans:"C"},{q:"What causes ocean tides?",a:"A. Wind",b:"B. The moon's gravity",c:"C. Earth's rotation",d:"D. The sun's heat",ans:"B"}],story:{title:"The First Ocean",text:"Bernard had grown up in Kansas and did not see the ocean until he was 35 years old. When he stood at the edge of the Pacific, he felt very small and very peaceful at the same time. He came back every year after that.",prompt:"Have you ever seen the ocean? What did it feel like the first time?"},sayings:[{prompt:"A rising tide lifts all ___",ans:"boats"},{prompt:"Still waters run ___",ans:"deep"},{prompt:"You can't step into the same river ___",ans:"twice"},{prompt:"There are plenty more fish in the ___",ans:"sea"},{prompt:"The sea is always the same and always ___",ans:"different"}],fillIn:[{prompt:"The salty water of the ocean is called ___ water.",ans:"saltwater or sea"},{prompt:"Fish breathe using organs called ___.",ans:"gills"},{prompt:"The area between high tide and low tide is called the ___ zone.",ans:"intertidal"},{prompt:"Sailors once used the stars to ___ their ships.",ans:"navigate"},{prompt:"A lighthouse warns ships away from ___ rocks and shores.",ans:"dangerous"}],chat:["Have you ever been on a boat? Where did you go?","What is your favorite seafood or ocean memory?","If you lived by the water, what would you do every day?"]},
+{num:20,theme:"Holidays & Celebrations",emoji:"\u1f389",scrambles:[{word:"TRADITION",hint:"Repeated custom"},{word:"GARLAND",hint:"Decorative chain"},{word:"LANTERN",hint:"Festive light holder"},{word:"PARADE",hint:"Festive march"},{word:"TOAST",hint:"Drink in someone's honor"},{word:"WREATH",hint:"Circular decoration"}],trivia:[{q:"What do people traditionally eat on Thanksgiving?",a:"A. Roast beef",b:"B. Lamb",c:"C. Turkey",d:"D. Ham",ans:"C"},{q:"Christmas is celebrated on what date?",a:"A. December 24",b:"B. December 25",c:"C. December 26",d:"D. January 1",ans:"B"},{q:"What is the Jewish festival of lights called?",a:"A. Passover",b:"B. Purim",c:"C. Rosh Hashanah",d:"D. Hanukkah",ans:"D"},{q:"Labor Day falls in which month?",a:"A. July",b:"B. August",c:"C. September",d:"D. October",ans:"C"},{q:"Valentine's Day is associated with what symbol?",a:"A. Star",b:"B. Heart",c:"C. Flower",d:"D. Rainbow",ans:"B"}],story:{title:"New Year's Eve",text:"Every New Year's Eve, the Larson family played cards until midnight. When the clock struck twelve, they all cheered and went to bed. It was not fancy, but it was theirs, and they never missed a year.",prompt:"What is your favorite holiday tradition? Where did it come from?"},sayings:[{prompt:"Tis the season to be ___",ans:"jolly"},{prompt:"The more the ___",ans:"merrier"},{prompt:"Let the good times ___",ans:"roll"},{prompt:"Eat, drink and be ___",ans:"merry"},{prompt:"Home for the ___",ans:"holidays"}],fillIn:[{prompt:"People exchange gifts on ___ morning.",ans:"Christmas"},{prompt:"The day after Thanksgiving is called ___ Friday.",ans:"Black"},{prompt:"A jack-o-lantern is carved from a ___.",ans:"pumpkin"},{prompt:"On Easter, children hunt for decorated ___.",ans:"eggs"},{prompt:"Fireworks are used to celebrate ___ Day.",ans:"Independence"}],chat:["What holiday do you celebrate the most enthusiastically?","What is a holiday memory that still makes you smile?","What holiday food could you not live without?"]},
+{num:21,theme:"Farm & Country Life",emoji:"\u1f33e",scrambles:[{word:"HARVEST",hint:"Gathering crops"},{word:"ROOSTER",hint:"Farm alarm clock"},{word:"PASTURE",hint:"Grazing field"},{word:"SILO",hint:"Grain storage tower"},{word:"FURROW",hint:"Plowed row in soil"},{word:"ORCHARD",hint:"Fruit tree grove"}],trivia:[{q:"What animal gives us wool?",a:"A. Goat",b:"B. Sheep",c:"C. Llama",d:"D. All of these",ans:"D"},{q:"What grain is most commonly grown in the Midwest?",a:"A. Rice",b:"B. Wheat",c:"C. Oats",d:"D. Corn",ans:"D"},{q:"A female pig is called a?",a:"A. Sow",b:"B. Ewe",c:"C. Hen",d:"D. Doe",ans:"A"},{q:"What vegetable grows underground?",a:"A. Tomato",b:"B. Corn",c:"C. Potato",d:"D. Cabbage",ans:"C"},{q:"A rooster crows at what time?",a:"A. Noon",b:"B. Sunset",c:"C. Midnight",d:"D. Dawn",ans:"D"}],story:{title:"The Last Harvest",text:"Carl had farmed the same 200 acres his father had farmed and his grandfather before that. Every autumn, when the corn was in and the field lay bare and brown, he stood at the fence and felt a satisfaction that no other moment in his year could match.",prompt:"Did you grow up in the country or around farming? What do you remember about that life?"},sayings:[{prompt:"You reap what you ___",ans:"sow"},{prompt:"Don't put all your eggs in one ___",ans:"basket"},{prompt:"Make hay while the sun ___",ans:"shines"},{prompt:"This is not my first time at the ___",ans:"rodeo"},{prompt:"The grass is always greener on the other ___",ans:"side"}],fillIn:[{prompt:"A baby cow is called a ___.",ans:"calf"},{prompt:"Grain is stored in a tall structure called a ___.",ans:"silo"},{prompt:"A person who raises crops and animals is called a ___.",ans:"farmer"},{prompt:"The season when crops are ready to pick is called ___.",ans:"harvest"},{prompt:"Fresh eggs come from ___.",ans:"chickens"}],chat:["What farm or country memory stays with you?","Did your family keep a garden or raise animals?","What country skill do you wish young people still learned?"]},
+{num:22,theme:"Cities & Famous Places",emoji:"\u1f3d9\ufe0f",scrambles:[{word:"SKYLINE",hint:"City silhouette view"},{word:"BOROUGH",hint:"City district"},{word:"BOULEVARD",hint:"Wide city street"},{word:"PLAZA",hint:"Public open square"},{word:"HARBOR",hint:"Protected dock area"},{word:"MONUMENT",hint:"Memorial structure"}],trivia:[{q:"The Golden Gate Bridge is in?",a:"A. San Diego",b:"B. Los Angeles",c:"C. San Francisco",d:"D. Seattle",ans:"C"},{q:"What city is known as the Windy City?",a:"A. Dallas",b:"B. Denver",c:"C. Chicago",d:"D. Detroit",ans:"C"},{q:"Times Square is in which city?",a:"A. Los Angeles",b:"B. New York City",c:"C. Chicago",d:"D. Las Vegas",ans:"B"},{q:"What river flows through Washington D.C.?",a:"A. Chesapeake",b:"B. James",c:"C. Potomac",d:"D. Rappahannock",ans:"C"},{q:"The Liberty Bell is in?",a:"A. Boston",b:"B. Washington DC",c:"C. Philadelphia",d:"D. New York",ans:"C"}],story:{title:"The Big City",text:"When Evelyn came to Chicago at age 18 to take a job, she had never seen buildings so tall. She stood on the corner of State and Madison and thought the whole world was there. She never left.",prompt:"What was the biggest city you ever visited? What surprised you most about it?"},sayings:[{prompt:"All roads lead to ___",ans:"Rome"},{prompt:"The city that never sleeps is ___",ans:"New York"},{prompt:"There is no place like ___",ans:"home"},{prompt:"A small town has a big ___",ans:"heart"},{prompt:"It takes a village to raise a ___",ans:"child"}],fillIn:[{prompt:"The city of New Orleans is famous for its ___ music.",ans:"jazz"},{prompt:"The Smithsonian Institution is located in ___.",ans:"Washington D.C."},{prompt:"The tallest building in the U.S. is the One World Trade Center in ___.",ans:"New York City"},{prompt:"A city's main road or business area is often called ___.",ans:"downtown or Main Street"},{prompt:"A neighborhood in a large city is sometimes called a ___.",ans:"district or borough"}],chat:["What city do you love to visit and why?","What do you prefer: the city, suburbs, or country?","If you could live in any city in the world, where would it be?"]},
+{num:23,theme:"Health & Happiness",emoji:"\u1f49b",scrambles:[{word:"WELLNESS",hint:"Overall good health"},{word:"BALANCE",hint:"Stability in life"},{word:"NOURISH",hint:"Feed and support"},{word:"RESILIENT",hint:"Bounces back from hardship"},{word:"GRATEFUL",hint:"Thankful"},{word:"MINDFUL",hint:"Paying attention to now"}],trivia:[{q:"How many hours of sleep do adults generally need?",a:"A. 4-5",b:"B. 6-7",c:"C. 7-9",d:"D. 10-12",ans:"C"},{q:"What vitamin does sunlight help your body make?",a:"A. Vitamin A",b:"B. Vitamin B12",c:"C. Vitamin D",d:"D. Vitamin C",ans:"C"},{q:"Which activity is best for heart health?",a:"A. Lifting weights only",b:"B. Sitting quietly",c:"C. Walking or aerobic exercise",d:"D. Stretching only",ans:"C"},{q:"What is blood pressure measured in?",a:"A. Watts",b:"B. Degrees",c:"C. Millimeters of mercury",d:"D. Pounds",ans:"C"},{q:"What food group is most associated with strong bones?",a:"A. Carbohydrates",b:"B. Fats",c:"C. Dairy and calcium",d:"D. Protein",ans:"C"}],story:{title:"The Walk",text:"Every morning at 7, Mabel walked to the end of the block and back. Her doctor had told her to. But soon she realized she was not walking for her health. She was walking because it was the best part of her day: the birds, the neighbors, the air.",prompt:"What do you do every day that makes you feel good?"},sayings:[{prompt:"Laughter is the best ___",ans:"medicine"},{prompt:"A healthy mind in a healthy ___",ans:"body"},{prompt:"An ounce of prevention is worth a pound of ___",ans:"cure"},{prompt:"Early to bed and early to rise makes a man healthy, wealthy and ___",ans:"wise"},{prompt:"Count your blessings, not your ___",ans:"troubles"}],fillIn:[{prompt:"The heart pumps ___ through the body.",ans:"blood"},{prompt:"Doctors recommend at least ___ minutes of walking most days.",ans:"30"},{prompt:"Drinking ___ glasses of water daily is good for your health.",ans:"8"},{prompt:"Eating fruits and vegetables provides vitamins and ___.",ans:"minerals"},{prompt:"A good night of ___ helps the body heal and restore.",ans:"sleep"}],chat:["What habit has kept you healthy over the years?","What does happiness mean to you now compared to when you were young?","What is one thing you do that brings you joy every day?"]},
+{num:24,theme:"Childhood Memories",emoji:"\u1f3a0",scrambles:[{word:"HOPSCOTCH",hint:"Sidewalk chalk game"},{word:"JACKS",hint:"Ball and metal star game"},{word:"MARBLES",hint:"Round glass game pieces"},{word:"TREEHOUSE",hint:"Backyard climbing hideout"},{word:"RECESS",hint:"School play break"},{word:"STREETLIGHT",hint:"Game-ending signal to go home"}],trivia:[{q:"What classic game involved saying 'Mother may I?'",a:"A. Tag",b:"B. Red light green light",c:"C. Mother May I",d:"D. Simon Says",ans:"C"},{q:"What was a common school lunch in the 1950s?",a:"A. Sushi",b:"B. Thermos soup and sandwich",c:"C. Salad bar",d:"D. Pizza",ans:"B"},{q:"What was the popular after-school snack drink?",a:"A. Juice box",b:"B. Smoothie",c:"C. Milk",d:"D. Soda",ans:"C"},{q:"Kids in earlier decades often played until?",a:"A. Noon",b:"B. Dinner",c:"C. The streetlights came on",d:"D. 9 PM",ans:"C"},{q:"What toy was a stick with a wheel you rolled down the street?",a:"A. Hula hoop",b:"B. Skip-It",c:"C. Hoop and stick",d:"D. Jump rope",ans:"C"}],story:{title:"The Long Summer",text:"In the summer of 1955, Danny and his friends played outside from sunup to sundown. No one told them what to do or where to be. They built forts, caught fireflies, and invented games with no rules. It was, he thought, the freest time of his life.",prompt:"What game or activity did you love most as a child that children today don't play?"},sayings:[{prompt:"Children should be seen and not ___",ans:"heard"},{prompt:"Boys will be ___",ans:"boys"},{prompt:"Play is the work of ___",ans:"childhood"},{prompt:"You are only young ___",ans:"once"},{prompt:"Growing old is mandatory, growing up is ___",ans:"optional"}],fillIn:[{prompt:"A spinning toy that children once played with on the sidewalk is a ___.",ans:"top"},{prompt:"Children in the 1950s often got ___ delivered to the house by a truck.",ans:"milk or ice"},{prompt:"A popular outdoor game where you count to 10 and look for hidden players is ___.",ans:"hide and seek"},{prompt:"A yellow school ___ took children to and from school.",ans:"bus"},{prompt:"Children traded small round glass toys called ___ in the schoolyard.",ans:"marbles"}],chat:["What is your happiest childhood memory?","Who was your best childhood friend and what did you do together?","What is something from your childhood you wish you still had?"]},
+{num:25,theme:"Old-Time Radio & TV",emoji:"\u1f4fb",scrambles:[{word:"BROADCAST",hint:"Send over airwaves"},{word:"SITCOM",hint:"TV comedy series"},{word:"VARIETY",hint:"Mixed entertainment show"},{word:"SPONSOR",hint:"Paid advertiser"},{word:"ANTENNA",hint:"Signal receiver"},{word:"WESTERN",hint:"Cowboy TV show"}],trivia:[{q:"What TV show featured Lucy Ricardo?",a:"A. Bewitched",b:"B. I Love Lucy",c:"C. The Dick Van Dyke Show",d:"D. I Dream of Jeannie",ans:"B"},{q:"What was the first coast-to-coast TV broadcast?",a:"A. Nixon debates",b:"B. The Ed Sullivan Show",c:"C. The 1951 Japanese Peace Treaty",d:"D. Moon landing",ans:"C"},{q:"What radio program starred Jack Benny?",a:"A. The Lone Ranger",b:"B. The Jack Benny Program",c:"C. Fibber McGee",d:"D. Suspense",ans:"B"},{q:"The Lone Ranger rode a horse named?",a:"A. Trigger",b:"B. Champion",c:"C. Silver",d:"D. Scout",ans:"C"},{q:"What show did Ed Sullivan host for 23 years?",a:"A. Toast of the Town",b:"B. The Sullivan Hour",c:"C. Ed Tonight",d:"D. The Ed Sullivan Show",ans:"D"}],story:{title:"The Sunday Shows",text:"When television first came to their neighborhood, the whole block came to sit in the Wrights' living room to watch. They brought chairs from home and crowded in front of a screen the size of a dinner plate. Nobody spoke. They were watching a miracle.",prompt:"What TV show or radio program do you remember most fondly from your younger years?"},sayings:[{prompt:"Stay tuned for more of ___",ans:"your favorite program"},{prompt:"We'll be right back after these ___",ans:"messages"},{prompt:"That is all for tonight, good night and good ___",ans:"luck"},{prompt:"Brought to you by our ___",ans:"sponsor"},{prompt:"And now, live from New York ___",ans:"it is Saturday Night"}],fillIn:[{prompt:"The Ed Sullivan Show was famous for introducing ___ to American audiences.",ans:"The Beatles"},{prompt:"The first president to appear on television was ___.",ans:"Franklin D. Roosevelt"},{prompt:"Radio shows often used ___ effects to create sounds like rain or horses.",ans:"sound"},{prompt:"Before remote controls, people had to get up to ___ the TV channel.",ans:"change"},{prompt:"Families used to gather around the ___ to listen to the evening news.",ans:"radio"}],chat:["What is the first TV show you remember watching?","Did your family have a favorite radio program?","How has television changed in your lifetime?"]},
+{num:26,theme:"Dance & Music Vol. 2",emoji:"\u1f483",scrambles:[{word:"WALTZ",hint:"Elegant 3-beat dance"},{word:"JUKEBOX",hint:"Coin-operated music machine"},{word:"SWING",hint:"Energetic 1940s dance"},{word:"BALLROOM",hint:"Formal dance hall"},{word:"HARMONY",hint:"Blended musical tones"},{word:"ENCORE",hint:"Audience call for more"}],trivia:[{q:"What famous band leader played Let the Good Times Roll?",a:"A. Glenn Miller",b:"B. Tommy Dorsey",c:"C. Louis Jordan",d:"D. Benny Goodman",ans:"C"},{q:"The Lindy Hop was named after?",a:"A. A famous dancer",b:"B. Charles Lindbergh's transatlantic flight",c:"C. A town in New Jersey",d:"D. A record label",ans:"B"},{q:"What dance was popularized in the 1950s at sock hops?",a:"A. The Twist",b:"B. The Jive",c:"C. The Waltz",d:"D. The Foxtrot",ans:"B"},{q:"What instrument is Ella Fitzgerald most famous for?",a:"A. Piano",b:"B. Trumpet",c:"C. Voice",d:"D. Saxophone",ans:"C"},{q:"The song White Christmas was sung by?",a:"A. Frank Sinatra",b:"B. Dean Martin",c:"C. Bing Crosby",d:"D. Perry Como",ans:"C"}],story:{title:"The Last Dance",text:"Frank and Ruth danced at every wedding, every party, every town hall event for fifty years. When she passed, he said the hardest part was that every song on the radio reminded him of her feet on a dance floor.",prompt:"Do you have a special song or dance memory? Who were you with?"},sayings:[{prompt:"Shall we ___",ans:"dance"},{prompt:"Put another nickel in, in the nickelodeon, all I want is ___",ans:"having you and music, music, music"},{prompt:"It don't mean a thing if it ain't got that ___",ans:"swing"},{prompt:"Come on and do the ___",ans:"twist"},{prompt:"Music gives a soul to the universe, wings to the ___",ans:"mind"}],fillIn:[{prompt:"A place where people go to dance together is called a ___.",ans:"dance hall or ballroom"},{prompt:"Big bands from the 1940s played a style of music called ___.",ans:"swing"},{prompt:"A DJ at a dance plays recorded ___.",ans:"music"},{prompt:"People often danced cheek to cheek to slow ___ songs.",ans:"romantic"},{prompt:"A singer who performs without a band is called a ___ artist.",ans:"solo"}],chat:["What song would you most like to dance to right now?","Did you take dance lessons? What kind?","What was your favorite place to hear live music?"]},
+{num:27,theme:"Nature Walks & Outdoors",emoji:"\u1f33f",scrambles:[{word:"CANOPY",hint:"Treetop covering"},{word:"TRAIL",hint:"Path through nature"},{word:"MEADOW",hint:"Open grassy field"},{word:"CREEK",hint:"Small stream"},{word:"PINECONE",hint:"Evergreen seed case"},{word:"DUSK",hint:"Just before dark"}],trivia:[{q:"What do you call a scientist who studies plants?",a:"A. Zoologist",b:"B. Botanist",c:"C. Biologist",d:"D. Ecologist",ans:"B"},{q:"What is the largest tree in the world by volume?",a:"A. Redwood",b:"B. Douglas Fir",c:"C. Giant Sequoia",d:"D. Baobab",ans:"C"},{q:"What does photosynthesis produce?",a:"A. Carbon dioxide",b:"B. Nitrogen",c:"C. Oxygen and sugar",d:"D. Water",ans:"C"},{q:"Which insect pollinates the most flowers?",a:"A. Butterfly",b:"B. Bee",c:"C. Moth",d:"D. Beetle",ans:"B"},{q:"What causes leaves to change color in fall?",a:"A. Frost",b:"B. Wind",c:"C. Loss of chlorophyll",d:"D. Soil changes",ans:"C"}],story:{title:"The Long Walk",text:"Even at 78, Margaret walked the park trail every Thursday morning. She said nature did not care how old she was. The trees did not look at her differently than they did when she was 30. That was the great kindness of the outdoors.",prompt:"Where in nature have you always felt most at peace?"},sayings:[{prompt:"Take a walk on the wild ___",ans:"side"},{prompt:"The forest is full of quiet ___",ans:"wisdom"},{prompt:"Stop and smell the ___",ans:"roses"},{prompt:"Nature does not hurry, yet everything is ___",ans:"accomplished"},{prompt:"In every walk with nature, one receives far more than one ___",ans:"seeks"}],fillIn:[{prompt:"A path through the woods or mountains is called a ___.",ans:"trail or footpath"},{prompt:"Leaves fall from trees in the season called ___.",ans:"autumn or fall"},{prompt:"A small body of still water surrounded by land is a ___.",ans:"pond"},{prompt:"Trees that keep their leaves all year are called ___.",ans:"evergreens"},{prompt:"The sound of frogs at night near a pond is called ___.",ans:"croaking or calling"}],chat:["Where did you like to go outdoors when you were young?","Have you ever gone camping or hiking? What was it like?","What is your favorite outdoor sound or smell?"]},
+{num:28,theme:"Gratitude & Reflection",emoji:"\u1f64f",scrambles:[{word:"GRATEFUL",hint:"Thankful for what you have"},{word:"REFLECT",hint:"Look back thoughtfully"},{word:"CHERISH",hint:"Hold close with love"},{word:"WISDOM",hint:"Knowledge gained from experience"},{word:"BLESSING",hint:"A gift or grace"},{word:"LEGACY",hint:"What you leave behind"}],trivia:[{q:"Research shows that gratitude can improve?",a:"A. Memory only",b:"B. Physical strength",c:"C. Mood and wellbeing",d:"D. Vision",ans:"C"},{q:"What does it mean to count your blessings?",a:"A. Add up your problems",b:"B. Be thankful for what you have",c:"C. Make a list of goals",d:"D. Count your money",ans:"B"},{q:"What famous prayer begins with Give us this day our daily bread?",a:"A. The Serenity Prayer",b:"B. The Prayer of St. Francis",c:"C. The Lord's Prayer",d:"D. The Hail Mary",ans:"C"},{q:"The word gratitude comes from which Latin word?",a:"A. Gratis meaning thankful",b:"B. Gratus meaning pleasing",c:"C. Grande meaning large",d:"D. Gravis meaning heavy",ans:"B"},{q:"Writing in a journal is often recommended for?",a:"A. Better sleep only",b:"B. Memory and emotional wellbeing",c:"C. Weight loss",d:"D. Physical therapy",ans:"B"}],story:{title:"The Letter",text:"On her 80th birthday, Alice sat down and wrote a letter to her 20-year-old self. She told her not to worry so much about the things that did not matter. She told her that the good moments were good enough and more than enough.",prompt:"If you could send a letter to your younger self, what is the one thing you would want them to know?"},sayings:[{prompt:"Count your blessings, name them one by ___",ans:"one"},{prompt:"It is not happy people who are thankful, it is thankful people who are ___",ans:"happy"},{prompt:"The past is a place of reference, not a place of ___",ans:"residence"},{prompt:"Reflect on your present blessings, of which every man has ___",ans:"many"},{prompt:"Gratitude turns what we have into ___",ans:"enough"}],fillIn:[{prompt:"Keeping a journal where you write three things you are thankful for is called a ___ journal.",ans:"gratitude"},{prompt:"The word contentment means being ___ with what you have.",ans:"happy or satisfied"},{prompt:"Reflecting on past experiences helps us find ___ and peace.",ans:"meaning"},{prompt:"Being present in the moment is sometimes called ___.",ans:"mindfulness"},{prompt:"A mentor is someone who shares their ___ and experience with others.",ans:"wisdom"}],chat:["What three things are you most grateful for today?","Who is someone you never properly thanked but wish you had?","What has life taught you that you would pass on to others?"]},
+{num:29,theme:"Games & Puzzles",emoji:"\u1f3b2",scrambles:[{word:"STRATEGY",hint:"A plan to win"},{word:"CHECKERS",hint:"Board game with red and black"},{word:"CROSSWORD",hint:"Letter grid puzzle"},{word:"RIDDLE",hint:"A puzzle with a tricky answer"},{word:"DOMINO",hint:"Tile-based matching game"},{word:"SHUFFLE",hint:"Mix up the cards"}],trivia:[{q:"How many squares are on a chess board?",a:"A. 32",b:"B. 48",c:"C. 64",d:"D. 72",ans:"C"},{q:"Scrabble tiles total how many points?",a:"A. 120",b:"B. 187",c:"C. 225",d:"D. 264",ans:"B"},{q:"What card game is most associated with Las Vegas casinos?",a:"A. Go Fish",b:"B. Bridge",c:"C. Blackjack",d:"D. Crazy Eights",ans:"C"},{q:"How many cards are in a standard deck?",a:"A. 48",b:"B. 50",c:"C. 52",d:"D. 54",ans:"C"},{q:"What game uses a board, a top hat, and railroads?",a:"A. Life",b:"B. Clue",c:"C. Monopoly",d:"D. Risk",ans:"C"}],story:{title:"The Game Night",text:"Every Friday night the Kowalski family played cards. The stakes were pennies and M&Ms. The competition was fierce. The laughter was fiercer. Those nights lasted three hours and seemed to last no time at all.",prompt:"What was your favorite card or board game growing up? Did you ever cheat?"},sayings:[{prompt:"Life is not a game of chance but a game of ___",ans:"skill"},{prompt:"All the world is a ___",ans:"stage"},{prompt:"Play your cards ___",ans:"right"},{prompt:"The game is not over until the last card is ___",ans:"played"},{prompt:"Winner, winner, chicken ___",ans:"dinner"}],fillIn:[{prompt:"A jigsaw puzzle is made up of many small ___ that fit together.",ans:"pieces"},{prompt:"In checkers, a piece that reaches the other side becomes a ___.",ans:"king"},{prompt:"The goal of Scrabble is to score the most points using letter ___.",ans:"tiles"},{prompt:"In solitaire, the aim is to arrange cards in order by ___ and suit.",ans:"rank"},{prompt:"A game of chess ends when the opponent's ___ has no escape.",ans:"king"}],chat:["What game have you played the longest in your life?","Do you prefer games of luck or skill?","Who is the most competitive person you know when it comes to games?"]},
+{num:30,theme:"Looking Back, Looking Forward",emoji:"\u2b50",scrambles:[{word:"MILESTONE",hint:"An important life event"},{word:"MEMOIR",hint:"A personal life story"},{word:"LEGACY",hint:"What you leave behind"},{word:"DECADE",hint:"A ten-year span"},{word:"RESILIENCE",hint:"Strength to recover"},{word:"JOURNEY",hint:"The whole course of life"}],trivia:[{q:"Which decade saw the most social change in the 20th century?",a:"A. 1920s",b:"B. 1940s",c:"C. 1960s",d:"D. 1980s",ans:"C"},{q:"What technology changed daily life most in the 1990s?",a:"A. Television",b:"B. Automobile",c:"C. The internet",d:"D. Microwave",ans:"C"},{q:"The Greatest Generation is generally defined as those born?",a:"A. 1880-1900",b:"B. 1901-1927",c:"C. 1928-1945",d:"D. 1946-1964",ans:"B"},{q:"What event in the 20th century affected virtually every American family?",a:"A. The Gold Rush",b:"B. World War II",c:"C. The Space Race",d:"D. Prohibition",ans:"B"},{q:"What invention do people most credit for changing medicine?",a:"A. X-ray",b:"B. Stethoscope",c:"C. Antibiotics",d:"D. Thermometer",ans:"C"}],story:{title:"The View from Here",text:"On the last day of her 85th year, Clara sat in her garden chair and tried to count up all the things she had seen. Two World Wars. A man on the moon. The internet. Her great-grandchildren on video calls from across the country. She shook her head slowly and smiled.",prompt:"Looking back over your whole life, what are you most proud of? What surprised you most about how life turned out?"},sayings:[{prompt:"The best is yet to ___",ans:"come"},{prompt:"With age comes ___",ans:"wisdom"},{prompt:"You cannot change the past but you can shape the ___",ans:"future"},{prompt:"Every ending is a new ___",ans:"beginning"},{prompt:"Life is a journey, not a ___",ans:"destination"}],fillIn:[{prompt:"A person who has lived through many decades has a lot of ___.",ans:"wisdom or experience"},{prompt:"When we share our life stories with younger people, we pass on our ___.",ans:"legacy"},{prompt:"Looking back at old photographs helps us ___ the past.",ans:"remember or revisit"},{prompt:"A life well lived is filled with ___, love, and purpose.",ans:"meaning"},{prompt:"The word memoir comes from the French word for ___.",ans:"memory"}],chat:["What decade of your life was your favorite and why?","What do you want the next generation to know about the life you lived?","What is one thing you still want to do or experience?"]},
+];
+
 </script>
+
+<!-- ═══════════════════════════════════ ATTENDANCE MODAL ══════════════════ -->
+<div id="attendance-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:3000;overflow-y:auto;">
+  <div style="background:#fff;border-radius:16px;max-width:680px;margin:40px auto;padding:0;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.25);">
+    <!-- Header -->
+    <div style="background:#1a1a40;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:20px;font-weight:800;" id="att-title">Activity</div>
+        <div style="font-size:13px;opacity:.75;margin-top:2px;" id="att-meta">Tap each resident who is present</div>
+      </div>
+      <button onclick="closeAttendance()" style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
+    </div>
+
+    <!-- Date/time bar -->
+    <div style="background:#f7f7fa;padding:12px 24px;display:flex;gap:20px;align-items:center;border-bottom:1px solid #eee;">
+      <label style="font-size:13px;font-weight:600;">Date:</label>
+      <input type="date" id="att-date" style="padding:5px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;" />
+      <label style="font-size:13px;font-weight:600;">Time:</label>
+      <input type="time" id="att-time" style="padding:5px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;" />
+      <div style="margin-left:auto;font-size:13px;color:#7030A0;font-weight:700;" id="att-count">0 present</div>
+    </div>
+
+    <!-- Resident grid -->
+    <div style="padding:20px 24px;">
+      <div style="font-size:12px;color:#888;margin-bottom:12px;">Tap a name to mark present · Tap again to remove</div>
+      <div id="att-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;max-height:340px;overflow-y:auto;"></div>
+      <div id="att-empty" style="display:none;text-align:center;padding:30px;color:#aaa;font-size:13px;">No residents in roster yet. Add residents on the Residents tab.</div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding:16px 24px;background:#f7f7fa;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+      <button onclick="closeAttendance()" style="padding:9px 20px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;cursor:pointer;">Cancel</button>
+      <div style="display:flex;gap:10px;">
+        <button onclick="selectAllAttendance()" style="padding:9px 16px;border:1px solid #7030A0;border-radius:8px;background:#fff;color:#7030A0;font-size:13px;cursor:pointer;font-weight:600;">Select All</button>
+        <button onclick="saveAttendance()" style="padding:9px 22px;border:none;border-radius:8px;background:#7030A0;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">💾 Save Log</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
