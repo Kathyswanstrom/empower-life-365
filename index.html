@@ -1127,6 +1127,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
     <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
+    <button class="tab-btn" data-tab="spotlight" id="spotlight-tab" onclick="switchTab('spotlight')">🌟 Spotlight</button>
     <button class="tab-btn" data-tab="music" id="music-tab" onclick="switchTab('music')">🎵 Music</button>
     <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
     <button class="tab-btn" data-tab="food" id="food-tab" onclick="switchTab('food')">🍽️ Food & Cooking</button>
@@ -2125,6 +2126,142 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 
 
+
+
+<section class="tab-panel" id="panel-spotlight">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">&#11088; Resident Spotlight</h2>
+      <div class="subtitle">Celebrate residents with spotlight profiles, birthday tracking, recognition, and interview guides.</div>
+    </div>
+    <button onclick="switchSpotlightTab('create')" class="btn" style="background:#7C3AED;color:#fff;">+ Create Spotlight</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="sptab-board"      onclick="switchSpotlightTab('board')"      class="tv-subtab tv-subtab-active">&#11088; Spotlight Board</button>
+    <button id="sptab-create"     onclick="switchSpotlightTab('create')"     class="tv-subtab">&#43; Create / Edit</button>
+    <button id="sptab-birthdays"  onclick="switchSpotlightTab('birthdays')"  class="tv-subtab">&#127874; Birthdays</button>
+    <button id="sptab-recognition" onclick="switchSpotlightTab('recognition')" class="tv-subtab">&#127942; Recognition</button>
+    <button id="sptab-interview"  onclick="switchSpotlightTab('interview')"  class="tv-subtab">&#128203; Interview Guide</button>
+  </div>
+
+  <!-- SPOTLIGHT BOARD -->
+  <div id="sppanel-board">
+    <div id="sp-board-empty" style="display:none;text-align:center;padding:60px;color:#9CA3AF;">
+      <div style="font-size:48px;margin-bottom:12px;">&#11088;</div>
+      <div style="font-size:18px;font-weight:600;margin-bottom:8px;">No spotlights yet</div>
+      <div style="font-size:14px;margin-bottom:20px;">Create your first resident spotlight to get started!</div>
+      <button onclick="switchSpotlightTab('create')" class="btn" style="background:#7C3AED;color:#fff;">Create First Spotlight</button>
+    </div>
+    <div id="sp-board-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;"></div>
+  </div>
+
+  <!-- CREATE / EDIT -->
+  <div id="sppanel-create" style="display:none;">
+    <div style="max-width:700px;">
+      <div style="font-weight:700;font-size:17px;color:#1F2937;margin-bottom:16px;" id="sp-form-title">Create New Spotlight</div>
+      <input type="hidden" id="sp-edit-id" value="">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Full Name *</label><input id="sp-name" type="text" class="form-input" placeholder="Resident name" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Room / Unit</label><input id="sp-room" type="text" class="form-input" placeholder="e.g. 204B" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Birthday (MM/DD/YYYY)</label><input id="sp-birthday" type="text" class="form-input" placeholder="01/15/1938" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Hometown</label><input id="sp-hometown" type="text" class="form-input" placeholder="City, State" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Career / Occupation</label><input id="sp-career" type="text" class="form-input" placeholder="e.g. Retired teacher" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Family</label><input id="sp-family" type="text" class="form-input" placeholder="e.g. 3 kids, 7 grandchildren" style="width:100%;box-sizing:border-box;"></div>
+      </div>
+      <div style="margin-bottom:14px;"><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Hobbies &amp; Interests</label><input id="sp-hobbies" type="text" class="form-input" placeholder="e.g. Gardening, reading, bingo" style="width:100%;box-sizing:border-box;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Favorite Food</label><input id="sp-food" type="text" class="form-input" placeholder="e.g. Apple pie" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Favorite Music / Song</label><input id="sp-music" type="text" class="form-input" placeholder="e.g. Johnny Cash, country" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Favorite Movie or Show</label><input id="sp-movie" type="text" class="form-input" placeholder="e.g. The Sound of Music" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Favorite Quote or Saying</label><input id="sp-quote" type="text" class="form-input" placeholder="Their go-to phrase" style="width:100%;box-sizing:border-box;"></div>
+      </div>
+      <div style="margin-bottom:14px;"><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Fun Facts (one per line)</label><textarea id="sp-facts" class="form-input" rows="3" placeholder="Served in the Navy&#10;Once met President Eisenhower&#10;Makes the best pecan pie in town" style="width:100%;box-sizing:border-box;resize:vertical;"></textarea></div>
+      <div style="margin-bottom:14px;"><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Life Highlight / Proudest Moment</label><textarea id="sp-highlight" class="form-input" rows="2" placeholder="A special memory or achievement they are most proud of..." style="width:100%;box-sizing:border-box;resize:vertical;"></textarea></div>
+      <div style="margin-bottom:20px;"><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Message to Fellow Residents</label><textarea id="sp-message" class="form-input" rows="2" placeholder="Something they would like other residents to know..." style="width:100%;box-sizing:border-box;resize:vertical;"></textarea></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="saveSpotlight()" class="btn" style="background:#7C3AED;color:#fff;">Save Spotlight</button>
+        <button onclick="clearSpotlightForm()" class="btn" style="background:#6B7280;color:#fff;">Clear Form</button>
+      </div>
+      <div id="sp-save-msg" style="display:none;margin-top:12px;padding:10px 14px;background:#F0FDF4;color:#166534;border-radius:8px;font-weight:600;">Spotlight saved!</div>
+    </div>
+  </div>
+
+  <!-- BIRTHDAYS -->
+  <div id="sppanel-birthdays" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;">
+      <div style="background:#FFF7ED;border:2px solid #FED7AA;border-radius:14px;padding:20px;">
+        <div style="font-size:22px;font-weight:800;color:#C2410C;margin-bottom:12px;">&#127874; This Month</div>
+        <div id="sp-bday-thismonth"></div>
+      </div>
+      <div style="background:#EFF6FF;border:2px solid #BFDBFE;border-radius:14px;padding:20px;">
+        <div style="font-size:22px;font-weight:800;color:#1D4ED8;margin-bottom:12px;">&#128197; Next Month</div>
+        <div id="sp-bday-nextmonth"></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <div style="font-weight:700;font-size:16px;color:#374151;margin-bottom:14px;">All Birthdays by Month</div>
+      <div id="sp-bday-all" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button onclick="printBirthdayList()" class="btn" style="background:#C2410C;color:#fff;">&#128424; Print Birthday List</button>
+      <button onclick="printBirthdayBanner()" class="btn" style="background:#7C3AED;color:#fff;">&#128424; Print Birthday Banner</button>
+    </div>
+  </div>
+
+  <!-- RECOGNITION -->
+  <div id="sppanel-recognition" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-bottom:24px;">
+      <div style="background:linear-gradient(135deg,#F59E0B,#D97706);border-radius:16px;padding:24px;color:#fff;">
+        <div style="font-size:36px;margin-bottom:8px;">&#127942;</div>
+        <div style="font-size:20px;font-weight:800;margin-bottom:8px;">Resident of the Month</div>
+        <div id="sp-rotm-display" style="font-size:15px;opacity:0.9;margin-bottom:16px;">No selection yet</div>
+        <select id="sp-rotm-select" class="form-input" style="width:100%;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);font-size:14px;">
+          <option value="">-- Select resident --</option>
+        </select>
+        <button onclick="saveROTM()" class="btn" style="background:rgba(255,255,255,0.25);color:#fff;border:1px solid rgba(255,255,255,0.4);margin-top:10px;width:100%;">Save Selection</button>
+        <button onclick="printROTMCertificate()" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);margin-top:8px;width:100%;font-size:12px;">&#128424; Print Certificate</button>
+      </div>
+      <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:24px;">
+        <div style="font-size:36px;margin-bottom:8px;">&#127881;</div>
+        <div style="font-size:18px;font-weight:700;color:#1F2937;margin-bottom:12px;">Add Milestone</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <select id="sp-milestone-resident" class="form-input" style="width:100%;">
+            <option value="">-- Select resident --</option>
+          </select>
+          <select id="sp-milestone-type" class="form-input" style="width:100%;">
+            <option value="1year">1 Year Anniversary</option>
+            <option value="5year">5 Year Anniversary</option>
+            <option value="10year">10 Year Anniversary</option>
+            <option value="birthday100">100th Birthday</option>
+            <option value="birthday90">90th Birthday</option>
+            <option value="birthday80">80th Birthday</option>
+            <option value="volunteer">Volunteer Award</option>
+            <option value="friendship">Friendship Award</option>
+            <option value="spirit">Community Spirit Award</option>
+            <option value="custom">Custom Award</option>
+          </select>
+          <input id="sp-milestone-custom" type="text" class="form-input" placeholder="Custom award name (if selected above)" style="width:100%;box-sizing:border-box;">
+          <button onclick="addMilestone()" class="btn" style="background:#166534;color:#fff;">Add Milestone</button>
+        </div>
+      </div>
+    </div>
+    <div style="font-weight:700;font-size:16px;color:#374151;margin-bottom:12px;">Milestone History</div>
+    <div id="sp-milestones-list"></div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div id="sppanel-interview" style="display:none;">
+    <div style="background:linear-gradient(135deg,#7C3AED,#5B21B6);border-radius:14px;padding:20px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:20px;font-weight:900;">&#128203; Resident Interview Guide</div>
+        <div style="opacity:0.8;font-size:13px;margin-top:4px;">Use these conversation starters to gather information for a spotlight. Take notes and fill out the Create form when done.</div>
+      </div>
+      <button onclick="printInterviewGuide()" class="btn" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);">&#128424; Print Guide</button>
+    </div>
+    <div id="sp-interview-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+  </div>
+
+</section>
 
 <section class="tab-panel" id="panel-music">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
@@ -3357,6 +3494,7 @@ function switchTab(name) {
   if (name === 'food') initFood();
   if (name === 'wellness') initWellness();
   if (name === 'music') initMusic();
+  if (name === 'spotlight') initSpotlight();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
   if (name === 'attlog') renderAttLogs();
@@ -12922,7 +13060,7 @@ const RECIPES = [
     season:'fall,winter' },
 
   // CULTURAL
-  { id:'hawaiisalsa', emoji:'🌺', name:'Hawaiian Pineapple Salsa', type:'cultural', diff:'easy', cultural:True,
+  { id:'hawaiisalsa', emoji:'🌺', name:'Hawaiian Pineapple Salsa', type:'cultural', diff:'easy', cultural:true,
     tagline:'Sweet and tangy tropical salsa. Perfect with chips or fish tacos.',
     serves:'10', time:'15 min', temp:'No heat',
     ingredients:'Fresh pineapple, diced (2 cups)\nRed bell pepper, diced (1/2)\nRed onion, diced (1/4 cup)\nCilantro, chopped (3 tbsp)\nJalapeno, minced (1, optional)\nLime juice (2 limes)\nSalt (1/2 tsp)',
@@ -12930,7 +13068,7 @@ const RECIPES = [
     tips:'Perfect for Hawaii travel theme month. Residents can help dice soft ingredients with safe cutting tools. Beautiful colors on the table.',
     season:'summer,anytime' },
 
-  { id:'greektzatziki', emoji:'🫙', name:'Greek Tzatziki', type:'cultural', diff:'easy', cultural:True,
+  { id:'greektzatziki', emoji:'🫙', name:'Greek Tzatziki', type:'cultural', diff:'easy', cultural:true,
     tagline:'Cool cucumber and dill yogurt dip -- the taste of Greece.',
     serves:'10', time:'20 min', temp:'No heat',
     ingredients:'Greek yogurt, full fat (2 cups)\nEnglish cucumber (1, grated)\nGarlic (2 cloves, minced)\nFresh dill (2 tbsp) or dried (1 tsp)\nOlive oil (2 tbsp)\nLemon juice (1 tbsp)\nSalt (1/2 tsp)\nPita bread and veggies to serve',
@@ -12938,7 +13076,7 @@ const RECIPES = [
     tips:'Squeezing the cucumber is a satisfying step for residents. Pairs beautifully with a Greece travel month. Discuss the Mediterranean diet.',
     season:'summer,anytime' },
 
-  { id:'mexicanriceshow', emoji:'🌮', name:'Mexican Street Corn Dip', type:'cultural', diff:'easy', cultural:True,
+  { id:'mexicanriceshow', emoji:'🌮', name:'Mexican Street Corn Dip', type:'cultural', diff:'easy', cultural:true,
     tagline:'Creamy elote-inspired dip -- big flavor, no cooking required.',
     serves:'10', time:'15 min', temp:'No heat',
     ingredients:'Canned or frozen corn, thawed (2 cans, drained)\nCream cheese, softened (4 oz)\nSour cream (1/4 cup)\nMayonnaise (2 tbsp)\nChili powder (1 tsp)\nSmoked paprika (1/2 tsp)\nLime juice (1 lime)\nCotija or feta cheese (1/4 cup)\nFresh cilantro\nTortilla chips to serve',
@@ -14415,6 +14553,492 @@ function printSongList() {
   }).join('');
   var w = window.open('','_blank');
   w.document.write('<!DOCTYPE html><html><head><title>Song Library</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:30px;max-width:680px;}</style></head><body><h1>Song Library</h1>'+sections+'<div style="margin-top:20px;font-size:11px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+</script>
+
+
+<script>
+// RESIDENT SPOTLIGHT HUB
+
+var SP_KEY       = 'anchor_engage_v3_spotlights';
+var SP_ROTM_KEY  = 'anchor_engage_v3_rotm';
+var SP_MILES_KEY = 'anchor_engage_v3_milestones';
+
+var SP_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+var INTERVIEW_CATEGORIES = [
+  { emoji:'🌍', title:'Early Life', color:'#1D4ED8', questions:[
+    'Where were you born and raised?',
+    'What was your hometown like growing up?',
+    'What is your earliest happy memory?',
+    'What was school like for you?',
+    'Who was your biggest influence growing up?',
+    'Did you have any pets as a child?',
+  ]},
+  { emoji:'💼', title:'Career & Life Work', color:'#166534', questions:[
+    'What did you do for a living? How did you get into that field?',
+    'What job are you most proud of?',
+    'Did you serve in the military? Where did you serve?',
+    'What was a typical day at work like?',
+    'What advice would you give a young person starting their career?',
+  ]},
+  { emoji:'❤️', title:'Family & Relationships', color:'#BE185D', questions:[
+    'Tell me about your family. Do you have children or grandchildren?',
+    'How did you meet your spouse or partner?',
+    'What is your favorite family tradition?',
+    'What do you love most about your family?',
+    'Is there a family story that always makes you laugh?',
+  ]},
+  { emoji:'🎉', title:'Favorites & Fun', color:'#7C3AED', questions:[
+    'What is your favorite food or meal?',
+    'What music or songs do you love most?',
+    'What is your favorite movie or TV show of all time?',
+    'What hobbies or activities do you enjoy most?',
+    'What is your favorite season and why?',
+    'If you could travel anywhere, where would you go?',
+  ]},
+  { emoji:'🌟', title:'Proudest Moments', color:'#D97706', questions:[
+    'What accomplishment are you most proud of in your life?',
+    'Tell me about a challenge you overcame.',
+    'What is the most exciting thing you have ever done?',
+    'Is there a moment when you knew you had made a difference?',
+    'What would you like people to remember about you?',
+  ]},
+  { emoji:'💬', title:'Wisdom & Messages', color:'#0F766E', questions:[
+    'What is the best piece of advice you ever received?',
+    'What life lesson do you wish you had learned sooner?',
+    'What advice would you give to the next generation?',
+    'What do you know now that you wish you knew at age 25?',
+    'Is there a quote or saying you live by?',
+  ]},
+];
+
+function initSpotlight() {
+  renderSpotlightBoard();
+  renderBirthdays();
+  renderRecognition();
+  renderInterviewGuide();
+}
+
+function switchSpotlightTab(tab) {
+  ['board','create','birthdays','recognition','interview'].forEach(function(t) {
+    var btn = document.getElementById('sptab-'+t);
+    if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
+    var p = document.getElementById('sppanel-'+t);
+    if (p) p.style.display = t===tab ? '' : 'none';
+  });
+  if (tab === 'board') renderSpotlightBoard();
+  if (tab === 'birthdays') renderBirthdays();
+  if (tab === 'recognition') renderRecognition();
+}
+
+function getSpotlights() { return lsGet(SP_KEY, []); }
+function saveSpotlights(arr) { lsSet(SP_KEY, arr); }
+
+function saveSpotlight() {
+  var name = document.getElementById('sp-name').value.trim();
+  if (!name) { alert('Please enter a resident name.'); return; }
+  var editId = document.getElementById('sp-edit-id').value;
+  var spotlights = getSpotlights();
+  var obj = {
+    id: editId || ('sp_'+Date.now()),
+    name: name,
+    room: document.getElementById('sp-room').value.trim(),
+    birthday: document.getElementById('sp-birthday').value.trim(),
+    hometown: document.getElementById('sp-hometown').value.trim(),
+    career: document.getElementById('sp-career').value.trim(),
+    family: document.getElementById('sp-family').value.trim(),
+    hobbies: document.getElementById('sp-hobbies').value.trim(),
+    food: document.getElementById('sp-food').value.trim(),
+    music: document.getElementById('sp-music').value.trim(),
+    movie: document.getElementById('sp-movie').value.trim(),
+    quote: document.getElementById('sp-quote').value.trim(),
+    facts: document.getElementById('sp-facts').value.trim(),
+    highlight: document.getElementById('sp-highlight').value.trim(),
+    message: document.getElementById('sp-message').value.trim(),
+    createdAt: editId ? (spotlights.find(function(s){return s.id===editId;})||{}).createdAt || Date.now() : Date.now(),
+  };
+  if (editId) {
+    var idx = spotlights.findIndex(function(s){return s.id===editId;});
+    if (idx !== -1) spotlights[idx] = obj; else spotlights.push(obj);
+  } else {
+    spotlights.push(obj);
+  }
+  saveSpotlights(spotlights);
+  var msg = document.getElementById('sp-save-msg');
+  if (msg) { msg.style.display=''; setTimeout(function(){ msg.style.display='none'; },3000); }
+  clearSpotlightForm();
+  renderSpotlightBoard();
+  populateResidentSelects();
+}
+
+function clearSpotlightForm() {
+  ['sp-edit-id','sp-name','sp-room','sp-birthday','sp-hometown','sp-career','sp-family','sp-hobbies','sp-food','sp-music','sp-movie','sp-quote','sp-facts','sp-highlight','sp-message'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  var t = document.getElementById('sp-form-title');
+  if (t) t.textContent = 'Create New Spotlight';
+}
+
+function editSpotlight(id) {
+  var spotlights = getSpotlights();
+  var s = spotlights.find(function(x){return x.id===id;});
+  if (!s) return;
+  document.getElementById('sp-edit-id').value = s.id;
+  document.getElementById('sp-name').value = s.name || '';
+  document.getElementById('sp-room').value = s.room || '';
+  document.getElementById('sp-birthday').value = s.birthday || '';
+  document.getElementById('sp-hometown').value = s.hometown || '';
+  document.getElementById('sp-career').value = s.career || '';
+  document.getElementById('sp-family').value = s.family || '';
+  document.getElementById('sp-hobbies').value = s.hobbies || '';
+  document.getElementById('sp-food').value = s.food || '';
+  document.getElementById('sp-music').value = s.music || '';
+  document.getElementById('sp-movie').value = s.movie || '';
+  document.getElementById('sp-quote').value = s.quote || '';
+  document.getElementById('sp-facts').value = s.facts || '';
+  document.getElementById('sp-highlight').value = s.highlight || '';
+  document.getElementById('sp-message').value = s.message || '';
+  var t = document.getElementById('sp-form-title');
+  if (t) t.textContent = 'Edit Spotlight: '+s.name;
+  switchSpotlightTab('create');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function deleteSpotlight(id) {
+  if (!confirm('Delete this spotlight? This cannot be undone.')) return;
+  var spotlights = getSpotlights().filter(function(s){return s.id!==id;});
+  saveSpotlights(spotlights);
+  renderSpotlightBoard();
+  populateResidentSelects();
+}
+
+function renderSpotlightBoard() {
+  var spotlights = getSpotlights();
+  var grid = document.getElementById('sp-board-grid');
+  var empty = document.getElementById('sp-board-empty');
+  if (!grid) return;
+  if (!spotlights.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = spotlights.map(function(s, i) {
+    var initial = s.name.charAt(0).toUpperCase();
+    var bdayStr = s.birthday ? (' &middot; Born '+s.birthday) : '';
+    var factsArr = s.facts ? s.facts.split('\n').filter(function(f){return f.trim();}) : [];
+    var factsHtml = factsArr.slice(0,2).map(function(f){ return '<div style="font-size:12px;color:#6B7280;padding:2px 0;">&#11088; '+f.trim()+'</div>'; }).join('');
+    return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;">'
+      + '<div style="background:linear-gradient(135deg,#7C3AED,#5B21B6);padding:20px;display:flex;align-items:center;gap:14px;">'
+      + '<div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;flex-shrink:0;">'+initial+'</div>'
+      + '<div><div style="font-size:17px;font-weight:800;color:#fff;">'+s.name+'</div>'
+      + '<div style="font-size:12px;color:rgba(255,255,255,0.75);">'+(s.room?'Room '+s.room:'')+''+bdayStr+'</div></div>'
+      + '</div>'
+      + '<div style="padding:16px;flex:1;display:flex;flex-direction:column;gap:8px;">'
+      + (s.hometown ? '<div style="font-size:13px;color:#374151;">&#127968; '+s.hometown+'</div>' : '')
+      + (s.career ? '<div style="font-size:13px;color:#374151;">&#128188; '+s.career+'</div>' : '')
+      + (s.hobbies ? '<div style="font-size:13px;color:#374151;">&#10024; '+s.hobbies+'</div>' : '')
+      + factsHtml
+      + (s.quote ? '<div style="font-size:13px;color:#7C3AED;font-style:italic;border-top:1px solid #f0f0f0;padding-top:8px;margin-top:4px;">"'+s.quote+'"</div>' : '')
+      + '</div>'
+      + '<div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;gap:8px;">'
+      + '<button onclick="printSpotlight('+i+')" class="btn" style="background:#7C3AED;color:#fff;font-size:12px;padding:6px 12px;flex:1;">&#128424; Print Poster</button>'
+      + '<button onclick="editSpotlight(\''+s.id+'\')" class="btn" style="background:#EFF6FF;color:#1D4ED8;font-size:12px;padding:6px 12px;">Edit</button>'
+      + '<button onclick="deleteSpotlight(\''+s.id+'\')" class="btn" style="background:#FEF2F2;color:#DC2626;font-size:12px;padding:6px 10px;">&#128465;</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+function printSpotlight(idx) {
+  var spotlights = getSpotlights();
+  var s = spotlights[idx]; if (!s) return;
+  var initial = s.name.charAt(0).toUpperCase();
+  var factsArr = s.facts ? s.facts.split('\n').filter(function(f){return f.trim();}) : [];
+  var factsHtml = factsArr.map(function(f){ return '<li>'+f.trim()+'</li>'; }).join('');
+  var rows = '';
+  if (s.hometown) rows += '<tr><td><b>Hometown</b></td><td>'+s.hometown+'</td></tr>';
+  if (s.career)   rows += '<tr><td><b>Career</b></td><td>'+s.career+'</td></tr>';
+  if (s.family)   rows += '<tr><td><b>Family</b></td><td>'+s.family+'</td></tr>';
+  if (s.hobbies)  rows += '<tr><td><b>Hobbies</b></td><td>'+s.hobbies+'</td></tr>';
+  if (s.food)     rows += '<tr><td><b>Favorite Food</b></td><td>'+s.food+'</td></tr>';
+  if (s.music)    rows += '<tr><td><b>Favorite Music</b></td><td>'+s.music+'</td></tr>';
+  if (s.movie)    rows += '<tr><td><b>Favorite Movie</b></td><td>'+s.movie+'</td></tr>';
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Resident Spotlight: '+s.name+'</title>'
+    +'<style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:0;padding:0;}'
+    +'.header{background:linear-gradient(135deg,#7C3AED,#5B21B6);color:#fff;padding:32px 40px;display:flex;align-items:center;gap:24px;}'
+    +'.avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:900;flex-shrink:0;}'
+    +'.content{padding:30px 40px;}h2{color:#7C3AED;border-bottom:2px solid #EDE9FE;padding-bottom:6px;}'
+    +'table{width:100%;border-collapse:collapse;margin-bottom:20px;}td{padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:14px;}td:first-child{width:140px;color:#888;}'
+    +'ul{line-height:1.8;}.quote{background:#F5F3FF;border-left:4px solid #7C3AED;padding:14px 18px;font-style:italic;color:#4B5563;border-radius:0 8px 8px 0;margin:16px 0;}'
+    +'</style></head><body>'
+    +'<div class="header"><div class="avatar">'+initial+'</div>'
+    +'<div><div style="font-size:32px;font-weight:900;">'+s.name+'</div>'
+    +'<div style="opacity:0.8;font-size:15px;margin-top:4px;">'+(s.room?'Room '+s.room+' &nbsp;&middot;&nbsp;':'')+''+(s.birthday?'Birthday: '+s.birthday:'')+'</div></div></div>'
+    +'<div class="content">'
+    +(rows ? '<h2>About '+s.name+'</h2><table>'+rows+'</table>' : '')
+    +(factsHtml ? '<h2>Fun Facts</h2><ul>'+factsHtml+'</ul>' : '')
+    +(s.highlight ? '<h2>Life Highlight</h2><p>'+s.highlight+'</p>' : '')
+    +(s.message ? '<h2>Message to Fellow Residents</h2><div class="quote">'+s.message+'</div>' : '')
+    +(s.quote ? '<div class="quote">"'+s.quote+'"</div>' : '')
+    +'<div style="margin-top:30px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'</div>'
+    +'<scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function getBirthdayMonth(bdayStr) {
+  if (!bdayStr) return null;
+  var parts = bdayStr.split('/');
+  if (parts.length < 2) return null;
+  var m = parseInt(parts[0], 10);
+  if (isNaN(m) || m < 1 || m > 12) return null;
+  return m - 1; // 0-indexed
+}
+
+function renderBirthdays() {
+  var spotlights = getSpotlights();
+  var now = new Date();
+  var thisM = now.getMonth();
+  var nextM = (thisM + 1) % 12;
+  var byMonth = {};
+  spotlights.forEach(function(s) {
+    var m = getBirthdayMonth(s.birthday);
+    if (m === null) return;
+    if (!byMonth[m]) byMonth[m] = [];
+    byMonth[m].push(s);
+  });
+
+  function renderList(month) {
+    var list = byMonth[month] || [];
+    if (!list.length) return '<div style="color:#9CA3AF;font-size:13px;">No birthdays on record this month. Add birthdays when creating spotlights.</div>';
+    return list.map(function(s) {
+      var parts = (s.birthday||'').split('/');
+      var day = parts[1] ? parseInt(parts[1],10) : '?';
+      var year = parts[2] ? parseInt(parts[2],10) : null;
+      var age = year ? (now.getFullYear() - year) : null;
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06);">'
+        +'<div style="font-size:22px;">&#127874;</div>'
+        +'<div><div style="font-weight:700;font-size:14px;">'+s.name+'</div>'
+        +'<div style="font-size:12px;color:#9CA3AF;">'+SP_MONTHS[month]+' '+day+(age?' &middot; Turning '+age:'')+'</div></div></div>';
+    }).join('');
+  }
+
+  var tm = document.getElementById('sp-bday-thismonth');
+  var nm = document.getElementById('sp-bday-nextmonth');
+  if (tm) tm.innerHTML = renderList(thisM);
+  if (nm) nm.innerHTML = renderList(nextM);
+
+  var allDiv = document.getElementById('sp-bday-all');
+  if (allDiv) {
+    allDiv.innerHTML = SP_MONTHS.map(function(mName, mi) {
+      var list = byMonth[mi] || [];
+      var bg = mi === thisM ? '#FFF7ED' : (mi === nextM ? '#EFF6FF' : '#F9FAFB');
+      var bc = mi === thisM ? '#FED7AA' : (mi === nextM ? '#BFDBFE' : '#E5E7EB');
+      var names = list.length ? list.map(function(s){ var d=(s.birthday||'').split('/')[1]||'?'; return '<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #f0f0f0;">&#127874; '+s.name+' ('+mName+' '+d+')</div>'; }).join('') : '<div style="font-size:12px;color:#aaa;padding:4px 0;">None on record</div>';
+      return '<div style="background:'+bg+';border:1px solid '+bc+';border-radius:10px;padding:14px;">'
+        +'<div style="font-weight:700;font-size:13px;color:#374151;margin-bottom:8px;">'+mName+(mi===thisM?' &#11088;':'')+'</div>'
+        +names+'</div>';
+    }).join('');
+  }
+}
+
+function printBirthdayList() {
+  var spotlights = getSpotlights().filter(function(s){ return getBirthdayMonth(s.birthday) !== null; });
+  spotlights.sort(function(a,b){
+    var am = getBirthdayMonth(a.birthday), bm = getBirthdayMonth(b.birthday);
+    if (am !== bm) return am - bm;
+    var ad = parseInt((a.birthday||'').split('/')[1]||0,10);
+    var bd2 = parseInt((b.birthday||'').split('/')[1]||0,10);
+    return ad - bd2;
+  });
+  var rows = spotlights.map(function(s,i){
+    return '<tr style="background:'+(i%2===0?'#f9f9f9':'#fff')+'">'
+      +'<td style="padding:10px 12px;border:1px solid #eee;">'+s.name+'</td>'
+      +'<td style="padding:10px 12px;border:1px solid #eee;">'+(s.room||'-')+'</td>'
+      +'<td style="padding:10px 12px;border:1px solid #eee;">'+(s.birthday||'-')+'</td>'
+      +'<td style="padding:10px 12px;border:1px solid #eee;">'+(getBirthdayMonth(s.birthday)!==null?SP_MONTHS[getBirthdayMonth(s.birthday)]:'')+'</td></tr>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Birthday List</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:30px;}table{width:100%;border-collapse:collapse;}th{background:#C2410C;color:#fff;padding:10px 12px;text-align:left;}</style></head><body><h1>&#127874; Resident Birthday List</h1><table><thead><tr><th>Name</th><th>Room</th><th>Birthday</th><th>Month</th></tr></thead><tbody>'+rows+'</tbody></table><div style="margin-top:20px;font-size:11px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function printBirthdayBanner() {
+  var now = new Date();
+  var mName = SP_MONTHS[now.getMonth()];
+  var spotlights = getSpotlights().filter(function(s){ return getBirthdayMonth(s.birthday) === now.getMonth(); });
+  var names = spotlights.length ? spotlights.map(function(s){ return '<div style="font-size:28px;font-weight:700;color:#C2410C;">&#127874; '+s.name+'</div>'; }).join('') : '<div style="font-size:20px;color:#aaa;">No birthdays this month on record</div>';
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Birthday Banner</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:0;background:#FFF7ED;}div.banner{text-align:center;padding:60px 40px;}</style></head><body><div class="banner"><div style="font-size:60px;">&#127874;&#127881;&#127874;</div><div style="font-size:36px;font-weight:900;color:#92400E;margin:16px 0;">Happy Birthday!</div><div style="font-size:22px;color:#B45309;margin-bottom:24px;">'+mName+' Birthdays</div>'+names+'<div style="margin-top:40px;font-size:13px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div></div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function populateResidentSelects() {
+  var spotlights = getSpotlights();
+  ['sp-rotm-select','sp-milestone-resident'].forEach(function(sid) {
+    var sel = document.getElementById(sid); if (!sel) return;
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">-- Select resident --</option>'
+      + spotlights.map(function(s){ return '<option value="'+s.id+'"'+(s.id===cur?' selected':'')+'>'+s.name+(s.room?' (Room '+s.room+')':'')+'</option>'; }).join('');
+  });
+}
+
+function renderRecognition() {
+  populateResidentSelects();
+  // ROTM display
+  var rotm = lsGet(SP_ROTM_KEY, {});
+  var now = new Date();
+  var mKey = now.getFullYear()+'-'+(now.getMonth()+1);
+  var display = document.getElementById('sp-rotm-display');
+  if (display) {
+    var spotlights = getSpotlights();
+    var sel = rotm[mKey];
+    if (sel) {
+      var s = spotlights.find(function(x){return x.id===sel;});
+      display.textContent = s ? (SP_MONTHS[now.getMonth()]+' '+now.getFullYear()+': '+s.name) : 'No selection yet';
+    } else {
+      display.textContent = SP_MONTHS[now.getMonth()]+' '+now.getFullYear()+': Not yet selected';
+    }
+  }
+  renderMilestones();
+}
+
+function saveROTM() {
+  var sel = document.getElementById('sp-rotm-select'); if (!sel || !sel.value) { alert('Please select a resident.'); return; }
+  var now = new Date();
+  var mKey = now.getFullYear()+'-'+(now.getMonth()+1);
+  var rotm = lsGet(SP_ROTM_KEY, {});
+  rotm[mKey] = sel.value;
+  lsSet(SP_ROTM_KEY, rotm);
+  renderRecognition();
+}
+
+function printROTMCertificate() {
+  var now = new Date();
+  var mKey = now.getFullYear()+'-'+(now.getMonth()+1);
+  var rotm = lsGet(SP_ROTM_KEY, {});
+  var spotlights = getSpotlights();
+  var selId = rotm[mKey];
+  var s = selId ? spotlights.find(function(x){return x.id===selId;}) : null;
+  var name = s ? s.name : '______________________________';
+  var month = SP_MONTHS[now.getMonth()]+' '+now.getFullYear();
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Resident of the Month Certificate</title>'
+    +'<style>@media print{body{margin:0;}}body{font-family:Georgia,serif;margin:0;background:#FFFBEB;}'
+    +'.cert{border:8px double #D97706;margin:40px;padding:50px;text-align:center;border-radius:8px;}'
+    +'</style></head><body><div class="cert">'
+    +'<div style="font-size:52px;margin-bottom:16px;">&#127942;</div>'
+    +'<div style="font-size:14px;letter-spacing:3px;color:#92400E;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Certificate of Recognition</div>'
+    +'<div style="font-size:28px;font-weight:700;color:#92400E;margin-bottom:16px;">Resident of the Month</div>'
+    +'<div style="font-size:16px;color:#78716C;margin-bottom:20px;">This certificate is proudly awarded to</div>'
+    +'<div style="font-size:42px;font-family:Georgia,serif;color:#1F2937;border-bottom:2px solid #D97706;padding-bottom:12px;margin-bottom:12px;">'+name+'</div>'
+    +'<div style="font-size:16px;color:#78716C;margin-bottom:30px;">In recognition of outstanding community spirit and friendship</div>'
+    +'<div style="font-size:15px;color:#92400E;font-weight:600;">'+month+'</div>'
+    +'<div style="margin-top:40px;display:flex;justify-content:space-around;font-size:13px;color:#aaa;">'
+    +'<div>Activity Director: _______________________</div>'
+    +'<div>Date: _______________</div>'
+    +'</div>'
+    +'<div style="margin-top:30px;font-size:11px;color:#ccc;">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function addMilestone() {
+  var res = document.getElementById('sp-milestone-resident');
+  var typ = document.getElementById('sp-milestone-type');
+  var cust = document.getElementById('sp-milestone-custom');
+  if (!res || !res.value) { alert('Please select a resident.'); return; }
+  var spotlights = getSpotlights();
+  var s = spotlights.find(function(x){return x.id===res.value;});
+  if (!s) return;
+  var typeLabels = {
+    '1year':'1 Year Anniversary','5year':'5 Year Anniversary','10year':'10 Year Anniversary',
+    'birthday100':'100th Birthday','birthday90':'90th Birthday','birthday80':'80th Birthday',
+    'volunteer':'Volunteer Award','friendship':'Friendship Award','spirit':'Community Spirit Award',
+    'custom': cust && cust.value.trim() ? cust.value.trim() : 'Special Award'
+  };
+  var label = typeLabels[typ.value] || typ.value;
+  var milestones = lsGet(SP_MILES_KEY, []);
+  milestones.unshift({ id:'m'+Date.now(), residentId:s.id, name:s.name, award:label, date:new Date().toLocaleDateString() });
+  lsSet(SP_MILES_KEY, milestones);
+  if (cust) cust.value = '';
+  renderMilestones();
+}
+
+function renderMilestones() {
+  var milestones = lsGet(SP_MILES_KEY, []);
+  var list = document.getElementById('sp-milestones-list'); if (!list) return;
+  if (!milestones.length) { list.innerHTML = '<div style="color:#aaa;padding:20px;">No milestones recorded yet.</div>'; return; }
+  list.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">'
+    + milestones.map(function(m, i) {
+      return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">'
+        +'<div style="display:flex;align-items:center;gap:12px;">'
+        +'<div style="font-size:24px;">&#127942;</div>'
+        +'<div><div style="font-weight:700;font-size:14px;">'+m.name+'</div>'
+        +'<div style="font-size:13px;color:#7C3AED;font-weight:600;">'+m.award+'</div>'
+        +'<div style="font-size:12px;color:#9CA3AF;">'+m.date+'</div></div></div>'
+        +'<div style="display:flex;gap:6px;">'
+        +'<button onclick="printMilestoneCert('+i+')" class="btn" style="background:#7C3AED;color:#fff;font-size:11px;padding:5px 10px;">Print Cert</button>'
+        +'<button onclick="deleteMilestone('+i+')" class="btn" style="background:#FEF2F2;color:#DC2626;font-size:11px;padding:5px 8px;">&#128465;</button>'
+        +'</div></div>';
+    }).join('') + '</div>';
+}
+
+function deleteMilestone(idx) {
+  if (!confirm('Remove this milestone?')) return;
+  var milestones = lsGet(SP_MILES_KEY, []);
+  milestones.splice(idx,1);
+  lsSet(SP_MILES_KEY, milestones);
+  renderMilestones();
+}
+
+function printMilestoneCert(idx) {
+  var milestones = lsGet(SP_MILES_KEY, []);
+  var m = milestones[idx]; if (!m) return;
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+m.award+'</title>'
+    +'<style>@media print{body{margin:0;}}body{font-family:Georgia,serif;margin:0;background:#F0FDF4;}'
+    +'.cert{border:8px double #166534;margin:40px;padding:50px;text-align:center;border-radius:8px;}'
+    +'</style></head><body><div class="cert">'
+    +'<div style="font-size:52px;margin-bottom:16px;">&#127881;</div>'
+    +'<div style="font-size:14px;letter-spacing:3px;color:#166534;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Certificate of Recognition</div>'
+    +'<div style="font-size:28px;font-weight:700;color:#166534;margin-bottom:20px;">'+m.award+'</div>'
+    +'<div style="font-size:16px;color:#4B7563;margin-bottom:16px;">Proudly awarded to</div>'
+    +'<div style="font-size:42px;font-family:Georgia,serif;color:#1F2937;border-bottom:2px solid #166534;padding-bottom:12px;margin-bottom:20px;">'+m.name+'</div>'
+    +'<div style="font-size:15px;color:#166534;font-weight:600;">'+m.date+'</div>'
+    +'<div style="margin-top:40px;display:flex;justify-content:space-around;font-size:13px;color:#aaa;">'
+    +'<div>Activity Director: _______________________</div>'
+    +'<div>Date: _______________</div>'
+    +'</div>'
+    +'<div style="margin-top:30px;font-size:11px;color:#ccc;">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function renderInterviewGuide() {
+  var grid = document.getElementById('sp-interview-grid'); if (!grid) return;
+  grid.innerHTML = INTERVIEW_CATEGORIES.map(function(cat) {
+    var qs = cat.questions.map(function(q){ return '<div style="padding:8px 10px;border-bottom:1px solid #f0f0f0;font-size:13px;color:#374151;">'+q+'<div style="margin-top:4px;font-size:11px;color:#D1D5DB;">Notes: _____________________________________________</div></div>'; }).join('');
+    return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;overflow:hidden;">'
+      +'<div style="background:'+cat.color+';padding:14px 16px;display:flex;align-items:center;gap:8px;">'
+      +'<div style="font-size:22px;">'+cat.emoji+'</div>'
+      +'<div style="font-weight:700;font-size:15px;color:#fff;">'+cat.title+'</div></div>'
+      +'<div>'+qs+'</div></div>';
+  }).join('');
+}
+
+function printInterviewGuide() {
+  var sections = INTERVIEW_CATEGORIES.map(function(cat) {
+    var qs = cat.questions.map(function(q,i){ return '<div style="padding:12px 0;border-bottom:1px solid #f0f0f0;"><div style="font-size:14px;font-weight:600;">'+(i+1)+'. '+q+'</div><div style="margin-top:6px;color:#aaa;font-size:12px;">Notes: _________________________________________________________________</div></div>'; }).join('');
+    return '<div style="margin-bottom:24px;page-break-inside:avoid;"><h3 style="color:'+cat.color+';border-bottom:2px solid '+cat.color+';padding-bottom:6px;">'+cat.emoji+' '+cat.title+'</h3>'+qs+'</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Resident Interview Guide</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:40px;max-width:680px;}</style></head><body><h1>&#128203; Resident Interview Guide</h1><p style="color:#555;">Use these questions as conversation starters when gathering information for a Resident Spotlight. Take notes and enter the information into Empower Life 365 when done.</p><p><b>Resident Name:</b> ___________________________________ &nbsp;&nbsp; <b>Date:</b> ______________</p><hr>'+sections+'<div style="margin-top:20px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
   w.document.close();
 }
 
