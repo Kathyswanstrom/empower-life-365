@@ -1127,6 +1127,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
     <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
+    <button class="tab-btn" data-tab="music" id="music-tab" onclick="switchTab('music')">🎵 Music</button>
     <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
     <button class="tab-btn" data-tab="food" id="food-tab" onclick="switchTab('food')">🍽️ Food & Cooking</button>
     <button class="tab-btn" data-tab="crafts" id="crafts-tab" onclick="switchTab('crafts')">🎨 Arts & Crafts</button>
@@ -2123,6 +2124,91 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 
 
+
+
+<section class="tab-panel" id="panel-music">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">&#127925; Music &amp; Entertainment</h2>
+      <div class="subtitle">Song library, movie club, music games, performance nights, and themed listening events.</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="mustab-songs"       onclick="switchMusicTab('songs')"       class="tv-subtab tv-subtab-active">&#127925; Song Library</button>
+    <button id="mustab-movies"      onclick="switchMusicTab('movies')"      class="tv-subtab">&#127916; Movie Club</button>
+    <button id="mustab-games"       onclick="switchMusicTab('games')"       class="tv-subtab">&#127918; Music Games</button>
+    <button id="mustab-performance" onclick="switchMusicTab('performance')" class="tv-subtab">&#127908; Performance Night</button>
+    <button id="mustab-themed"      onclick="switchMusicTab('themed')"      class="tv-subtab">&#128251; Themed Sessions</button>
+  </div>
+  <!-- SONG LIBRARY -->
+  <div id="muspanel-songs">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:#6B7280;">Decade:</span>
+      <button id="musdec-all" onclick="setMusicFilter('dec','all')" class="gm-cat gm-cat-active">All</button>
+      <button id="musdec-30s" onclick="setMusicFilter('dec','30s')" class="gm-cat">1930s</button>
+      <button id="musdec-40s" onclick="setMusicFilter('dec','40s')" class="gm-cat">1940s</button>
+      <button id="musdec-50s" onclick="setMusicFilter('dec','50s')" class="gm-cat">1950s</button>
+      <button id="musdec-60s" onclick="setMusicFilter('dec','60s')" class="gm-cat">1960s</button>
+      <button id="musdec-70s" onclick="setMusicFilter('dec','70s')" class="gm-cat">1970s</button>
+      <button id="musdec-80s" onclick="setMusicFilter('dec','80s')" class="gm-cat">1980s</button>
+      <span style="font-size:13px;font-weight:600;color:#6B7280;margin-left:6px;">Genre:</span>
+      <button id="musgen-all"       onclick="setMusicFilter('gen','all')"       class="gm-player gm-player-active">All</button>
+      <button id="musgen-bigband"   onclick="setMusicFilter('gen','bigband')"   class="gm-player">Big Band</button>
+      <button id="musgen-country"   onclick="setMusicFilter('gen','country')"   class="gm-player">Country</button>
+      <button id="musgen-gospel"    onclick="setMusicFilter('gen','gospel')"    class="gm-player">Gospel</button>
+      <button id="musgen-pop"       onclick="setMusicFilter('gen','pop')"       class="gm-player">Pop</button>
+      <button id="musgen-folk"      onclick="setMusicFilter('gen','folk')"      class="gm-player">Folk</button>
+      <button id="musgen-patriotic" onclick="setMusicFilter('gen','patriotic')" class="gm-player">Patriotic</button>
+    </div>
+    <div id="mus-song-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
+    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button onclick="printSingalongSheet()" class="btn" style="background:#7C3AED;color:#fff;">Print Sing-Along Session Sheet</button>
+      <button onclick="printSongList()" class="btn" style="background:#1e40af;color:#fff;">Print Song List</button>
+    </div>
+  </div>
+  <!-- MOVIE CLUB -->
+  <div id="muspanel-movies" style="display:none;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:#6B7280;">Genre:</span>
+      <button id="movgen-all"     onclick="setMovieFilter('all')"     class="gm-cat gm-cat-active">All</button>
+      <button id="movgen-musical" onclick="setMovieFilter('musical')" class="gm-cat">Musical</button>
+      <button id="movgen-comedy"  onclick="setMovieFilter('comedy')"  class="gm-cat">Comedy</button>
+      <button id="movgen-drama"   onclick="setMovieFilter('drama')"   class="gm-cat">Drama</button>
+      <button id="movgen-western" onclick="setMovieFilter('western')" class="gm-cat">Western</button>
+      <button id="movgen-classic" onclick="setMovieFilter('classic')" class="gm-cat">Classic</button>
+    </div>
+    <div id="mus-movie-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;"></div>
+    <div id="mus-movie-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;overflow-y:auto;">
+      <div style="background:#fff;max-width:600px;margin:60px auto;border-radius:16px;padding:32px;position:relative;">
+        <button onclick="closeMusicModal('movie')" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;">X</button>
+        <div id="mus-movie-modal-body"></div>
+      </div>
+    </div>
+  </div>
+  <!-- MUSIC GAMES -->
+  <div id="muspanel-games" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;" id="mus-games-grid"></div>
+  </div>
+  <!-- PERFORMANCE NIGHT -->
+  <div id="muspanel-performance" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;" id="mus-perf-grid"></div>
+    <div style="margin-top:20px;">
+      <div style="font-weight:700;font-size:15px;color:#374151;margin-bottom:10px;">Karaoke Favorites</div>
+      <div id="mus-karaoke-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+      <button onclick="printKaraokeList()" class="btn" style="background:#BE185D;color:#fff;margin-top:14px;">Print Karaoke List</button>
+    </div>
+  </div>
+  <!-- THEMED SESSIONS -->
+  <div id="muspanel-themed" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;" id="mus-themed-grid"></div>
+    <div id="mus-themed-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;overflow-y:auto;">
+      <div style="background:#fff;max-width:640px;margin:60px auto;border-radius:16px;padding:32px;position:relative;">
+        <button onclick="closeMusicModal('themed')" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;">X</button>
+        <div id="mus-themed-modal-body"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-wellness">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
@@ -3270,6 +3356,7 @@ function switchTab(name) {
   if (name === 'crafts') initCrafts();
   if (name === 'food') initFood();
   if (name === 'wellness') initWellness();
+  if (name === 'music') initMusic();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
   if (name === 'attlog') renderAttLogs();
@@ -13022,7 +13109,7 @@ const SEASONAL_FOOD = [
   {m:'December', emoji:'🎄', holiday:'Holidays', ideas:['Cookie exchange & decorating','Eggnog taste test','Soft pretzel making','Wassail punch -- hot holiday mocktail']},
 ];
 
-let fdState = { tab:'recipes', type:'all', diff:'all', activeRecipe:null, triviaAnswered:{} };
+var fdState = { tab:'recipes', type:'all', diff:'all', activeRecipe:null, triviaAnswered:{} };
 
 function initFood() {
   renderRecipeGrid();
@@ -13130,7 +13217,7 @@ function renderCocktails() {
     </div>`).join('');
 }
 
-let fdActiveCocktail = null;
+var fdActiveCocktail = null;
 function openCocktailModal(i) {
   const c = COCKTAILS[i];
   fdActiveCocktail = c;
@@ -13977,6 +14064,360 @@ function printMindfulScript(i) {
     <script>window.onload=()=>window.print();<\/script></body></html>`);
   w.document.close();
 }
+</script>
+
+
+<script>
+// MUSIC AND ENTERTAINMENT HUB
+
+const SONGS = [
+  { id:1,  title:'Over the Rainbow',         artist:'Judy Garland',              decade:'30s', genre:'pop',       singalong:true,  tip:'Perfect opener -- nearly everyone knows it.' },
+  { id:2,  title:'Pennies from Heaven',       artist:'Bing Crosby',               decade:'30s', genre:'bigband',   singalong:true,  tip:'Great for a rainy-day program.' },
+  { id:3,  title:'In the Mood',               artist:'Glenn Miller',              decade:'30s', genre:'bigband',   singalong:false, tip:'Play this to energize the room -- great for movement activities.' },
+  { id:4,  title:'Stormy Weather',            artist:'Lena Horne',                decade:'30s', genre:'pop',       singalong:true,  tip:'Beautiful for a reflective moment.' },
+  { id:5,  title:'You Are My Sunshine',       artist:'Various Artists',           decade:'40s', genre:'country',   singalong:true,  tip:'Works for all groups; residents love joining in.' },
+  { id:6,  title:'White Christmas',           artist:'Bing Crosby',               decade:'40s', genre:'pop',       singalong:true,  tip:'A December staple -- always brings smiles.' },
+  { id:7,  title:'Boogie Woogie Bugle Boy',   artist:'Andrews Sisters',           decade:'40s', genre:'bigband',   singalong:true,  tip:'High energy -- great for chair dancing.' },
+  { id:8,  title:'God Bless America',         artist:'Kate Smith',                decade:'40s', genre:'patriotic', singalong:true,  tip:'Perfect for July 4th or Veterans Day programs.' },
+  { id:9,  title:'Sentimental Journey',       artist:'Doris Day',                 decade:'40s', genre:'bigband',   singalong:true,  tip:'Wonderful for a travel-themed program.' },
+  { id:10, title:'Rock Around the Clock',     artist:'Bill Haley & His Comets',   decade:'50s', genre:'pop',       singalong:true,  tip:'Pair with a sock hop theme night.' },
+  { id:11, title:'Tennessee Waltz',           artist:'Patti Page',                decade:'50s', genre:'country',   singalong:true,  tip:'Many residents have memories connected to this song.' },
+  { id:12, title:'How Much Is That Doggie',   artist:'Patti Page',                decade:'50s', genre:'pop',       singalong:true,  tip:'Fun for animal-themed activities.' },
+  { id:13, title:'Amazing Grace',             artist:'Various Artists',           decade:'50s', genre:'gospel',    singalong:true,  tip:'Universally loved; great for reflection time.' },
+  { id:14, title:'This Land Is Your Land',    artist:'Woody Guthrie',             decade:'50s', genre:'folk',      singalong:true,  tip:'Get everyone clapping and singing together.' },
+  { id:15, title:'Que Sera Sera',             artist:'Doris Day',                 decade:'50s', genre:'pop',       singalong:true,  tip:'Easy chorus everyone can join.' },
+  { id:16, title:'Stand By Me',               artist:'Ben E. King',               decade:'60s', genre:'pop',       singalong:true,  tip:'Timeless -- bridges generations.' },
+  { id:17, title:'This Little Light of Mine', artist:'Various Artists',           decade:'60s', genre:'gospel',    singalong:true,  tip:'Add hand motions for an interactive experience.' },
+  { id:18, title:'Country Roads',             artist:'John Denver',               decade:'60s', genre:'country',   singalong:true,  tip:'Residents often sing the whole song from memory.' },
+  { id:19, title:'I Been Working on the Railroad', artist:'Traditional',          decade:'60s', genre:'folk',      singalong:true,  tip:'Classic crowd-pleaser with easy lyrics.' },
+  { id:20, title:'Moon River',                artist:'Audrey Hepburn',            decade:'60s', genre:'pop',       singalong:true,  tip:'Elegant closer for a movie-themed program.' },
+  { id:21, title:'Battle Hymn of the Republic', artist:'Various Artists',         decade:'60s', genre:'patriotic', singalong:true,  tip:'Excellent for patriotic holiday programs.' },
+  { id:22, title:'You Got a Friend',          artist:'James Taylor',              decade:'70s', genre:'folk',      singalong:true,  tip:'Evokes warmth and community.' },
+  { id:23, title:'Joy to the World',          artist:'Three Dog Night',           decade:'70s', genre:'pop',       singalong:true,  tip:'Fun and energetic -- great for group singalong.' },
+  { id:24, title:'Rhinestone Cowboy',         artist:'Glen Campbell',             decade:'70s', genre:'country',   singalong:true,  tip:'Country night favorite.' },
+  { id:25, title:'How Great Thou Art',        artist:'Various Artists',           decade:'70s', genre:'gospel',    singalong:true,  tip:'Many residents know all the verses.' },
+  { id:26, title:'What a Wonderful World',    artist:'Louis Armstrong',           decade:'80s', genre:'pop',       singalong:true,  tip:'Perfect closing song for any program.' },
+  { id:27, title:'Islands in the Stream',     artist:'Parton & Kenny Rogers',     decade:'80s', genre:'country',   singalong:true,  tip:'Great duet for two residents to perform together.' },
+  { id:28, title:'Wind Beneath My Wings',     artist:'Bette Midler',              decade:'80s', genre:'pop',       singalong:true,  tip:'Moving -- often requested for Mother Day programs.' },
+  { id:29, title:'America the Beautiful',     artist:'Various Artists',           decade:'80s', genre:'patriotic', singalong:true,  tip:'Elegant patriotic selection.' },
+  { id:30, title:'Elvira',                    artist:'Oak Ridge Boys',            decade:'80s', genre:'country',   singalong:true,  tip:'Residents love the Giddy up oom poppa part!' },
+];
+
+const MOVIES = [
+  { id:1,  emoji:'🎩', title:'Singin in the Rain',    year:1952, genre:'musical', tagline:'The ultimate feel-good movie musical.',        why:'Iconic songs, spectacular dancing, joyful energy.',             questions:['What was your favorite scene or song?','Did you ever have to make the best of it like these characters?','What is your favorite Gene Kelly memory?'] },
+  { id:2,  emoji:'🌹', title:'The Sound of Music',    year:1965, genre:'musical', tagline:'Music, mountains, and family.',                 why:'Singalong songs, uplifting story, family values.',              questions:['Which song is your favorite and why?','Have you ever been to mountains like in the film?','What do you think of the family courage?'] },
+  { id:3,  emoji:'🎭', title:'White Christmas',        year:1954, genre:'musical', tagline:'Bing Crosby timeless Christmas classic.',       why:'Nostalgic, warm holiday feelings, great songs.',                questions:['Does this movie bring back any holiday memories?','Which song is your favorite?','Have you ever dreamed of a White Christmas?'] },
+  { id:4,  emoji:'😄', title:'Some Like It Hot',       year:1959, genre:'comedy',  tagline:'Marilyn Monroe at her funniest.',               why:'Non-stop laughs, great one-liners, classic era.',               questions:['What made you laugh the most?','Did the ending surprise you?','Would you have recognized the disguises?'] },
+  { id:5,  emoji:'🤠', title:'True Grit',              year:1969, genre:'western', tagline:'John Wayne at his best.',                       why:'Classic western storytelling, great characters.',               questions:['What did you admire about Rooster Cogburn?','Were you a fan of John Wayne?','What do you think makes a good western?'] },
+  { id:6,  emoji:'🌟', title:'Casablanca',             year:1942, genre:'classic', tagline:'A timeless story of love and sacrifice.',       why:'Iconic romance, beautiful film, memorable lines.',              questions:['What did "Here is looking at you kid" mean to you?','Did you follow the news from that era?','What makes this movie still resonate today?'] },
+  { id:7,  emoji:'🎶', title:'West Side Story',        year:1961, genre:'musical', tagline:'Romeo and Juliet set to unforgettable music.',  why:'Stunning choreography, powerful music, important themes.',      questions:['How did the music make you feel?','Which was your favorite song or dance?','Do you think the story is still relevant today?'] },
+  { id:8,  emoji:'🌻', title:'The Wizard of Oz',       year:1939, genre:'classic', tagline:'There is no place like home.',                  why:'Magical, nostalgic, universally loved.',                        questions:['What is your earliest memory of this film?','Which character do you relate to most?','What does there is no place like home mean to you?'] },
+  { id:9,  emoji:'😂', title:'The Odd Couple',         year:1968, genre:'comedy',  tagline:'Felix and Oscar -- the original odd couple.',   why:'Great chemistry, relatable humor, classic one-liners.',         questions:['Are you more of a Felix or an Oscar?','Did this remind you of anyone you know?','Which scene made you laugh the hardest?'] },
+  { id:10, emoji:'🎪', title:'Grease',                 year:1978, genre:'musical', tagline:'Summer loving at Rydell High.',                 why:'Fun 50s nostalgia, singalong songs, great energy.',             questions:['What was your high school like in comparison?','Did you dance like this at school dances?','Which character was your favorite?'] },
+  { id:11, emoji:'🏇', title:'My Fair Lady',           year:1964, genre:'musical', tagline:'Audrey Hepburn transforms a flower girl.',      why:'Elegant, witty, beautiful songs and costumes.',                 questions:['Could you see yourself in Eliza shoes?','What was your favorite song?','Do you think Professor Higgins was right?'] },
+  { id:12, emoji:'🤵', title:'Roman Holiday',          year:1953, genre:'classic', tagline:'Audrey Hepburn enchanting Rome adventure.',    why:'Charming, romantic, beautifully filmed.',                       questions:['Have you ever wanted to escape for a day like Audrey?','Did this make you want to visit Rome?','What would your perfect day of freedom look like?'] },
+];
+
+const MUSIC_GAMES = [
+  { id:1, emoji:'🎱', name:'Music Bingo',         tagline:'Bingo cards with song titles instead of numbers!',    players:'4-30', time:'30-45 min', prep:'Moderate', howto:'Create bingo cards with song titles in each square. Play 15-20 second clips or hum songs. Players cover squares when they recognize a song. First to complete a row wins.', tips:'Group by theme: Big Band night, Country night, Gospel Sunday. Caller can sing a few words instead of recordings. Have small prizes ready.', print:true },
+  { id:2, emoji:'🎵', name:'Name That Tune',      tagline:'How fast can they identify the song?',                players:'2-20', time:'20-30 min', prep:'Low',      howto:'Caller hums, claps the rhythm, or gives clues. First resident to shout the correct title wins a point. Play 10-15 rounds.', tips:'Use a whiteboard to track scores. Start with very familiar songs then add harder ones. Can also do Name the Artist variant.', print:false },
+  { id:3, emoji:'🎤', name:'Finish the Lyric',    tagline:'Fill in the missing word -- everyone knows these!',   players:'1-30', time:'15-25 min', prep:'Low',      howto:'Staff reads a lyric stopping at a key word. Residents shout the missing word. No wrong answers -- just have fun! Works great as a warm-up activity.', tips:'Start with You Are My Sunshine and similar universally known songs. Residents with memory challenges often remember lyrics even when other memories fade.', print:true },
+  { id:4, emoji:'🗺️', name:'Song Map Challenge',  tagline:'Name a song for every state or country!',             players:'2-20', time:'30-40 min', prep:'Low',      howto:'Call out a US state. Team has 30 seconds to name a song that mentions that place. Country Roads (West Virginia), Georgia on My Mind, My Old Kentucky Home, etc.', tips:'Keep a running list on a whiteboard. Ties in perfectly with the Travel Hub virtual destinations.', print:false },
+  { id:5, emoji:'📅', name:'Decade Match',        tagline:'Match the song to its decade!',                       players:'2-20', time:'25-35 min', prep:'Low',      howto:'Staff reads a song title and artist. Residents vote on which decade it is from by raising hands. Award a point to everyone who guesses correctly.', tips:'Mix easy (1940s big band) with surprising ones. Great conversation starter about what was happening in each era.', print:false },
+  { id:6, emoji:'🎹', name:'One-Note Challenge',  tagline:'Identify the song from a single hummed note!',        players:'2-15', time:'15-20 min', prep:'None',     howto:'Staff hums just ONE note of a famous song. Residents guess the song. Move to 2 notes then 3 if needed. Award more points for fewer notes needed.', tips:'Works best with very distinctive melodies -- jingles and hymns are great. Keep it lighthearted!', print:false },
+];
+
+const PERFORMANCE_IDEAS = [
+  { id:1, emoji:'🎭', name:'Resident Talent Show',   tagline:'Let residents shine with their hidden talents!',      desc:'Annual or seasonal talent show where residents perform songs, recite poetry, tell jokes, play instruments, or share any skill. Staff act as enthusiastic emcees.', steps:['Announce 2 weeks in advance and take sign-ups','Offer to help residents rehearse or prepare','Set up a stage area with a microphone if available','Create printed programs with performer names','Have staff perform one number to kick things off','Award everyone a Star Performer certificate'] },
+  { id:2, emoji:'🎸', name:'Volunteer Concert Night', tagline:'Invite local musicians to perform for residents.',    desc:'Host local musicians, school choirs, barbershop quartets, or church groups to perform. Residents enjoy live music and the social connection with community visitors.', steps:['Reach out to local high school music departments','Contact church choirs, barbershop societies, community bands','Set up chairs in a concert-style arrangement','Prepare a simple reception','Take photos for the newsletter','Send thank-you notes from residents'] },
+  { id:3, emoji:'🪗', name:'Sing-Along Concert',      tagline:'Staff leads a structured singalong with lyric sheets.', desc:'Staff or a volunteer leads 30-45 minutes of guided group singing. Lyric sheets keep everyone on the same page and help residents with memory challenges participate fully.', steps:['Choose a theme: decades, holidays, gospel, country','Print lyric sheets (large font, double-spaced)','Warm up with an easy familiar song','Mix upbeat and slow songs','Invite residents to call out requests','End with a slow peaceful closing song'] },
+  { id:4, emoji:'🕺', name:'Dance Party',             tagline:'Chair dancing and movement to favorite music.',       desc:'No standing required! A chair dance party invites residents to move to the music from their seats. Pairs perfectly with the Wellness tab chair exercises.', steps:['Create a themed playlist: Big Band, 50s Rock, Country','Push tables aside for more space if possible','Model chair movements: arm raises, shoulder rolls, clapping','Invite residents who can stand to do so safely','Staff dance along to encourage participation','End with 2-3 slow songs for cool-down'] },
+];
+
+const KARAOKE_SONGS = [
+  { title:'You Are My Sunshine',         artist:'Various',                key:'C',       tip:'Simple melody, everyone knows it' },
+  { title:'Take Me Home Country Roads',  artist:'John Denver',            key:'G',       tip:'Crowd favorite -- they know every word' },
+  { title:'Amazing Grace',               artist:'Traditional',            key:'G',       tip:'Perfect for quieter reflective groups' },
+  { title:'I Will Fly Away',             artist:'Traditional',            key:'G',       tip:'Gospel classic with an easy chorus' },
+  { title:'My Favorite Things',          artist:'Julie Andrews',          key:'E minor', tip:'From Sound of Music -- they sing along naturally' },
+  { title:'Red River Valley',            artist:'Traditional',            key:'G',       tip:'Simple, slow, easy to follow' },
+  { title:'Oh Susanna',                  artist:'Traditional',            key:'D',       tip:'Upbeat and fun -- gets residents clapping' },
+  { title:'Side by Side',                artist:'Kay Starr',              key:'C',       tip:'Perfect two-resident duet option' },
+  { title:'When the Saints Go Marching', artist:'Traditional',            key:'G',       tip:'Build energy -- great finale song' },
+  { title:'Home on the Range',           artist:'Traditional',            key:'F',       tip:'Gentle and familiar -- great warm-up' },
+  { title:'Five Foot Two Eyes of Blue',  artist:'Various',                key:'G',       tip:'Fun 1920s novelty song' },
+  { title:'Daisy Bell',                  artist:'Traditional',            key:'F',       tip:'Daisy Daisy give me your answer do -- classic!' },
+];
+
+const THEMED_SESSIONS = [
+  { id:1, color:'#1A2A5C', emoji:'🎺', name:'Big Band Night',        tagline:'Step back to the 1940s dance hall!',               desc:'Transform your activity room into a 1940s supper club. Play Glenn Miller, Andrews Sisters, and Benny Goodman. Encourage chair dancing and singing along.',  setup:'Dim the lights slightly. Use round tables if possible. Consider paper flowers as centerpieces.', songs:['In the Mood -- Glenn Miller','Boogie Woogie Bugle Boy -- Andrews Sisters','Moonlight Serenade -- Glenn Miller','Sentimental Journey -- Doris Day','Pennsylvania 6-5000 -- Glenn Miller','Sing Sing Sing -- Benny Goodman','A-Tisket A-Tasket -- Ella Fitzgerald'], activities:['Chair dance to upbeat numbers','Trivia: Who led the most famous big band?','Show old big band or USO photos','Have residents share dance hall memories'], snack:'Punch bowl mocktail, finger sandwiches, or petit fours.' },
+  { id:2, color:'#92400E', emoji:'🤠', name:'Country Road Night',    tagline:'Boots, ballads, and barn dance memories!',          desc:'A country music celebration spanning Hank Williams to Kenny Rogers. Residents share memories of square dances, county fairs, and radio in the barn.',            setup:'Bandanas on tables. Mason jar vases with wildflowers.', songs:['Country Roads -- John Denver','Rhinestone Cowboy -- Glen Campbell','Islands in the Stream -- Parton & Rogers','Tennessee Waltz -- Patti Page','Your Cheatin Heart -- Hank Williams','Ring of Fire -- Johnny Cash','Elvira -- Oak Ridge Boys'], activities:['Name That Country Singer trivia','Share memories: Did anyone go to square dances?','Teach the basic shuffle (seated version)','Resident requests: What was your favorite country song?'], snack:'Cornbread, sweet tea mocktail, or apple cider.' },
+  { id:3, color:'#166534', emoji:'✝️',  name:'Gospel and Hymn Hour', tagline:'Joyful singing and spiritual reflection.',           desc:'A peaceful program of beloved hymns and gospel music. Works beautifully as a Sunday or Wednesday activity, or anytime residents want a meaningful reflective program.', setup:'Simple and calm. Small floral arrangement. Dimmer lighting if available.', songs:['Amazing Grace','How Great Thou Art','I Will Fly Away','This Little Light of Mine','Blessed Assurance','In the Garden','What a Friend We Have in Jesus','Old Rugged Cross'], activities:['Guided singalong with lyric sheets','Share: What hymn reminds you of childhood?','Read a short uplifting poem between songs','Moment of gratitude: each resident shares one thing they are thankful for'], snack:'Tea and light cookies.' },
+  { id:4, color:'#B91C1C', emoji:'🇺🇸', name:'Patriotic Salute',    tagline:'Honor veterans and celebrate America!',              desc:'A patriotic music program perfect for Veterans Day, Memorial Day, Flag Day, and July 4th. Honor resident veterans and celebrate American history through song.',     setup:'American flags, red-white-blue tablecloths, a photo display of veteran residents.', songs:['God Bless America','America the Beautiful','Battle Hymn of the Republic','Stars and Stripes Forever','Yankee Doodle','You Are a Grand Old Flag','This Land Is Your Land'], activities:['Pin flags on a US map where residents served','Ask veterans to share a brief memory','Service branch roll call with appropriate songs','Flag folding demonstration'], snack:'Apple pie or red-white-blue parfaits.' },
+  { id:5, color:'#7C3AED', emoji:'🎬', name:'Hollywood Golden Age', tagline:'Lights, camera, music from the silver screen!',      desc:'Celebrate classic movie soundtracks from the 1930s through 1960s. Perfect companion to a movie club session.',                                                       setup:'Movie posters, star-shaped confetti, a makeshift red carpet with a strip of red fabric.', songs:['Over the Rainbow -- Judy Garland','Moon River -- Audrey Hepburn','My Favorite Things -- Sound of Music','Singin in the Rain -- Gene Kelly','Que Sera Sera -- Doris Day','White Christmas -- Bing Crosby'], activities:['Movie trivia rounds','Guess the film from a famous quote','Award Oscars to residents: Most Glamorous, Best Storyteller','Share: What movie did you see on your first date?'], snack:'Popcorn station, movie theater candy, sparkling cider.' },
+  { id:6, color:'#0F766E', emoji:'🌿', name:'Soft and Soothing Hour', tagline:'Gentle music for relaxation and reflection.',      desc:'A calming program of soft, slow songs for afternoon or evening wind-down. Pairs beautifully with the Wellness Mindfulness scripts.',                                  setup:'Soft lighting. Comfortable seating. Lavender scent diffuser optional.', songs:['What a Wonderful World -- Louis Armstrong','You Are My Sunshine -- slow version','Moonlight Serenade -- Glenn Miller','Let Me Call You Sweetheart -- Traditional','Always -- Irving Berlin','When You Wish Upon a Star'], activities:['Guided breathing between songs','Residents close eyes and visualize a happy memory','Gentle hand massage if staff available','Journal prompt: A song that takes me to a happy place is...'], snack:'Warm herbal tea and light cookies.' },
+  { id:7, color:'#DC2626', emoji:'🎄', name:'Holiday Sing-Along',    tagline:'Celebrate the season with beloved holiday music!',   desc:'A festive singalong for the winter holiday season. Include a mix of Christmas and secular winter songs so all residents feel included.',                              setup:'Holiday decorations, songbooks or printed lyric sheets, festive tablecloths.', songs:['White Christmas -- Bing Crosby','Silver Bells -- Various','Jingle Bells -- Traditional','The Christmas Song -- Nat King Cole','O Holy Night -- Traditional','Frosty the Snowman','Winter Wonderland'], activities:['Decorate small ornaments while listening','Share: What is your favorite holiday memory?','Holiday trivia','Write a holiday card for a friend or family member during music'], snack:'Eggnog mocktail, sugar cookies, hot cocoa.' },
+  { id:8, color:'#BE185D', emoji:'🌸', name:'Spring Into Music',     tagline:'Fresh songs to celebrate new beginnings!',           desc:'A cheerful spring program filled with songs about nature, renewal, and happiness. Perfect for April or May.',                                                        setup:'Fresh flowers on tables, open windows if weather permits, bright tablecloths.', songs:['Oh What a Beautiful Morning -- Oklahoma!','April Showers -- Al Jolson','You Are My Sunshine','Everything Is Beautiful -- Ray Stevens','Zip-a-Dee-Doo-Dah -- Disney','Happy Days Are Here Again'], activities:['Name that spring flower photo trivia','Plant a small seed in a cup during music','Share: What is your favorite thing about spring?','Resident artwork: draw a spring scene'], snack:'Lemonade mocktail, fruit skewers, or flower-shaped sugar cookies.' },
+];
+
+var musState = { tab:'songs', dec:'all', gen:'all', movgen:'all', activeMovie:null, activeThemed:null };
+
+function initMusic() {
+  renderSongGrid();
+  renderMovieGrid();
+  renderMusicGames();
+  renderPerformanceIdeas();
+  renderKaraokeGrid();
+  renderThemedSessions();
+}
+
+function switchMusicTab(tab) {
+  musState.tab = tab;
+  ['songs','movies','games','performance','themed'].forEach(function(t) {
+    var btn = document.getElementById('mustab-'+t);
+    if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
+    var p = document.getElementById('muspanel-'+t);
+    if (p) p.style.display = t===tab ? '' : 'none';
+  });
+}
+
+function setMusicFilter(type, val) {
+  musState[type] = val;
+  if (type === 'dec') {
+    document.querySelectorAll('[id^="musdec-"]').forEach(function(b){ b.classList.remove('gm-cat-active'); });
+    var el = document.getElementById('musdec-'+val);
+    if (el) el.classList.add('gm-cat-active');
+  } else {
+    document.querySelectorAll('[id^="musgen-"]').forEach(function(b){ b.classList.remove('gm-player-active'); });
+    var el2 = document.getElementById('musgen-'+val);
+    if (el2) el2.classList.add('gm-player-active');
+  }
+  renderSongGrid();
+}
+
+function setMovieFilter(genre) {
+  musState.movgen = genre;
+  document.querySelectorAll('[id^="movgen-"]').forEach(function(b){ b.classList.remove('gm-cat-active'); });
+  var el = document.getElementById('movgen-'+genre);
+  if (el) el.classList.add('gm-cat-active');
+  renderMovieGrid();
+}
+
+function renderSongGrid() {
+  var songs = SONGS.filter(function(s) {
+    if (musState.dec !== 'all' && s.decade !== musState.dec) return false;
+    if (musState.gen !== 'all' && s.genre !== musState.gen) return false;
+    return true;
+  });
+  var grid = document.getElementById('mus-song-grid');
+  if (!grid) return;
+  if (!songs.length) { grid.innerHTML = '<div style="color:#aaa;padding:40px;text-align:center;">No songs match your filters.</div>'; return; }
+  grid.innerHTML = songs.map(function(s) {
+    return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;">'
+      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">'
+      + '<div><div style="font-weight:700;font-size:15px;color:#1F2937;">'+s.title+'</div>'
+      + '<div style="font-size:13px;color:#6B7280;">'+s.artist+'</div></div>'
+      + '<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">'
+      + '<span style="background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;">'+s.decade+'</span>'
+      + (s.singalong ? '<span style="background:#F0FDF4;color:#166534;padding:2px 8px;border-radius:20px;font-size:11px;">Singalong</span>' : '')
+      + '</div></div>'
+      + '<div style="font-size:12px;color:#9CA3AF;font-style:italic;">'+s.tip+'</div>'
+      + '</div>';
+  }).join('');
+}
+
+function renderMovieGrid() {
+  var movies = MOVIES.filter(function(m){ return musState.movgen === 'all' || m.genre === musState.movgen; });
+  var grid = document.getElementById('mus-movie-grid');
+  if (!grid) return;
+  grid.innerHTML = movies.map(function(m, i) {
+    return '<div onclick="openMovieModal('+i+')" style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:18px;cursor:pointer;" onmouseover="this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.1)\'" onmouseout="this.style.boxShadow=\'\'">'
+      + '<div style="font-size:32px;margin-bottom:8px;">'+m.emoji+'</div>'
+      + '<div style="font-weight:700;font-size:16px;color:#1F2937;">'+m.title+'</div>'
+      + '<div style="font-size:13px;color:#6B7280;margin-bottom:6px;">'+m.year+' &middot; '+m.genre.charAt(0).toUpperCase()+m.genre.slice(1)+'</div>'
+      + '<div style="font-size:13px;color:#374151;font-style:italic;">'+m.tagline+'</div>'
+      + '<div style="margin-top:12px;font-size:12px;color:#7C3AED;font-weight:600;">Click for discussion questions</div>'
+      + '</div>';
+  }).join('');
+}
+
+function openMovieModal(idx) {
+  var movies = MOVIES.filter(function(m){ return musState.movgen === 'all' || m.genre === musState.movgen; });
+  var m = movies[idx];
+  if (!m) return;
+  musState.activeMovie = m;
+  var qs = m.questions.map(function(q, qi) {
+    return '<div style="padding:10px 14px;background:'+(qi%2===0?'#F9FAFB':'#fff')+';border-radius:8px;font-size:14px;">'+q+'</div>';
+  }).join('');
+  document.getElementById('mus-movie-modal-body').innerHTML =
+    '<div style="font-size:40px;margin-bottom:8px;">'+m.emoji+'</div>'
+    + '<h2 style="margin:0 0 4px;">'+m.title+' <span style="font-size:16px;color:#9CA3AF;font-weight:400;">('+m.year+')</span></h2>'
+    + '<div style="font-size:14px;color:#7C3AED;font-weight:600;margin-bottom:12px;">'+m.genre.charAt(0).toUpperCase()+m.genre.slice(1)+'</div>'
+    + '<p style="color:#374151;font-style:italic;margin:0 0 16px;">'+m.why+'</p>'
+    + '<div style="font-weight:700;font-size:15px;margin-bottom:10px;">Discussion Questions</div>'
+    + '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">'+qs+'</div>'
+    + '<button onclick="printMovieGuide()" class="btn" style="background:#7C3AED;color:#fff;">Print Discussion Guide</button>';
+  document.getElementById('mus-movie-modal').style.display = '';
+}
+
+function printMovieGuide() {
+  var m = musState.activeMovie; if (!m) return;
+  var qs = m.questions.map(function(q,i){ return '<div style="padding:12px 0;border-bottom:1px solid #eee;">'+(i+1)+'. '+q+'<div style="margin-top:8px;color:#aaa;font-size:13px;">Notes: _________________________________</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+m.title+' -- Movie Club Guide</title><style>@media print{body{margin:0;}}body{font-family:Georgia,serif;margin:40px;max-width:650px;}h1{font-size:26px;}h3{color:#7C3AED;}</style></head><body><h1>'+m.emoji+' '+m.title+' ('+m.year+')</h1><h3>Movie Club Discussion Guide</h3><p><i>'+m.why+'</i></p><h3>Discussion Questions</h3>'+qs+'<div style="margin-top:30px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function closeMusicModal(type) {
+  if (type === 'movie') { var el = document.getElementById('mus-movie-modal'); if(el) el.style.display = 'none'; }
+  if (type === 'themed') { var el = document.getElementById('mus-themed-modal'); if(el) el.style.display = 'none'; }
+}
+
+function renderMusicGames() {
+  var grid = document.getElementById('mus-games-grid');
+  if (!grid) return;
+  grid.innerHTML = MUSIC_GAMES.map(function(g, i) {
+    return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px;">'
+      + '<div style="font-size:32px;">'+g.emoji+'</div>'
+      + '<div style="font-weight:700;font-size:17px;color:#1F2937;">'+g.name+'</div>'
+      + '<div style="font-size:13px;color:#6B7280;font-style:italic;">'+g.tagline+'</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0;">'
+      + '<span style="background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:20px;font-size:11px;">'+g.players+'</span>'
+      + '<span style="background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:20px;font-size:11px;">'+g.time+'</span>'
+      + '<span style="background:#F0FDF4;color:#166534;padding:2px 8px;border-radius:20px;font-size:11px;">'+g.prep+' prep</span>'
+      + '</div>'
+      + '<div style="font-size:13px;color:#374151;line-height:1.5;">'+g.howto+'</div>'
+      + '<div style="font-size:12px;color:#7C3AED;font-style:italic;background:#F5F3FF;padding:8px 10px;border-radius:8px;">'+g.tips+'</div>'
+      + (g.print ? '<button onclick="printMusicGame('+i+')" class="btn" style="background:#7C3AED;color:#fff;font-size:12px;padding:6px 14px;margin-top:4px;">Print Game Sheet</button>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function printMusicGame(idx) {
+  var g = MUSIC_GAMES[idx];
+  var content = '<h1>'+g.emoji+' '+g.name+'</h1><h3>How to Play</h3><p>'+g.howto+'</p><h3>Staff Tips</h3><p>'+g.tips+'</p>';
+  if (g.id === 3) {
+    var prompts = [
+      ['You are my sunshine my only ___','sunshine'],['Take me home ___ roads','country'],
+      ['Amazing grace how ___ the sound','sweet'],['What a wonderful ___ it is','world'],
+      ['Over the rainbow ___ are blue','skies'],['Rock around the clock ___ tonight','tonight'],
+      ['This land is your land this land is my ___','land'],['Home home on the ___','range'],
+      ['Oh give me a home where the ___ roam','buffalo'],['When the saints go ___ in','marching'],
+    ];
+    var html2 = prompts.map(function(p,i){ return '<div style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:16px;">'+(i+1)+'. '+p[0].replace('___','____________')+'</div>'; }).join('');
+    var ans = prompts.map(function(p,i){ return (i+1)+'. '+p[1]; }).join(' &nbsp;&nbsp; ');
+    content = '<h1>Finish the Lyric!</h1><p>Fill in the missing word.</p>'+html2+'<div style="margin-top:30px;background:#f9f9f9;padding:16px;border-radius:8px;font-size:13px;"><b>ANSWERS:</b> '+ans+'</div>';
+  }
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+g.name+'</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:30px;max-width:750px;}</style></head><body>'+content+'<div style="margin-top:30px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function renderPerformanceIdeas() {
+  var grid = document.getElementById('mus-perf-grid');
+  if (!grid) return;
+  grid.innerHTML = PERFORMANCE_IDEAS.map(function(p, i) {
+    return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px;">'
+      + '<div style="font-size:32px;">'+p.emoji+'</div>'
+      + '<div style="font-weight:700;font-size:17px;color:#1F2937;">'+p.name+'</div>'
+      + '<div style="font-size:13px;color:#6B7280;font-style:italic;">'+p.tagline+'</div>'
+      + '<div style="font-size:13px;color:#374151;line-height:1.5;">'+p.desc+'</div>'
+      + '<button onclick="printPerfGuide('+i+')" class="btn" style="background:#BE185D;color:#fff;font-size:12px;padding:6px 14px;margin-top:auto;">Print Event Guide</button>'
+      + '</div>';
+  }).join('');
+}
+
+function renderKaraokeGrid() {
+  var grid = document.getElementById('mus-karaoke-grid');
+  if (!grid) return;
+  grid.innerHTML = KARAOKE_SONGS.map(function(k) {
+    return '<div style="background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:12px 14px;">'
+      + '<div style="font-weight:600;font-size:14px;color:#1F2937;">'+k.title+'</div>'
+      + '<div style="font-size:12px;color:#9CA3AF;">'+k.artist+' &middot; Key of '+k.key+'</div>'
+      + '<div style="font-size:12px;color:#6B7280;margin-top:4px;font-style:italic;">'+k.tip+'</div>'
+      + '</div>';
+  }).join('');
+}
+
+function printPerfGuide(idx) {
+  var p = PERFORMANCE_IDEAS[idx];
+  var steps = p.steps.map(function(s,i){ return '<li style="margin-bottom:8px;">'+s+'</li>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+p.name+'</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:40px;max-width:650px;}h1{color:#BE185D;}h3{color:#374151;border-bottom:2px solid #eee;padding-bottom:6px;}</style></head><body><h1>'+p.emoji+' '+p.name+'</h1><p style="font-style:italic;color:#555;">'+p.tagline+'</p><h3>About This Program</h3><p>'+p.desc+'</p><h3>Step-by-Step Guide</h3><ol>'+steps+'</ol><div style="margin-top:30px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function printKaraokeList() {
+  var rows = KARAOKE_SONGS.map(function(k,i){ return '<tr style="background:'+(i%2===0?'#f9f9f9':'#fff')+'"><td style="padding:10px 12px;border:1px solid #eee;">'+k.title+'</td><td style="padding:10px 12px;border:1px solid #eee;">'+k.artist+'</td><td style="padding:10px 12px;border:1px solid #eee;">'+k.key+'</td><td style="padding:10px 12px;border:1px solid #eee;">'+k.tip+'</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Karaoke Favorites</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:30px;}table{width:100%;border-collapse:collapse;}th{background:#BE185D;color:#fff;padding:10px 12px;text-align:left;}</style></head><body><h1>Karaoke Favorites</h1><table><thead><tr><th>Song</th><th>Artist</th><th>Key</th><th>Staff Tips</th></tr></thead><tbody>'+rows+'</tbody></table><div style="margin-top:20px;font-size:11px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function renderThemedSessions() {
+  var grid = document.getElementById('mus-themed-grid');
+  if (!grid) return;
+  grid.innerHTML = THEMED_SESSIONS.map(function(t, i) {
+    return '<div onclick="openThemedModal('+i+')" style="background:#fff;border:2px solid '+t.color+'44;border-radius:14px;padding:20px;cursor:pointer;" onmouseover="this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.1)\'" onmouseout="this.style.boxShadow=\'\'">'
+      + '<div style="font-size:36px;margin-bottom:8px;">'+t.emoji+'</div>'
+      + '<div style="font-weight:700;font-size:17px;color:#1F2937;">'+t.name+'</div>'
+      + '<div style="font-size:13px;color:'+t.color+';font-weight:600;margin-bottom:6px;">'+t.tagline+'</div>'
+      + '<div style="font-size:13px;color:#6B7280;">'+t.desc.substring(0,100)+'...</div>'
+      + '<div style="margin-top:12px;font-size:12px;color:'+t.color+';font-weight:600;">Click for full session plan</div>'
+      + '</div>';
+  }).join('');
+}
+
+function openThemedModal(idx) {
+  var t = THEMED_SESSIONS[idx];
+  if (!t) return;
+  musState.activeThemed = t;
+  var songs = t.songs.map(function(s){ return '<li style="padding:4px 0;">'+s+'</li>'; }).join('');
+  var acts  = t.activities.map(function(a){ return '<li style="padding:4px 0;">'+a+'</li>'; }).join('');
+  document.getElementById('mus-themed-modal-body').innerHTML =
+    '<div style="font-size:40px;margin-bottom:8px;">'+t.emoji+'</div>'
+    + '<h2 style="margin:0 0 4px;color:'+t.color+';">'+t.name+'</h2>'
+    + '<div style="font-size:14px;color:#6B7280;margin-bottom:14px;font-style:italic;">'+t.tagline+'</div>'
+    + '<p style="color:#374151;line-height:1.6;">'+t.desc+'</p>'
+    + '<div style="margin-bottom:14px;"><div style="font-weight:700;font-size:14px;margin-bottom:8px;color:'+t.color+';">Suggested Songs</div><ul style="margin:0;padding-left:20px;color:#374151;">'+songs+'</ul></div>'
+    + '<div style="margin-bottom:14px;"><div style="font-weight:700;font-size:14px;margin-bottom:8px;color:'+t.color+';">Activities</div><ul style="margin:0;padding-left:20px;color:#374151;">'+acts+'</ul></div>'
+    + '<div style="background:#F9FAFB;border-radius:10px;padding:14px;margin-bottom:14px;"><b style="color:#374151;">Room Setup</b><div style="font-size:13px;color:#6B7280;margin-top:4px;">'+t.setup+'</div></div>'
+    + '<div style="background:#FEF3C7;border-radius:10px;padding:14px;margin-bottom:20px;"><b style="color:#92400E;">Snack Idea</b><div style="font-size:13px;color:#92400E;margin-top:4px;">'+t.snack+'</div></div>'
+    + '<button onclick="printThemedSession()" class="btn" style="background:'+t.color+';color:#fff;">Print Session Plan</button>';
+  document.getElementById('mus-themed-modal').style.display = '';
+}
+
+function printThemedSession() {
+  var t = musState.activeThemed; if (!t) return;
+  var songs = t.songs.map(function(s){ return '<li>'+s+'</li>'; }).join('');
+  var acts  = t.activities.map(function(a){ return '<li>'+a+'</li>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+t.name+'</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:40px;max-width:660px;}h1{color:'+t.color+';}h3{color:'+t.color+';border-bottom:2px solid '+t.color+'44;padding-bottom:5px;}li{margin-bottom:5px;}</style></head><body><h1>'+t.emoji+' '+t.name+'</h1><p style="font-style:italic;color:#555;">'+t.tagline+'</p><p>'+t.desc+'</p><h3>Suggested Songs</h3><ul>'+songs+'</ul><h3>Activities</h3><ul>'+acts+'</ul><h3>Room Setup</h3><p>'+t.setup+'</p><h3>Snack Idea</h3><p>'+t.snack+'</p><div style="margin-top:30px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function printSingalongSheet() {
+  var songs = SONGS.filter(function(s){ return s.singalong && (musState.dec==='all'||s.decade===musState.dec) && (musState.gen==='all'||s.genre===musState.gen); });
+  if (!songs.length) songs = SONGS.filter(function(s){ return s.singalong; }).slice(0,15);
+  var rows = songs.map(function(s,i){ return '<tr style="background:'+(i%2===0?'#f9f9f9':'#fff')+'"><td style="padding:10px;border:1px solid #eee;font-size:15px;font-weight:600;">'+s.title+'</td><td style="padding:10px;border:1px solid #eee;">'+s.artist+'</td><td style="padding:10px;border:1px solid #eee;">'+s.decade+'</td><td style="padding:10px;border:1px solid #eee;font-style:italic;font-size:12px;">'+s.tip+'</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Sing-Along Session Sheet</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:30px;}table{width:100%;border-collapse:collapse;}th{background:#7C3AED;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>Sing-Along Session</h1><p>Date: _____________ &nbsp;&nbsp; Staff: _______________ &nbsp;&nbsp; Group size: _______</p><table><thead><tr><th>Song</th><th>Artist</th><th>Decade</th><th>Notes</th></tr></thead><tbody>'+rows+'</tbody></table><div style="margin-top:20px;font-size:11px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function printSongList() {
+  var songs = SONGS.filter(function(s){ return (musState.dec==='all'||s.decade===musState.dec) && (musState.gen==='all'||s.genre===musState.gen); });
+  var byDecade = {};
+  songs.forEach(function(s){ if (!byDecade[s.decade]) byDecade[s.decade]=[]; byDecade[s.decade].push(s); });
+  var sections = Object.keys(byDecade).sort().map(function(dec) {
+    var rows = byDecade[dec].map(function(s){ return '<div style="padding:5px 0;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;"><span style="font-weight:600;">'+s.title+'</span><span style="color:#888;">'+s.artist+'</span></div>'; }).join('');
+    return '<div style="margin-bottom:20px;"><h3 style="color:#7C3AED;border-bottom:2px solid #7C3AED;padding-bottom:4px;">1'+dec+'s</h3>'+rows+'</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Song Library</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:30px;max-width:680px;}</style></head><body><h1>Song Library</h1>'+sections+'<div style="margin-top:20px;font-size:11px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
 </script>
 
 </body>
