@@ -12425,7 +12425,7 @@ function printShoppingList() {
 function renderTemplates() {
   const seasonColors = { spring:'#F0FDF4:#BBF7D0:#15803D', summer:'#FFFBEB:#FDE68A:#92400E', fall:'#FFF7ED:#FED7AA:#C2410C', winter:'#EFF6FF:#BFDBFE:#1D4ED8', anytime:'#FAF5FF:#DDD6FE:#7C3AED' };
   const grid = document.getElementById('cr-template-grid');
-  grid.innerHTML = TEMPLATES_LIST.map(t => {
+  grid.innerHTML = TEMPLATES_LIST.map((t, idx) => {
     const [bg,border,tx] = (seasonColors[t.season]||seasonColors.anytime).split(':');
     return `<div style="background:#fff;border:2px solid ${border};border-radius:12px;padding:18px;">
       <div style="font-size:28px;margin-bottom:8px;">${t.emoji}</div>
