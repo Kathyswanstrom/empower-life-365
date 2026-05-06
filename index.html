@@ -1127,6 +1127,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
     <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
+    <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
     <button class="tab-btn" data-tab="food" id="food-tab" onclick="switchTab('food')">🍽️ Food & Cooking</button>
     <button class="tab-btn" data-tab="crafts" id="crafts-tab" onclick="switchTab('crafts')">🎨 Arts & Crafts</button>
     <button class="tab-btn" data-tab="games" id="games-tab" onclick="switchTab('games')">🎮 Games</button>
@@ -2121,6 +2122,98 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 
 
+
+
+<section class="tab-panel" id="panel-wellness">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">🌿 Wellness &amp; Movement</h2>
+      <div class="subtitle">Exercise routines, movement tracking, monthly challenges, and mindfulness scripts.</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="wltab-exercise"   onclick="switchWellnessTab('exercise')"   class="tv-subtab tv-subtab-active">💪 Exercise Routines</button>
+    <button id="wltab-log"        onclick="switchWellnessTab('log')"        class="tv-subtab">📋 Movement Log</button>
+    <button id="wltab-challenges" onclick="switchWellnessTab('challenges')" class="tv-subtab">🏆 Challenges</button>
+    <button id="wltab-mindful"    onclick="switchWellnessTab('mindful')"    class="tv-subtab">🧘 Mindfulness</button>
+  </div>
+
+  <!-- EXERCISE ROUTINES -->
+  <div id="wlpanel-exercise">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:#6B7280;">Type:</span>
+      <button id="wltype-all"      onclick="setWellnessFilter('all')"      class="gm-cat gm-cat-active">All</button>
+      <button id="wltype-chair"    onclick="setWellnessFilter('chair')"    class="gm-cat">🪑 Chair</button>
+      <button id="wltype-stretch"  onclick="setWellnessFilter('stretch')"  class="gm-cat">🤸 Stretching</button>
+      <button id="wltype-balance"  onclick="setWellnessFilter('balance')"  class="gm-cat">⚖️ Balance</button>
+      <button id="wltype-strength" onclick="setWellnessFilter('strength')" class="gm-cat">💪 Strength</button>
+    </div>
+    <div id="wl-exercise-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;"></div>
+  </div>
+
+  <!-- MOVEMENT LOG -->
+  <div id="wlpanel-log" style="display:none;">
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap;">
+      <button onclick="printMovementLog()" class="btn btn-secondary">🖨️ Print Monthly Log</button>
+      <button onclick="resetMovementLog()" class="btn" style="background:#FEE2E2;color:#B91C1C;border:1px solid #FCA5A5;font-size:13px;padding:6px 14px;border-radius:8px;cursor:pointer;">🗑️ Reset Month</button>
+    </div>
+    <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:2px solid #86EFAC;border-radius:14px;padding:18px 22px;margin-bottom:20px;display:flex;gap:24px;flex-wrap:wrap;">
+      <div style="text-align:center;"><div id="wl-log-days" style="font-size:32px;font-weight:900;color:#15803D;">0</div><div style="font-size:12px;color:#166534;font-weight:600;">Days Logged</div></div>
+      <div style="text-align:center;"><div id="wl-log-sessions" style="font-size:32px;font-weight:900;color:#15803D;">0</div><div style="font-size:12px;color:#166534;font-weight:600;">Total Sessions</div></div>
+      <div style="text-align:center;"><div id="wl-log-residents" style="font-size:32px;font-weight:900;color:#15803D;">0</div><div style="font-size:12px;color:#166534;font-weight:600;">Unique Residents</div></div>
+    </div>
+    <div id="wl-log-calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px;"></div>
+    <div id="wl-log-day-detail" style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:20px;display:none;">
+      <div style="font-weight:800;font-size:15px;margin-bottom:12px;" id="wl-detail-title"></div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+        <select id="wl-log-exercise" style="padding:8px;border:1px solid #ddd;border-radius:8px;font-size:13px;flex:1;min-width:180px;"></select>
+        <select id="wl-log-resident-sel" style="padding:8px;border:1px solid #ddd;border-radius:8px;font-size:13px;flex:1;min-width:160px;"></select>
+        <button onclick="addLogEntry()" class="btn btn-primary" style="font-size:13px;">+ Add</button>
+      </div>
+      <div id="wl-day-entries" style="display:flex;flex-direction:column;gap:6px;"></div>
+    </div>
+  </div>
+
+  <!-- CHALLENGES -->
+  <div id="wlpanel-challenges" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="wl-challenge-grid"></div>
+  </div>
+
+  <!-- MINDFULNESS -->
+  <div id="wlpanel-mindful" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;" id="wl-mindful-grid"></div>
+  </div>
+
+  <!-- Exercise Detail Modal -->
+  <div id="wl-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.6);overflow:auto;" onclick="if(event.target===this)closeWellnessModal()">
+    <div style="background:#fff;border-radius:18px;max-width:720px;margin:40px auto;padding:32px;position:relative;">
+      <button onclick="closeWellnessModal()" style="position:absolute;top:16px;right:16px;background:#F3F4F6;border:none;border-radius:8px;padding:6px 14px;font-size:18px;cursor:pointer;">✕</button>
+      <div id="wl-modal-badges" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"></div>
+      <div id="wl-modal-title" style="font-size:26px;font-weight:900;margin-bottom:4px;"></div>
+      <div id="wl-modal-tagline" style="font-size:14px;color:#6B7280;margin-bottom:18px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:16px;">
+          <div style="font-weight:800;font-size:13px;color:#065F46;margin-bottom:8px;">🧺 Equipment Needed</div>
+          <div id="wl-modal-equip" style="font-size:13px;color:#374151;line-height:1.8;"></div>
+        </div>
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:16px;">
+          <div style="font-weight:800;font-size:13px;color:#1D4ED8;margin-bottom:8px;">⏱️ At a Glance</div>
+          <div id="wl-modal-glance" style="font-size:13px;color:#374151;line-height:1.9;"></div>
+        </div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:800;font-size:14px;margin-bottom:12px;">🏃 Exercises</div>
+        <div id="wl-modal-exercises" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px;margin-bottom:20px;">
+        <div style="font-weight:800;font-size:13px;color:#92400E;margin-bottom:8px;">💡 Safety &amp; Adaptation Tips</div>
+        <div id="wl-modal-tips" style="font-size:13px;color:#374151;line-height:1.7;"></div>
+      </div>
+      <button onclick="printExerciseGuide()" class="btn btn-primary">🖨️ Print Exercise Guide</button>
+    </div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-food">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
@@ -3176,6 +3269,7 @@ function switchTab(name) {
   if (name === 'games') initGames();
   if (name === 'crafts') initCrafts();
   if (name === 'food') initFood();
+  if (name === 'wellness') initWellness();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
   if (name === 'attlog') renderAttLogs();
@@ -13179,6 +13273,709 @@ function renderSeasonalFood() {
       ${mo.ideas.map(idea=>`<div style="padding:5px 8px;border-radius:6px;margin-bottom:4px;font-size:13px;font-weight:500;background:${isCurrent?'rgba(255,255,255,0.15)':'#FFFBEB'};border:1px solid ${isCurrent?'rgba(255,255,255,0.2)':'#FDE68A'};">🍴 ${idea}</div>`).join('')}
     </div>`;
   }).join('');
+}
+</script>
+
+
+<script>
+// ===============================================================
+// WELLNESS & MOVEMENT HUB
+// ===============================================================
+const WL_LOG_KEY = 'anchor_engage_v3_wl_log';
+
+const EXERCISES = [
+  // CHAIR
+  { id:'chair_morning', type:'chair', emoji:'🌅', name:'Morning Wake-Up',
+    tagline:'A gentle 10-minute seated routine to start the day right.',
+    duration:'10 min', level:'Gentle', equipment:'Chair (sturdy, no wheels)',
+    moves:[
+      {name:'Neck Rolls', reps:'5 each direction', cue:'Slowly drop ear to shoulder. Roll chin to chest, then to other shoulder. Never roll head back.'},
+      {name:'Shoulder Rolls', reps:'10 forward, 10 back', cue:'Lift shoulders to ears, roll forward and down. Reverse direction. Breathe naturally.'},
+      {name:'Seated March', reps:'20 total', cue:'Lift one knee, lower, then the other. Pick up the pace a little if able. Pump arms with each step.'},
+      {name:'Ankle Circles', reps:'10 each foot', cue:'Extend one leg slightly. Draw big circles with toes. Reverse direction. Switch feet.'},
+      {name:'Arm Reaches', reps:'10 each side', cue:'Reach one arm overhead as tall as possible. Feel the side stretch. Alternate arms slowly.'},
+      {name:'Seated Cat-Cow', reps:'8 slow', cue:'Hands on knees. Arch back and lift chin (cow). Then round spine and drop chin (cat). Flow gently.'},
+    ],
+    tips:'Always have water nearby. Never force a range of motion. Remind residents to breathe throughout. If any pain occurs, stop that exercise.' },
+
+  { id:'chair_upper', type:'chair', emoji:'💪', name:'Upper Body Circuit',
+    tagline:'Build arm and shoulder strength from the comfort of a chair.',
+    duration:'15 min', level:'Moderate', equipment:'Chair, optional light weights or water bottles',
+    moves:[
+      {name:'Bicep Curls', reps:'12 reps x 2 sets', cue:'Palms up, curl fists toward shoulders. Squeeze at the top. Lower slowly (3 counts down). Can use water bottles for resistance.'},
+      {name:'Overhead Press', reps:'10 reps x 2 sets', cue:'Start with hands at shoulder height, palms forward. Press straight up. Avoid locking elbows at top.'},
+      {name:'Chest Press', reps:'12 reps x 2 sets', cue:'Hands in fists at chest. Push forward until arms are nearly straight. Draw elbows back to start. Keep shoulders down.'},
+      {name:'Lateral Raises', reps:'10 reps x 2 sets', cue:'Arms at sides. Raise to shoulder height, no higher. Hold 1 second. Lower slowly. Keep slight bend in elbow.'},
+      {name:'Tricep Extensions', reps:'12 reps x 2 sets', cue:'Raise one arm overhead. Bend at elbow to lower hand behind head. Straighten arm up. Keep upper arm still.'},
+      {name:'Wrist Flexion Circles', reps:'10 each wrist', cue:'Extend arms. Make fists and draw slow circles at wrist. 10 forward, 10 back. Great for grip strength.'},
+    ],
+    tips:'Use water bottles (8-16 oz) as weights if no equipment. Rest 60 seconds between sets. Encourage slow, controlled movement over speed.' },
+
+  { id:'chair_lower', type:'chair', emoji:'🦵', name:'Lower Body Seated',
+    tagline:'Strengthen legs and improve circulation without standing.',
+    duration:'15 min', level:'Gentle', equipment:'Sturdy chair with back support',
+    moves:[
+      {name:'Seated Leg Extensions', reps:'12 each leg x 2', cue:'Sit tall. Slowly extend one leg until nearly straight. Hold 2 seconds. Lower. Keep thigh on seat throughout.'},
+      {name:'Heel Raises', reps:'15 reps', cue:'Both feet flat on floor. Rise onto tiptoes simultaneously. Hold 2 seconds. Lower slowly. Improves calf strength and circulation.'},
+      {name:'Toe Taps', reps:'20 alternating', cue:'Quickly tap one foot, then the other -- like a little march. This gets blood flowing and improves coordination.'},
+      {name:'Seated Clamshell', reps:'10 each side', cue:'Knees together, feet flat. Open one knee outward like a clamshell lid. Return. Use hand on thigh for light resistance.'},
+      {name:'Inner Thigh Squeezes', reps:'15 reps, hold 3 sec each', cue:'Place fists between knees. Squeeze knees together against resistance. Hold. Release. Strengthens adductors.'},
+      {name:'Knee Lifts with Hold', reps:'10 each leg', cue:'Lift one knee as high as comfortable. Hold 3 seconds. Lower slowly. Engage core by sitting tall throughout.'},
+    ],
+    tips:'Remind residents to sit back in the chair (not on the edge) for safety. Those with knee replacements should skip leg extensions unless cleared by therapy.' },
+
+  { id:'chair_cardio', type:'chair', emoji:'🎵', name:'Chair Cardio Boogie',
+    tagline:'Get the heart pumping with music and fun seated moves!',
+    duration:'10 min', level:'Moderate', equipment:'Chair, upbeat music playlist',
+    moves:[
+      {name:'Seated Salsa Arms', reps:'30 seconds', cue:'Roll hands forward, then back. Add a little shoulder sway. Smile! This is supposed to be fun.'},
+      {name:'Punch & Reach', reps:'20 alternating', cue:'Alternate punching one arm forward, then reaching the other diagonally overhead. Core engages naturally.'},
+      {name:'Speed March', reps:'30 seconds', cue:'March feet as quickly as comfortable. Pump arms. Count out loud with residents to keep energy up.'},
+      {name:'Big Arm Circles', reps:'10 forward, 10 back', cue:'Make the biggest arm circles possible. Go slow first, then pick up the pace. Breathe out on effort.'},
+      {name:'Seated Twist', reps:'10 each side', cue:'Arms crossed over chest. Rotate torso left and right. Look over the shoulder each time. Keep hips stable.'},
+      {name:'Victory Clap Finish', reps:'10 seconds', cue:'Raise both arms overhead and clap! Cheer for everyone who participated. Cool down with slow deep breaths.'},
+    ],
+    tips:'Play music from residents\' era -- 50s, 60s, 70s. The music does half the work! Watch for residents who get overheated. Always cool down after.' },
+
+  // STRETCHING
+  { id:'stretch_morning', type:'stretch', emoji:'🌸', name:'Morning Stretch Routine',
+    tagline:'Wake up every muscle with these gentle head-to-toe stretches.',
+    duration:'12 min', level:'Gentle', equipment:'Chair or mat (seated or standing)',
+    moves:[
+      {name:'Ear-to-Shoulder Neck Stretch', reps:'Hold 20 sec each side', cue:'Gently drop right ear toward right shoulder. Place right hand lightly on head (no pulling). Feel stretch in left neck. Breathe.'},
+      {name:'Chest Opener', reps:'Hold 20 sec x 2', cue:'Clasp hands behind back. Gently squeeze shoulder blades together. Lift chin slightly. Feel chest open. Great for posture.'},
+      {name:'Seated Side Bend', reps:'Hold 15 sec each side', cue:'Sit tall. Reach one arm overhead and lean to opposite side. Feel stretch along ribs. Keep both hips on seat.'},
+      {name:'Hamstring Stretch', reps:'Hold 20 sec each leg', cue:'Extend one leg on a footstool or floor. Lean forward slightly from hips (not rounded back). Feel pull behind knee.'},
+      {name:'Hip Flexor Stretch', reps:'Hold 20 sec each side', cue:'Sit on edge of chair. Slide one leg back so foot is behind hip. Sit tall. Feel stretch in front of hip.'},
+      {name:'Wrist and Finger Stretch', reps:'30 sec total', cue:'Extend one arm. Gently pull fingers back with other hand. Then spread all fingers wide. Shake hands out loosely.'},
+    ],
+    tips:'Stretching should never be painful -- a gentle pull is normal. Hold, breathe, and ease into it. Never bounce. Morning is ideal when muscles are warm from sleep.' },
+
+  { id:'stretch_neck', type:'stretch', emoji:'🧘', name:'Neck & Shoulder Relief',
+    tagline:'Targeted tension release for the neck, shoulders, and upper back.',
+    duration:'10 min', level:'Gentle', equipment:'Chair with back support',
+    moves:[
+      {name:'Chin Tuck', reps:'10 reps', cue:'Gently pull chin straight back (double chin motion). Hold 3 seconds. Release. This lengthens the back of the neck and corrects forward head posture.'},
+      {name:'Upper Trapezius Stretch', reps:'Hold 30 sec each side', cue:'Tilt head to one side. Reach opposite hand under chair seat. Feel stretch from ear to shoulder. Breathe slowly.'},
+      {name:'Levator Scapula Stretch', reps:'Hold 20 sec each side', cue:'Look down toward armpit (45 degree angle). Gentle hand on back of head (no pulling). Hold. Release.'},
+      {name:'Doorway Chest Stretch', reps:'Hold 30 sec x 2', cue:'Clasp hands behind head. Open elbows wide. Gently squeeze shoulder blades. Feel chest and front shoulder stretch.'},
+      {name:'Shoulder Blade Squeeze', reps:'15 reps, hold 5 sec', cue:'Arms relaxed at sides. Squeeze shoulder blades together as if holding a pencil between them. Release. Repeat.'},
+      {name:'Neck Rotation', reps:'5 each side', cue:'Slowly turn head to look over one shoulder. Hold 3 seconds. Return to center. Repeat other side. Keep chin level.'},
+    ],
+    tips:'Great to offer mid-afternoon when residents have been seated a while. Do not rotate the neck if any dizziness is present.' },
+
+  { id:'stretch_evening', type:'stretch', emoji:'🌙', name:'Evening Wind-Down Stretch',
+    tagline:'Calm the body and release the day before bed.',
+    duration:'10 min', level:'Gentle', equipment:'Chair or bed edge',
+    moves:[
+      {name:'Full Body Reach & Yawn', reps:'5 times', cue:'Reach both arms overhead as high as possible. Take a big exaggerated yawn. Release. Let shoulders drop completely.'},
+      {name:'Seated Forward Fold', reps:'Hold 30 sec x 2', cue:'Sit on edge of chair. Feet hip-width. Slowly fold forward, hands toward floor. Let head hang heavy. Breathe deeply.'},
+      {name:'Supine Knee Hug', reps:'Hold 30 sec each knee', cue:'Sitting back in chair or lying on bed. Draw one knee toward chest. Hug gently. Feel lower back stretch. Breathe.'},
+      {name:'Spinal Twist', reps:'Hold 20 sec each side', cue:'Sit tall. Place right hand on left knee. Left arm behind. Gently twist to look left. Every exhale, ease slightly deeper.'},
+      {name:'Hip Circle Stretch', reps:'5 circles each direction', cue:'Hands on knees. Draw slow circles with your whole torso. Let hips loosen. Reverse direction. Nice and slow.'},
+      {name:'Gratitude Breath', reps:'5 deep breaths', cue:'Close eyes. Breathe in for 4 counts. Hold for 2. Breathe out for 6. With each exhale, let tension go. Think of one good thing today.'},
+    ],
+    tips:'This routine is excellent before bed for residents with sleep difficulties. The gratitude breath at the end has a calming effect on the nervous system.' },
+
+  // BALANCE
+  { id:'balance_basics', type:'balance', emoji:'⚖️', name:'Balance Basics',
+    tagline:'Build steadiness and confidence with safe, supported balance work.',
+    duration:'12 min', level:'Moderate', equipment:'Sturdy chair for support, clear floor space',
+    moves:[
+      {name:'Heel-Toe Stand', reps:'Hold 10 sec x 5', cue:'Stand behind chair, hands lightly on back. Place one foot directly in front of the other (heel to toe). Hold. Look straight ahead, not at feet.'},
+      {name:'Weight Shift Side to Side', reps:'10 each side, slow', cue:'Feet hip-width, hands on chair. Slowly shift weight to right foot, lift left heel slightly. Return. Shift to left. Control the movement.'},
+      {name:'Single Leg Stand', reps:'Hold 5-10 sec each leg x 3', cue:'Hands on chair. Lift one foot just an inch off floor. Hold. Put down. Advance to lifting knee higher as able. Keep standing foot flat.'},
+      {name:'Toe Raises', reps:'15 reps, hold 2 sec at top', cue:'Both hands on chair. Rise onto tiptoes. Hold 2 seconds. Lower slowly. This strengthens the calves which are critical for balance.'},
+      {name:'Heel Stands', reps:'10 reps, hold 3 sec', cue:'Rise onto heels, toes in air. Hold. Lower. This challenges the anterior shin -- often weak in older adults. Go slow.'},
+      {name:'Side Step', reps:'5 steps each direction', cue:'Hands on chair. Step sideways -- step, together, step, together. Move chair along as you go. 5 steps right, 5 steps left.'},
+    ],
+    tips:'Always have a staff member nearby during balance exercises. Chair should be against a wall or very stable. Socks off for better grip on floor when standing.' },
+
+  { id:'balance_walk', type:'balance', emoji:'🚶', name:'Heel-Toe Walking',
+    tagline:'A slow, deliberate walking pattern that improves coordination and gait.',
+    duration:'10 min', level:'Moderate', equipment:'Clear hallway, chair at start for support',
+    moves:[
+      {name:'Warm-Up March', reps:'30 seconds', cue:'In place: lift knees high, swing arms. Get the body ready to move. Hold a chair or wall if needed.'},
+      {name:'Heel-Toe Walk Forward', reps:'10 steps x 3', cue:'Place heel of front foot to toe of back foot with each step. Arms out for balance or lightly touch wall. Go very slowly.'},
+      {name:'Side Grapevine Step', reps:'5 each direction', cue:'Step right, cross left foot behind right, step right again. Reverse. This is a grapevine step. Go slowly in a line.'},
+      {name:'Backward Walking', reps:'5 steps x 2', cue:'With staff spotter directly behind, take slow steps backward. Look over shoulder. This activates different balance pathways.'},
+      {name:'Stop and Go', reps:'10 stops', cue:'Walk forward at normal pace. Staff calls out "Stop!" -- freeze in place, one foot forward. Hold 3 seconds. Then "Go!" Continue.'},
+      {name:'Eyes-Closed Stand', reps:'Hold 10 sec x 3', cue:'Staff close by. Stand with feet together, arms crossed. Close eyes for 10 seconds. This is the advanced challenge! Keep staff hand nearby.'},
+    ],
+    tips:'Clear the hallway of obstacles before this activity. Have staff walk alongside residents. This routine directly targets fall prevention pathways in the brain.' },
+
+  // STRENGTH
+  { id:'strength_bands', type:'strength', emoji:'🎽', name:'Resistance Band Upper Body',
+    tagline:'Build functional strength with a light resistance band.',
+    duration:'18 min', level:'Moderate', equipment:'Light resistance band (loop or tube), chair',
+    moves:[
+      {name:'Bicep Curl with Band', reps:'12 reps x 2 sets', cue:'Stand or sit on band. Hold both ends. Curl hands toward shoulders. Lower slowly x3 counts. Keep elbows at sides.'},
+      {name:'Overhead Press with Band', reps:'10 reps x 2 sets', cue:'Anchor band under chair. Hold ends at shoulder height. Press overhead. Control the resistance coming down.'},
+      {name:'Seated Row', reps:'12 reps x 2 sets', cue:'Loop band around feet. Hold both ends. Pull hands toward waist, squeezing shoulder blades. Pause. Release slowly.'},
+      {name:'Chest Press with Band', reps:'12 reps x 2 sets', cue:'Hold band behind upper back, wrapped around. Press hands forward from chest. Straighten arms. Return.'},
+      {name:'Lat Pulldown with Band', reps:'10 reps x 2 sets', cue:'Hold band overhead, arms wide. Pull elbows down and out to sides. Squeeze lats. Control release upward.'},
+      {name:'External Rotation', reps:'12 each arm', cue:'Elbow bent at 90 degrees at side. Loop band around wrist. Rotate forearm outward. Great for rotator cuff health.'},
+    ],
+    tips:'Use light bands (yellow or green) for beginners. Never release a band suddenly -- control throughout. Rest 60 seconds between sets. Store bands away from sunlight.' },
+
+  { id:'strength_waterbottle', type:'strength', emoji:'💧', name:'Water Bottle Strength',
+    tagline:'No equipment needed -- water bottles are the perfect easy weight.',
+    duration:'15 min', level:'Gentle', equipment:'Two 16oz water bottles, chair',
+    moves:[
+      {name:'Front Raises', reps:'12 reps x 2', cue:'Hold bottles at thighs. Raise both arms straight forward to shoulder height. Hold 1 second. Lower slowly. Keep slight bend in elbows.'},
+      {name:'Lateral Raises', reps:'12 reps x 2', cue:'Arms at sides. Raise outward to shoulder height. Lead with elbows, not wrists. Think of pouring water from the bottle.'},
+      {name:'Tricep Kickbacks', reps:'12 each arm x 2', cue:'Lean slightly forward. Upper arm parallel to floor. Straighten arm behind you. Squeeze at the end. Return.'},
+      {name:'Wrist Curls', reps:'15 each wrist', cue:'Forearm resting on thigh, palm up. Curl wrist upward toward ceiling. Slowly lower. Great for grip and forearm strength.'},
+      {name:'Shoulder Press', reps:'10 reps x 2', cue:'Bottles at shoulder height, palms forward. Press straight up. Avoid shrugging shoulders. Lower with control.'},
+      {name:'Bent-Over Row', reps:'12 x 2 sets', cue:'Lean forward from hips (flat back). Let arms hang down. Pull elbows up and back. Squeeze between shoulder blades at top.'},
+    ],
+    tips:'A full 16oz bottle = 1 lb. Start light. A great option for residents who do not have formal weights. Also works with canned goods!' },
+
+  { id:'strength_seated', type:'strength', emoji:'🏋️', name:'Full Seated Strength',
+    tagline:'A complete strength circuit without ever leaving the chair.',
+    duration:'20 min', level:'Moderate', equipment:'Sturdy chair, optional water bottles or bands',
+    moves:[
+      {name:'Chair Push-Ups', reps:'10 reps x 2', cue:'Sit on chair edge. Hands on armrests or seat. Push body up until arms nearly straight. Lower slowly. Targets chest and triceps.'},
+      {name:'Seated Leg Press (Isometric)', reps:'10 reps, hold 5 sec', cue:'Place foot against leg of chair or heavy object. Press foot forward against resistance. Hold 5 seconds. Release. Switch.'},
+      {name:'Core Crunch (Seated)', reps:'15 reps', cue:'Sit tall on chair edge. Hands behind head. Lean back slightly, then use abs to pull forward to upright. Feel core engage.'},
+      {name:'Hip Abduction (Seated)', reps:'15 each side', cue:'Place fist on outside of knee. Press knee outward against hand resistance. Hold 3 sec. Release. Strengthens hip abductors.'},
+      {name:'Calf Raises (Seated)', reps:'20 reps', cue:'Feet flat. Rise onto toes of both feet. Hold 2 seconds. Lower slowly all the way down for full range of motion.'},
+      {name:'Full Body Isometric Squeeze', reps:'5 reps, hold 10 sec', cue:'Tense every muscle at once -- clench fists, flex legs, engage core, squeeze glutes. Hold 10 seconds. Release. Breathe.'},
+    ],
+    tips:'This is a complete full-body workout! For residents cleared for more challenge, add water bottles to arm exercises. Rest 60 seconds between exercises.' },
+];
+
+const CHALLENGES = [
+  { id:'hydration', emoji:'💧', name:'Hydration Challenge',
+    goal:'Drink 6 glasses of water every day for 30 days.',
+    why:'Proper hydration improves energy, cognition, digestion, and mood. Many seniors are chronically mildly dehydrated.',
+    how:'Staff check in at each meal and afternoon activity. Residents mark off each glass on their tracking sheet.',
+    prize:'Resident earns a "Hydration Hero" badge at end of the month.',
+    tips:'Flavor water with cucumber, lemon, or berries for residents who dislike plain water. Herbal tea counts!' },
+
+  { id:'movement', emoji:'🚶', name:'Daily Movement Challenge',
+    goal:'Participate in at least one movement activity every day for 30 days.',
+    why:'Even 10 minutes of daily movement improves balance, strength, mood, and sleep quality in older adults.',
+    how:'Staff log each resident\'s participation in the Movement Log. Track streaks and celebrate milestones.',
+    prize:'Award "Movement Champion" ribbon at month end. Celebrate every 7-day streak.',
+    tips:'Even a short chair exercise session counts. The goal is consistency, not intensity.' },
+
+  { id:'gratitude', emoji:'🌸', name:'Gratitude Challenge',
+    goal:'Share 3 things you are grateful for every morning for 30 days.',
+    why:'Daily gratitude practice is clinically shown to reduce depression, improve sleep, and increase overall wellbeing.',
+    how:'At morning activity or breakfast, staff ask each resident for 3 gratitudes. Record on the community board or journal.',
+    prize:'Compile a "Gratitude Book" at month end with everyone\'s entries -- a beautiful keepsake.',
+    tips:'Some days it\'s hard. On tough days, basics count: "my warm bed, my coffee, the sunshine today."' },
+
+  { id:'stretch', emoji:'🤸', name:'Morning Stretch Challenge',
+    goal:'Do 5 minutes of stretching every morning for 21 days.',
+    why:'Morning stretching increases flexibility, reduces pain, improves circulation, and sets a positive tone for the day.',
+    how:'Run a 5-minute group stretch at breakfast or morning activity. Mark a calendar for each resident who participates.',
+    prize:'21-day completion earns a personalized certificate. Celebrate as a group.',
+    tips:'Use the Morning Stretch Routine from the Exercise tab. 5 minutes is the perfect commitment -- achievable for everyone.' },
+
+  { id:'social', emoji:'💛', name:'Social Connection Challenge',
+    goal:'Have one meaningful conversation or kind gesture for someone else every day.',
+    why:'Social connection is one of the strongest predictors of longevity and happiness in older adults.',
+    how:'At end of each day, residents share who they connected with. Staff can record on the community board.',
+    prize:'Count total community connections at month end. Celebrate the number as a group achievement.',
+    tips:'Can be as simple as giving a compliment, sharing a story, or asking someone how they\'re doing today.' },
+
+  { id:'sleep', emoji:'🌙', name:'Sleep Well Challenge',
+    goal:'Follow a calming bedtime routine every night for 14 days.',
+    why:'Consistent sleep routines dramatically improve sleep quality, which affects everything from mood to immune function.',
+    how:'Encourage residents to use the Evening Wind-Down Stretch plus a short Mindfulness script from this tab each night.',
+    prize:'Track on a "Sleep Stars" chart. 14 days earns a "Sweet Dreams" badge.',
+    tips:'Dim lights at 7pm if possible. Limit screen time and caffeine after 3pm. The routine matters more than the time.' },
+];
+
+const MINDFULNESS = [
+  { id:'box_breathing', emoji:'📦', name:'Box Breathing',
+    tagline:'A powerful calming technique used by athletes and therapists alike.',
+    duration:'5 min',
+    script:`Welcome, everyone. Let\'s take a few minutes to calm our minds and bodies together.
+
+Sit comfortably in your chair. Place your feet flat on the floor. Rest your hands gently in your lap.
+
+We are going to practice something called Box Breathing. It is very simple. I will guide you through each step.
+
+[PAUSE 5 seconds]
+
+First, let\'s just take one big cleansing breath together. Breathe in... and sigh it out. [Pause] Good.
+
+Now we begin.
+
+Breathe IN slowly... 1, 2, 3, 4. [Pause]
+HOLD... 1, 2, 3, 4. [Pause]
+Breathe OUT slowly... 1, 2, 3, 4. [Pause]
+HOLD... 1, 2, 3, 4. [Pause]
+
+That is one box. Let\'s do it again.
+
+Breathe IN... 1, 2, 3, 4. [Pause]
+HOLD... 1, 2, 3, 4. [Pause]
+Breathe OUT... 1, 2, 3, 4. [Pause]
+HOLD... 1, 2, 3, 4. [Pause]
+
+Wonderful. Three more times at your own pace. In for 4... hold for 4... out for 4... hold for 4.
+
+[Allow 90 seconds of quiet counting]
+
+Gently open your eyes if they were closed. Take a normal breath. Notice how you feel -- perhaps a little calmer, a little more present. That is the power of breath.`,
+    tip:'Use this at the start of any group activity to settle the room, or anytime tension is high.' },
+
+  { id:'beach_guided', emoji:'🏖️', name:'Beach Visualization',
+    tagline:'A peaceful guided journey to a warm, sunny beach.',
+    duration:'8 min',
+    script:`Find a comfortable position. Let your hands rest gently, and allow your eyes to close if that feels okay.
+
+Take three slow, deep breaths with me. In through the nose... out through the mouth. [Pause after each]
+
+Now, in your mind\'s eye, imagine you are walking toward a beautiful beach. The sun is warm but not too hot -- just perfect. You can feel a gentle breeze on your face.
+
+[Pause 5 seconds]
+
+You step onto the sand. Notice how it feels beneath your feet -- soft and warm. You hear the waves in the distance... a steady, rhythmic sound. In... and out. In... and out.
+
+[Pause 8 seconds]
+
+You walk a little closer to the water. The smell of the salt air fills your lungs. You see the sparkle of sunlight dancing on the water. Seagulls glide lazily overhead.
+
+[Pause 5 seconds]
+
+You find the perfect spot and sit down. You are completely safe. Completely at peace. There is nowhere you need to be, nothing you need to do. Just this moment, this beautiful beach, this warm sun.
+
+[Pause 10 seconds]
+
+Take a deep breath in, filling your lungs with fresh ocean air... and slowly breathe out. Let any tension in your body float away with that breath.
+
+[Pause 8 seconds]
+
+In a moment, we will gently return. But for now, simply enjoy this peaceful place. You can always come back here whenever you need rest.
+
+[Pause 10 seconds]
+
+Slowly begin to bring your awareness back to the room. Wiggle your fingers. Wiggle your toes. Take one more deep breath... and gently open your eyes. Welcome back.`,
+    tip:'Speak slowly and softly. Pause generously. Residents with dementia often respond beautifully to sensory visualization.' },
+
+  { id:'body_scan', emoji:'🌊', name:'Body Scan Relaxation',
+    tagline:'A head-to-toe tension release that deeply relaxes the body.',
+    duration:'10 min',
+    script:`Let us take this time together to release any tension we are holding in our bodies.
+
+Sit comfortably and allow your eyes to close. Take one deep breath in through your nose... and let it go with a sigh. [Pause]
+
+We are going to travel through the body from head to toe, releasing tension as we go.
+
+Let\'s begin at the top of your head. Notice any tightness there... and let it soften. Imagine warmth spreading from the crown of your head downward.
+
+Move your attention to your forehead. Allow it to smooth out. [Pause] Your eyes -- let them be soft and relaxed. Your jaw -- is it clenched? Let it drop slightly. Lips parted just a little.
+
+[Pause 5 seconds]
+
+Now bring your awareness to your neck and shoulders. This is where so many of us carry stress. With your next breath out, let your shoulders drop away from your ears. [Pause] Feel the weight of your shoulders release.
+
+Move down to your arms. Your upper arms... your elbows... your forearms... your hands. Let your fingers uncurl and rest softly.
+
+[Pause 5 seconds]
+
+Bring your attention to your chest. Notice it rise and fall with each breath. Each breath in brings calm... each breath out carries away any worry.
+
+Move to your belly. Let it soften completely. There is no need to hold it in. Just breathe naturally.
+
+[Pause 5 seconds]
+
+Feel your back against the chair. Notice the support beneath you. You are held. You are safe.
+
+Move your attention down to your hips... your thighs... your knees. Let any tension drain away like water.
+
+Down your calves... your ankles... all the way to the soles of your feet. Your feet that have carried you through so much in this life. Offer them gratitude.
+
+[Pause 8 seconds]
+
+Now take a moment to experience your whole body at once -- relaxed, heavy, warm, at peace.
+
+[Pause 10 seconds]
+
+Gently begin to return. Wiggle your fingers and toes. Take a deeper breath. And when you are ready, slowly open your eyes.`,
+    tip:'Best for late afternoon or before a rest period. Some residents may fall asleep -- that is a success!' },
+
+  { id:'gratitude_meditation', emoji:'💛', name:'Gratitude Meditation',
+    tagline:'A guided reflection on the gifts, big and small, in our lives.',
+    duration:'7 min',
+    script:`Let us take a few peaceful minutes together to count our blessings.
+
+Find a comfortable position and take one slow, deep breath. [Pause]
+
+Gratitude is a practice -- and like any practice, the more we do it, the more natural it becomes. Today we are going to bring to mind the good things in our lives.
+
+Begin by thinking of your body. Even on the days it is difficult, your body has served you faithfully. Think of one thing your body does for you today -- perhaps it breathes, perhaps it allows you to hear this voice, perhaps it holds you upright right now. Offer it a quiet thank you. [Pause 8 seconds]
+
+Now bring to mind one person in your life -- someone who has been kind to you, someone you love, or someone who made you smile recently. Hold their face in your mind. Feel the warmth that person brings. [Pause 8 seconds]
+
+Think of one simple pleasure -- a cup of tea in the morning, a song you love, sunlight through a window, the smell of something delicious. Savor that memory. [Pause 8 seconds]
+
+Finally, bring to mind one thing about today -- something small that was good. Maybe it was a kind word, a good meal, a moment of rest. Let yourself feel grateful for it. [Pause 8 seconds]
+
+You have just identified four things to be grateful for. Science tells us this simple practice rewires the brain over time -- increasing happiness, reducing pain, and improving sleep.
+
+Take one last deep, grateful breath in... [Pause] and let it go. [Pause]
+
+Whenever you are ready, gently open your eyes. Carry that warmth with you today.`,
+    tip:'Invite residents to share what they thought of after the meditation. This often leads to beautiful conversations.' },
+
+  { id:'breathing_478', emoji:'🌬️', name:'4-7-8 Breathing',
+    tagline:'A natural tranquilizer for the nervous system. Calms anxiety quickly.',
+    duration:'5 min',
+    script:`This technique is called 4-7-8 breathing. It was developed to activate the body\'s natural relaxation response. Let us try it together.
+
+Sit upright with your back supported. Place the tip of your tongue just behind your upper front teeth. Keep it there throughout.
+
+We will breathe in for 4 counts, hold for 7 counts, and breathe out for 8 counts. The long exhale is what makes this so calming.
+
+Ready? Let\'s begin.
+
+EXHALE completely through your mouth with a whoosh sound. [Pause]
+
+Now INHALE quietly through your nose... 1, 2, 3, 4. [Pause]
+
+HOLD your breath... 1, 2, 3, 4, 5, 6, 7. [Pause]
+
+EXHALE completely through your mouth, making a whoosh sound... 1, 2, 3, 4, 5, 6, 7, 8. [Pause]
+
+That is one cycle. Let\'s do three more together.
+
+INHALE... 1, 2, 3, 4. [Pause]
+HOLD... 1 through 7. [Pause]
+EXHALE with a whoosh... 1 through 8. [Pause]
+
+[Repeat two more times]
+
+Breathe normally now. Notice how you feel -- perhaps your heart rate has slowed. Perhaps your mind feels a little quieter. This technique works within minutes and gets more powerful with practice.
+
+You can use this any time you feel anxious, angry, or unable to sleep. Just four cycles is enough.`,
+    tip:'Some residents may feel lightheaded the first time -- that is normal. Have them breathe normally and try again at a gentler pace.' },
+];
+
+let wlState = { type:'all', activeExercise:null, logDay:null };
+const WL_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function initWellness() {
+  renderExerciseGrid();
+  renderWellnessLog();
+  renderChallenges();
+  renderMindfulness();
+}
+
+function switchWellnessTab(tab) {
+  ['exercise','log','challenges','mindful'].forEach(t => {
+    document.getElementById('wltab-'+t)?.classList.toggle('tv-subtab-active', t===tab);
+    const p = document.getElementById('wlpanel-'+t);
+    if (p) p.style.display = t===tab ? '' : 'none';
+  });
+}
+
+function setWellnessFilter(type) {
+  wlState.type = type;
+  document.querySelectorAll('[id^="wltype-"]').forEach(b => b.classList.remove('gm-cat-active'));
+  document.getElementById('wltype-'+type)?.classList.add('gm-cat-active');
+  renderExerciseGrid();
+}
+
+function renderExerciseGrid() {
+  const exercises = wlState.type === 'all' ? EXERCISES : EXERCISES.filter(e => e.type === wlState.type);
+  const typeColors = { chair:'#EFF6FF:#BFDBFE:#1D4ED8', stretch:'#F0FDF4:#BBF7D0:#15803D', balance:'#FFFBEB:#FDE68A:#92400E', strength:'#FAF5FF:#DDD6FE:#7C3AED' };
+  const typeLabels = { chair:'Chair', stretch:'Stretching', balance:'Balance', strength:'Strength' };
+  const levelColors = { Gentle:'#D1FAE5:#065F46', Moderate:'#FEF9C3:#92400E' };
+  const grid = document.getElementById('wl-exercise-grid');
+  grid.innerHTML = exercises.map((e,i) => {
+    const [bg,border,tx] = (typeColors[e.type]||typeColors.chair).split(':');
+    const [lbg,ltx] = (levelColors[e.level]||levelColors.Gentle).split(':');
+    return `<div onclick="openExerciseModal(${i})" style="background:#fff;border:2px solid ${border};border-radius:14px;padding:18px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+        <span style="font-size:32px;">${e.emoji}</span>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+          <span style="background:${bg};color:${tx};font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;">${typeLabels[e.type]}</span>
+          <span style="background:${lbg};color:${ltx};font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;">${e.level}</span>
+        </div>
+      </div>
+      <div style="font-weight:800;font-size:15px;margin-bottom:4px;">${e.name}</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:10px;">${e.tagline}</div>
+      <div style="font-size:12px;color:#374151;font-weight:600;">⏱️ ${e.duration} &nbsp;·&nbsp; ${e.moves.length} exercises</div>
+    </div>`;
+  }).join('');
+}
+
+function openExerciseModal(idx) {
+  const e = EXERCISES[idx]; if (!e) return;
+  wlState.activeExercise = e;
+  const typeColors = { chair:'#EFF6FF:#1D4ED8', stretch:'#F0FDF4:#15803D', balance:'#FFFBEB:#92400E', strength:'#FAF5FF:#7C3AED' };
+  const typeLabels = { chair:'Chair', stretch:'Stretching', balance:'Balance', strength:'Strength' };
+  const levelColors = { Gentle:'#D1FAE5:#065F46', Moderate:'#FEF9C3:#92400E' };
+  const [tbg,ttx] = (typeColors[e.type]||typeColors.chair).split(':');
+  const [lbg,ltx] = (levelColors[e.level]||levelColors.Gentle).split(':');
+  document.getElementById('wl-modal-badges').innerHTML =
+    `<span style="background:${tbg};color:${ttx};border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">${typeLabels[e.type]}</span>
+     <span style="background:${lbg};color:${ltx};border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">${e.level}</span>
+     <span style="background:#F3F4F6;color:#374151;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">⏱️ ${e.duration}</span>`;
+  document.getElementById('wl-modal-title').textContent = e.emoji + ' ' + e.name;
+  document.getElementById('wl-modal-tagline').textContent = e.tagline;
+  document.getElementById('wl-modal-equip').textContent = e.equipment;
+  document.getElementById('wl-modal-glance').innerHTML =
+    `⏱️ <b>Duration:</b> ${e.duration}<br>📊 <b>Level:</b> ${e.level}<br>🏃 <b>Exercises:</b> ${e.moves.length} moves`;
+  document.getElementById('wl-modal-exercises').innerHTML = e.moves.map((m,i) =>
+    `<div style="background:#F8FAFF;border:1px solid #DCE8FF;border-radius:10px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-weight:700;font-size:14px;">${i+1}. ${m.name}</span>
+        <span style="background:#1A2A5C;color:#fff;font-size:11px;padding:2px 8px;border-radius:99px;font-weight:600;">${m.reps}</span>
+      </div>
+      <div style="font-size:13px;color:#374151;line-height:1.6;">${m.cue}</div>
+    </div>`).join('');
+  document.getElementById('wl-modal-tips').innerHTML = e.tips;
+  document.getElementById('wl-modal').style.display = '';
+}
+
+function closeWellnessModal() { document.getElementById('wl-modal').style.display='none'; }
+
+function printExerciseGuide() {
+  const e = wlState.activeExercise; if (!e) return;
+  const typeLabels = { chair:'Chair Exercise', stretch:'Stretching', balance:'Balance', strength:'Strength' };
+  const movesHtml = e.moves.map((m,i) =>
+    `<div style="margin-bottom:16px;padding:14px;border:1px solid #ddd;border-radius:8px;">
+      <div style="display:flex;justify-content:space-between;"><b>${i+1}. ${m.name}</b><span style="color:#1A2A5C;font-weight:700;">${m.reps}</span></div>
+      <div style="margin-top:6px;font-size:13px;color:#555;">${m.cue}</div>
+    </div>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>${e.name}</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#1A2A5C;border-bottom:3px solid #BBF7D0;padding-bottom:8px}.badge{display:inline-block;background:#EFF6FF;color:#1D4ED8;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700;margin-right:6px}.tips{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px;margin-top:16px;font-size:13px}</style></head><body>
+    <h1>${e.emoji} ${e.name}</h1>
+    <div><span class="badge">${typeLabels[e.type]}</span><span class="badge">${e.level}</span><span class="badge">${e.duration}</span></div>
+    <p style="color:#6B7280;font-style:italic;">${e.tagline}</p>
+    <p><b>Equipment:</b> ${e.equipment}</p>
+    <h2>Exercises</h2>${movesHtml}
+    <div class="tips"><b>Safety &amp; Adaptation Tips:</b><br>${e.tips}</div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// MOVEMENT LOG
+function getLogData() { return lsGet(WL_LOG_KEY, {}); }
+function saveLogData(d) { lsSet(WL_LOG_KEY, d); }
+
+function renderWellnessLog() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+  const logData = getLogData();
+  const key = year + '_' + month;
+
+  let days=0, sessions=0;
+  const residentSet = new Set();
+  for (let d=1; d<=daysInMonth; d++) {
+    const entries = (logData[key] || {})[d] || [];
+    if (entries.length) { days++; sessions += entries.length; entries.forEach(e => residentSet.add(e.resident)); }
+  }
+  document.getElementById('wl-log-days').textContent = days;
+  document.getElementById('wl-log-sessions').textContent = sessions;
+  document.getElementById('wl-log-residents').textContent = residentSet.size;
+
+  const cal = document.getElementById('wl-log-calendar');
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let cells = dayNames.map(d => `<div style="text-align:center;font-size:11px;font-weight:700;color:#9CA3AF;padding:6px;">${d}</div>`).join('');
+  for (let i=0; i<firstDay; i++) cells += '<div></div>';
+  for (let d=1; d<=daysInMonth; d++) {
+    const entries = (logData[key] || {})[d] || [];
+    const isToday = d === now.getDate();
+    const hasLog = entries.length > 0;
+    cells += `<div onclick="selectLogDay(${d})" style="border-radius:10px;padding:8px 4px;text-align:center;cursor:pointer;border:2px solid ${isToday?'#1A2A5C':hasLog?'#86EFAC':'#E5E7EB'};background:${hasLog?'#D1FAE5':'#fff'};transition:all 0.15s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+      <div style="font-size:13px;font-weight:${isToday?'900':'600'};color:${isToday?'#1A2A5C':hasLog?'#15803D':'#374151'};">${d}</div>
+      ${hasLog ? `<div style="font-size:10px;color:#15803D;font-weight:700;">${entries.length} ✓</div>` : ''}
+    </div>`;
+  }
+  cal.innerHTML = cells;
+
+  // Populate selects
+  const exSel = document.getElementById('wl-log-exercise');
+  if (exSel) exSel.innerHTML = EXERCISES.map(e => `<option value="${e.id}">${e.emoji} ${e.name}</option>`).join('');
+  const resSel = document.getElementById('wl-log-resident-sel');
+  if (resSel) {
+    const names = roster.map(r=>r.name).filter(Boolean);
+    resSel.innerHTML = names.length ? names.map(n=>`<option>${n}</option>`).join('') : '<option>-- Add residents first --</option>';
+  }
+}
+
+function selectLogDay(day) {
+  wlState.logDay = day;
+  const detail = document.getElementById('wl-log-day-detail');
+  detail.style.display = '';
+  const now = new Date();
+  document.getElementById('wl-detail-title').textContent = WL_MONTHS[now.getMonth()] + ' ' + day + ' -- Exercise Sessions';
+  renderDayEntries(day);
+}
+
+function renderDayEntries(day) {
+  const now = new Date();
+  const logData = getLogData();
+  const key = now.getFullYear() + '_' + now.getMonth();
+  const entries = (logData[key] || {})[day] || [];
+  const container = document.getElementById('wl-day-entries');
+  if (!entries.length) { container.innerHTML = '<div style="color:#aaa;font-size:13px;">No sessions logged yet for this day.</div>'; return; }
+  container.innerHTML = entries.map((e,i) => {
+    const ex = EXERCISES.find(x=>x.id===e.exercise);
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;">
+      <span style="font-size:13px;font-weight:600;">${ex ? ex.emoji+' '+ex.name : e.exercise} -- ${e.resident}</span>
+      <button onclick="removeLogEntry(${day},${i})" style="background:none;border:none;color:#EF4444;font-size:16px;cursor:pointer;">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function addLogEntry() {
+  const day = wlState.logDay; if (!day) return;
+  const exercise = document.getElementById('wl-log-exercise')?.value;
+  const resident = document.getElementById('wl-log-resident-sel')?.value;
+  if (!exercise || !resident) return;
+  const now = new Date();
+  const key = now.getFullYear() + '_' + now.getMonth();
+  const logData = getLogData();
+  if (!logData[key]) logData[key] = {};
+  if (!logData[key][day]) logData[key][day] = [];
+  logData[key][day].push({ exercise, resident });
+  saveLogData(logData);
+  renderWellnessLog();
+  renderDayEntries(day);
+}
+
+function removeLogEntry(day, idx) {
+  const now = new Date();
+  const key = now.getFullYear() + '_' + now.getMonth();
+  const logData = getLogData();
+  if (logData[key] && logData[key][day]) {
+    logData[key][day].splice(idx, 1);
+    saveLogData(logData);
+    renderWellnessLog();
+    renderDayEntries(day);
+  }
+}
+
+function resetMovementLog() {
+  if (!confirm('Reset the movement log for this month?')) return;
+  const now = new Date();
+  const key = now.getFullYear() + '_' + now.getMonth();
+  const logData = getLogData();
+  delete logData[key];
+  saveLogData(logData);
+  wlState.logDay = null;
+  document.getElementById('wl-log-day-detail').style.display = 'none';
+  renderWellnessLog();
+}
+
+function printMovementLog() {
+  const now = new Date();
+  const key = now.getFullYear() + '_' + now.getMonth();
+  const logData = getLogData();
+  const monthData = logData[key] || {};
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const rows = [];
+  for (let d=1; d<=daysInMonth; d++) {
+    const entries = monthData[d] || [];
+    entries.forEach(e => {
+      const ex = EXERCISES.find(x=>x.id===e.exercise);
+      rows.push(`<tr><td style="padding:8px;border:1px solid #ddd;">${d}</td><td style="padding:8px;border:1px solid #ddd;">${e.resident}</td><td style="padding:8px;border:1px solid #ddd;">${ex ? ex.name : e.exercise}</td><td style="padding:8px;border:1px solid #ddd;">${ex ? ex.type : ''}</td></tr>`);
+    });
+  }
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Movement Log</title><style>body{font-family:Arial,sans-serif;padding:30px}h1{color:#1A2A5C}table{border-collapse:collapse;width:100%}th{background:#1A2A5C;color:#fff;padding:10px;text-align:left}</style></head><body>
+    <h1>🌿 Movement Log -- ${WL_MONTHS[now.getMonth()]} ${now.getFullYear()}</h1>
+    <table><thead><tr><th>Day</th><th>Resident</th><th>Exercise</th><th>Type</th></tr></thead>
+    <tbody>${rows.length ? rows.join('') : '<tr><td colspan="4" style="padding:16px;color:#aaa;">No sessions logged this month.</td></tr>'}</tbody></table>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// CHALLENGES
+function renderChallenges() {
+  const grid = document.getElementById('wl-challenge-grid');
+  grid.innerHTML = CHALLENGES.map((c,i) => `
+    <div style="background:#fff;border:2px solid #BBF7D0;border-radius:14px;padding:20px;">
+      <div style="font-size:32px;margin-bottom:8px;">${c.emoji}</div>
+      <div style="font-weight:800;font-size:16px;margin-bottom:6px;">${c.name}</div>
+      <div style="background:#F0FDF4;border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px;"><b style="color:#065F46;">Goal:</b> ${c.goal}</div>
+      <div style="background:#EFF6FF;border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px;"><b style="color:#1D4ED8;">Why it works:</b> ${c.why}</div>
+      <div style="background:#FFFBEB;border-radius:8px;padding:10px;margin-bottom:10px;font-size:13px;"><b style="color:#92400E;">How to run it:</b> ${c.how}</div>
+      <div style="font-size:12px;color:#6B7280;font-style:italic;margin-bottom:12px;">🏆 ${c.prize}</div>
+      <button onclick="printChallenge(${i})" class="btn btn-secondary" style="width:100%;font-size:12px;">🖨️ Print Tracking Sheet</button>
+    </div>`).join('');
+}
+
+function printChallenge(i) {
+  const c = CHALLENGES[i];
+  const now = new Date();
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const boxes = Array(daysInMonth).fill(0).map((_,d) =>
+    `<div style="border:1px solid #ddd;border-radius:6px;padding:8px;text-align:center;min-width:42px;">
+      <div style="font-size:11px;font-weight:700;color:#888;">${d+1}</div>
+      <div style="font-size:20px;margin-top:4px;">☐</div>
+    </div>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>${c.name}</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#1A2A5C}.grid{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0;}.goal{background:#F0FDF4;border:2px solid #86EFAC;border-radius:10px;padding:14px;margin:12px 0;font-size:15px;}</style></head><body>
+    <h1>${c.emoji} ${c.name} Challenge</h1>
+    <div class="goal"><b>Goal:</b> ${c.goal}</div>
+    <p><b>Why:</b> ${c.why}</p>
+    <p><b>How to run it:</b> ${c.how}</p>
+    <h3>Tracking -- ${WL_MONTHS[now.getMonth()]} ${now.getFullYear()}</h3>
+    <p>Name: _______________________</p>
+    <div class="grid">${boxes}</div>
+    <p style="font-size:13px;color:#555;"><b>Tip:</b> ${c.tips}</p>
+    <p style="font-size:13px;font-style:italic;color:#1D4ED8;">${c.prize}</p>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// MINDFULNESS
+function renderMindfulness() {
+  const grid = document.getElementById('wl-mindful-grid');
+  grid.innerHTML = MINDFULNESS.map((m,i) => `
+    <div style="background:#fff;border:2px solid #DDD6FE;border-radius:14px;padding:20px;">
+      <div style="font-size:32px;margin-bottom:8px;">${m.emoji}</div>
+      <div style="font-weight:800;font-size:16px;margin-bottom:4px;">${m.name}</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:6px;">${m.tagline}</div>
+      <div style="background:#FAF5FF;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;color:#7C3AED;margin-bottom:10px;display:inline-block;">⏱️ ${m.duration}</div>
+      <div style="font-size:12px;color:#374151;font-style:italic;margin-bottom:14px;line-height:1.5;">${m.tip}</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="openMindfulModal(${i})" class="btn btn-primary" style="font-size:12px;flex:1;">📖 View Script</button>
+        <button onclick="printMindfulScript(${i})" class="btn btn-secondary" style="font-size:12px;flex:1;">🖨️ Print</button>
+      </div>
+    </div>`).join('');
+}
+
+function openMindfulModal(i) {
+  const m = MINDFULNESS[i];
+  const r = { emoji:m.emoji, name:m.name, tagline:m.tagline, type:'nocook', diff:'easy', serves:'Group', time:m.duration, temp:'', ingredients:'', steps:m.script.replace(/\n/g,'<br>'), tips:m.tip };
+  document.getElementById('fd-modal-badges').innerHTML =
+    `<span style="background:#FAF5FF;color:#7C3AED;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">🧘 Mindfulness Script</span>
+     <span style="background:#F3F4F6;color:#374151;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">⏱️ ${m.duration}</span>`;
+  document.getElementById('fd-modal-title').textContent = m.emoji + ' ' + m.name;
+  document.getElementById('fd-modal-tagline').textContent = m.tagline;
+  document.getElementById('fd-modal-ingredients').innerHTML = '<i>No materials needed. Read aloud to the group.</i>';
+  document.getElementById('fd-modal-glance').innerHTML = `⏱️ <b>Duration:</b> ${m.duration}<br>👥 <b>For:</b> Group or individual<br>🔊 <b>Mode:</b> Staff reads aloud`;
+  document.getElementById('fd-modal-steps').innerHTML = m.script.replace(/\n/g,'<br>');
+  document.getElementById('fd-modal-tips').innerHTML = m.tip;
+  document.getElementById('fd-modal').style.display='';
+}
+
+function printMindfulScript(i) {
+  const m = MINDFULNESS[i];
+  const scriptHtml = m.script.replace(/\[([^\]]+)\]/g,'<span style="color:#7030A0;font-weight:700;">[$1]</span>').replace(/\n/g,'<br>');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>${m.name}</title><style>body{font-family:Georgia,serif;padding:40px;max-width:680px;line-height:1.9}h1{color:#1A2A5C}h3{color:#7030A0;font-style:italic}.script{font-size:15px;color:#374151;border-left:4px solid #DDD6FE;padding-left:20px;margin:20px 0;}.tip{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px;font-size:13px;margin-top:16px;}</style></head><body>
+    <h1>${m.emoji} ${m.name}</h1>
+    <h3>${m.tagline} -- ${m.duration}</h3>
+    <p style="font-size:13px;color:#888;"><i>Read aloud slowly and gently. Text in [purple brackets] are timing cues for the reader -- do not read these aloud.</i></p>
+    <div class="script">${scriptHtml}</div>
+    <div class="tip"><b>Staff Tip:</b> ${m.tip}</div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
 }
 </script>
 
