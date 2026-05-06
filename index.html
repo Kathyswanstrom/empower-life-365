@@ -1136,6 +1136,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
     <button class="tab-btn" data-tab="family" id="family-tab" onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
     <button class="tab-btn" data-tab="social" id="social-tab" onclick="switchTab('social')">📱 Social Media</button>
+    <button class="tab-btn" data-tab="community" id="community-tab" onclick="switchTab('community')">💬 Community</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
@@ -3455,6 +3456,38 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     </div>
   </div>
 </section>
+<section class="tab-panel" id="panel-community">
+  <style>
+    .sb-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:18px;margin-bottom:10px;transition:box-shadow 0.15s;}
+    .sb-card:hover{box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+    .sb-card.clickable{cursor:pointer;}
+    .sb-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+    .sb-btn-primary{background:var(--navy);color:#fff;}
+    .sb-btn-primary:hover{background:#1e3a6e;}
+    .sb-btn-secondary{background:var(--gray-100);color:var(--gray-700);}
+    .sb-btn-secondary:hover{background:var(--gray-200);}
+    .sb-btn-danger{background:#fee2e2;color:#b91c1c;}
+    .sb-btn-sm{padding:5px 10px;font-size:12px;}
+    .sb-input{width:100%;padding:9px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color 0.15s;}
+    .sb-input:focus{border-color:var(--navy);}
+    .sb-textarea{width:100%;padding:9px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:100px;}
+    .sb-textarea:focus{border-color:var(--navy);}
+    .sb-label{display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:5px;}
+    .sb-error{background:#fee2e2;color:#b91c1c;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;}
+    .sb-success{background:#d1fae5;color:#065f46;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;}
+    .sb-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+    .sb-tag{display:inline-block;background:var(--gray-100);color:var(--gray-600);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;}
+    .sb-pin{background:#fef9c3;color:#854d0e;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:700;}
+    .sb-like-btn{background:none;border:1px solid var(--gray-200);border-radius:99px;padding:4px 12px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;}
+    .sb-like-btn:hover,.sb-like-btn.liked{background:#fce7f3;border-color:#ec4899;color:#be185d;}
+    .sb-divider{border:none;border-top:1px solid var(--gray-100);margin:16px 0;}
+    .sb-back{background:none;border:none;font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:4px 0;margin-bottom:16px;}
+    .sb-back:hover{text-decoration:underline;}
+    .sb-loading{text-align:center;padding:40px;color:var(--gray-400);font-size:14px;}
+    .sb-empty{text-align:center;padding:48px 20px;color:var(--gray-400);}
+  </style>
+  <div id="sb-view" style="max-width:780px;margin:0 auto;"></div>
+</section>
 
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
@@ -4056,6 +4089,7 @@ function switchTab(name) {
   if (name === 'travel') initTravel();
   if (name === 'family') initFamily();
   if (name === 'social') initSocial();
+  if (name === 'community') initCommunity();
   if (name === 'games') initGames();
   if (name === 'crafts') initCrafts();
   if (name === 'food') initFood();
@@ -17473,6 +17507,467 @@ function copySMText(b64, btn) {
 
 function copyHashtags(tags, btn) {
   copySMText(btoa(unescape(encodeURIComponent(tags))), btn);
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// ── COMMUNITY BOARD ────────────────────────────────────────────────────────
+var SB_URL = 'https://qewcjndfjctcrwxvzdxd.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFld2NqbmRmamN0Y3J3eHZ6ZHhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNjM5MjUsImV4cCI6MjA5MzYzOTkyNX0.yGVjlZO_6mqlmLJeHnWLk4v5ZImE7WkUg6kNQ82JHg0';
+var sbClient = null;
+var sbUser = null;
+var sbProfile = null;
+var sbView = 'auth';
+var sbSelCat = null;   // {id, name, emoji}
+var sbCats = [];        // loaded category list
+var sbSelPost = null;  // {id, title, ...}
+var sbAuthMode = 'signin';
+var sbCommunityInited = false;
+
+function getSB() {
+  if (!sbClient) sbClient = supabase.createClient(SB_URL, SB_KEY);
+  return sbClient;
+}
+
+function sbAvatarColor(name) {
+  var colors = ['#1e40af','#7c3aed','#0d9488','#b45309','#be185d','#166534','#0369a1'];
+  var idx = (name||'?').charCodeAt(0) % colors.length;
+  return colors[idx];
+}
+
+function sbTimeAgo(ts) {
+  var diff = (Date.now() - new Date(ts)) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff/86400) + 'd ago';
+  return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+function sbInitials(name) {
+  if (!name) return '?';
+  var parts = name.trim().split(' ');
+  return parts.length > 1 ? (parts[0][0]+parts[parts.length-1][0]).toUpperCase() : name.slice(0,2).toUpperCase();
+}
+
+async function initCommunity() {
+  if (sbCommunityInited) return;
+  sbCommunityInited = true;
+  var sb = getSB();
+  var session = await sb.auth.getSession();
+  if (session.data && session.data.session && session.data.session.user) {
+    sbUser = session.data.session.user;
+    await sbLoadProfile();
+    sbView = 'categories';
+  }
+  sbRender();
+  // Listen for auth changes
+  sb.auth.onAuthStateChange(async function(event, session) {
+    if (event === 'SIGNED_IN' && session) {
+      sbUser = session.user;
+      await sbLoadProfile();
+      sbView = 'categories';
+      sbRender();
+    } else if (event === 'SIGNED_OUT') {
+      sbUser = null; sbProfile = null;
+      sbView = 'auth'; sbRender();
+    }
+  });
+}
+
+async function sbLoadProfile() {
+  if (!sbUser) return;
+  var res = await getSB().from('profiles').select('*').eq('id', sbUser.id).single();
+  if (res.data) sbProfile = res.data;
+}
+
+function sbSelectCat(id) {
+  var cat = sbCats.find(function(c){return c.id===id;}) || {id:id,name:'Posts',emoji:'💬'};
+  sbSelCat = cat;
+  sbView = 'posts';
+  sbRender();
+}
+function sbRender() {
+  var el = document.getElementById('sb-view');
+  if (!el) return;
+  if (sbView === 'auth') sbRenderAuth(el);
+  else if (sbView === 'categories') sbRenderCategories(el);
+  else if (sbView === 'posts') sbRenderPosts(el);
+  else if (sbView === 'post-detail') sbRenderPostDetail(el);
+  else if (sbView === 'new-post') sbRenderNewPost(el);
+  else if (sbView === 'edit-profile') sbRenderEditProfile(el);
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────────
+function sbRenderAuth(el) {
+  el.innerHTML = '<div style="max-width:440px;margin:40px auto;">'
+    +'<div style="text-align:center;margin-bottom:28px;">'
+    +'<div style="font-size:48px;margin-bottom:8px;">💬</div>'
+    +'<h2 style="margin:0 0 6px;">Empower Life 365 Community</h2>'
+    +'<p style="color:var(--gray-500);font-size:14px;margin:0;">Connect with activity directors across the country — share ideas, ask questions, and inspire each other.</p>'
+    +'</div>'
+    +'<div style="display:flex;border-bottom:2px solid var(--gray-200);margin-bottom:20px;">'
+    +'<button id="sb-tab-signin" onclick="sbAuthMode=\'signin\';sbRender();" style="flex:1;padding:10px;border:none;background:none;font-weight:700;font-size:14px;cursor:pointer;border-bottom:'+(sbAuthMode==='signin'?'2px solid var(--navy)':'2px solid transparent')+';color:'+(sbAuthMode==='signin'?'var(--navy)':'var(--gray-500)')+';">Sign In</button>'
+    +'<button id="sb-tab-signup" onclick="sbAuthMode=\'signup\';sbRender();" style="flex:1;padding:10px;border:none;background:none;font-weight:700;font-size:14px;cursor:pointer;border-bottom:'+(sbAuthMode==='signup'?'2px solid var(--navy)':'2px solid transparent')+';color:'+(sbAuthMode==='signup'?'var(--navy)':'var(--gray-500)')+';">Create Account</button>'
+    +'</div>'
+    +'<div id="sb-auth-msg"></div>';
+
+  if (sbAuthMode === 'signin') {
+    el.querySelector('#sb-view > div').innerHTML += '<div style="display:flex;flex-direction:column;gap:14px;">'
+      +'<div><label class="sb-label">Email</label><input class="sb-input" id="sb-email" type="email" placeholder="your@email.com"></div>'
+      +'<div><label class="sb-label">Password</label><input class="sb-input" id="sb-password" type="password" placeholder="••••••••"></div>'
+      +'<button class="sb-btn sb-btn-primary" style="width:100%;justify-content:center;padding:11px;" onclick="sbSignIn()">Sign In →</button>'
+      +'</div></div>';
+  } else {
+    el.querySelector('#sb-view > div').innerHTML += '<div style="display:flex;flex-direction:column;gap:14px;">'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+      +'<div><label class="sb-label">Full Name</label><input class="sb-input" id="sb-fullname" type="text" placeholder="Sarah Miller"></div>'
+      +'<div><label class="sb-label">State</label><input class="sb-input" id="sb-state" type="text" placeholder="OH" maxlength="2"></div>'
+      +'</div>'
+      +'<div><label class="sb-label">Community Name</label><input class="sb-input" id="sb-community-name" type="text" placeholder="Sunrise Gardens"></div>'
+      +'<div><label class="sb-label">Email</label><input class="sb-input" id="sb-email" type="email" placeholder="your@email.com"></div>'
+      +'<div><label class="sb-label">Password <span style="font-weight:400;color:var(--gray-500);">(min 6 characters)</span></label><input class="sb-input" id="sb-password" type="password" placeholder="••••••••"></div>'
+      +'<button class="sb-btn sb-btn-primary" style="width:100%;justify-content:center;padding:11px;" onclick="sbSignUp()">Create Account →</button>'
+      +'<p style="text-align:center;font-size:12px;color:var(--gray-400);margin:0;">By joining you agree to keep conversations respectful and professional.</p>'
+      +'</div></div>';
+  }
+}
+
+async function sbSignIn() {
+  var email = (document.getElementById('sb-email')||{value:''}).value.trim();
+  var pass  = (document.getElementById('sb-password')||{value:''}).value;
+  if (!email||!pass) { sbAuthMsg('Please fill in all fields.','error'); return; }
+  sbAuthMsg('Signing in...','');
+  var res = await getSB().auth.signInWithPassword({email:email,password:pass});
+  if (res.error) { sbAuthMsg(res.error.message,'error'); return; }
+  // onAuthStateChange handles the rest
+}
+
+async function sbSignUp() {
+  var name  = (document.getElementById('sb-fullname')||{value:''}).value.trim();
+  var state = (document.getElementById('sb-state')||{value:''}).value.trim().toUpperCase();
+  var comm  = (document.getElementById('sb-community-name')||{value:''}).value.trim();
+  var email = (document.getElementById('sb-email')||{value:''}).value.trim();
+  var pass  = (document.getElementById('sb-password')||{value:''}).value;
+  if (!name||!email||!pass) { sbAuthMsg('Please fill in all required fields.','error'); return; }
+  if (pass.length < 6) { sbAuthMsg('Password must be at least 6 characters.','error'); return; }
+  sbAuthMsg('Creating your account...','');
+  var res = await getSB().auth.signUp({
+    email:email, password:pass,
+    options: { data: { full_name: name } }
+  });
+  if (res.error) { sbAuthMsg(res.error.message,'error'); return; }
+  // Update profile with community and state
+  if (res.data && res.data.user) {
+    await getSB().from('profiles').upsert({
+      id: res.data.user.id, full_name: name,
+      community_name: comm, state: state
+    });
+  }
+  sbAuthMsg('Account created! Check your email to confirm, then sign in.','success');
+}
+
+function sbAuthMsg(msg, type) {
+  var el = document.getElementById('sb-auth-msg'); if (!el) return;
+  if (!msg) { el.innerHTML=''; return; }
+  el.innerHTML = '<div class="sb-'+(type||'success')+'">'+msg+'</div>';
+}
+
+async function sbSignOut() {
+  await getSB().auth.signOut();
+}
+
+// ── CATEGORIES ────────────────────────────────────────────────────────────
+async function sbRenderCategories(el) {
+  el.innerHTML = '<div id="sb-cat-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;">'
+    +'<div>'
+    +'<h2 style="margin:0 0 2px;">💬 Community</h2>'
+    +'<p style="margin:0;font-size:13px;color:var(--gray-500);">Connect with activity directors nationwide</p>'
+    +'</div>'
+    +'<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">'
+    +(sbProfile ? '<span style="font-size:13px;color:var(--gray-600);">👋 '+(sbProfile.full_name||sbUser.email)+(sbProfile.community_name?'  ·  '+sbProfile.community_name:'')+'</span>' : '')
+    +'<button class="sb-btn sb-btn-primary" onclick="sbView=\'new-post\';sbSelCat=null;sbRender();">✏️ New Post</button>'
+    +'<button class="sb-btn sb-btn-secondary" onclick="sbView=\'edit-profile\';sbRender();">👤 Profile</button>'
+    +'<button class="sb-btn sb-btn-secondary" onclick="sbSignOut()">Sign Out</button>'
+    +'</div></div>'
+    +'<div id="sb-cats-list"><div class="sb-loading">Loading categories...</div></div>';
+
+  var res = await getSB().from('categories').select('*').order('sort_order');
+  if (res.error) { document.getElementById('sb-cats-list').innerHTML = '<div class="sb-error">'+res.error.message+'</div>'; return; }
+  var cats = res.data || [];
+
+  // Get post counts per category
+  var countRes = await getSB().from('posts').select('category_id');
+  var postCounts = {};
+  if (countRes.data) {
+    countRes.data.forEach(function(p){ postCounts[p.category_id] = (postCounts[p.category_id]||0)+1; });
+  }
+
+  var listEl = document.getElementById('sb-cats-list');
+  if (!listEl) return;
+  sbCats = cats;
+  listEl.innerHTML = cats.map(function(c) {
+    var count = postCounts[c.id] || 0;
+    return '<div class="sb-card clickable" onclick="sbSelectCat('+c.id+');">';
+      +'<div style="display:flex;align-items:center;gap:14px;">'
+      +'<div style="font-size:32px;width:48px;text-align:center;flex-shrink:0;">'+c.emoji+'</div>'
+      +'<div style="flex:1;">'
+      +'<div style="font-weight:700;font-size:15px;margin-bottom:2px;">'+c.name+'</div>'
+      +'<div style="font-size:13px;color:var(--gray-500);">'+c.description+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0;">'
+      +'<div style="font-size:20px;font-weight:800;color:var(--navy);">'+count+'</div>'
+      +'<div style="font-size:11px;color:var(--gray-400);">post'+(count!==1?'s':'')+'</div>'
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── POSTS ─────────────────────────────────────────────────────────────────
+async function sbRenderPosts(el) {
+  var cat = sbSelCat || {id:0,name:'Posts',emoji:'💬'};
+  el.innerHTML = '<button class="sb-back" onclick="sbView=\'categories\';sbRender();">← All Categories</button>'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;">'
+    +'<h2 style="margin:0;">'+cat.emoji+' '+cat.name+'</h2>'
+    +'<button class="sb-btn sb-btn-primary" onclick="sbView=\'new-post\';sbRender();">✏️ New Post</button>'
+    +'</div>'
+    +'<div id="sb-posts-list"><div class="sb-loading">Loading posts...</div></div>';
+
+  var res = await getSB().from('posts')
+    .select('id,title,body,is_pinned,created_at,author_id,profiles(full_name,community_name,state)')
+    .eq('category_id', cat.id)
+    .order('is_pinned', {ascending:false})
+    .order('created_at', {ascending:false});
+
+  var replyRes = await getSB().from('replies').select('post_id');
+  var replyCounts = {};
+  if (replyRes.data) replyRes.data.forEach(function(r){ replyCounts[r.post_id]=(replyCounts[r.post_id]||0)+1; });
+
+  var likeRes = await getSB().from('post_likes').select('post_id');
+  var likeCounts = {};
+  if (likeRes.data) likeRes.data.forEach(function(l){ likeCounts[l.post_id]=(likeCounts[l.post_id]||0)+1; });
+
+  var listEl = document.getElementById('sb-posts-list');
+  if (!listEl) return;
+  if (!res.data || !res.data.length) {
+    listEl.innerHTML = '<div class="sb-empty"><div style="font-size:40px;margin-bottom:12px;">✏️</div><div>No posts yet — be the first to start a conversation!</div></div>';
+    return;
+  }
+  listEl.innerHTML = res.data.map(function(p) {
+    var prof = p.profiles || {};
+    var initials = sbInitials(prof.full_name);
+    var color = sbAvatarColor(prof.full_name);
+    var loc = [prof.community_name, prof.state].filter(Boolean).join(', ');
+    var replies = replyCounts[p.id] || 0;
+    var likes = likeCounts[p.id] || 0;
+    var preview = (p.body||'').slice(0,120) + ((p.body||'').length > 120 ? '...' : '');
+    return '<div class="sb-card clickable" onclick="sbSelPost={id:'+p.id+'};sbView=\'post-detail\';sbRender();">'
+      +(p.is_pinned ? '<div style="margin-bottom:8px;"><span class="sb-pin">📌 Pinned</span></div>' : '')
+      +'<div style="display:flex;gap:12px;">'
+      +'<div class="sb-avatar" style="background:'+color+';margin-top:2px;">'+initials+'</div>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div style="font-weight:700;font-size:15px;margin-bottom:4px;">'+p.title+'</div>'
+      +'<div style="font-size:13px;color:var(--gray-500);margin-bottom:8px;line-height:1.4;">'+preview+'</div>'
+      +'<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'
+      +'<span style="font-size:12px;color:var(--gray-500);">'+initials+' '+(prof.full_name||'Member')+(loc?' · '+loc:'')+'</span>'
+      +'<span style="font-size:12px;color:var(--gray-400);">'+sbTimeAgo(p.created_at)+'</span>'
+      +'<span style="font-size:12px;color:var(--gray-500);">💬 '+replies+'</span>'
+      +'<span style="font-size:12px;color:var(--gray-500);">👍 '+likes+'</span>'
+      +'</div>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+// ── POST DETAIL ───────────────────────────────────────────────────────────
+async function sbRenderPostDetail(el) {
+  el.innerHTML = '<button class="sb-back" onclick="sbView=\'posts\';sbRender();">← Back</button>'
+    +'<div id="sb-post-content"><div class="sb-loading">Loading post...</div></div>';
+
+  var postRes = await getSB().from('posts')
+    .select('*,profiles(full_name,community_name,state)')
+    .eq('id', sbSelPost.id).single();
+  if (postRes.error || !postRes.data) { document.getElementById('sb-post-content').innerHTML='<div class="sb-error">Could not load post.</div>'; return; }
+  var p = postRes.data;
+  var prof = p.profiles || {};
+  var color = sbAvatarColor(prof.full_name);
+
+  // Count likes + check if user liked
+  var likeRes = await getSB().from('post_likes').select('user_id').eq('post_id', p.id);
+  var likeCount = likeRes.data ? likeRes.data.length : 0;
+  var userLiked = sbUser && likeRes.data ? likeRes.data.some(function(l){return l.user_id===sbUser.id;}) : false;
+
+  // Load replies
+  var repRes = await getSB().from('replies')
+    .select('*,profiles(full_name,community_name,state)')
+    .eq('post_id', p.id).order('created_at', {ascending:true});
+  var replies = repRes.data || [];
+
+  var isOwner = sbUser && p.author_id === sbUser.id;
+  var loc = [prof.community_name, prof.state].filter(Boolean).join(', ');
+
+  var content = document.getElementById('sb-post-content');
+  if (!content) return;
+  content.innerHTML = '<div class="sb-card">'
+    +'<div style="display:flex;gap:12px;margin-bottom:14px;">'
+    +'<div class="sb-avatar" style="background:'+color+';width:44px;height:44px;font-size:17px;">'+sbInitials(prof.full_name)+'</div>'
+    +'<div>'
+    +'<div style="font-weight:700;font-size:14px;">'+(prof.full_name||'Member')+'</div>'
+    +'<div style="font-size:12px;color:var(--gray-500);">'+(loc||'')+'</div>'
+    +'<div style="font-size:12px;color:var(--gray-400);">'+sbTimeAgo(p.created_at)+'</div>'
+    +'</div>'
+    +(isOwner?'<div style="margin-left:auto;"><button class="sb-btn sb-btn-secondary sb-btn-sm" onclick="sbDeletePost('+p.id+')">🗑️ Delete</button></div>':'')
+    +'</div>'
+    +'<h2 style="margin:0 0 12px;font-size:20px;">'+p.title+'</h2>'
+    +'<div style="font-size:15px;line-height:1.7;color:#374151;white-space:pre-wrap;">'+p.body+'</div>'
+    +'<hr class="sb-divider">'
+    +'<button class="sb-like-btn'+(userLiked?' liked':'')+'" id="sb-like-btn" onclick="sbToggleLike('+p.id+','+userLiked+')">👍 <span id="sb-like-count">'+likeCount+'</span></button>'
+    +'</div>'
+
+    // Replies
+    +'<h3 style="margin:20px 0 12px;font-size:15px;font-weight:700;">💬 '+replies.length+' '+(replies.length===1?'Reply':'Replies')+'</h3>'
+    + (replies.length ? replies.map(function(r) {
+        var rp = r.profiles||{};
+        var rc = sbAvatarColor(rp.full_name);
+        var rl = [rp.community_name,rp.state].filter(Boolean).join(', ');
+        var rOwner = sbUser && r.author_id===sbUser.id;
+        return '<div class="sb-card" style="margin-bottom:8px;">'
+          +'<div style="display:flex;gap:10px;">'
+          +'<div class="sb-avatar" style="background:'+rc+';width:32px;height:32px;font-size:13px;flex-shrink:0;">'+sbInitials(rp.full_name)+'</div>'
+          +'<div style="flex:1;min-width:0;">'
+          +'<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px;">'
+          +'<span style="font-weight:700;font-size:13px;">'+(rp.full_name||'Member')+'</span>'
+          +(rl?'<span style="font-size:12px;color:var(--gray-400);">'+rl+'</span>':'')
+          +'<span style="font-size:12px;color:var(--gray-400);">'+sbTimeAgo(r.created_at)+'</span>'
+          +(rOwner?'<button class="sb-btn sb-btn-secondary sb-btn-sm" style="margin-left:auto;" onclick="sbDeleteReply('+r.id+','+p.id+')">🗑️</button>':'')
+          +'</div>'
+          +'<div style="font-size:14px;color:#374151;line-height:1.6;white-space:pre-wrap;">'+r.body+'</div>'
+          +'</div></div></div>';
+      }).join('') : '<div class="sb-empty" style="padding:20px;">No replies yet — start the conversation!</div>')
+
+    // Reply form
+    + (sbUser ? '<div class="sb-card" style="margin-top:8px;">'
+      +'<h4 style="margin:0 0 10px;font-size:14px;">Leave a Reply</h4>'
+      +'<div id="sb-reply-msg"></div>'
+      +'<textarea class="sb-textarea" id="sb-reply-body" placeholder="Share your thoughts, ideas, or experience..." style="margin-bottom:10px;"></textarea>'
+      +'<button class="sb-btn sb-btn-primary" onclick="sbSubmitReply('+p.id+')">Post Reply</button>'
+      +'</div>'
+    : '<div class="sb-card" style="text-align:center;padding:20px;color:var(--gray-500);font-size:14px;">Sign in to leave a reply.</div>');
+}
+
+async function sbToggleLike(postId, currentlyLiked) {
+  if (!sbUser) return;
+  var btn = document.getElementById('sb-like-btn');
+  var countEl = document.getElementById('sb-like-count');
+  if (currentlyLiked) {
+    await getSB().from('post_likes').delete().eq('post_id',postId).eq('user_id',sbUser.id);
+    if (btn) btn.classList.remove('liked');
+    if (countEl) countEl.textContent = Math.max(0, parseInt(countEl.textContent)-1);
+    // Update button onclick
+    if (btn) btn.setAttribute('onclick','sbToggleLike('+postId+',false)');
+  } else {
+    await getSB().from('post_likes').insert({post_id:postId,user_id:sbUser.id});
+    if (btn) btn.classList.add('liked');
+    if (countEl) countEl.textContent = parseInt(countEl.textContent)+1;
+    if (btn) btn.setAttribute('onclick','sbToggleLike('+postId+',true)');
+  }
+}
+
+async function sbSubmitReply(postId) {
+  var body = (document.getElementById('sb-reply-body')||{value:''}).value.trim();
+  if (!body) { sbSetMsg('sb-reply-msg','Please write a reply.','error'); return; }
+  sbSetMsg('sb-reply-msg','Posting...','');
+  var res = await getSB().from('replies').insert({post_id:postId, author_id:sbUser.id, body:body});
+  if (res.error) { sbSetMsg('sb-reply-msg',res.error.message,'error'); return; }
+  sbRender(); // Reload
+}
+
+async function sbDeletePost(postId) {
+  if (!confirm('Delete this post and all its replies?')) return;
+  await getSB().from('posts').delete().eq('id',postId);
+  sbView='posts'; sbRender();
+}
+
+async function sbDeleteReply(replyId, postId) {
+  if (!confirm('Delete this reply?')) return;
+  await getSB().from('replies').delete().eq('id',replyId);
+  sbSelPost={id:postId}; sbRender();
+}
+
+// ── NEW POST ──────────────────────────────────────────────────────────────
+async function sbRenderNewPost(el) {
+  el.innerHTML = '<button class="sb-back" onclick="sbView=\'categories\';sbRender();">← Cancel</button>'
+    +'<div class="sb-card">'
+    +'<h2 style="margin:0 0 20px;">✏️ New Post</h2>'
+    +'<div id="sb-newpost-msg"></div>'
+    +'<div style="margin-bottom:14px;"><label class="sb-label">Category</label>'
+    +'<select class="sb-input" id="sb-np-cat"><option value="">Loading categories...</option></select></div>'
+    +'<div style="margin-bottom:14px;"><label class="sb-label">Title</label>'
+    +'<input class="sb-input" id="sb-np-title" type="text" placeholder="Give your post a clear, descriptive title"></div>'
+    +'<div style="margin-bottom:20px;"><label class="sb-label">Body</label>'
+    +'<textarea class="sb-textarea" id="sb-np-body" style="min-height:160px;" placeholder="Share your idea, question, or experience in detail..."></textarea></div>'
+    +'<button class="sb-btn sb-btn-primary" onclick="sbSubmitPost()">Post to Community</button>'
+    +'</div>';
+
+  var res = await getSB().from('categories').select('*').order('sort_order');
+  var sel = document.getElementById('sb-np-cat');
+  if (sel && res.data) {
+    sel.innerHTML = '<option value="">Select a category...</option>'
+      + res.data.map(function(c){ return '<option value="'+c.id+'"'+(sbSelCat&&sbSelCat.id===c.id?' selected':'')+'>'+c.emoji+' '+c.name+'</option>'; }).join('');
+  }
+}
+
+async function sbSubmitPost() {
+  var catId = parseInt((document.getElementById('sb-np-cat')||{value:''}).value);
+  var title = (document.getElementById('sb-np-title')||{value:''}).value.trim();
+  var body  = (document.getElementById('sb-np-body')||{value:''}).value.trim();
+  if (!catId) { sbSetMsg('sb-newpost-msg','Please select a category.','error'); return; }
+  if (!title) { sbSetMsg('sb-newpost-msg','Please add a title.','error'); return; }
+  if (!body)  { sbSetMsg('sb-newpost-msg','Please write your post.','error'); return; }
+  sbSetMsg('sb-newpost-msg','Posting...','');
+  var res = await getSB().from('posts').insert({
+    category_id:catId, author_id:sbUser.id, title:title, body:body
+  }).select().single();
+  if (res.error) { sbSetMsg('sb-newpost-msg',res.error.message,'error'); return; }
+  sbSelCat = null; sbView='categories'; sbRender();
+}
+
+// ── EDIT PROFILE ──────────────────────────────────────────────────────────
+function sbRenderEditProfile(el) {
+  var prof = sbProfile || {};
+  el.innerHTML = '<button class="sb-back" onclick="sbView=\'categories\';sbRender();">← Back</button>'
+    +'<div class="sb-card" style="max-width:480px;">'
+    +'<h2 style="margin:0 0 20px;">👤 Your Profile</h2>'
+    +'<div id="sb-prof-msg"></div>'
+    +'<div style="display:flex;flex-direction:column;gap:14px;">'
+    +'<div><label class="sb-label">Full Name</label><input class="sb-input" id="sb-ep-name" value="'+(prof.full_name||'')+'"></div>'
+    +'<div><label class="sb-label">Community Name</label><input class="sb-input" id="sb-ep-comm" value="'+(prof.community_name||'')+'"></div>'
+    +'<div><label class="sb-label">State</label><input class="sb-input" id="sb-ep-state" value="'+(prof.state||'')+'" maxlength="2" style="width:80px;"></div>'
+    +'</div>'
+    +'<div style="margin-top:20px;display:flex;gap:10px;">'
+    +'<button class="sb-btn sb-btn-primary" onclick="sbSaveProfile()">Save Changes</button>'
+    +'<button class="sb-btn sb-btn-danger" onclick="sbSignOut()">Sign Out</button>'
+    +'</div></div>';
+}
+
+async function sbSaveProfile() {
+  var name  = (document.getElementById('sb-ep-name')||{value:''}).value.trim();
+  var comm  = (document.getElementById('sb-ep-comm')||{value:''}).value.trim();
+  var state = (document.getElementById('sb-ep-state')||{value:''}).value.trim().toUpperCase();
+  if (!name) { sbSetMsg('sb-prof-msg','Name is required.','error'); return; }
+  var res = await getSB().from('profiles').upsert({
+    id:sbUser.id, full_name:name, community_name:comm, state:state
+  });
+  if (res.error) { sbSetMsg('sb-prof-msg',res.error.message,'error'); return; }
+  sbProfile = {id:sbUser.id,full_name:name,community_name:comm,state:state};
+  sbSetMsg('sb-prof-msg','Profile saved!','success');
+  setTimeout(function(){ sbView='categories'; sbRender(); }, 1000);
+}
+
+function sbSetMsg(id, msg, type) {
+  var el = document.getElementById(id); if (!el) return;
+  el.innerHTML = msg ? '<div class="sb-'+(type||'success')+'">'+msg+'</div>' : '';
 }
 </script>
 </body>
