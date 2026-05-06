@@ -1127,6 +1127,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
     <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
+    <button class="tab-btn" data-tab="food" id="food-tab" onclick="switchTab('food')">🍽️ Food & Cooking</button>
     <button class="tab-btn" data-tab="crafts" id="crafts-tab" onclick="switchTab('crafts')">🎨 Arts & Crafts</button>
     <button class="tab-btn" data-tab="games" id="games-tab" onclick="switchTab('games')">🎮 Games</button>
     <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
@@ -2120,6 +2121,107 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 
 
+
+<section class="tab-panel" id="panel-food">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">🍽️ Food &amp; Cooking</h2>
+      <div class="subtitle">Recipes, taste tests, cocktails &amp; mocktails, food trivia, and seasonal menu ideas.</div>
+    </div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="fdtab-recipes"  onclick="switchFoodTab('recipes')"  class="tv-subtab tv-subtab-active">🍳 Recipes</button>
+    <button id="fdtab-cocktails" onclick="switchFoodTab('cocktails')" class="tv-subtab">🥂 Cocktails &amp; Mocktails</button>
+    <button id="fdtab-taste"    onclick="switchFoodTab('taste')"    class="tv-subtab">🧪 Taste Tests</button>
+    <button id="fdtab-trivia"   onclick="switchFoodTab('trivia')"   class="tv-subtab">🧠 Food Trivia</button>
+    <button id="fdtab-seasonal" onclick="switchFoodTab('seasonal')" class="tv-subtab">🗓️ Seasonal Ideas</button>
+  </div>
+
+  <!-- RECIPES -->
+  <div id="fdpanel-recipes">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:#6B7280;">Type:</span>
+      <button id="fdtype-all"      onclick="setFoodFilter('type','all')"      class="gm-cat gm-cat-active">All</button>
+      <button id="fdtype-nocook"   onclick="setFoodFilter('type','nocook')"   class="gm-cat">🥗 No-Cook</button>
+      <button id="fdtype-baking"   onclick="setFoodFilter('type','baking')"   class="gm-cat">🧁 Baking</button>
+      <button id="fdtype-demo"     onclick="setFoodFilter('type','demo')"     class="gm-cat">👨‍🍳 Demo</button>
+      <button id="fdtype-cultural" onclick="setFoodFilter('type','cultural')" class="gm-cat">🌍 Cultural</button>
+      <span style="font-size:13px;font-weight:600;color:#6B7280;margin-left:8px;">Difficulty:</span>
+      <button id="fddiff-all"    onclick="setFoodFilter('diff','all')"    class="gm-player gm-player-active">All</button>
+      <button id="fddiff-easy"   onclick="setFoodFilter('diff','easy')"   class="gm-player">Easy</button>
+      <button id="fddiff-medium" onclick="setFoodFilter('diff','medium')" class="gm-player">Medium</button>
+    </div>
+    <div id="fd-recipe-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-top:14px;"></div>
+    <div id="fd-recipe-empty" style="display:none;text-align:center;padding:60px;color:#aaa;">No recipes match your filters.</div>
+  </div>
+
+  <!-- COCKTAILS & MOCKTAILS -->
+  <div id="fdpanel-cocktails" style="display:none;">
+    <div style="background:linear-gradient(135deg,#1A2A5C,#7030A0);border-radius:14px;padding:20px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:20px;font-weight:900;">🥂 Cocktails &amp; Mocktails Bar</div>
+        <div style="opacity:0.75;font-size:13px;margin-top:4px;">All recipes include both a cocktail and a mocktail version. Always check with nursing staff on alcohol policies.</div>
+      </div>
+      <button onclick="printCocktailMenu()" class="btn" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);font-size:13px;">🖨️ Print Bar Menu</button>
+    </div>
+    <div id="fd-cocktail-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;"></div>
+  </div>
+
+  <!-- TASTE TESTS -->
+  <div id="fdpanel-taste" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="fd-taste-grid"></div>
+  </div>
+
+  <!-- FOOD TRIVIA -->
+  <div id="fdpanel-trivia" style="display:none;">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap;">
+      <div style="font-size:14px;font-weight:600;color:#374151;">Category:</div>
+      <button onclick="loadFoodTrivia('general')"  class="btn btn-secondary" id="ftcat-general">🍕 General</button>
+      <button onclick="loadFoodTrivia('history')"  class="btn btn-secondary" id="ftcat-history">📜 Food History</button>
+      <button onclick="loadFoodTrivia('states')"   class="btn btn-secondary" id="ftcat-states">🗺️ State Foods</button>
+      <button onclick="loadFoodTrivia('culture')"  class="btn btn-secondary" id="ftcat-culture">🌍 World Cuisine</button>
+      <button onclick="printFoodTrivia()" class="btn" style="margin-left:auto;background:#E0E7FF;color:#3730A3;border:1px solid #C7D2FE;">🖨️ Print Quiz</button>
+    </div>
+    <div id="fd-trivia-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;"></div>
+  </div>
+
+  <!-- SEASONAL IDEAS -->
+  <div id="fdpanel-seasonal" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;" id="fd-seasonal-grid"></div>
+  </div>
+
+  <!-- Recipe Detail Modal -->
+  <div id="fd-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.6);overflow:auto;" onclick="if(event.target===this)closeFoodModal()">
+    <div style="background:#fff;border-radius:18px;max-width:700px;margin:40px auto;padding:32px;position:relative;">
+      <button onclick="closeFoodModal()" style="position:absolute;top:16px;right:16px;background:#F3F4F6;border:none;border-radius:8px;padding:6px 14px;font-size:18px;cursor:pointer;">✕</button>
+      <div id="fd-modal-badges" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"></div>
+      <div id="fd-modal-title"   style="font-size:26px;font-weight:900;margin-bottom:4px;"></div>
+      <div id="fd-modal-tagline" style="font-size:14px;color:#6B7280;margin-bottom:20px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px;">
+          <div style="font-weight:800;font-size:13px;color:#92400E;margin-bottom:8px;">🛒 Ingredients</div>
+          <div id="fd-modal-ingredients" style="font-size:13px;color:#374151;line-height:1.9;"></div>
+        </div>
+        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:16px;">
+          <div style="font-weight:800;font-size:13px;color:#065F46;margin-bottom:8px;">⏱️ At a Glance</div>
+          <div id="fd-modal-glance" style="font-size:13px;color:#374151;line-height:1.9;"></div>
+        </div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:800;font-size:14px;margin-bottom:10px;">👨‍🍳 Instructions</div>
+        <div id="fd-modal-steps" style="font-size:14px;color:#374151;line-height:1.9;"></div>
+      </div>
+      <div style="background:#F8FAFF;border:1px solid #DCE8FF;border-radius:10px;padding:16px;margin-bottom:20px;">
+        <div style="font-weight:800;font-size:13px;color:var(--primary);margin-bottom:8px;">💡 Staff Tips &amp; Adaptations</div>
+        <div id="fd-modal-tips" style="font-size:13px;color:#374151;line-height:1.7;"></div>
+      </div>
+      <button onclick="printRecipeCard()" class="btn btn-primary">🖨️ Print Recipe Card</button>
+    </div>
+  </div>
+</section>
+
 <section class="tab-panel" id="panel-crafts">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
     <div>
@@ -3073,6 +3175,7 @@ function switchTab(name) {
   if (name === 'travel') initTravel();
   if (name === 'games') initGames();
   if (name === 'crafts') initCrafts();
+  if (name === 'food') initFood();
   if (name === 'build') { renderCustomCalendar(); renderCommunityServiceCard(); }
   if (name === 'actlib') renderLibrary();
   if (name === 'attlog') renderAttLogs();
@@ -12488,6 +12591,594 @@ function printTemplate(idx) {
   }
   w.document.write(`<html><head><title>${t.name}</title><style>body{font-family:Arial,sans-serif;margin:0;padding:20px;}</style></head><body>${content}<script>window.onload=()=>window.print();<\/script></body></html>`);
   w.document.close();
+}
+</script>
+
+
+<script>
+// ===============================================================
+// FOOD & COOKING HUB
+// ===============================================================
+
+const RECIPES = [
+  // NO-COOK
+  { id:'fruitparfait', emoji:'🍓', name:'Fruit Parfait Cups', type:'nocook', diff:'easy', cultural:false,
+    tagline:'Layer yogurt, granola, and fresh fruit for a beautiful treat.',
+    serves:'8', time:'15 min', temp:'No heat',
+    ingredients:'Plain or vanilla yogurt (32 oz)\nGranola (2 cups)\nFresh berries or fruit (2 cups)\nHoney (optional)\nClear plastic cups',
+    steps:'1. Set up a station with all ingredients in separate bowls.\n2. Spoon 2 tbsp granola into the bottom of each cup.\n3. Add a layer of yogurt (about 1/4 cup).\n4. Add a layer of fresh fruit.\n5. Repeat layers. Drizzle honey on top.\n6. Serve immediately or refrigerate up to 2 hours.',
+    tips:'Residents love building their own! Set up as a self-serve station for independence. Use pre-cut fruit for easier handling.',
+    season:'spring,summer' },
+
+  { id:'bruschetta', emoji:'🍅', name:'Tomato Bruschetta', type:'nocook', diff:'easy', cultural:false,
+    tagline:'Fresh tomatoes, basil, and garlic on toasted bread.',
+    serves:'10', time:'20 min', temp:'Toaster for bread',
+    ingredients:'Baguette or Italian bread (1 loaf)\nRipe tomatoes, diced (4 medium)\nFresh basil, chopped (1/4 cup)\nGarlic (2 cloves, minced)\nOlive oil (3 tbsp)\nSalt and pepper\nBalsamic glaze (optional)',
+    steps:'1. Toast baguette slices in a toaster or under the broiler.\n2. Mix diced tomatoes, basil, garlic, olive oil, salt, and pepper in a bowl.\n3. Let the mixture sit 10 minutes for flavors to meld.\n4. Spoon tomato mix onto toasted bread slices.\n5. Drizzle with balsamic glaze if desired. Serve right away.',
+    tips:'A great Italian-themed activity. Residents can help stir the tomato mixture and assemble their own.',
+    season:'summer,anytime' },
+
+  { id:'caprese', emoji:'🫙', name:'Caprese Skewers', type:'nocook', diff:'easy', cultural:true,
+    tagline:'Italian classic: fresh mozzarella, tomato, and basil on a stick.',
+    serves:'10', time:'20 min', temp:'No heat',
+    ingredients:'Fresh mozzarella balls (16 oz)\nCherry tomatoes (1 pint)\nFresh basil leaves\nSkewers or toothpicks\nOlive oil, salt, and balsamic glaze',
+    steps:'1. Drain mozzarella and pat dry.\n2. Thread onto skewer: basil leaf, tomato, mozzarella.\n3. Arrange on a platter.\n4. Drizzle with olive oil and balsamic glaze.\n5. Season with salt and cracked pepper. Serve.',
+    tips:'Short toothpicks are safest. Residents can assemble their own skewers at the table. Ties in beautifully with an Italy travel theme.',
+    season:'summer,anytime' },
+
+  { id:'guacamole', emoji:'🥑', name:'Fresh Guacamole', type:'nocook', diff:'easy', cultural:true,
+    tagline:'Creamy avocado dip with lime and cilantro. No cooking required!',
+    serves:'10', time:'15 min', temp:'No heat',
+    ingredients:'Ripe avocados (4 large)\nLime juice (2 limes)\nRed onion, finely diced (1/4 cup)\nCilantro, chopped (2 tbsp)\nJalapeno, minced (1, optional)\nSalt (1 tsp)\nTortilla chips for serving',
+    steps:'1. Halve and pit avocados. Scoop into a bowl.\n2. Mash with a fork to desired consistency.\n3. Add lime juice immediately to prevent browning.\n4. Stir in onion, cilantro, jalapeno, and salt.\n5. Taste and adjust seasoning. Serve with tortilla chips.',
+    tips:'Great for a Mexican culture day. Residents love mashing the avocados. Press plastic wrap directly onto the surface to store.',
+    season:'anytime' },
+
+  { id:'cucumber', emoji:'🥒', name:'Tea Party Cucumber Sandwiches', type:'nocook', diff:'easy', cultural:false,
+    tagline:'Classic dainty sandwiches for a proper afternoon tea.',
+    serves:'12', time:'20 min', temp:'No heat',
+    ingredients:'Thin white or wheat bread (1 loaf)\nCream cheese, softened (8 oz)\nFresh dill or chives (2 tbsp)\nGarlic powder (1/4 tsp)\nEnglish cucumber, thinly sliced\nSalt and white pepper',
+    steps:'1. Mix cream cheese with herbs, garlic powder, salt, and pepper.\n2. Spread mixture on one side of each bread slice.\n3. Layer cucumber slices on half the bread slices.\n4. Top with remaining bread slices.\n5. Trim crusts. Cut into triangles or fingers. Arrange on a platter.',
+    tips:'Perfect for a British tea party or Mother\'s Day event. Residents can spread the cream cheese themselves.',
+    season:'spring,anytime' },
+
+  { id:'deviledeggs', emoji:'🥚', name:'Classic Deviled Eggs', type:'nocook', diff:'easy', cultural:false,
+    tagline:'Creamy, tangy deviled eggs -- a crowd favorite at any gathering.',
+    serves:'12', time:'30 min', temp:'Boiling water',
+    ingredients:'Eggs, hard boiled and peeled (12)\nMayonnaise (1/4 cup)\nYellow mustard (1 tbsp)\nWhite vinegar (1 tsp)\nSalt and pepper\nPaprika for garnish',
+    steps:'1. Pre-boil and peel the eggs (staff can do this ahead).\n2. Slice eggs in half lengthwise. Pop yolks into a bowl.\n3. Mash yolks with mayo, mustard, vinegar, salt, and pepper.\n4. Spoon or pipe filling back into egg white halves.\n5. Sprinkle paprika on top. Refrigerate until serving.',
+    tips:'Residents can help mash the filling and spoon it back in. A piping bag or zip-lock bag with corner snipped makes filling easier.',
+    season:'spring,summer,anytime' },
+
+  { id:'pimentocheese', emoji:'🧀', name:'Southern Pimento Cheese', type:'nocook', diff:'easy', cultural:true,
+    tagline:'The classic Southern spread -- delicious on crackers or celery.',
+    serves:'10', time:'15 min', temp:'No heat',
+    ingredients:'Sharp cheddar, shredded (2 cups)\nCream cheese, softened (8 oz)\nMayonnaise (1/3 cup)\nJarred pimentos, drained (4 oz)\nGarlic powder (1/4 tsp)\nOnion powder (1/4 tsp)\nCayenne (pinch)\nCrackers or bread to serve',
+    steps:'1. Combine cream cheese and mayo until smooth.\n2. Stir in shredded cheddar and pimentos.\n3. Add seasonings and mix well.\n4. Refrigerate 30 minutes for best flavor.\n5. Serve with crackers, celery, or sliced bread.',
+    tips:'Southern residents often have strong feelings about this recipe. Ask them for their own family version! Great for a Southern heritage food day.',
+    season:'anytime' },
+
+  // BAKING
+  { id:'bananabread', emoji:'🍌', name:'Classic Banana Bread', type:'baking', diff:'easy', cultural:false,
+    tagline:'Moist, sweet banana bread with just a few pantry staples.',
+    serves:'10', time:'70 min (15 prep + 55 bake)', temp:'350 F oven',
+    ingredients:'Ripe bananas, mashed (3 large)\nButter, melted (1/3 cup)\nSugar (3/4 cup)\nEgg, beaten (1)\nVanilla extract (1 tsp)\nBaking soda (1 tsp)\nSalt (pinch)\nAll-purpose flour (1.5 cups)',
+    steps:'1. Preheat oven to 350F. Grease a 9x5 loaf pan.\n2. Mix mashed banana with melted butter.\n3. Stir in sugar, egg, and vanilla.\n4. Add baking soda and salt. Mix well.\n5. Fold in flour until just combined. Do not overmix.\n6. Pour into loaf pan. Bake 55 minutes or until a toothpick comes out clean.\n7. Cool 10 minutes before slicing.',
+    tips:'Residents love mashing the bananas. The riper the banana, the sweeter the bread. Add chocolate chips or walnuts for variety.',
+    season:'anytime' },
+
+  { id:'snickerdoodles', emoji:'🍪', name:'Snickerdoodles', type:'baking', diff:'easy', cultural:false,
+    tagline:'Soft, cinnamon-sugar cookies with a perfectly crinkled top.',
+    serves:'24 cookies', time:'30 min', temp:'375 F oven',
+    ingredients:'Butter, softened (1/2 cup)\nSugar (3/4 cup + 2 tbsp for rolling)\nEgg (1)\nVanilla (1 tsp)\nFlour (1.5 cups)\nCream of tartar (1 tsp)\nBaking soda (1/2 tsp)\nCinnamon (2 tsp for rolling)',
+    steps:'1. Preheat oven to 375F.\n2. Cream butter and 3/4 cup sugar. Beat in egg and vanilla.\n3. Mix in flour, cream of tartar, and baking soda.\n4. Mix 2 tbsp sugar and cinnamon in a small bowl.\n5. Roll dough into 1-inch balls, then roll in cinnamon sugar.\n6. Place on ungreased baking sheet. Bake 8-10 min until edges are set.\n7. Cool on the pan 5 min before moving.',
+    tips:'Rolling cookies in cinnamon sugar is the perfect resident task. The smell of baking snickerdoodles is worth it alone!',
+    season:'fall,winter,anytime' },
+
+  { id:'blueberrymuffins', emoji:'🫐', name:'Blueberry Muffins', type:'baking', diff:'easy', cultural:false,
+    tagline:'Bakery-style muffins bursting with fresh blueberries.',
+    serves:'12 muffins', time:'35 min', temp:'400 F oven',
+    ingredients:'All-purpose flour (2 cups)\nSugar (3/4 cup)\nBaking powder (2.5 tsp)\nSalt (1/2 tsp)\nMilk (1 cup)\nVegetable oil (1/3 cup)\nEgg (1)\nVanilla (1 tsp)\nFresh or frozen blueberries (1.5 cups)',
+    steps:'1. Preheat oven to 400F. Line a muffin tin with papers.\n2. Whisk dry ingredients in one bowl.\n3. Mix wet ingredients in a second bowl.\n4. Fold wet into dry. Stir just until combined -- lumpy is OK.\n5. Gently fold in blueberries.\n6. Fill muffin cups 3/4 full. Sprinkle sugar on top if desired.\n7. Bake 20-25 min until golden. Cool 5 min before removing.',
+    tips:'Frozen blueberries work great and are more budget-friendly. Residents can help pour and stir. The golden rule: do not overmix!',
+    season:'spring,summer,anytime' },
+
+  { id:'pumpkinbread', emoji:'🎃', name:'Pumpkin Spice Bread', type:'baking', diff:'easy', cultural:false,
+    tagline:'Warmly spiced fall bread made with canned pumpkin.',
+    serves:'10', time:'75 min', temp:'350 F oven',
+    ingredients:'Canned pumpkin puree (1 cup)\nSugar (1 cup)\nVegetable oil (1/2 cup)\nEggs (2)\nAll-purpose flour (1.5 cups)\nBaking soda (1 tsp)\nSalt (1/2 tsp)\nCinnamon (1 tsp)\nNutmeg (1/2 tsp)\nGinger (1/4 tsp)',
+    steps:'1. Preheat oven to 350F. Grease a loaf pan.\n2. Mix pumpkin, sugar, oil, and eggs until smooth.\n3. In another bowl, whisk flour, baking soda, salt, and spices.\n4. Add dry to wet and stir until just combined.\n5. Pour into loaf pan. Bake 65-70 minutes.\n6. Cool 15 minutes before slicing. Serve with cream cheese.',
+    tips:'The smell alone makes this a 10/10 fall activity. Wrap slices in cellophane for a resident gift or family take-home.',
+    season:'fall' },
+
+  { id:'shortbread', emoji:'🫖', name:'Classic Shortbread Cookies', type:'baking', diff:'easy', cultural:true,
+    tagline:'Three-ingredient Scottish shortbread -- buttery and perfectly crumbly.',
+    serves:'20 cookies', time:'40 min', temp:'325 F oven',
+    ingredients:'Butter, softened (1 cup / 2 sticks)\nPowdered sugar (1/2 cup)\nAll-purpose flour (2 cups)\nPinch of salt\nSugar for sprinkling (optional)',
+    steps:'1. Preheat oven to 325F.\n2. Beat butter and powdered sugar until light and fluffy.\n3. Mix in flour and salt until dough forms.\n4. Roll to 1/4 inch thickness. Cut with cookie cutters.\n5. Place on ungreased baking sheet. Prick with a fork.\n6. Bake 18-20 min until edges are just golden. Do not overbrown.\n7. Sprinkle with sugar while warm. Cool completely.',
+    tips:'Great for a British tea party or Scotland heritage day. Residents love using cookie cutters. Stores well for 5 days.',
+    season:'winter,anytime' },
+
+  { id:'cranberryscones', emoji:'🫐', name:'Cranberry Orange Scones', type:'baking', diff:'medium', cultural:false,
+    tagline:'Flaky, tender scones with tart cranberries and bright orange zest.',
+    serves:'8 scones', time:'35 min', temp:'400 F oven',
+    ingredients:'All-purpose flour (2 cups)\nSugar (3 tbsp)\nBaking powder (1 tbsp)\nSalt (1/2 tsp)\nCold butter, cubed (6 tbsp)\nDried cranberries (1/2 cup)\nOrange zest (1 orange)\nHeavy cream (3/4 cup)\nEgg (1)',
+    steps:'1. Preheat oven to 400F. Line baking sheet with parchment.\n2. Mix dry ingredients. Cut in cold butter until mixture is crumbly.\n3. Stir in cranberries and orange zest.\n4. Mix cream and egg. Add to flour mixture and stir until dough forms.\n5. Pat into a 1-inch thick circle on floured surface.\n6. Cut into 8 wedges. Brush tops with cream.\n7. Bake 18-22 min until golden. Serve warm.',
+    tips:'Cutting the scones and brushing with cream are great resident tasks. Serve with clotted cream or butter for a tea party experience.',
+    season:'winter,fall' },
+
+  // DEMOS
+  { id:'applesauce', emoji:'🍎', name:'Cinnamon Applesauce', type:'demo', diff:'easy', cultural:false,
+    tagline:'Homemade applesauce -- the whole kitchen smells amazing.',
+    serves:'10', time:'35 min', temp:'Stovetop',
+    ingredients:'Apples, peeled and chopped (8 medium)\nWater (1/2 cup)\nSugar (2-4 tbsp to taste)\nCinnamon (1 tsp)\nLemon juice (1 tbsp)',
+    steps:'1. Peel, core, and chop apples. (Residents can help peel with peelers.)\n2. Combine apples, water, and lemon juice in a large pot.\n3. Bring to a boil, then reduce heat and simmer 20 min until very soft.\n4. Mash with a potato masher or use an immersion blender for smooth texture.\n5. Stir in cinnamon and sugar to taste.\n6. Serve warm in small cups. Can also be cooled and served later.',
+    tips:'A fall classic. Residents can help peel apples with adaptive peelers. The cinnamon aroma is a powerful sensory memory trigger.',
+    season:'fall' },
+
+  { id:'crepesdemo', emoji:'🥞', name:'French Crepes Demo', type:'demo', diff:'medium', cultural:true,
+    tagline:'Paper-thin French pancakes with sweet or savory fillings.',
+    serves:'10', time:'40 min', temp:'Skillet or crepe pan',
+    ingredients:'Eggs (2)\nMilk (1 cup)\nWater (1/4 cup)\nFlour (1 cup)\nButter, melted (3 tbsp)\nSugar (2 tbsp)\nVanilla (1 tsp)\nPinch of salt\nFilling ideas: jam, Nutella, whipped cream, sliced strawberries',
+    steps:'1. Blend all batter ingredients until smooth. Rest 15 min.\n2. Heat a non-stick pan over medium-high. Butter lightly.\n3. Pour 1/4 cup batter in center. Swirl pan to spread thin.\n4. Cook 1-2 min until edges lift. Flip and cook 30 seconds.\n5. Slide onto plate. Residents choose their filling and roll or fold.\n6. Dust with powdered sugar. Serve with fruit on the side.',
+    tips:'A great demo activity -- residents watch the process, then get to choose their own toppings. Ties perfectly with a Paris travel theme.',
+    season:'anytime' },
+
+  { id:'pretzels', emoji:'🥨', name:'Soft Pretzels', type:'demo', diff:'medium', cultural:false,
+    tagline:'Warm, chewy soft pretzels with coarse salt. A real crowd-pleaser.',
+    serves:'8', time:'90 min (includes rise time)', temp:'450 F oven',
+    ingredients:'Active dry yeast (2.25 tsp / 1 packet)\nWarm water (1.5 cups)\nSugar (1 tbsp)\nSalt (2 tsp)\nFlour (4.5 cups)\nButter, melted (2 tbsp)\nBaking soda (1/2 cup) for boiling\nCoarse salt for topping',
+    steps:'1. Dissolve yeast and sugar in warm water. Let sit 5 min.\n2. Mix in salt, butter, and flour to form dough. Knead 8 min.\n3. Rise in greased bowl for 1 hour.\n4. Divide into 8 pieces. Residents roll each into a 20-inch rope and fold into a pretzel shape.\n5. Boil water with baking soda. Dip pretzels 30 seconds each.\n6. Sprinkle coarse salt. Bake 12-15 min at 450F until dark golden.\n7. Serve warm with mustard or cheese dip.',
+    tips:'Rolling and shaping the pretzels is the best part -- residents love it. The baking soda boil is the secret to that chewy crust.',
+    season:'winter,anytime' },
+
+  { id:'soup', emoji:'🍲', name:'Chicken Noodle Soup Demo', type:'demo', diff:'easy', cultural:false,
+    tagline:'Homemade soup from scratch -- warming and deeply nostalgic.',
+    serves:'12', time:'60 min', temp:'Stovetop',
+    ingredients:'Chicken broth (8 cups)\nCooked rotisserie chicken, shredded (2 cups)\nCarrots, sliced (2)\nCelery, sliced (3 stalks)\nOnion, diced (1)\nEgg noodles (2 cups)\nGarlic (2 cloves)\nParsley, thyme, salt, pepper',
+    steps:'1. Saute onion, carrots, and celery in a large pot with butter until softened.\n2. Add garlic and cook 1 minute.\n3. Pour in broth. Bring to a boil.\n4. Add shredded chicken. Simmer 15 minutes.\n5. Add egg noodles. Cook 8-10 minutes until tender.\n6. Season with salt, pepper, parsley, and thyme.\n7. Ladle into cups and serve with crackers or crusty bread.',
+    tips:'Residents can help pull apart the rotisserie chicken and add measured spices. The aroma is extremely comforting and memory-evoking.',
+    season:'fall,winter' },
+
+  // CULTURAL
+  { id:'hawaiisalsa', emoji:'🌺', name:'Hawaiian Pineapple Salsa', type:'cultural', diff:'easy', cultural:True,
+    tagline:'Sweet and tangy tropical salsa. Perfect with chips or fish tacos.',
+    serves:'10', time:'15 min', temp:'No heat',
+    ingredients:'Fresh pineapple, diced (2 cups)\nRed bell pepper, diced (1/2)\nRed onion, diced (1/4 cup)\nCilantro, chopped (3 tbsp)\nJalapeno, minced (1, optional)\nLime juice (2 limes)\nSalt (1/2 tsp)',
+    steps:'1. Combine all ingredients in a bowl and stir gently.\n2. Let sit 10 minutes for flavors to develop.\n3. Taste and adjust lime juice and salt.\n4. Serve with tortilla chips or over grilled chicken.\n5. Can be made a day ahead -- flavors improve overnight.',
+    tips:'Perfect for Hawaii travel theme month. Residents can help dice soft ingredients with safe cutting tools. Beautiful colors on the table.',
+    season:'summer,anytime' },
+
+  { id:'greektzatziki', emoji:'🫙', name:'Greek Tzatziki', type:'cultural', diff:'easy', cultural:True,
+    tagline:'Cool cucumber and dill yogurt dip -- the taste of Greece.',
+    serves:'10', time:'20 min', temp:'No heat',
+    ingredients:'Greek yogurt, full fat (2 cups)\nEnglish cucumber (1, grated)\nGarlic (2 cloves, minced)\nFresh dill (2 tbsp) or dried (1 tsp)\nOlive oil (2 tbsp)\nLemon juice (1 tbsp)\nSalt (1/2 tsp)\nPita bread and veggies to serve',
+    steps:'1. Grate cucumber. Squeeze in a kitchen towel to remove moisture.\n2. Mix yogurt, cucumber, garlic, dill, olive oil, and lemon juice.\n3. Season with salt. Stir until combined.\n4. Refrigerate 30 minutes for best flavor.\n5. Serve with warm pita, cucumber slices, and carrot sticks.',
+    tips:'Squeezing the cucumber is a satisfying step for residents. Pairs beautifully with a Greece travel month. Discuss the Mediterranean diet.',
+    season:'summer,anytime' },
+
+  { id:'mexicanriceshow', emoji:'🌮', name:'Mexican Street Corn Dip', type:'cultural', diff:'easy', cultural:True,
+    tagline:'Creamy elote-inspired dip -- big flavor, no cooking required.',
+    serves:'10', time:'15 min', temp:'No heat',
+    ingredients:'Canned or frozen corn, thawed (2 cans, drained)\nCream cheese, softened (4 oz)\nSour cream (1/4 cup)\nMayonnaise (2 tbsp)\nChili powder (1 tsp)\nSmoked paprika (1/2 tsp)\nLime juice (1 lime)\nCotija or feta cheese (1/4 cup)\nFresh cilantro\nTortilla chips to serve',
+    steps:'1. Mix cream cheese, sour cream, and mayo until smooth.\n2. Stir in corn, chili powder, paprika, and lime juice.\n3. Top with crumbled cotija and fresh cilantro.\n4. Serve at room temperature with chips.\n5. For a warm version, bake at 350F for 20 minutes.',
+    tips:'Great for a Mexican fiesta day. No cooking needed! Residents can stir and assemble. Pairs well with a Virgin Margarita Mocktail.',
+    season:'summer,anytime' },
+];
+
+const COCKTAILS = [
+  { id:'shirltemple', emoji:'🍒', name:'Shirley Temple',
+    mocktail:'Ginger ale + grenadine + orange juice + maraschino cherry',
+    cocktail:'Add 1 oz vodka or rum',
+    ingredients:'Ginger ale (6 oz)\nGrenadine syrup (2 tsp)\nOrange juice (1 oz)\nMaraschino cherry and orange slice to garnish\nIce',
+    steps:'1. Fill a tall glass with ice.\n2. Pour ginger ale and orange juice over ice.\n3. Slowly pour grenadine down the side of the glass.\n4. Do not stir -- the grenadine sinks for a beautiful sunset effect!\n5. Garnish with a cherry and orange slice.',
+    tip:'A beloved classic. Residents who grew up going to restaurants will recognize this immediately.' },
+
+  { id:'arnoldpalmer', emoji:'🍋', name:'Arnold Palmer',
+    mocktail:'Half iced tea + half lemonade',
+    cocktail:'Add 1 oz vodka for a "John Daly"',
+    ingredients:'Iced tea, unsweetened (3 oz)\nLemonade (3 oz)\nIce\nLemon slice to garnish\nSugar syrup (optional)',
+    steps:'1. Fill a tall glass with ice.\n2. Pour iced tea and lemonade equally.\n3. Stir gently.\n4. Sweeten with a little sugar syrup if preferred.\n5. Garnish with a fresh lemon slice.',
+    tip:'Simple to make in a big batch for the whole group. Named after the legendary golfer -- great conversation starter.' },
+
+  { id:'virginpina', emoji:'🍍', name:'Virgin Pina Colada',
+    mocktail:'Pineapple juice + coconut cream + ice blended',
+    cocktail:'Add 2 oz white rum',
+    ingredients:'Pineapple juice (4 oz)\nCoconut cream (2 oz)\nIce (1 cup)\nPineapple slice and cherry to garnish',
+    steps:'1. Combine pineapple juice, coconut cream, and ice in a blender.\n2. Blend until smooth and creamy.\n3. Pour into a chilled glass.\n4. Garnish with a pineapple slice and maraschino cherry.\n5. Serve with a straw.',
+    tip:'Perfect for Hawaii or Caribbean travel month. Can be made in large batches in a blender.' },
+
+  { id:'cranspritz', emoji:'🫐', name:'Cranberry Spritzer',
+    mocktail:'Cranberry juice + sparkling water + lime',
+    cocktail:'Add 1.5 oz vodka or gin',
+    ingredients:'Cranberry juice cocktail (3 oz)\nSparkling water or club soda (3 oz)\nLime juice (1/2 lime)\nIce\nFresh cranberries and lime wheel to garnish',
+    steps:'1. Fill a glass with ice.\n2. Pour cranberry juice and lime juice.\n3. Top with sparkling water. Do not over-stir.\n4. Garnish with a lime wheel and a few fresh cranberries.\n5. Serve immediately.',
+    tip:'Beautiful ruby color. Festive for holidays. Cranberry juice is heart-healthy -- a great talking point!' },
+
+  { id:'mintlemonade', emoji:'🍃', name:'Mint Lemonade',
+    mocktail:'Fresh lemonade + mint + soda water',
+    cocktail:'Add 1.5 oz bourbon or vodka',
+    ingredients:'Fresh lemon juice (4 oz / about 3 lemons)\nSugar syrup (2 tbsp)\nFresh mint leaves (8 leaves)\nSparkling water or still water (6 oz)\nIce\nLemon slice and mint sprig to garnish',
+    steps:'1. Muddle mint leaves with sugar syrup in the bottom of a glass.\n2. Fill glass with ice.\n3. Add fresh lemon juice.\n4. Top with sparkling water.\n5. Stir gently and garnish with a lemon slice and mint sprig.',
+    tip:'Squeezing lemons and muddling mint are great resident tasks. The fresh lemon smell is a wonderful sensory experience.' },
+
+  { id:'sweetpunch', emoji:'🍊', name:'Southern Sweet Tea Punch',
+    mocktail:'Sweet tea + peach nectar + ginger ale',
+    cocktail:'Add 1 oz peach schnapps or bourbon',
+    ingredients:'Sweet tea (4 oz)\nPeach nectar or juice (2 oz)\nGinger ale (2 oz)\nIce\nPeach slice to garnish\nMint (optional)',
+    steps:'1. Fill a tall glass with ice.\n2. Combine sweet tea and peach nectar.\n3. Top with ginger ale for fizz.\n4. Stir gently.\n5. Garnish with a peach slice. Serve with a straw.',
+    tip:'A Southern classic that almost everyone loves. Great for a Southern heritage day or any summer event.' },
+
+  { id:'applemule', emoji:'🍎', name:'Apple Harvest Mule',
+    mocktail:'Apple cider + ginger beer + lime',
+    cocktail:'Add 1.5 oz vodka or spiced rum',
+    ingredients:'Apple cider (3 oz)\nGinger beer (4 oz)\nLime juice (1/2 lime)\nIce\nApple slice and cinnamon stick to garnish',
+    steps:'1. Fill a glass (copper mug is classic!) with ice.\n2. Pour apple cider and lime juice.\n3. Top with ginger beer.\n4. Stir gently.\n5. Garnish with a thin apple slice and cinnamon stick.',
+    tip:'Perfect for fall. The cinnamon stick garnish smells wonderful. Can make a big batch in a punch bowl for a group.' },
+
+  { id:'blulagoon', emoji:'💙', name:'Blue Lagoon',
+    mocktail:'Blue sports drink + lemonade + soda',
+    cocktail:'Add 1 oz blue curacao + 1 oz vodka',
+    ingredients:'Blue sports drink like Gatorade (4 oz)\nLemonade (2 oz)\nSprite or soda water (2 oz)\nIce\nMaraschino cherry to garnish',
+    steps:'1. Fill a glass with ice.\n2. Combine lemonade and blue sports drink.\n3. Top with a splash of Sprite.\n4. Stir once.\n5. Garnish with a cherry on a toothpick.',
+    tip:'The bright blue color creates great excitement! Simple ingredients most facilities have on hand.' },
+];
+
+const TASTE_TESTS = [
+  { id:'cheese', emoji:'🧀', name:'Cheese Tasting', tagline:'Sample 4-6 cheeses from mild to bold.',
+    setup:'Buy: mild cheddar, pepper jack, swiss, brie, gouda, blue cheese.\nArrange each on a labeled plate with crackers, apple slices, grapes.\nProvide water between tastings to cleanse the palate.',
+    prompts:'Which is your favorite? Which is the strongest? Have you had this before? What would you pair it with?',
+    scoring:'Score each cheese 1-5 stars on flavor, texture, and overall. Tally group results on the whiteboard.',
+    tip:'Start mild and move to stronger flavors. Blue cheese often sparks the most discussion!' },
+
+  { id:'apples', emoji:'🍎', name:'Apple Variety Tasting', tagline:'Which apple reigns supreme? Let residents decide!',
+    setup:'Buy 5-6 apple varieties: Fuji, Granny Smith, Honeycrisp, Gala, Pink Lady, Red Delicious.\nSlice each apple and arrange labeled on plates.\nProvide napkins and small cups of water.',
+    prompts:'Which is the sweetest? The most tart? Which would you use for pie? Which for eating fresh? Did you have an apple tree growing up?',
+    scoring:'Residents vote for favorite with a show of hands or by placing a sticker on a chart.',
+    tip:'A fall staple. Great conversation about apple orchards, apple picking memories, and grandma\'s apple pie.' },
+
+  { id:'chocolate', emoji:'🍫', name:'Chocolate Tasting', tagline:'Dark, milk, white -- and everything in between.',
+    setup:'Get 5-6 chocolates: white, milk, semi-sweet, dark (60%), dark (85%), flavored bar.\nBreak into small pieces on plates. Label each with only a number -- blind tasting!\nReveal identity after voting.',
+    prompts:'Is it sweet or bitter? What does it remind you of? Do you prefer milk or dark? Favorite chocolate memory?',
+    scoring:'Rate each on sweetness (1-5) and preference (1-5). Reveal and compare after.',
+    tip:'The blind reveal always generates laughs. White chocolate being labeled #1 or last place creates the most debate.' },
+
+  { id:'juices', emoji:'🧃', name:'Juice Blind Taste Test', tagline:'Can you identify the juice just by taste?',
+    setup:'Pour 5-6 juices into numbered cups: orange, apple, grape, cranberry, pineapple, pomegranate.\nCover the bottles. Residents only see cups 1-6.\nReveal after voting.',
+    prompts:'What color do you think it is? What fruit is it? Which is the most familiar taste?',
+    scoring:'Each correct guess = 1 point. Most points wins a ribbon or small prize.',
+    tip:'Use small sample cups (2 oz). A great activity for residents with memory challenges -- no wrong answers for taste preference.' },
+
+  { id:'cookies', emoji:'🍪', name:'Cookie Throwdown', tagline:'Compare 4 cookies -- store-bought vs. homemade, or brand vs. brand.',
+    setup:'Bring in 4 types: Oreo, homemade chocolate chip, Pepperidge Farm, sugar cookie.\nNumber them and provide milk for dunking.\nAsk residents to rank them 1 (best) to 4.',
+    prompts:'Which is crunchiest? Which has the best chocolate flavor? Do you dunk your cookies? What cookie did you make at home?',
+    scoring:'Tally the #1 rankings -- which cookie wins the crown? Display on a whiteboard.',
+    tip:'The Great Cookie Throwdown is always a hit. Residents take it very seriously. Award a fun paper ribbon to the winning cookie.' },
+
+  { id:'salsa', emoji:'🌶️', name:'Salsa Heat Scale', tagline:'How hot can you go? Mild to fire -- rate your heat tolerance!',
+    setup:'Provide 4 salsas from mild to hot: mild, medium, hot, extra hot.\nServe with plain tortilla chips. Label 1-4.\nHave water and sour cream on hand to cool things down.',
+    prompts:'Which is just right? Too hot? Did you grow up eating spicy food? Where are you on the heat scale?',
+    scoring:'Staff draws a heat thermometer on a whiteboard. Residents place their name at their preferred heat level.',
+    tip:'Always have water and plain crackers as relief. The "extra hot" reaction is usually the highlight of the activity!' },
+];
+
+const FOOD_TRIVIA = {
+  general:[
+    {q:'What is the world\'s most popular fruit?', a:'Tomato (botanically a fruit)', choices:['Apple','Banana','Tomato (botanically a fruit)','Mango']},
+    {q:'How many teaspoons are in one tablespoon?', a:'3', choices:['2','3','4','5']},
+    {q:'What is the main ingredient in guacamole?', a:'Avocado', choices:['Lime','Tomato','Avocado','Onion']},
+    {q:'Which nut is used to make marzipan?', a:'Almond', choices:['Walnut','Peanut','Almond','Hazelnut']},
+    {q:'What gives red wine its red color?', a:'Grape skins', choices:['Added dye','Grape juice','Grape skins','Fermentation']},
+    {q:'What is the only fruit with seeds on the outside?', a:'Strawberry', choices:['Kiwi','Raspberry','Strawberry','Fig']},
+    {q:'What country invented ice cream?', a:'China', choices:['France','Italy','United States','China']},
+    {q:'What is the most consumed beverage in the world after water?', a:'Tea', choices:['Coffee','Tea','Milk','Juice']},
+    {q:'What cooking method uses no water or oil in a hot oven?', a:'Dry roasting', choices:['Steaming','Braising','Dry roasting','Poaching']},
+    {q:'What is the sweetener made by bees?', a:'Honey', choices:['Syrup','Nectar','Honey','Molasses']}
+  ],
+  history:[
+    {q:'What war led to the invention of canned food?', a:'Napoleonic Wars', choices:['Civil War','World War I','Napoleonic Wars','Revolutionary War']},
+    {q:'Where was the chocolate chip cookie invented?', a:'Massachusetts, USA', choices:['Belgium','Switzerland','Massachusetts, USA','Pennsylvania']},
+    {q:'What spice was once worth more than gold?', a:'Saffron', choices:['Pepper','Cinnamon','Vanilla','Saffron']},
+    {q:'What is the oldest known recipe in the world?', a:'Beer', choices:['Bread','Cheese','Beer','Soup']},
+    {q:'Who is credited with bringing the fork to the Western dinner table?', a:'Catherine de Medici', choices:['Marie Antoinette','Catherine de Medici','Queen Victoria','Eleanor of Aquitaine']},
+    {q:'In what decade did TV dinners become popular in America?', a:'1950s', choices:['1940s','1950s','1960s','1970s']},
+    {q:'What food was rationed in the US during World War II?', a:'All of these', choices:['Sugar','Butter','Meat','All of these']},
+    {q:'Where did the Caesar salad originate?', a:'Tijuana, Mexico', choices:['Rome, Italy','New York, USA','Paris, France','Tijuana, Mexico']},
+    {q:'What was Coca-Cola originally made with?', a:'Trace amounts of cocaine', choices:['Caffeine only','Trace amounts of cocaine','Sugar cane','Molasses']},
+    {q:'What is the traditional dish served on American Thanksgiving?', a:'Turkey', choices:['Goose','Ham','Turkey','Chicken']}
+  ],
+  states:[
+    {q:'What is the state food of Texas?', a:'Chili', choices:['BBQ Brisket','Pecan Pie','Chili','Tacos']},
+    {q:'What state is famous for its peaches?', a:'Georgia', choices:['Florida','California','Georgia','South Carolina']},
+    {q:'What is the official state fruit of Washington?', a:'Apple', choices:['Cherry','Blueberry','Apple','Pear']},
+    {q:'What state is famous for lobster?', a:'Maine', choices:['Massachusetts','Connecticut','Maine','Rhode Island']},
+    {q:'What state is the top producer of maple syrup in the US?', a:'Vermont', choices:['New York','Maine','Vermont','New Hampshire']},
+    {q:'What is Chicago\'s famous pizza style?', a:'Deep dish', choices:['Thin crust','New York style','Deep dish','Stuffed crust']},
+    {q:'What southern state is famous for its pecan pie?', a:'Georgia', choices:['Alabama','Texas','Mississippi','Georgia']},
+    {q:'What state is the top producer of cheese in the US?', a:'Wisconsin', choices:['Vermont','California','Wisconsin','New York']},
+    {q:'What state is famous for its Cajun and Creole cuisine?', a:'Louisiana', choices:['Alabama','Mississippi','South Carolina','Louisiana']},
+    {q:'What nut is a specialty of Hawaii?', a:'Macadamia', choices:['Almond','Cashew','Macadamia','Coconut']}
+  ],
+  culture:[
+    {q:'What is the national dish of England?', a:'Chicken Tikka Masala', choices:['Fish and Chips','Roast Beef','Yorkshire Pudding','Chicken Tikka Masala']},
+    {q:'Sushi rice is seasoned with what?', a:'Rice vinegar', choices:['Soy sauce','Rice vinegar','Sake','Mirin']},
+    {q:'What is the main ingredient in hummus?', a:'Chickpeas', choices:['Lentils','White beans','Chickpeas','Fava beans']},
+    {q:'Croissants originated in which country?', a:'Austria', choices:['France','Belgium','Austria','Switzerland']},
+    {q:'What is the spicy condiment made from fermented cabbage in Korea?', a:'Kimchi', choices:['Miso','Gochujang','Kimchi','Bibimbap']},
+    {q:'What country is pho (noodle soup) from?', a:'Vietnam', choices:['Thailand','China','Japan','Vietnam']},
+    {q:'What is the name for the Japanese art of food presentation?', a:'Moritsuke', choices:['Ikebana','Origami','Moritsuke','Kaiseki']},
+    {q:'What country produces 1/3 of the world\'s olive oil?', a:'Spain', choices:['Italy','Greece','Spain','Morocco']},
+    {q:'Pad Thai is the national dish of which country?', a:'Thailand', choices:['Vietnam','Cambodia','Thailand','Indonesia']},
+    {q:'What is the traditional Christmas dessert in England?', a:'Christmas Pudding', choices:['Fruitcake','Yule Log','Mince Pies','Christmas Pudding']}
+  ]
+};
+
+const SEASONAL_FOOD = [
+  {m:'January', emoji:'❄️', holiday:'New Year\'s', ideas:['Warm apple cider bar','Black-eyed pea soup for luck','Hot chocolate station','Soup-making demo']},
+  {m:'February', emoji:'💌', holiday:'Valentine\'s Day', ideas:['Heart-shaped shortbread','Chocolate fondue party','Strawberry mocktail','Red velvet cake demo']},
+  {m:'March', emoji:'🍀', holiday:'St. Patrick\'s Day', ideas:['Irish soda bread','Green smoothie taste test','Potato soup demo','Shamrock sugar cookies']},
+  {m:'April', emoji:'🐣', holiday:'Easter', ideas:['Deviled eggs decorating','Carrot cake demo','Spring fruit parfaits','Easter cookie decorating']},
+  {m:'May', emoji:'🌸', holiday:'Mother\'s Day', ideas:['Brunch spread -- quiche & scones','Tea party with cucumber sandwiches','Strawberry lemonade mocktail','Breakfast in bed trays']},
+  {m:'June', emoji:'☀️', holiday:'Father\'s Day', ideas:['Backyard BBQ taste test','Root beer float bar','Grilling demo -- chicken','Baseball snack board']},
+  {m:'July', emoji:'🇺🇸', holiday:'4th of July', ideas:['Red white & blue parfaits','Lemonade stand -- residents mix it','Watermelon cutting demo','Patriotic cookie decorating']},
+  {m:'August', emoji:'🌻', holiday:'Summer Fun', ideas:['Homemade salsa competition','Peach cobbler demo','Tropical mocktail bar','Corn on the cob tasting']},
+  {m:'September', emoji:'🍂', holiday:'Labor Day', ideas:['Cinnamon applesauce demo','Apple variety taste test','Caramel apple dipping','Pumpkin spice latte bar']},
+  {m:'October', emoji:'🎃', holiday:'Halloween', ideas:['Pumpkin bread demo','Caramel popcorn making','Witches brew punch','Halloween cookie decorating']},
+  {m:'November', emoji:'🦃', holiday:'Thanksgiving', ideas:['Pie tasting -- apple vs. pumpkin vs. pecan','Cranberry sauce from scratch','Gratitude dinner appetizers','Heritage recipe sharing']},
+  {m:'December', emoji:'🎄', holiday:'Holidays', ideas:['Cookie exchange & decorating','Eggnog taste test','Soft pretzel making','Wassail punch -- hot holiday mocktail']},
+];
+
+let fdState = { tab:'recipes', type:'all', diff:'all', activeRecipe:null, triviaAnswered:{} };
+
+function initFood() {
+  renderRecipeGrid();
+  renderCocktails();
+  renderTasteTests();
+  loadFoodTrivia('general');
+  renderSeasonalFood();
+}
+
+function switchFoodTab(tab) {
+  fdState.tab = tab;
+  ['recipes','cocktails','taste','trivia','seasonal'].forEach(t => {
+    document.getElementById('fdtab-'+t)?.classList.toggle('tv-subtab-active', t===tab);
+    const p = document.getElementById('fdpanel-'+t);
+    if (p) p.style.display = t===tab ? '' : 'none';
+  });
+}
+
+function setFoodFilter(type, val) {
+  fdState[type] = val;
+  document.querySelectorAll('[id^="fd'+type+'-"]').forEach(b => b.classList.remove(type==='type' ? 'gm-cat-active' : 'gm-player-active'));
+  document.getElementById('fd'+type+'-'+val)?.classList.add(type==='type' ? 'gm-cat-active' : 'gm-player-active');
+  renderRecipeGrid();
+}
+
+function renderRecipeGrid() {
+  let recipes = RECIPES.filter(r => {
+    if (fdState.type !== 'all' && r.type !== fdState.type) return false;
+    if (fdState.diff !== 'all' && r.diff !== fdState.diff) return false;
+    return true;
+  });
+  const grid = document.getElementById('fd-recipe-grid');
+  const empty = document.getElementById('fd-recipe-empty');
+  if (!recipes.length) { grid.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  const typeColors = { nocook:'#F0FDF4:#BBF7D0:#15803D', baking:'#FFFBEB:#FDE68A:#92400E', demo:'#EFF6FF:#BFDBFE:#1D4ED8', cultural:'#FAF5FF:#DDD6FE:#7C3AED' };
+  const typeLabels = { nocook:'No-Cook', baking:'Baking', demo:'Demo', cultural:'Cultural' };
+  grid.innerHTML = recipes.map((r,i) => {
+    const [bg,border,tx] = (typeColors[r.type]||typeColors.nocook).split(':');
+    return `<div onclick="openRecipeModal(${i})" style="background:#fff;border:2px solid ${border};border-radius:14px;padding:18px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+        <span style="font-size:32px;">${r.emoji}</span>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+          <span style="background:${bg};color:${tx};font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;">${typeLabels[r.type]}</span>
+          <span style="background:#F3F4F6;color:#374151;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;">${r.diff.toUpperCase()} · ${r.time}</span>
+        </div>
+      </div>
+      <div style="font-weight:800;font-size:15px;margin-bottom:4px;">${r.name}</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:10px;">${r.tagline}</div>
+      <div style="font-size:12px;color:#374151;font-weight:600;">Serves: ${r.serves} &nbsp;·&nbsp; ${r.temp}</div>
+    </div>`;
+  }).join('');
+}
+
+function openRecipeModal(idx) {
+  const r = RECIPES[idx]; if (!r) return;
+  fdState.activeRecipe = r;
+  const typeColors = { nocook:'#F0FDF4:#15803D', baking:'#FFFBEB:#92400E', demo:'#EFF6FF:#1D4ED8', cultural:'#FAF5FF:#7C3AED' };
+  const typeLabels = { nocook:'No-Cook', baking:'Baking', demo:'Demo', cultural:'Cultural' };
+  const [bg,tx] = (typeColors[r.type]||typeColors.nocook).split(':');
+  document.getElementById('fd-modal-badges').innerHTML =
+    `<span style="background:${bg};color:${tx};border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">${typeLabels[r.type]}</span>
+     <span style="background:#F3F4F6;color:#374151;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">${r.diff.toUpperCase()}</span>
+     <span style="background:#EFF6FF;color:#1D4ED8;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">Serves ${r.serves}</span>`;
+  document.getElementById('fd-modal-title').textContent = r.emoji + ' ' + r.name;
+  document.getElementById('fd-modal-tagline').textContent = r.tagline;
+  document.getElementById('fd-modal-ingredients').innerHTML = r.ingredients.split('\n').map(l=>'• '+l).join('<br>');
+  document.getElementById('fd-modal-glance').innerHTML =
+    `⏱️ <b>Time:</b> ${r.time}<br>🌡️ <b>Heat:</b> ${r.temp}<br>🍽️ <b>Serves:</b> ${r.serves}`;
+  document.getElementById('fd-modal-steps').innerHTML = r.steps.split('\n').join('<br>');
+  document.getElementById('fd-modal-tips').innerHTML = r.tips;
+  document.getElementById('fd-modal').style.display = '';
+}
+
+function closeFoodModal() { document.getElementById('fd-modal').style.display='none'; }
+
+function printRecipeCard() {
+  const r = fdState.activeRecipe; if (!r) return;
+  const typeLabels = { nocook:'No-Cook', baking:'Baking', demo:'Demo', cultural:'Cultural' };
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>${r.name}</title><style>body{font-family:Georgia,serif;padding:36px;max-width:680px}h1{color:#1A2A5C;font-size:26px;border-bottom:3px solid #FDE68A;padding-bottom:8px}h2{color:#92400E;font-size:15px;margin-top:20px}.badge{display:inline-block;background:#FFFBEB;color:#92400E;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700;margin-right:6px;border:1px solid #FDE68A}.ingredients{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px;margin-bottom:14px}.steps{line-height:2}.tips{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:14px;margin-top:14px;font-style:italic}</style></head><body>
+    <h1>${r.emoji} ${r.name}</h1>
+    <div><span class="badge">${typeLabels[r.type]}</span><span class="badge">${r.diff.toUpperCase()}</span><span class="badge">Serves ${r.serves}</span><span class="badge">${r.time}</span></div>
+    <p style="color:#6B7280;font-style:italic;">${r.tagline}</p>
+    <h2>Ingredients</h2><div class="ingredients">${r.ingredients.split('\n').map(l=>'• '+l).join('<br>')}</div>
+    <h2>Instructions</h2><div class="steps">${r.steps.split('\n').join('<br>')}</div>
+    <div class="tips"><b>Staff Tips:</b> ${r.tips}</div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+function renderCocktails() {
+  const grid = document.getElementById('fd-cocktail-grid');
+  grid.innerHTML = COCKTAILS.map((c,i) => `
+    <div style="background:#fff;border:2px solid #DDD6FE;border-radius:14px;padding:20px;">
+      <div style="font-size:32px;margin-bottom:8px;">${c.emoji}</div>
+      <div style="font-weight:800;font-size:16px;margin-bottom:4px;">${c.name}</div>
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px;">
+        <b style="color:#065F46;">🧃 Mocktail:</b> ${c.mocktail}
+      </div>
+      <div style="background:#FAF5FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px;margin-bottom:12px;font-size:13px;">
+        <b style="color:#7C3AED;">🍸 Cocktail:</b> ${c.cocktail}
+      </div>
+      <button onclick="openCocktailModal(${i})" class="btn btn-secondary" style="font-size:12px;padding:6px 14px;width:100%;">View Full Recipe</button>
+    </div>`).join('');
+}
+
+let fdActiveCocktail = null;
+function openCocktailModal(i) {
+  const c = COCKTAILS[i];
+  fdActiveCocktail = c;
+  const r = {
+    emoji: c.emoji, name: c.name,
+    tagline: c.mocktail,
+    type:'nocook', diff:'easy', serves:'1', time:'5 min', temp:'No heat',
+    ingredients: c.ingredients,
+    steps: c.steps,
+    tips: c.tip + '\n\nCocktail version: ' + c.cocktail
+  };
+  fdState.activeRecipe = r;
+  document.getElementById('fd-modal-badges').innerHTML =
+    `<span style="background:#FAF5FF;color:#7C3AED;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;">🥂 Cocktail / Mocktail</span>`;
+  document.getElementById('fd-modal-title').textContent = c.emoji + ' ' + c.name;
+  document.getElementById('fd-modal-tagline').textContent = 'Mocktail: ' + c.mocktail;
+  document.getElementById('fd-modal-ingredients').innerHTML = c.ingredients.split('\n').map(l=>'• '+l).join('<br>');
+  document.getElementById('fd-modal-glance').innerHTML = '⏱️ <b>Time:</b> 5 min<br>🧊 <b>Heat:</b> No heat<br>🥂 <b>Serves:</b> 1 (scale up easily)';
+  document.getElementById('fd-modal-steps').innerHTML = c.steps.split('\n').join('<br>');
+  document.getElementById('fd-modal-tips').innerHTML = c.tip + '<br><br><b>Cocktail version:</b> ' + c.cocktail;
+  document.getElementById('fd-modal').style.display='';
+}
+
+function printCocktailMenu() {
+  const items = COCKTAILS.map(c =>
+    `<div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #eee;">
+      <div style="font-size:20px;font-weight:700;">${c.emoji} ${c.name}</div>
+      <div style="margin-top:6px;"><b style="color:#065F46;">Mocktail:</b> ${c.mocktail}</div>
+      <div style="margin-top:4px;"><b style="color:#7C3AED;">Cocktail:</b> ${c.cocktail}</div>
+    </div>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Bar Menu</title><style>body{font-family:Georgia,serif;padding:40px;max-width:650px}h1{text-align:center;color:#1A2A5C;font-size:30px}h3{text-align:center;color:#7030A0;font-style:italic;margin-bottom:30px}</style></head><body>
+    <h1>🥂 Cocktails &amp; Mocktails Menu</h1><h3>All drinks available as mocktails. Ask staff for cocktail version.</h3><hr style="margin-bottom:24px;">${items}
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+function renderTasteTests() {
+  const grid = document.getElementById('fd-taste-grid');
+  grid.innerHTML = TASTE_TESTS.map((t,i) => `
+    <div style="background:#fff;border:2px solid #FDE68A;border-radius:14px;padding:20px;">
+      <div style="font-size:32px;margin-bottom:8px;">${t.emoji}</div>
+      <div style="font-weight:800;font-size:16px;margin-bottom:4px;">${t.name}</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:14px;">${t.tagline}</div>
+      <div style="background:#FFFBEB;border-radius:8px;padding:12px;margin-bottom:10px;font-size:13px;">
+        <b style="color:#92400E;">Setup:</b><br>${t.setup.split('\n').join('<br>')}
+      </div>
+      <div style="background:#F0FDF4;border-radius:8px;padding:10px;margin-bottom:10px;font-size:13px;">
+        <b style="color:#065F46;">Discussion Prompts:</b><br>${t.prompts}
+      </div>
+      <div style="font-size:12px;color:#6B7280;font-style:italic;margin-bottom:12px;">${t.tip}</div>
+      <button onclick="printTasteTest(${i})" class="btn btn-secondary" style="font-size:12px;padding:6px 14px;width:100%;">🖨️ Print Voting Sheet</button>
+    </div>`).join('');
+}
+
+function printTasteTest(i) {
+  const t = TASTE_TESTS[i];
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>${t.name} Voting Sheet</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#1A2A5C}table{width:100%;border-collapse:collapse;margin-top:16px}th{background:#1A2A5C;color:#fff;padding:10px}td{border:1px solid #ddd;padding:12px;min-width:80px;}.stars{font-size:20px;letter-spacing:4px}</style></head><body>
+    <h1>${t.emoji} ${t.name} — Voting Sheet</h1>
+    <p><i>${t.tagline}</i></p>
+    <p><b>Scoring:</b> ${t.scoring}</p>
+    <table><thead><tr><th>Sample</th><th>Name</th><th>Rating (1-5 stars)</th><th>Comments</th></tr></thead>
+    <tbody>${[1,2,3,4,5,6].map(n=>`<tr><td style="text-align:center;font-weight:700;">#${n}</td><td></td><td class="stars">☆☆☆☆☆</td><td></td></tr>`).join('')}</tbody></table>
+    <div style="margin-top:24px;"><b>My Favorite:</b> ___________  <b>Name:</b> ___________</div>
+    <div style="margin-top:16px;font-size:13px;color:#888;">Discussion: ${t.prompts}</div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+function loadFoodTrivia(cat) {
+  fdState.triviaAnswered = {};
+  ['general','history','states','culture'].forEach(c => {
+    document.getElementById('ftcat-'+c)?.classList.toggle('btn-primary', c===cat);
+    document.getElementById('ftcat-'+c)?.classList.toggle('btn-secondary', c!==cat);
+  });
+  const questions = FOOD_TRIVIA[cat] || [];
+  const container = document.getElementById('fd-trivia-container');
+  container.innerHTML = questions.map((q,i) => `
+    <div id="ft-card-${i}" style="background:#fff;border:2px solid #E5E7EB;border-radius:12px;padding:18px;">
+      <div style="font-size:12px;font-weight:700;color:#9CA3AF;margin-bottom:6px;">Q${i+1}</div>
+      <div style="font-weight:700;font-size:15px;color:#111827;margin-bottom:12px;">${q.q}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        ${q.choices.map((ch,j) => `<button onclick="answerFoodTrivia(${i},${j})" id="ftbtn-${i}-${j}" style="padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;background:#F9FAFB;font-size:13px;cursor:pointer;text-align:left;">${ch}</button>`).join('')}
+      </div>
+      <div id="ft-result-${i}" style="margin-top:8px;font-size:13px;font-weight:700;display:none;"></div>
+    </div>`).join('');
+}
+
+function answerFoodTrivia(qi, ci) {
+  if (fdState.triviaAnswered[qi]) return;
+  fdState.triviaAnswered[qi] = true;
+  const cat = Object.keys(FOOD_TRIVIA).find(k => document.getElementById('ftcat-'+k)?.classList.contains('btn-primary')) || 'general';
+  const q = FOOD_TRIVIA[cat][qi];
+  const correct = q.a;
+  const chosen = q.choices[ci];
+  for (let j = 0; j < q.choices.length; j++) {
+    const btn = document.getElementById('ftbtn-'+qi+'-'+j);
+    if (!btn) continue;
+    btn.style.pointerEvents = 'none';
+    if (q.choices[j] === correct) { btn.style.background='#D1FAE5'; btn.style.borderColor='#10B981'; }
+  }
+  const result = document.getElementById('ft-result-'+qi);
+  const card = document.getElementById('ft-card-'+qi);
+  if (chosen === correct) {
+    document.getElementById('ftbtn-'+qi+'-'+ci).style.background='#D1FAE5';
+    result.textContent='✅ Correct!'; result.style.color='#065F46'; card.style.borderColor='#10B981';
+  } else {
+    document.getElementById('ftbtn-'+qi+'-'+ci).style.background='#FEE2E2';
+    document.getElementById('ftbtn-'+qi+'-'+ci).style.borderColor='#EF4444';
+    result.textContent='❌ Answer: '+correct; result.style.color='#B91C1C'; card.style.borderColor='#EF4444';
+  }
+  result.style.display='block';
+}
+
+function printFoodTrivia() {
+  const cat = Object.keys(FOOD_TRIVIA).find(k => document.getElementById('ftcat-'+k)?.classList.contains('btn-primary')) || 'general';
+  const questions = FOOD_TRIVIA[cat];
+  const qHtml = questions.map((q,i) => `<div style="margin-bottom:18px;border-bottom:1px solid #eee;padding-bottom:14px;"><b>Q${i+1}.</b> ${q.q}<br><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px;">${q.choices.map((c,j)=>`<span>${String.fromCharCode(65+j)}. ${c}</span>`).join('')}</div></div>`).join('');
+  const ansHtml = questions.map((q,i) => `<b>Q${i+1}:</b> ${q.a}`).join(' &nbsp;|&nbsp; ');
+  const w = window.open('','_blank');
+  w.document.write(`<html><head><title>Food Trivia</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:700px}h1{color:#1A2A5C}.ans{background:#FFFBEB;padding:14px;border-radius:8px;font-size:13px;margin-top:24px;}</style></head><body>
+    <h1>🍽️ Food Trivia Quiz</h1><h3>${cat.charAt(0).toUpperCase()+cat.slice(1)} Category</h3>${qHtml}
+    <div class="ans"><b>ANSWER KEY:</b><br>${ansHtml}</div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+function renderSeasonalFood() {
+  const now = new Date().getMonth();
+  const grid = document.getElementById('fd-seasonal-grid');
+  grid.innerHTML = SEASONAL_FOOD.map((mo,i) => {
+    const isCurrent = i === now;
+    return `<div style="background:${isCurrent?'linear-gradient(135deg,#92400E,#B45309)':'#fff'};border:2px solid ${isCurrent?'#B45309':'#FDE68A'};border-radius:12px;padding:16px;${isCurrent?'color:#fff':''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-weight:800;font-size:15px;">${mo.emoji} ${mo.m}</div>
+        ${isCurrent?'<span style="background:rgba(255,255,255,0.25);border-radius:99px;padding:2px 8px;font-size:10px;font-weight:700;">THIS MONTH</span>':''}
+      </div>
+      <div style="font-size:12px;opacity:0.7;margin-bottom:10px;">🎉 ${mo.holiday}</div>
+      ${mo.ideas.map(idea=>`<div style="padding:5px 8px;border-radius:6px;margin-bottom:4px;font-size:13px;font-weight:500;background:${isCurrent?'rgba(255,255,255,0.15)':'#FFFBEB'};border:1px solid ${isCurrent?'rgba(255,255,255,0.2)':'#FDE68A'};">🍴 ${idea}</div>`).join('')}
+    </div>`;
+  }).join('');
 }
 </script>
 
