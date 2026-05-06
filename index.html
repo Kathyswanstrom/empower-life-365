@@ -1485,15 +1485,30 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
 
 <section class="tab-panel" id="panel-birthday">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+    <div>
+      <h2 style="margin:0;">&#127874; Birthdays</h2>
+      <div class="subtitle">Calendar, printable cards &amp; banners, and On This Day newspaper.</div>
+    </div>
+  </div>
+  <!-- Birthday sub-tabs -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="bdtab-calendar" onclick="switchBdayTab('calendar')" class="tv-subtab tv-subtab-active">&#128197; Calendar</button>
+    <button id="bdtab-cards"    onclick="switchBdayTab('cards')"    class="tv-subtab">&#127881; Cards &amp; Banners</button>
+    <button id="bdtab-newspaper" onclick="switchBdayTab('newspaper')" class="tv-subtab">&#128240; On This Day</button>
+  </div>
+
+  <!-- CALENDAR (existing content wrapped) -->
+  <div id="bdpanel-calendar">
   <div class="bday-controls" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
     <div>
-      <h2 style="margin:0;">🎂 Birthday Calendar</h2>
-      <div class="subtitle">Click any day to add a birthday · Sync from Roster · Or type in the form below</div>
+      <h2 style="margin:0;">&#127874; Birthday Calendar</h2>
+      <div class="subtitle">Click any day to add a birthday &middot; Sync from Roster &middot; Or type in the form below</div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn btn-secondary" onclick="syncRosterBirthdays()" title="Auto-fill birthdays from the Residents tab">🔄 Sync from Roster</button>
-      <button class="btn btn-secondary" onclick="importBirthdayCSV()">📥 Import CSV</button>
-      <button class="btn btn-gold" onclick="exportBirthdayPDF()">📄 Export PDF</button>
+      <button class="btn btn-secondary" onclick="syncRosterBirthdays()" title="Auto-fill birthdays from the Residents tab">&#128260; Sync from Roster</button>
+      <button class="btn btn-secondary" onclick="importBirthdayCSV()">&#128229; Import CSV</button>
+      <button class="btn btn-gold" onclick="exportBirthdayPDF()">&#128196; Export PDF</button>
     </div>
   </div>
 
@@ -1544,6 +1559,99 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 
   <!-- Hidden CSV input -->
   <input type="file" id="bday-csv-input" accept=".csv" style="display:none;" onchange="handleBirthdayCSV(event)">
+  </div><!-- end bdpanel-calendar -->
+
+  <!-- CARDS & BANNERS -->
+  <div id="bdpanel-cards" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;">
+
+      <!-- Banner Generator -->
+      <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:28px;">&#127937;</div>
+        <div style="font-weight:700;font-size:17px;color:#1F2937;">Birthday Banner / Sign</div>
+        <div style="font-size:13px;color:#6B7280;">Full-page printable banner or room door sign.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Resident Name</label><input id="bdbanner-name" type="text" class="form-input" placeholder="e.g. Margaret" style="width:100%;box-sizing:border-box;"></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Age (optional)</label><input id="bdbanner-age" type="text" class="form-input" placeholder="e.g. 90 or leave blank" style="width:100%;box-sizing:border-box;"></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Custom Message (optional)</label><input id="bdbanner-msg" type="text" class="form-input" placeholder="e.g. We love you!" style="width:100%;box-sizing:border-box;"></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Style</label>
+            <select id="bdbanner-style" class="form-input" style="width:100%;">
+              <option value="festive">&#127881; Festive (Colorful)</option>
+              <option value="elegant">&#128160; Elegant (Purple &amp; Gold)</option>
+              <option value="navy">&#127942; Classic (Navy &amp; Gold)</option>
+              <option value="door">&#128679; Room Door Sign</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <button onclick="printBirthdayBanner()" class="btn" style="background:#C2410C;color:#fff;flex:1;">&#128424; Print Banner</button>
+          <button onclick="printDoorSign()" class="btn" style="background:#7C3AED;color:#fff;flex:1;">&#128424; Door Sign</button>
+        </div>
+      </div>
+
+      <!-- Card Generator -->
+      <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:28px;">&#127881;</div>
+        <div style="font-weight:700;font-size:17px;color:#1F2937;">Birthday Card</div>
+        <div style="font-size:13px;color:#6B7280;">Folds in half. Print, fold, and deliver!</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">To (Resident Name)</label><input id="bdcard-to" type="text" class="form-input" placeholder="e.g. Margaret" style="width:100%;box-sizing:border-box;"></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">From</label><input id="bdcard-from" type="text" class="form-input" placeholder="e.g. Your Activities Team" style="width:100%;box-sizing:border-box;"></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Personal Message</label><textarea id="bdcard-msg" class="form-input" rows="3" placeholder="Wishing you a wonderful day filled with joy..." style="width:100%;box-sizing:border-box;resize:vertical;"></textarea></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Card Style</label>
+            <select id="bdcard-style" class="form-input" style="width:100%;">
+              <option value="classic">&#127881; Classic Birthday</option>
+              <option value="milestone">&#11088; Milestone Birthday (80th, 90th, 100th)</option>
+              <option value="group">&#128101; From the Group (with signature lines)</option>
+            </select>
+          </div>
+          <div id="bdcard-milestone-row"><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Milestone Age</label><input id="bdcard-milestone" type="text" class="form-input" placeholder="e.g. 90" style="width:100%;box-sizing:border-box;"></div>
+        </div>
+        <button onclick="printBirthdayCard()" class="btn" style="background:#BE185D;color:#fff;margin-top:4px;">&#128424; Print Card</button>
+      </div>
+
+      <!-- Group Card / Signing Sheet -->
+      <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:28px;">&#128101;</div>
+        <div style="font-weight:700;font-size:17px;color:#1F2937;">Group Signing Sheet</div>
+        <div style="font-size:13px;color:#6B7280;">Pass around for residents and staff to sign. Print multiple for large groups.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">For Resident</label><input id="bdsign-name" type="text" class="form-input" placeholder="e.g. Margaret Johnson" style="width:100%;box-sizing:border-box;"></div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Number of Signature Lines</label>
+            <select id="bdsign-lines" class="form-input" style="width:100%;">
+              <option value="10">10 lines</option>
+              <option value="16" selected>16 lines</option>
+              <option value="24">24 lines</option>
+            </select>
+          </div>
+          <div><label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:3px;">Top Message</label><input id="bdsign-msg" type="text" class="form-input" placeholder="Happy Birthday! Sign your name below." style="width:100%;box-sizing:border-box;"></div>
+        </div>
+        <button onclick="printGroupSigning()" class="btn" style="background:#166534;color:#fff;margin-top:4px;">&#128424; Print Signing Sheet</button>
+      </div>
+
+    </div>
+  </div><!-- end bdpanel-cards -->
+
+  <!-- ON THIS DAY NEWSPAPER -->
+  <div id="bdpanel-newspaper" style="display:none;">
+    <div style="background:linear-gradient(135deg,#1F2937,#374151);border-radius:14px;padding:22px 26px;margin-bottom:20px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <div>
+        <div style="font-size:20px;font-weight:900;">&#128240; The Birthday Gazette</div>
+        <div style="opacity:0.75;font-size:13px;margin-top:4px;">Generate a personalized newspaper for any resident&#8217;s birth year. Print and share as a birthday keepsake!</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:22px;max-width:560px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Resident Name</label><input id="bdnews-name" type="text" class="form-input" placeholder="e.g. Margaret Johnson" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Birth Year</label><input id="bdnews-year" type="number" class="form-input" placeholder="e.g. 1938" min="1900" max="1970" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Birth Month &amp; Day (optional)</label><input id="bdnews-date" type="text" class="form-input" placeholder="e.g. June 14" style="width:100%;box-sizing:border-box;"></div>
+        <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Today&#8217;s Turning Age (optional)</label><input id="bdnews-age" type="text" class="form-input" placeholder="e.g. 88" style="width:100%;box-sizing:border-box;"></div>
+      </div>
+      <button onclick="generateNewspaper()" class="btn" style="background:#1F2937;color:#fff;width:100%;">&#128240; Generate The Birthday Gazette</button>
+    </div>
+    <div id="bdnews-preview" style="display:none;"></div>
+  </div><!-- end bdpanel-newspaper -->
+
 </section>
 
 <section class="tab-panel" id="panel-empower-moments">
@@ -2139,7 +2247,6 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
     <button id="sptab-board"      onclick="switchSpotlightTab('board')"      class="tv-subtab tv-subtab-active">&#11088; Spotlight Board</button>
     <button id="sptab-create"     onclick="switchSpotlightTab('create')"     class="tv-subtab">&#43; Create / Edit</button>
-    <button id="sptab-birthdays"  onclick="switchSpotlightTab('birthdays')"  class="tv-subtab">&#127874; Birthdays</button>
     <button id="sptab-recognition" onclick="switchSpotlightTab('recognition')" class="tv-subtab">&#127942; Recognition</button>
     <button id="sptab-interview"  onclick="switchSpotlightTab('interview')"  class="tv-subtab">&#128203; Interview Guide</button>
   </div>
@@ -2183,28 +2290,6 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <button onclick="clearSpotlightForm()" class="btn" style="background:#6B7280;color:#fff;">Clear Form</button>
       </div>
       <div id="sp-save-msg" style="display:none;margin-top:12px;padding:10px 14px;background:#F0FDF4;color:#166534;border-radius:8px;font-weight:600;">Spotlight saved!</div>
-    </div>
-  </div>
-
-  <!-- BIRTHDAYS -->
-  <div id="sppanel-birthdays" style="display:none;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;">
-      <div style="background:#FFF7ED;border:2px solid #FED7AA;border-radius:14px;padding:20px;">
-        <div style="font-size:22px;font-weight:800;color:#C2410C;margin-bottom:12px;">&#127874; This Month</div>
-        <div id="sp-bday-thismonth"></div>
-      </div>
-      <div style="background:#EFF6FF;border:2px solid #BFDBFE;border-radius:14px;padding:20px;">
-        <div style="font-size:22px;font-weight:800;color:#1D4ED8;margin-bottom:12px;">&#128197; Next Month</div>
-        <div id="sp-bday-nextmonth"></div>
-      </div>
-    </div>
-    <div style="margin-top:20px;">
-      <div style="font-weight:700;font-size:16px;color:#374151;margin-bottom:14px;">All Birthdays by Month</div>
-      <div id="sp-bday-all" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
-    </div>
-    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
-      <button onclick="printBirthdayList()" class="btn" style="background:#C2410C;color:#fff;">&#128424; Print Birthday List</button>
-      <button onclick="printBirthdayBanner()" class="btn" style="background:#7C3AED;color:#fff;">&#128424; Print Birthday Banner</button>
     </div>
   </div>
 
@@ -14617,13 +14702,12 @@ var INTERVIEW_CATEGORIES = [
 
 function initSpotlight() {
   renderSpotlightBoard();
-  renderBirthdays();
   renderRecognition();
   renderInterviewGuide();
 }
 
 function switchSpotlightTab(tab) {
-  ['board','create','birthdays','recognition','interview'].forEach(function(t) {
+  ['board','create','recognition','interview'].forEach(function(t) {
     var btn = document.getElementById('sptab-'+t);
     if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
     var p = document.getElementById('sppanel-'+t);
@@ -15039,6 +15123,290 @@ function printInterviewGuide() {
   }).join('');
   var w = window.open('','_blank');
   w.document.write('<!DOCTYPE html><html><head><title>Resident Interview Guide</title><style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:40px;max-width:680px;}</style></head><body><h1>&#128203; Resident Interview Guide</h1><p style="color:#555;">Use these questions as conversation starters when gathering information for a Resident Spotlight. Take notes and enter the information into Empower Life 365 when done.</p><p><b>Resident Name:</b> ___________________________________ &nbsp;&nbsp; <b>Date:</b> ______________</p><hr>'+sections+'<div style="margin-top:20px;font-size:11px;color:#aaa;border-top:1px solid #eee;padding-top:10px;">Empower Life 365 &middot; empowerlife365.app</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+</script>
+
+
+<script>
+// BIRTHDAY ENHANCEMENTS: Cards, Banners, On This Day Newspaper
+
+function switchBdayTab(tab) {
+  ['calendar','cards','newspaper'].forEach(function(t) {
+    var btn = document.getElementById('bdtab-'+t);
+    if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
+    var p = document.getElementById('bdpanel-'+t);
+    if (p) p.style.display = t===tab ? '' : 'none';
+  });
+}
+
+// Show/hide milestone field based on card style
+document.addEventListener('DOMContentLoaded', function() {
+  var sel = document.getElementById('bdcard-style');
+  if (sel) sel.addEventListener('change', function() {
+    var row = document.getElementById('bdcard-milestone-row');
+    if (row) row.style.display = sel.value === 'milestone' ? '' : 'none';
+  });
+  var row = document.getElementById('bdcard-milestone-row');
+  if (row) row.style.display = 'none';
+});
+
+// ── BANNER ──────────────────────────────────────────────────────────────
+function printBirthdayBanner() {
+  var name = (document.getElementById('bdbanner-name').value.trim()) || 'Birthday Star';
+  var age  = document.getElementById('bdbanner-age').value.trim();
+  var msg  = document.getElementById('bdbanner-msg').value.trim();
+  var style = document.getElementById('bdbanner-style').value;
+
+  var configs = {
+    festive:  { bg:'linear-gradient(135deg,#EC4899,#F97316,#FBBF24)', textColor:'#fff', accent:'#fff', emoji:'&#127881;&#127882;&#127881;' },
+    elegant:  { bg:'linear-gradient(135deg,#7C3AED,#5B21B6)', textColor:'#fff', accent:'#FDE68A', emoji:'&#10024;&#128160;&#10024;' },
+    navy:     { bg:'linear-gradient(135deg,#1A2A5C,#2E4A9C)', textColor:'#fff', accent:'#FFD700', emoji:'&#127942;&#127874;&#127942;' },
+    door:     { bg:'linear-gradient(135deg,#F59E0B,#D97706)', textColor:'#fff', accent:'#fff', emoji:'&#127881;' },
+  };
+  var cfg = configs[style] || configs.festive;
+  var ageHtml = age ? '<div style="font-size:52px;font-weight:900;color:'+cfg.accent+';margin-bottom:10px;">'+age+'<span style="font-size:28px;">th</span></div>' : '';
+  var msgHtml = msg ? '<div style="font-size:28px;color:'+cfg.accent+';margin-top:16px;font-style:italic;">'+msg+'</div>' : '';
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Happy Birthday '+name+'!</title>'
+    +'<style>@media print{body{margin:0;}}body{margin:0;font-family:Arial,sans-serif;}'
+    +'.banner{background:'+cfg.bg+';min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;box-sizing:border-box;}'
+    +'</style></head><body><div class="banner">'
+    +'<div style="font-size:60px;margin-bottom:16px;">'+cfg.emoji+'</div>'
+    +'<div style="font-size:38px;font-weight:700;color:'+cfg.accent+';letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;">Happy Birthday</div>'
+    +'<div style="font-size:80px;font-weight:900;color:'+cfg.textColor+';text-shadow:2px 4px 12px rgba(0,0,0,0.2);">'+name+'</div>'
+    +ageHtml+msgHtml
+    +'<div style="margin-top:30px;font-size:22px;color:'+cfg.accent+';">&#127874; &#127881; &#127874;</div>'
+    +'<div style="margin-top:20px;font-size:12px;color:rgba(255,255,255,0.5);">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function printDoorSign() {
+  var name = (document.getElementById('bdbanner-name').value.trim()) || 'Birthday Star';
+  var age  = document.getElementById('bdbanner-age').value.trim();
+  var msg  = document.getElementById('bdbanner-msg').value.trim();
+  var ageHtml = age ? '<div style="font-size:36px;font-weight:900;color:#F59E0B;margin:8px 0;">Turning '+age+'!</div>' : '';
+  var msgHtml = msg ? '<div style="font-size:18px;color:#374151;font-style:italic;margin-top:10px;">'+msg+'</div>' : '';
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Door Sign: '+name+'</title>'
+    +'<style>@media print{body{margin:0;}}body{margin:0;font-family:Arial,sans-serif;}'
+    +'.sign{width:380px;border:6px solid #F59E0B;border-radius:20px;margin:30px auto;padding:30px;text-align:center;background:linear-gradient(180deg,#FFFBEB,#FEF3C7);}'
+    +'</style></head><body><div class="sign">'
+    +'<div style="font-size:56px;margin-bottom:12px;">&#127874;</div>'
+    +'<div style="font-size:22px;font-weight:900;color:#92400E;letter-spacing:2px;text-transform:uppercase;">Happy Birthday!</div>'
+    +'<div style="font-size:38px;font-weight:900;color:#1F2937;margin:10px 0;">'+name+'</div>'
+    +ageHtml+msgHtml
+    +'<div style="margin-top:16px;font-size:24px;">&#127881; &#10024; &#127882;</div>'
+    +'<div style="margin-top:16px;font-size:10px;color:#ccc;">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'</div><scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+// ── CARDS ───────────────────────────────────────────────────────────────
+function printBirthdayCard() {
+  var to    = (document.getElementById('bdcard-to').value.trim()) || 'Friend';
+  var from  = (document.getElementById('bdcard-from').value.trim()) || 'Your Friends';
+  var msg   = (document.getElementById('bdcard-msg').value.trim()) || 'Wishing you a wonderful birthday!';
+  var style = document.getElementById('bdcard-style').value;
+  var milestone = document.getElementById('bdcard-milestone').value.trim();
+
+  var front = '', inside = '';
+  if (style === 'milestone' && milestone) {
+    front = '<div style="font-size:70px;margin-bottom:16px;">&#11088;</div>'
+      +'<div style="font-size:32px;font-weight:900;color:#7C3AED;margin-bottom:8px;">Happy</div>'
+      +'<div style="font-size:80px;font-weight:900;color:#F59E0B;line-height:1;margin-bottom:8px;">'+milestone+'</div>'
+      +'<div style="font-size:28px;font-weight:700;color:#7C3AED;">th Birthday!</div>';
+    inside = '<div style="font-size:32px;font-weight:900;color:#7C3AED;margin-bottom:16px;">Dear '+to+',</div>'
+      +'<div style="font-size:18px;color:#374151;line-height:1.7;margin-bottom:20px;">'+msg+'</div>'
+      +'<div style="font-size:16px;color:#6B7280;border-top:1px solid #eee;padding-top:16px;margin-top:16px;">With love,<br><b>'+from+'</b></div>';
+  } else if (style === 'group') {
+    front = '<div style="font-size:70px;margin-bottom:16px;">&#127874;</div>'
+      +'<div style="font-size:42px;font-weight:900;color:#BE185D;">Happy Birthday</div>'
+      +'<div style="font-size:32px;font-weight:700;color:#EC4899;margin-top:8px;">'+to+'!</div>';
+    inside = '<div style="font-size:20px;font-weight:700;color:#374151;margin-bottom:20px;">From all of us! &#128101;</div>'
+      +'<div style="font-size:14px;color:#6B7280;margin-bottom:16px;">'+msg+'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+      +Array(8).fill('<div style="border-bottom:1px solid #ddd;padding-bottom:6px;height:20px;"></div>').join('')
+      +'</div>';
+  } else {
+    front = '<div style="font-size:70px;margin-bottom:16px;">&#127881;</div>'
+      +'<div style="font-size:42px;font-weight:900;color:#BE185D;">Happy Birthday</div>'
+      +'<div style="font-size:28px;font-weight:700;color:#EC4899;margin-top:8px;">'+to+'!</div>';
+    inside = '<div style="font-size:20px;font-weight:700;color:#374151;margin-bottom:20px;">Dear '+to+',</div>'
+      +'<div style="font-size:17px;color:#374151;line-height:1.7;margin-bottom:24px;">'+msg+'</div>'
+      +'<div style="font-size:15px;color:#6B7280;border-top:1px solid #eee;padding-top:16px;">With warmth,<br><b>'+from+'</b></div>';
+  }
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Birthday Card: '+to+'</title>'
+    +'<style>@media print{body{margin:0;}}.page{width:5in;height:7in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;box-sizing:border-box;page-break-after:always;}'
+    +'body{font-family:Georgia,serif;margin:0;}'
+    +'</style></head><body>'
+    +'<div class="page" style="background:linear-gradient(135deg,#FFF0F5,#FCE7F3);">'+front+'</div>'
+    +'<div class="page" style="background:#fff;text-align:left;">'+inside+'</div>'
+    +'<scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function printGroupSigning() {
+  var name  = (document.getElementById('bdsign-name').value.trim()) || 'Our Birthday Star';
+  var lines = parseInt(document.getElementById('bdsign-lines').value)||16;
+  var msg   = (document.getElementById('bdsign-msg').value.trim()) || 'Happy Birthday! Sign your name and add a message below.';
+  var lineHtml = Array(lines).fill('<div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:12px;"><div style="font-size:16px;">&#127881;</div><div style="flex:1;border-bottom:1px solid #ccc;height:24px;"></div></div>').join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Group Signing Sheet: '+name+'</title>'
+    +'<style>@media print{body{margin:0;}}body{font-family:Arial,sans-serif;margin:40px;max-width:680px;}'
+    +'</style></head><body>'
+    +'<div style="text-align:center;border:3px solid #EC4899;border-radius:12px;padding:20px 30px;margin-bottom:30px;">'
+    +'<div style="font-size:40px;margin-bottom:8px;">&#127874; &#127881; &#127874;</div>'
+    +'<div style="font-size:28px;font-weight:900;color:#BE185D;">Happy Birthday, '+name+'!</div>'
+    +'<div style="font-size:15px;color:#6B7280;margin-top:8px;">'+msg+'</div>'
+    +'</div>'
+    +lineHtml
+    +'<div style="margin-top:20px;font-size:11px;color:#aaa;text-align:center;">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'<scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+// ── ON THIS DAY NEWSPAPER ───────────────────────────────────────────────
+var ON_THIS_DAY = {
+  1910:{events:['Halley\'s Comet passed close to Earth, visible worldwide','The Boy Scouts of America was founded'],song:'Let Me Call You Sweetheart',movie:'Frankenstein (first film version)',bread:'$0.05',gas:'$0.10',house:'$2,750',fun:'The first Father\'s Day was celebrated in Spokane, Washington.'},
+  1911:{events:['Roald Amundsen reached the South Pole','The Mona Lisa was stolen from the Louvre in Paris'],song:'Alexander\'s Ragtime Band',movie:'The Battle of Gettysburg',bread:'$0.05',gas:'$0.12',house:'$2,900',fun:'Triangle Shirtwaist Factory fire led to landmark safety laws.'},
+  1912:{events:['The Titanic sank on its maiden voyage','New Mexico and Arizona became the 47th and 48th US states'],song:'Waiting for the Robert E. Lee',movie:'From the Manger to the Cross',bread:'$0.05',gas:'$0.12',house:'$3,000',fun:'The first Girl Scout troop was organized in Savannah, Georgia.'},
+  1913:{events:['The Federal Reserve was established in the United States','The first moving assembly line for cars opened at Ford Motor Company'],song:'You Made Me Love You',movie:'Traffic in Souls',bread:'$0.06',gas:'$0.12',house:'$3,200',fun:'The zipper was patented -- no more buttons on boots!'},
+  1914:{events:['World War I began after Archduke Franz Ferdinand was assassinated','The Panama Canal officially opened'],song:'St. Louis Blues',movie:'The Birth of a Nation (released 1915)',bread:'$0.06',gas:'$0.12',house:'$3,500',fun:'The first traffic light was installed in Cleveland, Ohio.'},
+  1915:{events:['The first transatlantic telephone call was made','Einstein published his General Theory of Relativity'],song:'Pack Up Your Troubles',movie:'The Birth of a Nation',bread:'$0.07',gas:'$0.15',house:'$3,500',fun:'Babe Ruth hit his first professional home run.'},
+  1916:{events:['President Wilson signed the National Park Service Act','Battle of the Somme -- one of the largest battles in WWI'],song:'Pretty Baby',movie:'Intolerance',bread:'$0.07',gas:'$0.20',house:'$3,800',fun:'The first professional baseball player received a $10 weekly salary.'},
+  1917:{events:['The United States entered World War I','The Russian Revolution toppled the Tsar'],song:'Over There',movie:'The Poor Little Rich Girl',bread:'$0.10',gas:'$0.25',house:'$4,000',fun:'Jazz music began sweeping across America from New Orleans.'},
+  1918:{events:['World War I ended on November 11th -- Armistice Day','The great influenza pandemic affected millions worldwide'],song:'After You\'ve Gone',movie:'Mickey',bread:'$0.10',gas:'$0.25',house:'$4,200',fun:'Time zones were standardized in the United States.'},
+  1919:{events:['The 18th Amendment (Prohibition) was ratified','The Treaty of Versailles ended WWI officially'],song:'Swanee',movie:'Broken Blossoms',bread:'$0.10',gas:'$0.25',house:'$4,500',fun:'Jack Dempsey became the heavyweight boxing champion of the world.'},
+  1920:{events:['The 19th Amendment gave women the right to vote','The first commercial radio broadcast was made in Pittsburgh'],song:'Whispering',movie:'The Mark of Zorro',bread:'$0.12',gas:'$0.26',house:'$4,800',fun:'The NFL (National Football League) was founded.'},
+  1921:{events:['President Harding signed the first immigration quota law','Babe Ruth hit 59 home runs -- a new record'],song:'Ain\'t We Got Fun',movie:'The Kid (Charlie Chaplin)',bread:'$0.12',gas:'$0.24',house:'$4,900',fun:'The Wonder Bread brand was introduced.'},
+  1922:{events:['Howard Carter discovered Tutankhamun\'s tomb in Egypt','Benito Mussolini came to power in Italy'],song:'April Showers',movie:'Nosferatu',bread:'$0.09',gas:'$0.22',house:'$5,000',fun:'Lincoln Memorial was dedicated in Washington D.C.'},
+  1923:{events:['President Harding died in office; Calvin Coolidge became president','The Hollywood sign was erected in Los Angeles'],song:'Yes! We Have No Bananas',movie:'The Ten Commandments',bread:'$0.09',gas:'$0.22',house:'$5,200',fun:'The first Le Mans 24-hour car race was held in France.'},
+  1924:{events:['J. Edgar Hoover became Director of the FBI','The first winter Olympics were held in Chamonix, France'],song:'Rhapsody in Blue (George Gershwin)',movie:'The Thief of Bagdad',bread:'$0.09',gas:'$0.20',house:'$5,500',fun:'Wheaties cereal was introduced and quickly nicknamed the Breakfast of Champions.'},
+  1925:{events:['The Scopes "Monkey Trial" debated evolution in schools','New Yorker magazine was first published'],song:'Five Foot Two Eyes of Blue',movie:'The Gold Rush (Charlie Chaplin)',bread:'$0.09',gas:'$0.20',house:'$5,700',fun:'The world\'s population reached 2 billion people.'},
+  1926:{events:['Route 66 officially became a US highway','Harry Houdini died on Halloween'],song:'Always (Irving Berlin)',movie:'The General (Buster Keaton)',bread:'$0.09',gas:'$0.22',house:'$5,900',fun:'Winnie-the-Pooh was published by A.A. Milne.'},
+  1927:{events:['Charles Lindbergh completed the first solo transatlantic flight','The Jazz Singer -- the first major sound film -- was released'],song:'Ol\' Man River',movie:'Wings (first Academy Award Best Picture)',bread:'$0.09',gas:'$0.21',house:'$6,000',fun:'Babe Ruth hit 60 home runs -- a record that stood for 34 years.'},
+  1928:{events:['Alexander Fleming discovered penicillin','Mickey Mouse made his debut in Steamboat Willie'],song:'Makin\' Whoopee',movie:'Lights of New York',bread:'$0.09',gas:'$0.21',house:'$6,200',fun:'Bubble gum was invented by Walter Diemer.'},
+  1929:{events:['The Great Depression began after the stock market crashed in October','The first Academy Awards ceremony was held'],song:'Stardust',movie:'The Broadway Melody',bread:'$0.09',gas:'$0.21',house:'$6,000',fun:'Popeye the Sailor Man first appeared in a comic strip.'},
+  1930:{events:['Pluto was discovered and named the ninth planet','The Empire State Building began construction'],song:'Georgia on My Mind (Hoagy Carmichael)',movie:'All Quiet on the Western Front',bread:'$0.09',gas:'$0.20',house:'$5,500',fun:'Twinkies were invented -- the golden sponge cake with cream filling.'},
+  1931:{events:['The Empire State Building opened as the world\'s tallest structure','The Star-Spangled Banner officially became the US national anthem'],song:'Dream a Little Dream of Me',movie:'Frankenstein',bread:'$0.08',gas:'$0.18',house:'$5,200',fun:'Alka-Seltzer was introduced. "Plop, plop, fizz, fizz!"'},
+  1932:{events:['Franklin D. Roosevelt won the presidency in a landslide','Amelia Earhart became the first woman to fly solo across the Atlantic'],song:'Brother Can You Spare a Dime',movie:'Grand Hotel',bread:'$0.07',gas:'$0.18',house:'$4,900',fun:'Fritos corn chips were invented in San Antonio, Texas.'},
+  1933:{events:['President Roosevelt launched the New Deal to fight the Depression','Prohibition ended -- it was legal to drink again!'],song:'Stormy Weather',movie:'42nd Street',bread:'$0.07',gas:'$0.18',house:'$4,500',fun:'The first drive-in movie theater opened in Camden, New Jersey.'},
+  1934:{events:['The Dust Bowl began devastating the Great Plains','Bonnie and Clyde were killed in a police ambush'],song:'On the Good Ship Lollipop',movie:'It Happened One Night',bread:'$0.08',gas:'$0.19',house:'$4,700',fun:'Donald Duck made his first appearance in a Disney cartoon.'},
+  1935:{events:['Social Security was signed into law by President Roosevelt','The first "beer can" was introduced'],song:'Cheek to Cheek (Fred Astaire)',movie:'Mutiny on the Bounty',bread:'$0.08',gas:'$0.19',house:'$4,800',fun:'Alcoholics Anonymous was founded in Akron, Ohio.'},
+  1936:{events:['Jesse Owens won four gold medals at the Berlin Olympics','Margaret Mitchell published Gone with the Wind'],song:'Pennies from Heaven (Bing Crosby)',movie:'Modern Times (Charlie Chaplin)',bread:'$0.08',gas:'$0.19',house:'$4,900',fun:'The first pop-up toaster became widely available.'},
+  1937:{events:['The Golden Gate Bridge opened in San Francisco','The Hindenburg airship disaster was broadcast live on radio'],song:'The Merry-Go-Round Broke Down',movie:'Snow White and the Seven Dwarfs',bread:'$0.09',gas:'$0.20',house:'$5,100',fun:'Spam (the canned meat) was introduced and became a wartime staple.'},
+  1938:{events:['War of the Worlds radio broadcast caused widespread panic','Wrong-Way Corrigan flew from New York to Ireland -- by accident!'],song:'A-Tisket A-Tasket (Ella Fitzgerald)',movie:'You Can\'t Take It with You',bread:'$0.09',gas:'$0.20',house:'$5,200',fun:'Teflon was accidentally invented by a DuPont chemist.'},
+  1939:{events:['World War II began when Germany invaded Poland','The Wizard of Oz and Gone with the Wind premiered in theaters'],song:'Over the Rainbow (Judy Garland)',movie:'Gone with the Wind',bread:'$0.08',gas:'$0.19',house:'$5,300',fun:'The first FM radio station broadcast went on the air.'},
+  1940:{events:['Winston Churchill became Prime Minister of Britain','Nylon stockings went on sale for the first time'],song:'When You Wish Upon a Star',movie:'The Grapes of Wrath',bread:'$0.08',gas:'$0.18',house:'$5,500',fun:'McDonald\'s was founded as a barbecue drive-in in California.'},
+  1941:{events:['Japan attacked Pearl Harbor; the US entered World War II','The first commercial television broadcast aired in the US'],song:'Chattanooga Choo Choo (Glenn Miller)',movie:'Citizen Kane',bread:'$0.08',gas:'$0.19',house:'$5,600',fun:'Mount Rushmore was completed after 14 years of work.'},
+  1942:{events:['The Manhattan Project began to develop an atomic bomb','Disney\'s Bambi was released in theaters'],song:'White Christmas (Bing Crosby -- best-selling single of all time)',movie:'Casablanca',bread:'$0.09',gas:'$0.20',house:'$5,800',fun:'Bing Crosby\'s White Christmas became the best-selling single in history.'},
+  1943:{events:['Allied forces invaded Sicily and Italy','Rodgers and Hammerstein\'s Oklahoma! opened on Broadway'],song:'Oh What a Beautiful Mornin\'',movie:'For Whom the Bell Tolls',bread:'$0.09',gas:'$0.21',house:'$5,900',fun:'The jitterbug was the most popular dance in America.'},
+  1944:{events:['D-Day -- Allied forces landed on the beaches of Normandy','The GI Bill was signed to help returning veterans'],song:'Swinging on a Star (Bing Crosby)',movie:'Going My Way',bread:'$0.09',gas:'$0.21',house:'$6,000',fun:'Smokey Bear became the symbol of wildfire prevention.'},
+  1945:{events:['World War II ended -- Germany surrendered in May, Japan in August','The United Nations was founded to promote world peace'],song:'Sentimental Journey (Doris Day)',movie:'Anchors Aweigh',bread:'$0.09',gas:'$0.21',house:'$6,200',fun:'Tupperware was invented -- making leftovers much easier to store!'},
+  1946:{events:['The first meeting of the United Nations General Assembly was held','Baby boom began as soldiers returned home from the war'],song:'The Old Lamplighter',movie:'The Best Years of Our Lives',bread:'$0.10',gas:'$0.21',house:'$6,500',fun:'The first microwave oven was invented -- it was the size of a refrigerator.'},
+  1947:{events:['The Cold War began between the US and Soviet Union','Chuck Yeager broke the sound barrier in the Bell X-1'],song:'Near You',movie:'Gentleman\'s Agreement',bread:'$0.12',gas:'$0.23',house:'$7,200',fun:'The first Polaroid camera was demonstrated -- instant photos!'},
+  1948:{events:['Israel became an independent state','Transistor was invented at Bell Labs, changing technology forever'],song:'Buttons and Bows',movie:'Hamlet',bread:'$0.14',gas:'$0.25',house:'$7,700',fun:'The first McDonald\'s drive-thru style restaurant opened.'},
+  1949:{events:['NATO was established as a military alliance','The Soviet Union successfully tested its first atomic bomb'],song:'Riders in the Sky',movie:'All the King\'s Men',bread:'$0.14',gas:'$0.26',house:'$7,900',fun:'The first Scrabble game sets went on sale and sold out immediately.'},
+  1950:{events:['The Korean War began','Peanuts comic strip by Charles Schulz made its debut'],song:'Tennessee Waltz (Patti Page)',movie:'All About Eve',bread:'$0.14',gas:'$0.27',house:'$8,450',fun:'Minute Rice was introduced -- cooking just got a lot faster!'},
+  1951:{events:['The first color television broadcast aired in the US','I Love Lucy premiered on CBS television'],song:'How High the Moon',movie:'An American in Paris',bread:'$0.16',gas:'$0.27',house:'$9,000',fun:'UNIVAC, the first commercial computer, was installed.'},
+  1952:{events:['Eisenhower was elected president','The first hydrogen bomb was tested by the United States'],song:'Blue Tango',movie:'The Greatest Show on Earth',bread:'$0.16',gas:'$0.27',house:'$9,050',fun:'Polio vaccine trials began, offering hope for millions.'},
+  1953:{events:['Edmund Hillary and Tenzing Norgay climbed Mount Everest','The Korean War ended with an armistice agreement'],song:'Song from Moulin Rouge',movie:'Roman Holiday',bread:'$0.16',gas:'$0.29',house:'$9,500',fun:'The first issue of Playboy magazine was published.'},
+  1954:{events:['The Supreme Court ruled school segregation unconstitutional in Brown v. Board of Education','Roger Bannister ran the first sub-4-minute mile'],song:'Sh-Boom',movie:'On the Waterfront',bread:'$0.17',gas:'$0.29',house:'$10,000',fun:'Sports Illustrated was first published.'},
+  1955:{events:['Rosa Parks refused to give up her seat on a Montgomery bus','Disneyland opened in Anaheim, California'],song:'Rock Around the Clock (Bill Haley)',movie:'Marty',bread:'$0.18',gas:'$0.29',house:'$10,700',fun:'The Guinness Book of World Records was published for the first time.'},
+  1956:{events:['Elvis Presley\'s Heartbreak Hotel became his first #1 hit','President Eisenhower signed the Interstate Highway Act'],song:'Don\'t Be Cruel / Hound Dog (Elvis)',movie:'Around the World in 80 Days',bread:'$0.18',gas:'$0.30',house:'$11,700',fun:'The first trans-Atlantic telephone cable was laid.'},
+  1957:{events:['The Soviet Union launched Sputnik -- the first satellite in space','Congress passed the first civil rights legislation since Reconstruction'],song:'All Shook Up (Elvis Presley)',movie:'The Bridge on the River Kwai',bread:'$0.19',gas:'$0.30',house:'$12,200',fun:'The word "frisbee" was trademarked.'},
+  1958:{events:['NASA was established to lead the US space program','The USS Nautilus became the first submarine to travel under the North Pole'],song:'Volare',movie:'Gigi',bread:'$0.19',gas:'$0.31',house:'$12,800',fun:'The hula hoop became a nationwide craze -- 25 million sold in 4 months!'},
+  1959:{events:['Alaska and Hawaii became the 49th and 50th US states','Fidel Castro took power in Cuba'],song:'Mack the Knife (Bobby Darin)',movie:'Ben-Hur',bread:'$0.20',gas:'$0.30',house:'$13,400',fun:'The Barbie doll made its debut at the American Toy Fair.'},
+  1960:{events:['John F. Kennedy was elected the 35th President','The first televised presidential debate was watched by 70 million Americans'],song:'Theme from A Summer Place',movie:'The Apartment',bread:'$0.20',gas:'$0.31',house:'$14,500',fun:'The first birth control pill received FDA approval.'},
+};
+
+function generateNewspaper() {
+  var name = (document.getElementById('bdnews-name').value.trim()) || 'Our Honored Resident';
+  var year = parseInt(document.getElementById('bdnews-year').value)||0;
+  var date = document.getElementById('bdnews-date').value.trim();
+  var age  = document.getElementById('bdnews-age').value.trim();
+
+  if (!year || year < 1900 || year > 1970) { alert('Please enter a birth year between 1900 and 1970.'); return; }
+  var data = ON_THIS_DAY[year];
+  if (!data) { alert('We don\'t have historical data for '+year+'. Try a year between 1910 and 1960.'); return; }
+
+  var dateStr = date ? (date + ', ' + year) : ('The Year ' + year);
+  var ageStr = age ? (' &mdash; Celebrating ' + age + ' Years!') : '';
+
+  var events = data.events.map(function(e){ return '<div style="padding:10px 0;border-bottom:1px solid #e0d5c0;"><div style="font-size:15px;color:#1F2937;line-height:1.5;">&#10148; '+e+'</div></div>'; }).join('');
+
+  var preview = document.getElementById('bdnews-preview');
+
+  var html2 = '<div style="max-width:700px;font-family:Georgia,serif;">'
+    // Newspaper masthead
+    +'<div style="text-align:center;border-bottom:4px double #1F2937;border-top:4px double #1F2937;padding:16px 0;margin-bottom:0;">'
+    +'<div style="font-size:11px;letter-spacing:3px;color:#6B7280;text-transform:uppercase;margin-bottom:4px;">Empower Life 365 Special Edition</div>'
+    +'<div style="font-size:44px;font-weight:900;color:#1F2937;font-family:Georgia,serif;line-height:1;">The Birthday Gazette</div>'
+    +'<div style="font-size:13px;color:#6B7280;margin-top:4px;">'+dateStr+ageStr+'</div>'
+    +'</div>'
+    // Banner headline
+    +'<div style="background:#1F2937;color:#fff;text-align:center;padding:18px 20px;margin-bottom:16px;">'
+    +'<div style="font-size:13px;letter-spacing:2px;opacity:0.7;margin-bottom:4px;">THIS EDITION CELEBRATES</div>'
+    +'<div style="font-size:32px;font-weight:900;">'+name+'</div>'
+    +'<div style="font-size:14px;opacity:0.8;margin-top:4px;">Born in '+year+(date ? ' &middot; '+date : '')+'</div>'
+    +'</div>'
+    // 3 columns
+    +'<div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">'
+    // Left: events
+    +'<div>'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#6B7280;text-transform:uppercase;border-bottom:2px solid #1F2937;padding-bottom:4px;margin-bottom:12px;">The Year in Headlines &mdash; '+year+'</div>'
+    +events
+    +'<div style="margin-top:16px;">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#6B7280;text-transform:uppercase;border-bottom:2px solid #1F2937;padding-bottom:4px;margin-bottom:10px;">On the Music Charts</div>'
+    +'<div style="font-size:15px;color:#374151;padding:8px 0;">&#127925; <i>'+data.song+'</i></div>'
+    +'</div>'
+    +'<div style="margin-top:16px;">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#6B7280;text-transform:uppercase;border-bottom:2px solid #1F2937;padding-bottom:4px;margin-bottom:10px;">At the Movies</div>'
+    +'<div style="font-size:15px;color:#374151;padding:8px 0;">&#127916; <i>'+data.movie+'</i></div>'
+    +'</div>'
+    +'</div>'
+    // Right: prices + fun fact
+    +'<div>'
+    +'<div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px;margin-bottom:16px;">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#92400E;text-transform:uppercase;margin-bottom:10px;">What Things Cost in '+year+'</div>'
+    +'<div style="font-size:13px;color:#374151;line-height:2;">&#127812; Loaf of bread: <b>'+data.bread+'</b><br>&#9981; Gallon of gas: <b>'+data.gas+'</b><br>&#127968; Average house: <b>'+data.house+'</b></div>'
+    +'</div>'
+    +'<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:14px;">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#166534;text-transform:uppercase;margin-bottom:8px;">Did You Know?</div>'
+    +'<div style="font-size:13px;color:#374151;line-height:1.6;">'+data.fun+'</div>'
+    +'</div>'
+    +'<div style="margin-top:16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:14px;">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#1D4ED8;text-transform:uppercase;margin-bottom:8px;">Happy Birthday, '+name+'!</div>'
+    +'<div style="font-size:13px;color:#374151;line-height:1.6;">You were born into a remarkable world. '+(age?'All '+age+' years of your life have been a gift to everyone who knows you. ':'')+'We are so glad you are here!</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>' // end grid
+    +'<div style="text-align:center;margin-top:20px;padding-top:12px;border-top:2px solid #1F2937;font-size:11px;color:#aaa;">Empower Life 365 &middot; empowerlife365.app</div>'
+    +'</div>';
+
+  if (preview) { preview.style.display=''; preview.innerHTML = html2
+    +'<div style="margin-top:16px;">'
+    +'<button onclick="printNewspaperDirect()" class="btn" style="background:#1F2937;color:#fff;margin-right:10px;">&#128424; Print The Birthday Gazette</button>'
+    +'</div>'; }
+
+  window.scrollTo({top: document.getElementById('bdnews-preview').offsetTop - 20, behavior:'smooth'});
+}
+
+function printNewspaperDirect() {
+  var preview = document.getElementById('bdnews-preview');
+  if (!preview) return;
+  var content = preview.querySelector('div').outerHTML;
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>The Birthday Gazette</title>'
+    +'<style>@media print{body{margin:0;}}body{font-family:Georgia,serif;margin:30px;max-width:700px;}</style>'
+    +'</head><body>'+content+'<scr'+'ipt>window.onload=function(){window.print()};<'+'/scr'+'ipt></body></html>');
   w.document.close();
 }
 
