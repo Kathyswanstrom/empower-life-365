@@ -1134,6 +1134,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="crafts" id="crafts-tab" onclick="switchTab('crafts')">🎨 Arts & Crafts</button>
     <button class="tab-btn" data-tab="games" id="games-tab" onclick="switchTab('games')">🎮 Games</button>
     <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
+    <button class="tab-btn" data-tab="family" id="family-tab" onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
@@ -2975,6 +2976,223 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 
 </section>
+<section class="tab-panel" id="panel-family">
+  <style>
+    .fc-tab { background:var(--gray-100); border:none; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-600); transition:all 0.15s; }
+    .fc-tab:hover { background:var(--gray-200); }
+    .fc-tab.fc-tab-active { background:var(--navy); color:#fff; }
+    .fc-panel { display:none; }
+    .fc-panel.fc-panel-active { display:block; }
+    .fc-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    .fc-form-grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px; }
+    .pm-card { border:1px solid var(--gray-200); border-radius:10px; padding:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+    .wl-card { border:1px solid var(--gray-200); border-radius:10px; padding:14px; margin-bottom:10px; }
+    .wl-tag { display:inline-block; background:var(--gray-100); border-radius:12px; padding:2px 10px; font-size:12px; margin:2px; }
+  </style>
+
+  <div class="panel-header">
+    <h2>👨‍👩‍👧 Family Connection</h2>
+    <p class="panel-subtitle">Communicate with families — personalized letters, newsletters, invitations &amp; more</p>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+    <button class="fc-tab fc-tab-active" data-fc="letter" onclick="switchFCTab('letter')">📝 Update Letter</button>
+    <button class="fc-tab" data-fc="fnews" onclick="switchFCTab('fnews')">📰 Family Newsletter</button>
+    <button class="fc-tab" data-fc="invites" onclick="switchFCTab('invites')">🎟️ Invitations</button>
+    <button class="fc-tab" data-fc="moments" onclick="switchFCTab('moments')">📸 Photo Moments</button>
+    <button class="fc-tab" data-fc="wishlist" onclick="switchFCTab('wishlist')">🎁 Wish Lists</button>
+  </div>
+
+  <!-- ── UPDATE LETTER ─────────────────────────────────────── -->
+  <div id="fc-letter" class="fc-panel fc-panel-active">
+    <div class="section-card">
+      <h3 style="margin-bottom:6px;">📝 Resident Update Letter</h3>
+      <p style="color:var(--gray-500);margin-bottom:20px;font-size:14px;">Generate a personalized letter for a resident's family — print or copy as email.</p>
+      <div class="fc-form-grid">
+        <div><label class="form-label">Resident Name</label><input class="form-input" id="fc-res-name" placeholder="e.g. Margaret Johnson"></div>
+        <div><label class="form-label">Room / Apt</label><input class="form-input" id="fc-res-room" placeholder="e.g. 214B"></div>
+        <div><label class="form-label">Month &amp; Year</label><input class="form-input" type="month" id="fc-letter-month"></div>
+        <div><label class="form-label">Staff / Activity Director</label><input class="form-input" id="fc-staff-name" placeholder="e.g. Sarah M."></div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label class="form-label">Include in Letter</label>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="fc-inc-activities" checked> Activities &amp; Programs</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="fc-inc-moments" checked> Special Moments</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="fc-inc-birthday"> Birthday / Anniversary</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="fc-inc-upcoming" checked> Upcoming Events</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="fc-inc-wellness"> Wellness Highlights</label>
+        </div>
+      </div>
+      <div class="fc-form-grid">
+        <div><label class="form-label">Activities This Month</label><textarea class="form-input" id="fc-activities-text" rows="3" placeholder="e.g. Bingo on Tuesdays, Painting class, Garden Walk..."></textarea></div>
+        <div><label class="form-label">Special Moments / Highlights</label><textarea class="form-input" id="fc-moments-text" rows="3" placeholder="e.g. Won trivia night, Made a beautiful painting..."></textarea></div>
+        <div><label class="form-label">Upcoming Events to Share</label><textarea class="form-input" id="fc-upcoming-text" rows="2" placeholder="e.g. Ice Cream Social June 15, Family BBQ June 28..."></textarea></div>
+        <div><label class="form-label">Personal Note from Staff</label><textarea class="form-input" id="fc-personal-note" rows="2" placeholder="A warm personal message to the family..."></textarea></div>
+        <div><label class="form-label">Birthday / Anniversary Note</label><textarea class="form-input" id="fc-birthday-text" rows="2" placeholder="e.g. Celebrated her 84th birthday with cake and singing!"></textarea></div>
+        <div><label class="form-label">Wellness Highlights</label><textarea class="form-input" id="fc-wellness-text" rows="2" placeholder="e.g. Participated in chair yoga, enjoyed daily walks..."></textarea></div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label class="form-label">Letter Tone</label>
+        <div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="fc-tone" value="warm" checked> 💛 Warm &amp; Personal</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="fc-tone" value="professional"> 📋 Professional</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="fc-tone" value="brief"> ⚡ Brief Update</label>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="printFamilyLetter()">🖨️ Print Letter</button>
+        <button class="btn btn-secondary" onclick="copyEmailLetter()">📋 Copy for Email</button>
+      </div>
+      <div id="fc-email-copy-box" style="display:none;margin-top:16px;">
+        <label class="form-label">Email-Ready Text — click inside to select all</label>
+        <textarea class="form-input" id="fc-email-text" rows="14" onclick="this.select()" style="font-family:monospace;font-size:12px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FAMILY NEWSLETTER ─────────────────────────────────── -->
+  <div id="fc-fnews" class="fc-panel">
+    <div class="section-card">
+      <h3 style="margin-bottom:6px;">📰 Family Newsletter</h3>
+      <p style="color:var(--gray-500);margin-bottom:20px;font-size:14px;">A family-facing newsletter with community highlights, upcoming events, and resident news.</p>
+      <div class="fc-form-grid3">
+        <div><label class="form-label">Community Name</label><input class="form-input" id="fn-community" placeholder="e.g. Sunrise Gardens"></div>
+        <div><label class="form-label">Newsletter Month</label><input class="form-input" type="month" id="fn-month"></div>
+        <div><label class="form-label">From / Editor</label><input class="form-input" id="fn-editor" placeholder="e.g. The Activity Team"></div>
+      </div>
+      <div class="fc-form-grid">
+        <div><label class="form-label">Welcome Message</label><textarea class="form-input" id="fn-welcome" rows="3" placeholder="A warm opening note to all families..."></textarea></div>
+        <div><label class="form-label">Activity Highlights This Month</label><textarea class="form-input" id="fn-highlights" rows="3" placeholder="What residents have been enjoying..."></textarea></div>
+        <div><label class="form-label">Upcoming Events</label><textarea class="form-input" id="fn-events" rows="3" placeholder="Events families may want to attend or know about..."></textarea></div>
+        <div><label class="form-label">Resident Spotlight</label><textarea class="form-input" id="fn-spotlight" rows="3" placeholder="Celebrate a resident's milestone or achievement..."></textarea></div>
+        <div><label class="form-label">Staff Corner</label><textarea class="form-input" id="fn-staffcorner" rows="2" placeholder="A personal note from the team..."></textarea></div>
+        <div><label class="form-label">Tip / Quote of the Month</label><textarea class="form-input" id="fn-tip" rows="2" placeholder="An inspiring quote or seasonal activity idea..."></textarea></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="printFamilyNewsletter()">🖨️ Print Newsletter</button>
+        <button class="btn btn-secondary" onclick="copyFamilyNewsletter()">📋 Copy for Email</button>
+      </div>
+      <div id="fn-email-box" style="display:none;margin-top:16px;">
+        <label class="form-label">Email-Ready Text — click inside to select all</label>
+        <textarea class="form-input" id="fn-email-text" rows="16" onclick="this.select()" style="font-family:monospace;font-size:12px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INVITATIONS ───────────────────────────────────────── -->
+  <div id="fc-invites" class="fc-panel">
+    <div class="section-card">
+      <h3 style="margin-bottom:6px;">🎟️ Event Invitations</h3>
+      <p style="color:var(--gray-500);margin-bottom:20px;font-size:14px;">Create beautiful printable invitations for families to join special events.</p>
+      <div class="fc-form-grid">
+        <div><label class="form-label">Event Name</label><input class="form-input" id="inv-name" placeholder="e.g. Summer Family BBQ"></div>
+        <div><label class="form-label">Date</label><input class="form-input" type="date" id="inv-date"></div>
+        <div><label class="form-label">Time</label><input class="form-input" id="inv-time" placeholder="e.g. 2:00 PM – 4:00 PM"></div>
+        <div><label class="form-label">Location</label><input class="form-input" id="inv-location" placeholder="e.g. Garden Patio, Room 101"></div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label class="form-label">Event Description</label>
+        <textarea class="form-input" id="inv-desc" rows="3" placeholder="Join us for a wonderful afternoon of food, music, and fun with your loved one!"></textarea>
+      </div>
+      <div class="fc-form-grid">
+        <div><label class="form-label">RSVP By</label><input class="form-input" id="inv-rsvp-date" placeholder="e.g. June 20th"></div>
+        <div><label class="form-label">RSVP Contact</label><input class="form-input" id="inv-rsvp-contact" placeholder="e.g. Call (555) 123-4567 or ask at front desk"></div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label class="form-label">Invitation Style</label>
+        <div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="inv-style" value="formal" checked> 🎩 Formal &amp; Elegant</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="inv-style" value="casual"> 🌸 Warm &amp; Casual</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="inv-style" value="festive"> 🎉 Festive &amp; Fun</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="inv-style" value="seasonal"> 🍂 Seasonal</label>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="printInvitation()">🖨️ Print Invitation</button>
+        <button class="btn btn-secondary" onclick="copyInvitationEmail()">📋 Copy for Email</button>
+      </div>
+      <div id="inv-email-box" style="display:none;margin-top:16px;">
+        <label class="form-label">Email-Ready Text — click inside to select all</label>
+        <textarea class="form-input" id="inv-email-text" rows="10" onclick="this.select()" style="font-family:monospace;font-size:12px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PHOTO MOMENTS ─────────────────────────────────────── -->
+  <div id="fc-moments" class="fc-panel">
+    <div style="display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;">
+      <div class="section-card">
+        <h3 style="margin-bottom:16px;">📸 Save a Moment</h3>
+        <div style="margin-bottom:12px;"><label class="form-label">Resident Name</label><input class="form-input" id="pm-resident" placeholder="Resident's name"></div>
+        <div style="margin-bottom:12px;"><label class="form-label">What Happened?</label><textarea class="form-input" id="pm-what" rows="3" placeholder="e.g. Painted a beautiful watercolor landscape today!"></textarea></div>
+        <div class="fc-form-grid" style="margin-bottom:12px;">
+          <div><label class="form-label">Date</label><input class="form-input" type="date" id="pm-date"></div>
+          <div><label class="form-label">Noted By</label><input class="form-input" id="pm-staff" placeholder="Staff name"></div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label class="form-label">Card Style</label>
+          <select class="form-input" id="pm-style">
+            <option value="celebrate">🎉 Celebrating You!</option>
+            <option value="shining">⭐ You're Shining!</option>
+            <option value="caught">👏 Caught Being Great</option>
+            <option value="golden">💛 A Golden Moment</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%;" onclick="saveMoment()">💾 Save Moment</button>
+      </div>
+      <div class="section-card">
+        <h3 style="margin-bottom:16px;">Saved Moments</h3>
+        <div id="pm-list"><p style="color:var(--gray-400);text-align:center;padding:40px 0;">No moments saved yet. Add one on the left!</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WISH LISTS ────────────────────────────────────────── -->
+  <div id="fc-wishlist" class="fc-panel">
+    <div style="display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;">
+      <div class="section-card">
+        <h3 style="margin-bottom:16px;">🎁 Create Wish List</h3>
+        <div style="margin-bottom:12px;"><label class="form-label">Resident Name</label><input class="form-input" id="wl-resident" placeholder="Resident's name"></div>
+        <div style="margin-bottom:12px;"><label class="form-label">Room / Apt</label><input class="form-input" id="wl-room" placeholder="e.g. 214B"></div>
+        <div style="margin-bottom:12px;">
+          <label class="form-label">Occasion</label>
+          <select class="form-input" id="wl-occasion">
+            <option value="Birthday">🎂 Birthday</option>
+            <option value="Holiday">🎄 Holiday</option>
+            <option value="Just Because">💛 Just Because</option>
+            <option value="Anniversary">💍 Anniversary</option>
+            <option value="Valentine's Day">💝 Valentine's Day</option>
+          </select>
+        </div>
+        <div style="margin-bottom:12px;"><label class="form-label">Occasion Date</label><input class="form-input" type="date" id="wl-date"></div>
+        <div style="margin-bottom:8px;">
+          <label class="form-label">Category</label>
+          <select class="form-input" id="wl-item-cat" style="font-size:13px;">
+            <option value="Comfort">🛋️ Comfort &amp; Home</option>
+            <option value="Hobby">🎨 Hobby &amp; Fun</option>
+            <option value="Treats">🍬 Treats &amp; Snacks</option>
+            <option value="Care">🌸 Personal Care</option>
+            <option value="Entertainment">📺 Entertainment</option>
+            <option value="Clothing">👕 Clothing</option>
+            <option value="Other">🎁 Other</option>
+          </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px;">
+          <input class="form-input" id="wl-item-input" placeholder="Add an item..." onkeydown="if(event.key==='Enter')addWishItem()">
+          <button class="btn btn-secondary" onclick="addWishItem()">+ Add</button>
+        </div>
+        <div id="wl-current-items" style="min-height:50px;border:1px solid var(--gray-200);border-radius:8px;padding:8px;margin-bottom:12px;font-size:13px;"><span style="color:var(--gray-400);">Items appear here as you add them</span></div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:8px;" onclick="saveWishList()">💾 Save Wish List</button>
+        <button class="btn btn-secondary" style="width:100%;" onclick="clearWishForm()">🗑️ Clear Form</button>
+      </div>
+      <div class="section-card">
+        <h3 style="margin-bottom:16px;">Saved Wish Lists</h3>
+        <div id="wl-saved-lists"><p style="color:var(--gray-400);text-align:center;padding:40px 0;">No wish lists yet. Create one on the left!</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
@@ -3574,6 +3792,7 @@ function switchTab(name) {
   if (name === 'punchcard') renderPunchCardsPanel();
   if (name === 'biggames') renderBigGames();
   if (name === 'travel') initTravel();
+  if (name === 'family') initFamily();
   if (name === 'games') initGames();
   if (name === 'crafts') initCrafts();
   if (name === 'food') initFood();
@@ -15412,5 +15631,458 @@ function printNewspaperDirect() {
 
 </script>
 
+
+<script>
+var FC_MOMENTS_KEY = 'anchor_engage_v3_fc_moments';
+var FC_WISHLISTS_KEY = 'anchor_engage_v3_fc_wishlists';
+var fcWishItems = [];
+
+function initFamily() {
+  var today = new Date();
+  var monthStr = today.toISOString().slice(0,7);
+  var dateStr = today.toISOString().slice(0,10);
+  var el;
+  el = document.getElementById('fc-letter-month'); if(el && !el.value) el.value = monthStr;
+  el = document.getElementById('fn-month'); if(el && !el.value) el.value = monthStr;
+  el = document.getElementById('pm-date'); if(el && !el.value) el.value = dateStr;
+  el = document.getElementById('inv-date'); if(el && !el.value) el.value = dateStr;
+  try {
+    var profile = lsGet('communityProfile', {});
+    var cname = (profile && profile.name) ? profile.name : (lsGet('communityName','') || '');
+    el = document.getElementById('fn-community'); if(el && !el.value && cname) el.value = cname;
+  } catch(e){}
+  renderMoments();
+  renderWishLists();
+}
+
+function switchFCTab(tab) {
+  document.querySelectorAll('.fc-tab').forEach(function(b){ b.classList.toggle('fc-tab-active', b.dataset.fc === tab); });
+  document.querySelectorAll('.fc-panel').forEach(function(p){ p.classList.toggle('fc-panel-active', p.id === 'fc-' + tab); });
+}
+
+// ── helpers ────────────────────────────────────────────────────────────────
+function fcVal(id){ var el=document.getElementById(id); return el ? el.value.trim() : ''; }
+function fcChecked(id){ var el=document.getElementById(id); return el ? el.checked : false; }
+function fcMonthLabel(val){
+  if(!val) return new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  var d = new Date(val+'-01');
+  return d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+}
+function fcDateLabel(val){
+  if(!val) return '';
+  var d = new Date(val+'T00:00:00');
+  return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+}
+function fcFirstName(full){ return (full||'').split(' ')[0] || full || 'Your Loved One'; }
+function fcLastName(full){ var p=(full||'').trim().split(' '); return p.length>1 ? p[p.length-1] : full || ''; }
+
+// ── PRINT helpers ──────────────────────────────────────────────────────────
+function fcPrintStyles(extra){
+  return '<style>*{box-sizing:border-box;}body{font-family:Georgia,serif;margin:0;padding:32px;color:#222;max-width:720px;margin:0 auto;}h1{font-size:22px;margin:0 0 4px;}h2{font-size:17px;margin:16px 0 6px;}h3{font-size:15px;margin:12px 0 4px;}p{margin:0 0 10px;line-height:1.6;}ul{margin:4px 0 10px;padding-left:20px;}li{margin-bottom:4px;}.header{border-bottom:3px solid #1a3a5c;padding-bottom:12px;margin-bottom:24px;}.footer{border-top:1px solid #ccc;margin-top:24px;padding-top:10px;font-size:12px;color:#666;}.section{margin-bottom:18px;}.highlight{background:#fffbea;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin-bottom:18px;}@media print{body{padding:20px;}}' + (extra||'') + '<\/style>';
+}
+
+// ── FAMILY LETTER ──────────────────────────────────────────────────────────
+function buildLetterText(forEmail) {
+  var name = fcVal('fc-res-name') || 'Your Loved One';
+  var room = fcVal('fc-res-room');
+  var monthVal = fcVal('fc-letter-month');
+  var staff = fcVal('fc-staff-name') || 'Your Activity Team';
+  var tone = (document.querySelector('input[name="fc-tone"]:checked')||{value:'warm'}).value;
+  var monthDisplay = fcMonthLabel(monthVal);
+  var firstName = fcFirstName(name);
+  var lastName = fcLastName(name);
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Our Community');
+  var today = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  var greeting, opening, closing;
+  if(tone==='warm'){
+    greeting = 'Dear ' + (lastName ? lastName+' Family' : 'Family') + ',';
+    opening = 'We wanted to take a moment to share some wonderful updates about '+name+' here at '+community+'. It has been such a joy having '+firstName+' with us this month, and we hope this letter brings a smile to your face!';
+    closing = 'We are so grateful to have '+firstName+' as part of our family here at '+community+'. Please know they are cherished, valued, and celebrated every single day. We encourage you to visit whenever you can — '+firstName+' always loves to see a familiar face!';
+  } else if(tone==='professional'){
+    greeting = 'Dear ' + (lastName ? lastName+' Family' : 'Family') + ',';
+    opening = 'Please find below a summary of activities and updates for '+name+(room?' (Room '+room+')':'')+' for the month of '+monthDisplay+'.';
+    closing = 'We remain committed to providing the highest quality of care and engagement. Please do not hesitate to contact us with any questions or to schedule a visit.';
+  } else {
+    greeting = 'Hi ' + (lastName ? lastName+' Family' : 'there') + '!';
+    opening = 'Quick update on '+firstName+' — here\'s what they\'ve been up to in '+monthDisplay+'!';
+    closing = 'Thanks for trusting us with '+firstName+'\'s care. We love having them here! Don\'t hesitate to reach out anytime.';
+  }
+
+  var br = forEmail ? '\n' : '<br>';
+  var sections = [];
+  if(fcChecked('fc-inc-activities') && fcVal('fc-activities-text'))
+    sections.push({title:'Activities & Programs This Month', body: fcVal('fc-activities-text')});
+  if(fcChecked('fc-inc-moments') && fcVal('fc-moments-text'))
+    sections.push({title:'Special Moments & Highlights', body: fcVal('fc-moments-text')});
+  if(fcChecked('fc-inc-birthday') && fcVal('fc-birthday-text'))
+    sections.push({title:'Birthday / Anniversary Celebration', body: fcVal('fc-birthday-text')});
+  if(fcChecked('fc-inc-upcoming') && fcVal('fc-upcoming-text'))
+    sections.push({title:'Upcoming Events', body: fcVal('fc-upcoming-text')});
+  if(fcChecked('fc-inc-wellness') && fcVal('fc-wellness-text'))
+    sections.push({title:'Wellness Highlights', body: fcVal('fc-wellness-text')});
+  var personal = fcVal('fc-personal-note');
+
+  if(forEmail){
+    var lines = [today, '', greeting, '', opening, ''];
+    sections.forEach(function(s){ lines.push('── '+s.title+' ──'); lines.push(s.body); lines.push(''); });
+    if(personal){ lines.push('── A Personal Note from '+staff+' ──'); lines.push(personal); lines.push(''); }
+    lines.push(closing);
+    lines.push(''); lines.push('Warmly,'); lines.push(staff); lines.push(community);
+    return lines.join('\n');
+  } else {
+    var html2 = '';
+    sections.forEach(function(s){
+      html2 += '<div class="section"><h3>'+s.title+'</h3><p>'+s.body.replace(/\n/g,'<br>')+'</p></div>';
+    });
+    if(personal) html2 += '<div class="highlight"><h3>A Personal Note from '+staff+'</h3><p>'+personal.replace(/\n/g,'<br>')+'</p></div>';
+    return {greeting:greeting, opening:opening, closing:closing, sections:html2, community:community, staff:staff, today:today, monthDisplay:monthDisplay, name:name, room:room};
+  }
+}
+
+function printFamilyLetter(){
+  var d = buildLetterText(false);
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = d.community;
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Family Update Letter</title>'+fcPrintStyles('')+'</head><body>');
+  w.document.write('<div class="header"><h1>'+community+'</h1><p style="color:#666;font-size:13px;">Family Update Letter &mdash; '+d.monthDisplay+'</p>');
+  if(d.room) w.document.write('<p style="color:#888;font-size:12px;">Re: '+d.name+' &mdash; Room '+d.room+'</p>');
+  w.document.write('</div>');
+  w.document.write('<p style="color:#888;font-size:13px;margin-bottom:16px;">'+d.today+'</p>');
+  w.document.write('<p><strong>'+d.greeting+'</strong></p>');
+  w.document.write('<p>'+d.opening+'</p>');
+  w.document.write(d.sections);
+  w.document.write('<p>'+d.closing+'</p>');
+  w.document.write('<div class="footer">Warmly,<br><strong>'+d.staff+'</strong><br>'+community+'</div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+function copyEmailLetter(){
+  var text = buildLetterText(true);
+  document.getElementById('fc-email-text').value = text;
+  document.getElementById('fc-email-copy-box').style.display = 'block';
+  document.getElementById('fc-email-text').select();
+}
+
+// ── FAMILY NEWSLETTER ─────────────────────────────────────────────────────
+function buildNewsletterContent(forEmail){
+  var community = fcVal('fn-community') || 'Our Community';
+  var monthVal = fcVal('fn-month');
+  var editor = fcVal('fn-editor') || 'The Activity Team';
+  var monthDisplay = fcMonthLabel(monthVal);
+  var welcome = fcVal('fn-welcome');
+  var highlights = fcVal('fn-highlights');
+  var events = fcVal('fn-events');
+  var spotlight = fcVal('fn-spotlight');
+  var staffcorner = fcVal('fn-staffcorner');
+  var tip = fcVal('fn-tip');
+
+  if(forEmail){
+    var lines = ['═══════════════════════════════════════',
+      community.toUpperCase()+' — FAMILY NEWSLETTER',
+      monthDisplay, '═══════════════════════════════════════', ''];
+    if(welcome){ lines.push('Dear Families,'); lines.push(welcome); lines.push(''); }
+    if(highlights){ lines.push('── ACTIVITY HIGHLIGHTS ──'); lines.push(highlights); lines.push(''); }
+    if(events){ lines.push('── UPCOMING EVENTS ──'); lines.push(events); lines.push(''); }
+    if(spotlight){ lines.push('── RESIDENT SPOTLIGHT ──'); lines.push(spotlight); lines.push(''); }
+    if(staffcorner){ lines.push('── STAFF CORNER ──'); lines.push(staffcorner); lines.push(''); }
+    if(tip){ lines.push('── TIP OF THE MONTH ──'); lines.push(tip); lines.push(''); }
+    lines.push('With warmth,'); lines.push(editor); lines.push(community);
+    return lines.join('\n');
+  }
+  return {community:community, monthDisplay:monthDisplay, editor:editor,
+          welcome:welcome, highlights:highlights, events:events,
+          spotlight:spotlight, staffcorner:staffcorner, tip:tip};
+}
+
+function printFamilyNewsletter(){
+  var d = buildNewsletterContent(false);
+  var nlStyles = '.nl-header{background:#1a3a5c;color:#fff;padding:24px;text-align:center;margin:-32px -32px 24px;}.nl-header h1{color:#fff;font-size:24px;margin:0 0 4px;}.nl-header p{color:#a8c4e0;margin:0;font-size:14px;}.nl-col{column-count:2;column-gap:24px;}.nl-section{break-inside:avoid;margin-bottom:16px;border:1px solid #e5e7eb;border-radius:6px;padding:12px;}.nl-section h2{font-size:14px;color:#1a3a5c;border-bottom:1px solid #e5e7eb;padding-bottom:6px;margin-bottom:8px;}.nl-section p{font-size:13px;margin:0;}';
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Family Newsletter</title>'+fcPrintStyles(nlStyles)+'</head><body>');
+  w.document.write('<div class="nl-header"><h1>'+d.community+'</h1><p>Family Newsletter &mdash; '+d.monthDisplay+'</p></div>');
+  if(d.welcome) w.document.write('<p style="font-style:italic;margin-bottom:20px;">'+d.welcome.replace(/\n/g,'<br>')+'</p>');
+  w.document.write('<div class="nl-col">');
+  if(d.highlights) w.document.write('<div class="nl-section"><h2>🌟 Activity Highlights</h2><p>'+d.highlights.replace(/\n/g,'<br>')+'</p></div>');
+  if(d.events) w.document.write('<div class="nl-section"><h2>📅 Upcoming Events</h2><p>'+d.events.replace(/\n/g,'<br>')+'</p></div>');
+  if(d.spotlight) w.document.write('<div class="nl-section"><h2>⭐ Resident Spotlight</h2><p>'+d.spotlight.replace(/\n/g,'<br>')+'</p></div>');
+  if(d.staffcorner) w.document.write('<div class="nl-section"><h2>💬 Staff Corner</h2><p>'+d.staffcorner.replace(/\n/g,'<br>')+'</p></div>');
+  if(d.tip) w.document.write('<div class="nl-section"><h2>💡 Tip of the Month</h2><p>'+d.tip.replace(/\n/g,'<br>')+'</p></div>');
+  w.document.write('</div>');
+  w.document.write('<div class="footer">'+d.community+' &mdash; Prepared with care by '+d.editor+'</div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+function copyFamilyNewsletter(){
+  var text = buildNewsletterContent(true);
+  document.getElementById('fn-email-text').value = text;
+  document.getElementById('fn-email-box').style.display = 'block';
+  document.getElementById('fn-email-text').select();
+}
+
+// ── INVITATIONS ────────────────────────────────────────────────────────────
+var INV_STYLES_MAP = {
+  formal:   { bg:'#1a3a5c', accent:'#c9a84c', text:'#fff', border:'2px solid #c9a84c', label:'Formal & Elegant' },
+  casual:   { bg:'#fff8f0', accent:'#e07b54', text:'#333', border:'2px solid #e07b54', label:'Warm & Casual' },
+  festive:  { bg:'#fff0f6', accent:'#d63384', text:'#333', border:'2px solid #d63384', label:'Festive & Fun' },
+  seasonal: { bg:'#f0faf4', accent:'#2d7a4f', text:'#333', border:'2px solid #2d7a4f', label:'Seasonal' }
+};
+
+function printInvitation(){
+  var name = fcVal('inv-name') || 'Special Event';
+  var dateVal = fcVal('inv-date');
+  var time = fcVal('inv-time');
+  var location = fcVal('inv-location');
+  var desc = fcVal('inv-desc');
+  var rsvpDate = fcVal('inv-rsvp-date');
+  var rsvpContact = fcVal('inv-rsvp-contact');
+  var styleKey = (document.querySelector('input[name="inv-style"]:checked')||{value:'formal'}).value;
+  var s = INV_STYLES_MAP[styleKey] || INV_STYLES_MAP.formal;
+  var dateDisplay = dateVal ? fcDateLabel(dateVal) : '';
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Our Community');
+
+  var invCSS = 'body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f5f5;padding:20px;}.card{background:'+s.bg+';border:'+s.border+';border-radius:12px;padding:40px;max-width:560px;width:100%;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.12);}.card h1{color:'+s.accent+';font-size:28px;margin:0 0 8px;}.card .subtitle{color:'+(s.text==='#fff'?'rgba(255,255,255,0.8)':'#888')+';font-size:14px;margin-bottom:28px;}.detail{margin:10px 0;font-size:16px;color:'+s.text+';}.detail strong{color:'+s.accent+';}.desc{background:'+(s.text==='#fff'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.04)')+';border-radius:8px;padding:14px;margin:20px 0;font-size:15px;color:'+s.text+';line-height:1.6;}.rsvp{margin-top:24px;border-top:1px solid '+(s.text==='#fff'?'rgba(255,255,255,0.3)':'#ddd')+';padding-top:18px;}.rsvp p{font-size:14px;color:'+(s.text==='#fff'?'rgba(255,255,255,0.8)':'#666')+';margin:4px 0;}.from{font-size:13px;color:'+(s.text==='#fff'?'rgba(255,255,255,0.6)':'#aaa')+';margin-top:20px;}';
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Invitation</title><style>*{box-sizing:border-box;}body{font-family:Georgia,serif;margin:0;}'+invCSS+'@media print{body{background:white!important;}}<\/style></head><body>');
+  w.document.write('<div class="card">');
+  w.document.write('<p class="subtitle">You are cordially invited to</p>');
+  w.document.write('<h1>'+name+'</h1>');
+  if(dateDisplay) w.document.write('<div class="detail"><strong>📅 Date:</strong> '+dateDisplay+'</div>');
+  if(time) w.document.write('<div class="detail"><strong>🕑 Time:</strong> '+time+'</div>');
+  if(location) w.document.write('<div class="detail"><strong>📍 Location:</strong> '+location+'</div>');
+  if(desc) w.document.write('<div class="desc">'+desc.replace(/\n/g,'<br>')+'</div>');
+  if(rsvpDate || rsvpContact){
+    w.document.write('<div class="rsvp">');
+    if(rsvpDate) w.document.write('<p><strong>RSVP by:</strong> '+rsvpDate+'</p>');
+    if(rsvpContact) w.document.write('<p>'+rsvpContact+'</p>');
+    w.document.write('</div>');
+  }
+  w.document.write('<p class="from">Hosted by '+community+'</p>');
+  w.document.write('</div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+function copyInvitationEmail(){
+  var name = fcVal('inv-name') || 'Special Event';
+  var dateDisplay = fcVal('inv-date') ? fcDateLabel(fcVal('inv-date')) : '';
+  var time = fcVal('inv-time'); var location = fcVal('inv-location');
+  var desc = fcVal('inv-desc'); var rsvpDate = fcVal('inv-rsvp-date'); var rsvpContact = fcVal('inv-rsvp-contact');
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Our Community');
+  var lines = ['You\'re Invited!','','Event: '+name,''];
+  if(dateDisplay) lines.push('Date: '+dateDisplay);
+  if(time) lines.push('Time: '+time);
+  if(location) lines.push('Location: '+location);
+  lines.push('');
+  if(desc) { lines.push(desc); lines.push(''); }
+  if(rsvpDate||rsvpContact){
+    lines.push('── RSVP ──');
+    if(rsvpDate) lines.push('Please RSVP by: '+rsvpDate);
+    if(rsvpContact) lines.push(rsvpContact);
+    lines.push('');
+  }
+  lines.push('We hope to see you there!'); lines.push(community);
+  document.getElementById('inv-email-text').value = lines.join('\n');
+  document.getElementById('inv-email-box').style.display = 'block';
+  document.getElementById('inv-email-text').select();
+}
+
+// ── PHOTO MOMENTS ──────────────────────────────────────────────────────────
+var PM_STYLE_MAP = {
+  celebrate: { emoji:'🎉', title:'Celebrating You!', bg:'#fff0fb', accent:'#d63384' },
+  shining:   { emoji:'⭐', title:"You're Shining!", bg:'#fffbea', accent:'#f59e0b' },
+  caught:    { emoji:'👏', title:'Caught Being Great', bg:'#f0f9ff', accent:'#0284c7' },
+  golden:    { emoji:'💛', title:'A Golden Moment', bg:'#fffdf0', accent:'#b45309' }
+};
+
+function saveMoment(){
+  var resident = fcVal('pm-resident');
+  var what = fcVal('pm-what');
+  if(!resident||!what){ alert('Please enter a resident name and what happened.'); return; }
+  var date = fcVal('pm-date'); var staff = fcVal('pm-staff');
+  var style = document.getElementById('pm-style').value;
+  var moments = lsGet(FC_MOMENTS_KEY, []);
+  moments.unshift({ resident:resident, what:what, date:date, staff:staff, style:style, saved:Date.now() });
+  lsSet(FC_MOMENTS_KEY, moments);
+  document.getElementById('pm-resident').value=''; document.getElementById('pm-what').value=''; document.getElementById('pm-staff').value='';
+  renderMoments();
+}
+
+function renderMoments(){
+  var el = document.getElementById('pm-list'); if(!el) return;
+  var moments = lsGet(FC_MOMENTS_KEY, []);
+  if(!moments.length){ el.innerHTML='<p style="color:var(--gray-400);text-align:center;padding:40px 0;">No moments saved yet. Add one on the left!</p>'; return; }
+  el.innerHTML = moments.map(function(m,i){
+    var s = PM_STYLE_MAP[m.style] || PM_STYLE_MAP.celebrate;
+    var dLabel = m.date ? fcDateLabel(m.date) : '';
+    return '<div class="pm-card" style="border-left:4px solid '+s.accent+';">'
+      +'<div><div style="font-size:18px;margin-bottom:4px;">'+s.emoji+' <strong>'+m.resident+'</strong></div>'
+      +'<div style="font-size:14px;color:var(--gray-600);margin-bottom:4px;">'+m.what+'</div>'
+      +'<div style="font-size:12px;color:var(--gray-400);">'+(dLabel||'')+(m.staff?' &bull; Noted by '+m.staff:'')+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">'
+      +'<button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="printMomentCard('+i+')">🖨️ Print Card</button>'
+      +'<button class="btn" style="font-size:12px;padding:4px 10px;background:var(--gray-100);color:var(--gray-600);" onclick="deleteMoment('+i+')">🗑️ Delete</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+function printMomentCard(idx){
+  var moments = lsGet(FC_MOMENTS_KEY, []);
+  var m = moments[idx]; if(!m) return;
+  var s = PM_STYLE_MAP[m.style] || PM_STYLE_MAP.celebrate;
+  var dLabel = m.date ? fcDateLabel(m.date) : '';
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Our Community');
+  var cardCSS = 'body{font-family:Georgia,serif;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;margin:0;}.card{width:500px;min-height:280px;background:'+s.bg+';border:3px solid '+s.accent+';border-radius:16px;padding:32px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1);}.card .emoji{font-size:48px;line-height:1;margin-bottom:10px;}.card h1{color:'+s.accent+';font-size:22px;margin:0 0 8px;}.card .name{font-size:18px;font-weight:bold;margin-bottom:12px;}.card .what{font-size:15px;line-height:1.6;color:#444;margin-bottom:16px;}.card .meta{font-size:12px;color:#888;border-top:1px solid #ddd;padding-top:10px;}@media print{body{background:white;}min-height:unset;}';
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Moment Card</title><style>'+cardCSS+'<\/style></head><body>');
+  w.document.write('<div class="card">');
+  w.document.write('<div class="emoji">'+s.emoji+'</div>');
+  w.document.write('<h1>'+s.title+'</h1>');
+  w.document.write('<div class="name">'+m.resident+'</div>');
+  w.document.write('<div class="what">'+m.what+'</div>');
+  w.document.write('<div class="meta">'+(dLabel||'')+' &mdash; '+community+(m.staff?' &mdash; Noted by '+m.staff:'')+'</div>');
+  w.document.write('</div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+function deleteMoment(idx){
+  if(!confirm('Delete this moment?')) return;
+  var moments = lsGet(FC_MOMENTS_KEY, []);
+  moments.splice(idx,1); lsSet(FC_MOMENTS_KEY, moments); renderMoments();
+}
+
+// ── WISH LISTS ─────────────────────────────────────────────────────────────
+function addWishItem(){
+  var input = document.getElementById('wl-item-input');
+  var cat = document.getElementById('wl-item-cat').value;
+  var item = input ? input.value.trim() : '';
+  if(!item) return;
+  fcWishItems.push({ item:item, cat:cat });
+  input.value = '';
+  renderWishItems();
+}
+
+function renderWishItems(){
+  var el = document.getElementById('wl-current-items'); if(!el) return;
+  if(!fcWishItems.length){ el.innerHTML='<span style="color:var(--gray-400);">Items appear here as you add them</span>'; return; }
+  el.innerHTML = fcWishItems.map(function(w,i){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid var(--gray-100);">'
+      +'<span><span class="wl-tag">'+w.cat+'</span> '+w.item+'</span>'
+      +'<button style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:14px;" onclick="removeWishItem('+i+')">✕</button>'
+      +'</div>';
+  }).join('');
+}
+
+function removeWishItem(i){ fcWishItems.splice(i,1); renderWishItems(); }
+
+function saveWishList(){
+  var resident = fcVal('wl-resident');
+  if(!resident){ alert('Please enter a resident name.'); return; }
+  if(!fcWishItems.length){ alert('Please add at least one item.'); return; }
+  var wl = {
+    resident: resident,
+    room: fcVal('wl-room'),
+    occasion: document.getElementById('wl-occasion').value,
+    date: fcVal('wl-date'),
+    items: fcWishItems.slice(),
+    saved: Date.now()
+  };
+  var lists = lsGet(FC_WISHLISTS_KEY, []);
+  lists.unshift(wl); lsSet(FC_WISHLISTS_KEY, lists);
+  clearWishForm();
+  renderWishLists();
+}
+
+function clearWishForm(){
+  fcWishItems = [];
+  ['wl-resident','wl-room','wl-date'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=''; });
+  renderWishItems();
+}
+
+function renderWishLists(){
+  var el = document.getElementById('wl-saved-lists'); if(!el) return;
+  var lists = lsGet(FC_WISHLISTS_KEY, []);
+  if(!lists.length){ el.innerHTML='<p style="color:var(--gray-400);text-align:center;padding:40px 0;">No wish lists yet. Create one on the left!</p>'; return; }
+  el.innerHTML = lists.map(function(wl,i){
+    var dLabel = wl.date ? fcDateLabel(wl.date) : '';
+    var itemsHtml = wl.items.map(function(it){
+      return '<span class="wl-tag">'+it.cat+'</span> '+it.item;
+    }).join('<br>');
+    return '<div class="wl-card">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'
+      +'<div><strong style="font-size:16px;">'+wl.resident+'</strong>'+(wl.room?' <span style="color:var(--gray-500);font-size:13px;">Room '+wl.room+'</span>':'')+'<br>'
+      +'<span style="font-size:13px;color:var(--navy);">'+wl.occasion+(dLabel?' &mdash; '+dLabel:'')+'</span></div>'
+      +'<div style="display:flex;gap:6px;">'
+      +'<button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="printWishList('+i+')">🖨️ Print List</button>'
+      +'<button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="printWishLetter('+i+')">✉️ Print Letter</button>'
+      +'<button class="btn" style="font-size:12px;padding:4px 10px;background:var(--gray-100);color:var(--gray-600);" onclick="deleteWishList('+i+')">🗑️</button>'
+      +'</div></div>'
+      +'<div style="font-size:13px;color:var(--gray-600);line-height:1.8;">'+itemsHtml+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function printWishList(idx){
+  var lists = lsGet(FC_WISHLISTS_KEY, []);
+  var wl = lists[idx]; if(!wl) return;
+  var dLabel = wl.date ? fcDateLabel(wl.date) : '';
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Our Community');
+  var byCategory = {};
+  wl.items.forEach(function(it){ if(!byCategory[it.cat]) byCategory[it.cat]=[]; byCategory[it.cat].push(it.item); });
+  var catIcons = {Comfort:'🛋️',Hobby:'🎨',Treats:'🍬',Care:'🌸',Entertainment:'📺',Clothing:'👕',Other:'🎁'};
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Wish List</title>'+fcPrintStyles('.wish-header{background:#1a3a5c;color:#fff;padding:20px;margin:-32px -32px 24px;border-radius:0;}.wish-header h1{color:#fff;margin:0 0 4px;font-size:20px;}.wish-header p{color:#a8c4e0;margin:0;font-size:13px;}.cat-section{margin-bottom:16px;}.cat-title{font-size:14px;font-weight:bold;color:#1a3a5c;border-bottom:1px solid #e5e7eb;padding-bottom:4px;margin-bottom:8px;}ul li{margin-bottom:6px;font-size:14px;}')+'</head><body>');
+  w.document.write('<div class="wish-header"><h1>🎁 Wish List for '+wl.resident+'</h1><p>'+wl.occasion+(dLabel?' &mdash; '+dLabel:'')+(wl.room?' &mdash; Room '+wl.room:'')+'</p></div>');
+  Object.keys(byCategory).forEach(function(cat){
+    w.document.write('<div class="cat-section"><div class="cat-title">'+(catIcons[cat]||'🎁')+' '+cat+'</div><ul>');
+    byCategory[cat].forEach(function(item){ w.document.write('<li>'+item+'</li>'); });
+    w.document.write('</ul></div>');
+  });
+  w.document.write('<div class="footer">Prepared by '+community+'</div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+function printWishLetter(idx){
+  var lists = lsGet(FC_WISHLISTS_KEY, []);
+  var wl = lists[idx]; if(!wl) return;
+  var dLabel = wl.date ? fcDateLabel(wl.date) : '';
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Our Community');
+  var firstName = fcFirstName(wl.resident);
+  var itemsList = wl.items.map(function(it){ return '<li><strong>['+it.cat+']</strong> '+it.item+'</li>'; }).join('');
+  var today = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Family Celebration Letter</title>'+fcPrintStyles('')+'</head><body>');
+  w.document.write('<div class="header"><h1>'+community+'</h1><p style="color:#666;font-size:13px;">A Note About '+wl.resident+'\'s Upcoming '+wl.occasion+'</p></div>');
+  w.document.write('<p style="color:#888;font-size:13px;margin-bottom:16px;">'+today+'</p>');
+  w.document.write('<p>Dear '+fcLastName(wl.resident)+' Family,</p>');
+  w.document.write('<p>We are so excited to celebrate '+firstName+'\'s upcoming <strong>'+wl.occasion+'</strong>'+(dLabel?' on <strong>'+dLabel+'</strong>':'')+' here at '+community+'! We wanted to share some ideas in case you\'d like to bring a little something special to make the day even more memorable.</p>');
+  w.document.write('<div class="section"><h3>'+firstName+'\'s Wish List 🎁</h3><ul>'+itemsList+'</ul></div>');
+  w.document.write('<div class="highlight"><p>Of course, your presence is the greatest gift of all! But if you\'d like to bring something, any item from this list would bring a big smile to '+firstName+'\'s face.</p></div>');
+  w.document.write('<p>Please feel free to reach out to our activities team with any questions or to coordinate your visit. We can\'t wait to celebrate together!</p>');
+  w.document.write('<div class="footer">With love,<br><strong>The Activities Team</strong><br>'+community+'</div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+function deleteWishList(idx){
+  if(!confirm('Delete this wish list?')) return;
+  var lists = lsGet(FC_WISHLISTS_KEY, []);
+  lists.splice(idx,1); lsSet(FC_WISHLISTS_KEY, lists); renderWishLists();
+}
+</script>
 </body>
 </html>
