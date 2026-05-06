@@ -1136,7 +1136,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
     <button class="tab-btn" data-tab="family" id="family-tab" onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
     <button class="tab-btn" data-tab="social" id="social-tab" onclick="switchTab('social')">📱 Social Media</button>
-    <button class="tab-btn" data-tab="community" id="community-tab" onclick="switchTab('community')">💬 Community</button>
+    <button class="tab-btn" data-tab="community" id="community-tab" onclick="switchTab('community')">🔑 365 Members Exchange</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
@@ -17605,7 +17605,7 @@ function sbRenderAuth(el) {
     +'<div style="text-align:center;margin-bottom:28px;">'
     +'<div style="font-size:48px;margin-bottom:8px;">💬</div>'
     +'<h2 style="margin:0 0 6px;">Empower Life 365 Community</h2>'
-    +'<p style="color:var(--gray-500);font-size:14px;margin:0;">Connect with activity directors across the country — share ideas, ask questions, and inspire each other.</p>'
+    +'<p style="color:var(--gray-500);font-size:14px;margin:0;">Your members-only hub for activity professionals — share ideas, ask questions, and inspire each other.</p>'
     +'</div>'
     +'<div style="display:flex;border-bottom:2px solid var(--gray-200);margin-bottom:20px;">'
     +'<button id="sb-tab-signin" onclick="sbAuthMode=\'signin\';sbRender();" style="flex:1;padding:10px;border:none;background:none;font-weight:700;font-size:14px;cursor:pointer;border-bottom:'+(sbAuthMode==='signin'?'2px solid var(--navy)':'2px solid transparent')+';color:'+(sbAuthMode==='signin'?'var(--navy)':'var(--gray-500)')+';">Sign In</button>'
@@ -17682,8 +17682,8 @@ async function sbSignOut() {
 async function sbRenderCategories(el) {
   el.innerHTML = '<div id="sb-cat-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;">'
     +'<div>'
-    +'<h2 style="margin:0 0 2px;">💬 Community</h2>'
-    +'<p style="margin:0;font-size:13px;color:var(--gray-500);">Connect with activity directors nationwide</p>'
+    +'<h2 style="margin:0 0 2px;">🔑 365 Members Exchange</h2>'
+    +'<p style="margin:0;font-size:13px;color:var(--gray-500);">Welcome to the 365 Members Exchange</p>'
     +'</div>'
     +'<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">'
     +(sbProfile ? '<span style="font-size:13px;color:var(--gray-600);">👋 '+(sbProfile.full_name||sbUser.email)+(sbProfile.community_name?'  ·  '+sbProfile.community_name:'')+'</span>' : '')
