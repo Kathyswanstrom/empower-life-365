@@ -2489,9 +2489,91 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="wl-challenge-grid"></div>
   </div>
 
-  <!-- MINDFULNESS -->
+  <!-- MINDFULNESS CORNER -->
   <div id="wlpanel-mindful" style="display:none;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;" id="wl-mindful-grid"></div>
+    <style>
+      .mfc-tab{background:var(--gray-100);border:none;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all 0.15s;}
+      .mfc-tab:hover{background:var(--gray-200);}
+      .mfc-tab.mfc-tab-active{background:#7c3aed;color:#fff;}
+      .mfc-panel{display:none;}
+      .mfc-panel.mfc-panel-active{display:block;}
+      .breath-circle{width:180px;height:180px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;transition:transform 1.0s ease,background 1.0s ease,box-shadow 1.0s ease;cursor:default;user-select:none;}
+      .moment-card{background:linear-gradient(135deg,#faf5ff,#ede9fe);border:2px solid #ddd6fe;border-radius:16px;padding:28px;text-align:center;max-width:560px;margin:0 auto;}
+      .mfc-card-set{border:1px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+    </style>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+      <button class="mfc-tab mfc-tab-active" data-mfc="breathing" onclick="switchMFCTab('breathing')">🌬️ Breathing</button>
+      <button class="mfc-tab" data-mfc="moments" onclick="switchMFCTab('moments')">🌅 Daily Moments</button>
+      <button class="mfc-tab" data-mfc="scripts" onclick="switchMFCTab('scripts')">📖 Scripts</button>
+      <button class="mfc-tab" data-mfc="cards" onclick="switchMFCTab('cards')">🃏 Print Cards</button>
+    </div>
+
+    <!-- BREATHING EXERCISES -->
+    <div id="mfc-breathing" class="mfc-panel mfc-panel-active">
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start;">
+        <!-- Pattern selector -->
+        <div>
+          <h3 style="margin-bottom:14px;color:#7c3aed;">Select a Breathing Pattern</h3>
+          <div id="mfc-pattern-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+        <!-- Breath timer -->
+        <div style="background:#faf5ff;border:2px solid #ddd6fe;border-radius:16px;padding:24px;text-align:center;position:sticky;top:80px;">
+          <div id="mfc-pattern-name" style="font-weight:700;font-size:16px;color:#4c1d95;margin-bottom:4px;"></div>
+          <div id="mfc-pattern-desc" style="font-size:12px;color:#6b7280;margin-bottom:20px;line-height:1.4;"></div>
+          <div class="breath-circle" id="mfc-circle" style="background:radial-gradient(circle,#c4b5fd,#6d28d9);box-shadow:0 0 40px rgba(109,40,217,0.3);">
+            <div id="mfc-phase-label" style="font-size:13px;font-weight:800;color:#fff;letter-spacing:0.1em;margin-bottom:4px;"></div>
+            <div id="mfc-count" style="font-size:52px;font-weight:900;color:#fff;line-height:1;"></div>
+          </div>
+          <div id="mfc-cycle-label" style="font-size:13px;color:#7c3aed;margin-bottom:16px;font-weight:600;"></div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <button id="mfc-start-btn" class="btn btn-primary" style="background:#7c3aed;border-color:#7c3aed;" onclick="mfcStartStop()">▶ Start</button>
+            <button class="btn btn-secondary" onclick="mfcReset()">↺ Reset</button>
+          </div>
+          <div style="margin-top:14px;font-size:11px;color:#9ca3af;">Set cycles: <input type="number" id="mfc-max-cycles" value="5" min="1" max="20" style="width:48px;padding:3px 6px;border:1px solid #ddd;border-radius:6px;font-size:11px;text-align:center;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY MOMENTS -->
+    <div id="mfc-moments" class="mfc-panel">
+      <div style="text-align:center;margin-bottom:20px;">
+        <h3 style="margin-bottom:6px;">🌅 Daily Mindfulness Moments</h3>
+        <p style="color:var(--gray-500);font-size:14px;margin-bottom:14px;">A gentle prompt to open a group session, spark reflection, or close the day.</p>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+          <button class="mfc-tab mfc-tab-active" data-mfcat="all" onclick="filterMoments('all')">All</button>
+          <button class="mfc-tab" data-mfcat="gratitude" onclick="filterMoments('gratitude')">🙏 Gratitude</button>
+          <button class="mfc-tab" data-mfcat="reflection" onclick="filterMoments('reflection')">💭 Reflection</button>
+          <button class="mfc-tab" data-mfcat="nature" onclick="filterMoments('nature')">🌿 Nature</button>
+          <button class="mfc-tab" data-mfcat="connection" onclick="filterMoments('connection')">💛 Connection</button>
+          <button class="mfc-tab" data-mfcat="joy" onclick="filterMoments('joy')">😊 Joy</button>
+        </div>
+      </div>
+      <div class="moment-card" id="mfc-moment-card">
+        <div id="mfc-moment-cat" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#7c3aed;margin-bottom:12px;"></div>
+        <div id="mfc-moment-emoji" style="font-size:48px;line-height:1;margin-bottom:14px;"></div>
+        <div id="mfc-moment-prompt" style="font-size:20px;font-weight:600;color:#1e1b4b;line-height:1.5;margin-bottom:16px;"></div>
+        <div id="mfc-moment-tip" style="font-size:13px;color:#6b7280;font-style:italic;line-height:1.5;"></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="prevMoment()">← Previous</button>
+        <button class="btn btn-primary" style="background:#7c3aed;border-color:#7c3aed;" onclick="shuffleMoment()">🔀 Shuffle</button>
+        <button class="btn btn-secondary" onclick="nextMoment()">Next →</button>
+        <button class="btn btn-secondary" onclick="printMomentCard()">🖨️ Print This Card</button>
+      </div>
+      <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--gray-400);" id="mfc-moment-counter"></div>
+    </div>
+
+    <!-- SCRIPTS (existing wl-mindful-grid preserved) -->
+    <div id="mfc-scripts" class="mfc-panel">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;" id="wl-mindful-grid"></div>
+    </div>
+
+    <!-- PRINTABLE CARDS -->
+    <div id="mfc-cards" class="mfc-panel">
+      <h3 style="margin-bottom:6px;">🃏 Printable Mindfulness Cards</h3>
+      <p style="color:var(--gray-500);font-size:14px;margin-bottom:20px;">Print card sets for residents to keep in their room, use during activities, or take home with family.</p>
+      <div id="mfc-card-sets"></div>
+    </div>
   </div>
 
   <!-- Exercise Detail Modal -->
@@ -16431,6 +16513,371 @@ function copySeasonalEmail() {
   document.body.appendChild(box);
   box.querySelector('textarea').value = lines.join('\n');
   box.querySelector('textarea').select();
+}
+</script>
+
+<script>
+// ── MINDFULNESS CORNER ─────────────────────────────────────────────────────
+
+// -- Sub-tab switcher --
+function switchMFCTab(tab) {
+  document.querySelectorAll('.mfc-tab[data-mfc]').forEach(function(b){
+    b.classList.toggle('mfc-tab-active', b.dataset.mfc === tab);
+  });
+  document.querySelectorAll('.mfc-panel[id^="mfc-"]').forEach(function(p){
+    p.classList.toggle('mfc-panel-active', p.id === 'mfc-' + tab);
+  });
+  if (tab === 'moments' && !mfcMomentsInited) { mfcInitMoments(); mfcMomentsInited = true; }
+  if (tab === 'cards' && !mfcCardsInited) { mfcRenderCardSets(); mfcCardsInited = true; }
+  if (tab === 'breathing' && !mfcBreathInited) { mfcRenderPatterns(); mfcBreathInited = true; }
+}
+
+var mfcMomentsInited = false;
+var mfcCardsInited = false;
+var mfcBreathInited = false;
+
+// ── BREATHING PATTERNS ────────────────────────────────────────────────────
+var MFC_PATTERNS = [
+  { id:'box', name:'Box Breathing', emoji:'📦', color:'#1e40af', bgFrom:'#93c5fd', bgTo:'#1d4ed8',
+    desc:'Equal counts: inhale, hold, exhale, hold. Used by athletes and therapists for focus and calm.',
+    phases:[{label:'INHALE',count:4},{label:'HOLD',count:4},{label:'EXHALE',count:4},{label:'HOLD',count:4}] },
+  { id:'478', name:'4-7-8 Breathing', emoji:'😌', color:'#6d28d9', bgFrom:'#c4b5fd', bgTo:'#6d28d9',
+    desc:'Longer exhale activates the calming nervous system. Excellent for anxiety, stress, or before sleep.',
+    phases:[{label:'INHALE',count:4},{label:'HOLD',count:7},{label:'EXHALE',count:8}] },
+  { id:'belly', name:'Deep Belly Breathing', emoji:'🌊', color:'#0d9488', bgFrom:'#99f6e4', bgTo:'#0d9488',
+    desc:'Slow diaphragmatic breaths reduce cortisol and create a full-body sense of calm.',
+    phases:[{label:'INHALE',count:4},{label:'EXHALE',count:6}] },
+  { id:'equal', name:'Equal Breathing', emoji:'⚖️', color:'#0369a1', bgFrom:'#7dd3fc', bgTo:'#0369a1',
+    desc:'Simple and steady. Equal inhale and exhale balances the nervous system.',
+    phases:[{label:'INHALE',count:5},{label:'EXHALE',count:5}] },
+  { id:'pursed', name:'Pursed Lip Breathing', emoji:'💨', color:'#0f766e', bgFrom:'#6ee7b7', bgTo:'#0f766e',
+    desc:'Inhale through nose, exhale slowly through pursed lips. Great for lung health and COPD.',
+    phases:[{label:'INHALE',count:2},{label:'EXHALE',count:4}] }
+];
+
+var mfcTimer = null;
+var mfcPhaseIdx = 0;
+var mfcCycleCount = 0;
+var mfcCurrentCount = 0;
+var mfcActivePatternId = 'box';
+var mfcRunning = false;
+var mfcBig = false; // current circle size state
+
+function mfcRenderPatterns() {
+  var list = document.getElementById('mfc-pattern-list');
+  if (!list) return;
+  list.innerHTML = MFC_PATTERNS.map(function(p) {
+    return '<div onclick="mfcSelectPattern(\'' + p.id + '\')" id="mfcp-' + p.id + '" style="border:2px solid var(--gray-200);border-radius:10px;padding:12px 16px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\''+p.color+'\'" onmouseout="if(mfcActivePatternId!==\''+p.id+'\')this.style.borderColor=\'var(--gray-200)\'">'
+      +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">'
+      +'<span style="font-size:22px;">'+p.emoji+'</span>'
+      +'<div><strong style="font-size:14px;">'+p.name+'</strong><br>'
+      +'<span style="font-size:11px;color:#6b7280;">'+p.phases.map(function(ph){return ph.label+' '+ph.count+'s';}).join(' · ')+'</span></div>'
+      +'</div>'
+      +'<div style="font-size:12px;color:#6b7280;line-height:1.4;">'+p.desc+'</div>'
+      +'</div>';
+  }).join('');
+  mfcSelectPattern('box');
+}
+
+function mfcSelectPattern(id) {
+  if (mfcRunning) mfcStop();
+  mfcActivePatternId = id;
+  var p = MFC_PATTERNS.filter(function(x){return x.id===id;})[0];
+  if (!p) return;
+  // Highlight selected
+  MFC_PATTERNS.forEach(function(q) {
+    var el = document.getElementById('mfcp-'+q.id);
+    if (el) { el.style.borderColor = q.id===id ? p.color : 'var(--gray-200)'; el.style.background = q.id===id ? '#faf5ff' : ''; }
+  });
+  document.getElementById('mfc-pattern-name').textContent = p.emoji + ' ' + p.name;
+  document.getElementById('mfc-pattern-desc').textContent = p.desc;
+  mfcReset();
+}
+
+function mfcReset() {
+  mfcStop();
+  mfcPhaseIdx = 0;
+  mfcCycleCount = 0;
+  var p = MFC_PATTERNS.filter(function(x){return x.id===mfcActivePatternId;})[0];
+  if (!p) return;
+  mfcCurrentCount = p.phases[0].count;
+  mfcUpdateDisplay(p);
+  var btn = document.getElementById('mfc-start-btn');
+  if (btn) btn.textContent = '▶ Start';
+}
+
+function mfcStop() {
+  mfcRunning = false;
+  if (mfcTimer) { clearTimeout(mfcTimer); mfcTimer = null; }
+}
+
+function mfcStartStop() {
+  if (mfcRunning) {
+    mfcStop();
+    var btn = document.getElementById('mfc-start-btn');
+    if (btn) btn.textContent = '▶ Resume';
+  } else {
+    mfcRunning = true;
+    var btn = document.getElementById('mfc-start-btn');
+    if (btn) btn.textContent = '⏸ Pause';
+    mfcTick();
+  }
+}
+
+function mfcTick() {
+  if (!mfcRunning) return;
+  var p = MFC_PATTERNS.filter(function(x){return x.id===mfcActivePatternId;})[0];
+  if (!p) return;
+  var maxCycles = parseInt(document.getElementById('mfc-max-cycles').value) || 5;
+  if (mfcCycleCount >= maxCycles) {
+    mfcStop();
+    var btn = document.getElementById('mfc-start-btn');
+    if (btn) btn.textContent = '▶ Start';
+    document.getElementById('mfc-phase-label').textContent = 'DONE';
+    document.getElementById('mfc-count').textContent = '✓';
+    document.getElementById('mfc-cycle-label').textContent = 'Great work! ' + maxCycles + ' cycles complete.';
+    return;
+  }
+  mfcCurrentCount--;
+  if (mfcCurrentCount <= 0) {
+    mfcPhaseIdx = (mfcPhaseIdx + 1) % p.phases.length;
+    if (mfcPhaseIdx === 0) mfcCycleCount++;
+    if (mfcCycleCount >= maxCycles) { mfcTick(); return; }
+    mfcCurrentCount = p.phases[mfcPhaseIdx].count;
+  }
+  mfcUpdateDisplay(p);
+  mfcTimer = setTimeout(mfcTick, 1000);
+}
+
+function mfcUpdateDisplay(p) {
+  var phase = p.phases[mfcPhaseIdx];
+  var circle = document.getElementById('mfc-circle');
+  var lbl = document.getElementById('mfc-phase-label');
+  var cnt = document.getElementById('mfc-count');
+  var cyc = document.getElementById('mfc-cycle-label');
+  if (lbl) lbl.textContent = phase.label;
+  if (cnt) cnt.textContent = mfcCurrentCount;
+  // Circle visual
+  var isExpand = phase.label === 'INHALE';
+  var isHoldBig = phase.label === 'HOLD' && mfcPhaseIdx === 1 && p.phases.length === 4;
+  var isShrink = phase.label === 'EXHALE';
+  if (circle) {
+    if (isExpand) {
+      circle.style.transform = 'scale(1.5)';
+      circle.style.background = 'radial-gradient(circle,' + p.bgFrom + ',' + p.bgTo + ')';
+      circle.style.boxShadow = '0 0 60px rgba(0,0,0,0.25)';
+    } else if (isShrink) {
+      circle.style.transform = 'scale(0.75)';
+      circle.style.background = 'radial-gradient(circle,#e0e7ff,#4338ca)';
+      circle.style.boxShadow = '0 0 20px rgba(0,0,0,0.1)';
+    } else if (phase.label === 'HOLD') {
+      // Keep current transform — just change color slightly
+      circle.style.background = 'radial-gradient(circle,#d1fae5,#065f46)';
+    }
+  }
+  var maxCycles = parseInt((document.getElementById('mfc-max-cycles')||{value:'5'}).value) || 5;
+  if (cyc) cyc.textContent = 'Cycle ' + (mfcCycleCount + 1) + ' of ' + maxCycles;
+}
+
+// ── DAILY MOMENTS ─────────────────────────────────────────────────────────
+var MFC_MOMENTS = [
+  // GRATITUDE
+  {cat:'gratitude', emoji:'🙏', prompt:'What is one small thing you are grateful for right now?', tip:'Look around the room — sometimes the simplest answers are the most powerful.'},
+  {cat:'gratitude', emoji:'💐', prompt:'Think of someone who made your life better. What would you say to them today?', tip:'Gratitude for people deepens our sense of connection and belonging.'},
+  {cat:'gratitude', emoji:'☕', prompt:'What is a simple pleasure that brings you comfort?', tip:'Hot coffee, a warm blanket, a favorite song — simple joys deserve to be celebrated.'},
+  {cat:'gratitude', emoji:'🤲', prompt:'Recall a kindness someone showed you. How did it make you feel?', tip:'Reliving moments of kindness rewires our brains toward positivity.'},
+  {cat:'gratitude', emoji:'🌞', prompt:'What is something about today that you are thankful for?', tip:'Finding even one thing shifts our focus from lack to abundance.'},
+  {cat:'gratitude', emoji:'🏡', prompt:'Name a place that holds happy memories for you.', tip:'Visualizing a beloved place can be as calming as physically being there.'},
+  {cat:'gratitude', emoji:'👐', prompt:'What talent or ability are you grateful to have?', tip:'Acknowledging our own gifts is a quiet form of self-kindness.'},
+  {cat:'gratitude', emoji:'📖', prompt:'What is a lesson life has taught you that you are grateful for — even if it was hard?', tip:'Hard lessons often become our greatest wisdom.'},
+  // REFLECTION
+  {cat:'reflection', emoji:'💭', prompt:'What is one thing you did in your life that you are truly proud of?', tip:'Let yourself sit with this feeling — pride in a good life is earned.'},
+  {cat:'reflection', emoji:'🌅', prompt:'If today were a chapter title in your life story, what would it be called?', tip:'This is a wonderful writing or journaling prompt too.'},
+  {cat:'reflection', emoji:'🕯️', prompt:'What does peace feel like to you? Describe it.', tip:'Everyone\'s sense of peace is unique — sharing it can be deeply connecting.'},
+  {cat:'reflection', emoji:'⭐', prompt:'Think of a moment when you felt most like yourself. What were you doing?', tip:'These moments reveal our truest values and strengths.'},
+  {cat:'reflection', emoji:'🗝️', prompt:'What advice would you give your younger self?', tip:'Wisdom that comes from lived experience is the most valuable kind.'},
+  {cat:'reflection', emoji:'🌿', prompt:'When do you feel most calm and at peace?', tip:'Identifying our calm places helps us return to them in our minds when we need comfort.'},
+  {cat:'reflection', emoji:'💫', prompt:'What has changed about you over the years that you appreciate?', tip:'Growth is worth celebrating — especially wisdom and perspective.'},
+  {cat:'reflection', emoji:'🤔', prompt:'What is something you believed when you were young that you now see differently?', tip:'Changing our minds is a sign of wisdom, not weakness.'},
+  // NATURE
+  {cat:'nature', emoji:'🌸', prompt:'What is your favorite season, and what do you love most about it?', tip:'Seasonal memories are often tied to our warmest family traditions.'},
+  {cat:'nature', emoji:'🌊', prompt:'Close your eyes and imagine your favorite place in nature. What do you see?', tip:'A brief visualization like this can lower blood pressure and heart rate.'},
+  {cat:'nature', emoji:'🌿', prompt:'What sounds in nature bring you the most peace?', tip:'Birds, rain, wind in the trees — nature\'s sounds are deeply soothing.'},
+  {cat:'nature', emoji:'🌻', prompt:'If you could be any flower, which would you be and why?', tip:'Playful questions like this warm up a group beautifully.'},
+  {cat:'nature', emoji:'🌙', prompt:'What time of day is your favorite, and what does the sky look like then?', tip:'Sunrises and sunsets hold meaning for nearly everyone.'},
+  {cat:'nature', emoji:'🍎', prompt:'What garden or outdoor place from your past do you miss?', tip:'Sensory memories of gardens — smells, textures, tastes — are especially vivid.'},
+  {cat:'nature', emoji:'🦋', prompt:'What animal do you feel most connected to? Why?', tip:'This question is always surprising — answers reveal personality in a delightful way.'},
+  {cat:'nature', emoji:'🌧️', prompt:'What is your earliest memory of being outside?', tip:'Childhood outdoor memories are often joyful and full of sensory detail.'},
+  // CONNECTION
+  {cat:'connection', emoji:'💛', prompt:'Who is someone who truly understood you?', tip:'Feeling understood is one of the deepest human needs — honoring that relationship matters.'},
+  {cat:'connection', emoji:'🤗', prompt:'What is your favorite memory with a family member?', tip:'These stories are treasures worth recording and sharing.'},
+  {cat:'connection', emoji:'🏠', prompt:'What does the word home mean to you?', tip:'Home is a feeling as much as a place — this prompt opens rich conversations.'},
+  {cat:'connection', emoji:'🎁', prompt:'What is the kindest thing you have ever done for someone?', tip:'Recalling our own acts of kindness lifts our sense of purpose and worth.'},
+  {cat:'connection', emoji:'👴', prompt:'Who in your life has been a mentor or guide?', tip:'Honoring those who shaped us keeps their legacy alive.'},
+  {cat:'connection', emoji:'💌', prompt:'If you could say one thing to someone you love, what would it be?', tip:'Some answers come quickly — others need space. Both are valid.'},
+  {cat:'connection', emoji:'🌟', prompt:'What do you hope people remember about you?', tip:'This is one of the most meaningful questions we can ever sit with.'},
+  {cat:'connection', emoji:'🤝', prompt:'Tell me about the best friend you have ever had.', tip:'Friendship stories are full of warmth, humor, and heart.'},
+  // JOY
+  {cat:'joy', emoji:'😊', prompt:'What activity makes time feel like it disappears?', tip:'When we lose track of time doing something we love, we are in a state of flow — pure joy.'},
+  {cat:'joy', emoji:'🎵', prompt:'What song makes you want to sing or move?', tip:'Music activates memory and emotion more powerfully than almost anything else.'},
+  {cat:'joy', emoji:'😂', prompt:'What is the funniest thing that ever happened to you?', tip:'Laughter is medicine — let this one go long.'},
+  {cat:'joy', emoji:'🎉', prompt:'What is your happiest memory?', tip:'Ask follow-up questions: Where were you? Who was there? What did it smell like?'},
+  {cat:'joy', emoji:'🌈', prompt:'What made you smile today — even something small?', tip:'Training ourselves to notice small joys is one of the most powerful wellbeing practices.'},
+  {cat:'joy', emoji:'🍦', prompt:'If you could do absolutely anything today, what would you choose?', tip:'Dream answers reveal deep values — there are no wrong responses.'},
+  {cat:'joy', emoji:'🎨', prompt:'What creative thing have you made that you are most proud of?', tip:'Everyone has made something beautiful — a recipe, a garden, a family, a career.'},
+  {cat:'joy', emoji:'🥳', prompt:'Describe the best celebration you were ever part of.', tip:'Celebrations mark what matters most to us — the stories are always wonderful.'}
+];
+
+var mfcMomentIdx = 0;
+var mfcFilteredMoments = MFC_MOMENTS.slice();
+var mfcCurrentCat = 'all';
+
+function mfcInitMoments() {
+  mfcFilteredMoments = MFC_MOMENTS.slice();
+  mfcMomentIdx = 0;
+  mfcShowMoment();
+}
+
+function filterMoments(cat) {
+  document.querySelectorAll('.mfc-tab[data-mfcat]').forEach(function(b){
+    b.classList.toggle('mfc-tab-active', b.dataset.mfcat === cat);
+  });
+  mfcCurrentCat = cat;
+  mfcFilteredMoments = cat === 'all' ? MFC_MOMENTS.slice() : MFC_MOMENTS.filter(function(m){ return m.cat === cat; });
+  mfcMomentIdx = 0;
+  mfcShowMoment();
+}
+
+function mfcShowMoment() {
+  var m = mfcFilteredMoments[mfcMomentIdx];
+  if (!m) return;
+  var catLabels = {gratitude:'🙏 Gratitude', reflection:'💭 Reflection', nature:'🌿 Nature', connection:'💛 Connection', joy:'😊 Joy'};
+  document.getElementById('mfc-moment-cat').textContent = catLabels[m.cat] || m.cat;
+  document.getElementById('mfc-moment-emoji').textContent = m.emoji;
+  document.getElementById('mfc-moment-prompt').textContent = m.prompt;
+  document.getElementById('mfc-moment-tip').textContent = '💡 Staff tip: ' + m.tip;
+  document.getElementById('mfc-moment-counter').textContent = (mfcMomentIdx+1) + ' of ' + mfcFilteredMoments.length;
+}
+
+function nextMoment() { mfcMomentIdx = (mfcMomentIdx+1) % mfcFilteredMoments.length; mfcShowMoment(); }
+function prevMoment() { mfcMomentIdx = (mfcMomentIdx-1+mfcFilteredMoments.length) % mfcFilteredMoments.length; mfcShowMoment(); }
+function shuffleMoment() { mfcMomentIdx = Math.floor(Math.random()*mfcFilteredMoments.length); mfcShowMoment(); }
+
+function printMomentCard() {
+  var m = mfcFilteredMoments[mfcMomentIdx];
+  if (!m) return;
+  var catLabels = {gratitude:'Gratitude', reflection:'Reflection', nature:'Nature', connection:'Connection', joy:'Joy'};
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Mindfulness Moment</title><style>*{box-sizing:border-box;}body{font-family:Georgia,serif;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f3ff;margin:0;padding:20px;}.card{background:linear-gradient(135deg,#faf5ff,#ede9fe);border:3px solid #7c3aed;border-radius:16px;padding:36px;max-width:500px;width:100%;text-align:center;box-shadow:0 4px 20px rgba(109,40,217,0.15);}.cat{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#7c3aed;margin-bottom:12px;}.emoji{font-size:52px;line-height:1;margin-bottom:16px;}.prompt{font-size:20px;font-weight:600;color:#1e1b4b;line-height:1.6;margin-bottom:16px;}.tip{font-size:13px;color:#6b7280;font-style:italic;border-top:1px solid #ddd6fe;padding-top:12px;margin-top:4px;}.footer{font-size:11px;color:#9ca3af;margin-top:16px;}@media print{body{background:white;}}<\/style></head><body>');
+  w.document.write('<div class="card"><div class="cat">'+catLabels[m.cat]+' Mindfulness Moment</div><div class="emoji">'+m.emoji+'</div><div class="prompt">'+m.prompt+'</div><div class="tip">'+m.tip+'</div><div class="footer">Empower Life 365 &mdash; Mindfulness Corner</div></div>');
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+// ── PRINTABLE CARD SETS ───────────────────────────────────────────────────
+var MFC_CARD_SETS = [
+  { id:'breath_reminder', emoji:'🌬️', name:'Breathing Reminder Cards',
+    desc:'One card per breathing technique — residents keep in their room for independent use.', count:'5 cards',
+    cards:[
+      {title:'Box Breathing', steps:'Inhale 4 · Hold 4 · Exhale 4 · Hold 4', note:'Repeat 4-5 times. Great for focus.'},
+      {title:'4-7-8 Breathing', steps:'Inhale 4 · Hold 7 · Exhale 8', note:'Repeat 3-4 times. Calming for anxiety.'},
+      {title:'Deep Belly Breathing', steps:'Inhale 4 · Exhale 6', note:'Let your belly rise and fall. Very soothing.'},
+      {title:'Equal Breathing', steps:'Inhale 5 · Exhale 5', note:'Simple and steady. Balances the mind.'},
+      {title:'Pursed Lip Breathing', steps:'Inhale through nose 2s · Exhale through pursed lips 4s', note:'Good for lung health. Slow and gentle.'}
+    ]},
+  { id:'gratitude', emoji:'🙏', name:'Daily Gratitude Prompt Cards',
+    desc:'7-card set — one for each day of the week. Perfect for morning groups or individual reflection.', count:'7 cards',
+    cards:[
+      {title:'Monday', steps:'Name 3 people you are grateful for today.', note:'"Gratitude turns what we have into enough."'},
+      {title:'Tuesday', steps:'What simple pleasure made you smile this week?', note:'Small joys are worth big celebration.'},
+      {title:'Wednesday', steps:'What is something your body did well today?', note:'Our bodies work hard for us every day.'},
+      {title:'Thursday', steps:'What talent or skill are you grateful to have?', note:'You have gifts that are uniquely yours.'},
+      {title:'Friday', steps:'Think of a memory that fills your heart. Sit with it.', note:'Happy memories are a form of joy we carry always.'},
+      {title:'Saturday', steps:'What act of kindness — given or received — are you grateful for?', note:'Kindness is never forgotten by the heart.'},
+      {title:'Sunday', steps:'What are you looking forward to in the week ahead?', note:'Hope is a form of gratitude for what is to come.'}
+    ]},
+  { id:'affirmations', emoji:'💛', name:'Daily Affirmation Cards',
+    desc:'Positive affirmations for residents to keep on their nightstand or bulletin board.', count:'8 cards',
+    cards:[
+      {title:'I Am Loved', steps:'I am loved by the people around me. I matter. My presence is a gift.', note:''},
+      {title:'I Am Enough', steps:'I am enough exactly as I am. My worth is not measured by what I do.', note:''},
+      {title:'I Am Strong', steps:'I have survived hard days before. I carry strength I may not always see.', note:''},
+      {title:'I Belong Here', steps:'I am part of this community. I am seen, welcomed, and valued.', note:''},
+      {title:'I Have Wisdom', steps:'My years of experience hold wisdom that matters. My stories deserve to be heard.', note:''},
+      {title:'Today Is Good', steps:'I choose to find one good thing in today. It is enough.', note:''},
+      {title:'I Am At Peace', steps:'I breathe in calm. I breathe out worry. Right now, in this moment, I am at peace.', note:''},
+      {title:'I Am Grateful', steps:'Even on hard days, I can find something to be grateful for. Gratitude is my strength.', note:''}
+    ]},
+  { id:'mindful_senses', emoji:'🌿', name:'"Pause & Notice" Sensory Cards',
+    desc:'Grounding cards that bring residents into the present moment using the five senses.', count:'5 cards',
+    cards:[
+      {title:'5 Things You Can See', steps:'Look around slowly. Name 5 things you can see right now. Describe one in detail.', note:'Noticing our surroundings anchors us in the present moment.'},
+      {title:'4 Things You Can Touch', steps:'Feel the texture of your chair, your clothing, your hands. Name 4 things you can touch.', note:'Physical sensation is one of the fastest routes to calm.'},
+      {title:'3 Things You Can Hear', steps:'Close your eyes. What 3 sounds can you hear? Near ones, then far away ones.', note:'Our hearing often works harder than we realize.'},
+      {title:'2 Things You Can Smell', steps:'Take a slow breath. What 2 things can you smell — even faintly?', note:'Smell is our most powerful sense for triggering memory and emotion.'},
+      {title:'1 Thing You Are Grateful For', steps:'After noticing all your senses, name 1 thing you are grateful to experience with them.', note:'This completes the 5-4-3-2-1 grounding technique — a powerful anxiety reducer.'}
+    ]}
+];
+
+function mfcRenderCardSets() {
+  var el = document.getElementById('mfc-card-sets'); if (!el) return;
+  el.innerHTML = MFC_CARD_SETS.map(function(set) {
+    return '<div class="mfc-card-set">'
+      +'<div><strong style="font-size:15px;">'+set.emoji+' '+set.name+'</strong><br>'
+      +'<span style="font-size:13px;color:var(--gray-500);">'+set.desc+'</span><br>'
+      +'<span style="font-size:12px;color:var(--navy);font-weight:600;">'+set.count+' · 4 per page · print &amp; cut or laminate</span></div>'
+      +'<button class="btn btn-primary" style="white-space:nowrap;" onclick="printCardSet(\''+set.id+'\')">🖨️ Print Set</button>'
+      +'</div>';
+  }).join('');
+}
+
+function printCardSet(setId) {
+  var set = MFC_CARD_SETS.filter(function(s){ return s.id === setId; })[0];
+  if (!set) return;
+  var profile = {}; try{ profile = lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name) ? profile.name : (lsGet('communityName','')||'Empower Life 365');
+
+  var cardCSS = '*{box-sizing:border-box;}body{font-family:Arial,sans-serif;margin:0;padding:16px;background:#fff;}.page{display:grid;grid-template-columns:1fr 1fr;gap:12px;page-break-after:always;}.card{border:2px solid #7c3aed;border-radius:12px;padding:16px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(135deg,#faf5ff,#ede9fe);}.card-title{font-size:15px;font-weight:700;color:#4c1d95;margin-bottom:8px;}.card-steps{font-size:13px;color:#1e1b4b;line-height:1.6;flex:1;}.card-note{font-size:11px;color:#7c3aed;font-style:italic;border-top:1px solid #ddd6fe;padding-top:8px;margin-top:8px;}.card-footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:6px;}@media print{.page{page-break-after:always;}body{padding:8px;}}';
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+set.name+'</title><style>'+cardCSS+'<\/style></head><body>');
+
+  // Group cards into pages of 4
+  for (var i = 0; i < set.cards.length; i += 4) {
+    var chunk = set.cards.slice(i, i+4);
+    w.document.write('<div class="page">');
+    chunk.forEach(function(c) {
+      w.document.write('<div class="card">');
+      w.document.write('<div><div class="card-title">'+set.emoji+' '+c.title+'</div>');
+      w.document.write('<div class="card-steps">'+c.steps+'</div>');
+      if (c.note) w.document.write('<div class="card-note">'+c.note+'</div>');
+      w.document.write('</div>');
+      w.document.write('<div class="card-footer">'+community+' &mdash; Mindfulness Corner</div>');
+      w.document.write('</div>');
+    });
+    // Pad with blank cards if needed
+    for (var j = chunk.length; j < 4; j++) {
+      w.document.write('<div class="card" style="background:#f9fafb;border-color:#e5e7eb;"></div>');
+    }
+    w.document.write('</div>');
+  }
+  w.document.write('<'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+// Initialize breathing panel when mindfulness tab first opens
+var _origSwitchWellnessTab = typeof switchWellnessTab !== 'undefined' ? switchWellnessTab : null;
+function switchWellnessTab(tab) {
+  ['exercise','log','challenges','mindful'].forEach(function(t) {
+    var btn = document.getElementById('wltab-'+t);
+    if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
+    var p = document.getElementById('wlpanel-'+t);
+    if (p) p.style.display = t===tab ? '' : 'none';
+  });
+  if (tab === 'mindful' && !mfcBreathInited) {
+    mfcRenderPatterns();
+    mfcBreathInited = true;
+  }
 }
 </script>
 </body>
