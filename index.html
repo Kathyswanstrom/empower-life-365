@@ -3352,6 +3352,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
     <button class="sm-tab sm-tab-active" data-sm="calendar" onclick="switchSMTab('calendar')">📅 Content Calendar</button>
     <button class="sm-tab" data-sm="tiktok" onclick="switchSMTab('tiktok')">🎵 TikTok Ideas</button>
+    <button class="sm-tab" data-sm="facebook" onclick="switchSMTab('facebook')">📘 Facebook Ideas</button>
     <button class="sm-tab" data-sm="captions" onclick="switchSMTab('captions')">✍️ Caption Templates</button>
     <button class="sm-tab" data-sm="hashtags" onclick="switchSMTab('hashtags')">🏷️ Hashtag Library</button>
   </div>
@@ -3392,12 +3393,26 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <button class="sm-tab" data-ttcat="bts" onclick="filterTT('bts')">🎬 Behind the Scenes</button>
         <button class="sm-tab" data-ttcat="educational" onclick="filterTT('educational')">💡 Educational</button>
         <button class="sm-tab" data-ttcat="holiday" onclick="filterTT('holiday')">🎉 Holiday &amp; Seasonal</button>
+      <button class="sm-tab" data-ttcat="dance" onclick="filterTT('dance')">💃 Dance &amp; Movement</button>
       </div>
     </div>
     <div id="sm-tt-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
   </div>
 
   <!-- CAPTION TEMPLATES -->
+  <div id="sm-facebook" class="sm-panel">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">
+      <button class="sm-tab sm-tab-active" data-fbcat="all" onclick="filterFB('all')">All Ideas</button>
+      <button class="sm-tab" data-fbcat="moments" onclick="filterFB('moments')">💛 Resident Moments</button>
+      <button class="sm-tab" data-fbcat="activities" onclick="filterFB('activities')">🎨 Activities &amp; Events</button>
+      <button class="sm-tab" data-fbcat="family" onclick="filterFB('family')">👨‍👩‍👧 Family Engagement</button>
+      <button class="sm-tab" data-fbcat="inspiration" onclick="filterFB('inspiration')">✨ Inspiration</button>
+      <button class="sm-tab" data-fbcat="bts" onclick="filterFB('bts')">🎬 Behind the Scenes</button>
+      <button class="sm-tab" data-fbcat="holiday" onclick="filterFB('holiday')">🎉 Holiday &amp; Seasonal</button>
+    </div>
+    <div id="sm-fb-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+  </div>
+
   <div id="sm-captions" class="sm-panel">
     <div style="margin-bottom:16px;">
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
@@ -17070,6 +17085,7 @@ function initSocial() {
   if (!smInited) {
     renderSMCalendar();
     renderTTGrid('all');
+    renderFBGrid('all');
     renderCaptions('all');
     renderHashtags();
     smInited = true;
@@ -17327,7 +17343,72 @@ var SM_TIKTOK = [
    desc:'Ask residents for their predictions for the new year. Funny, wise, and always quotable.',
    steps:['Ask: "What do you predict will happen this year?"','Film each answer','Let their personalities shine — the funnier the better','Edit to NYE countdown music'],
    caption:'New Year\'s predictions from people who\'ve seen it all 🎆 Born in the 1930s. Wiser than the internet. #NewYear #SeniorWisdom #NYE #fyp #Predictions',
-   tags:['#NewYear','#SeniorWisdom','#NYE','#fyp','#Predictions']}
+   tags:['#NewYear','#SeniorWisdom','#NYE','#fyp','#Predictions']},
+  // DANCE & MOVEMENT
+  {cat:'dance',emoji:'\U0001f483',title:'Chair Dance Challenge',
+   hook:'Who says you need to stand up to bust a move? \U0001f483',
+   desc:'Seated chair dances are huge on TikTok and PERFECT for senior living. Residents can participate regardless of mobility level.',
+   steps:['Set up a row or semicircle of chairs','Pick a fun upbeat song (try \"Can\'t Stop the Feeling\" or \"Happy\")',
+     'Teach 4-8 arm movements: clap, wave, raise the roof, snap, shimmy shoulders, point fingers',
+     'Layer them into a sequence and rehearse twice','Film from the front showing all residents — wide shot then close-ups'],
+   caption:'Chair dancing is REAL dancing \U0001f483 Our residents absolutely owned this! Drop a \U0001f64c if you want to see more!',
+   tags:['#ChairDance','#SeniorTikTok','#SeniorLiving','#DanceChallenge','#ActivityDirector','#NeverTooOld','#SeniorFitness']},
+  {cat:'dance',emoji:'\U0001f57a',title:'Trending TikTok Dance (Simplified)',
+   hook:'We put our own spin on a viral dance! \U0001f57a',
+   desc:'Take a trending TikTok dance and simplify it into 3-5 moves seniors can do seated or standing. The contrast with the original is pure gold.',
+   steps:['Pick a current trending dance (check TikTok Discover page)','Break it to just arm/upper body moves',
+     'Teach it in slow motion first','Stitch your video next to the original trend if possible',
+     'Film reaction shots — residents laughing are the best moments'],
+   caption:'We put our own spin on a trending dance and honestly? We nailed it \U0001f44f Tag someone who needs to try this with their residents!',
+   tags:['#TrendingDance','#SeniorTikTok','#DanceChallenge','#ActivityDirector','#NeverTooOld','#SeniorLiving']},
+  {cat:'dance',emoji:'\U0001f3b7',title:'Decade Dance Party',
+   hook:'Every decade has its signature moves — we did them ALL! \U0001f3b7',
+   desc:'Run through iconic dances from the 1940s through today. Residents recognize each era and light up with recognition.',
+   steps:['Research 6-8 decade dances: Jitterbug (40s), Twist (60s), Hustle (70s), Running Man (80s), Macarena (90s), Cupid Shuffle (2000s)',
+     'Play 15-20 seconds of a song from each era','Teach the signature move for that decade',
+     'Film in one take or quick cuts','Add decade labels as text overlays'],
+   caption:'From the Jitterbug to today — our residents can do it ALL \U0001f49b Which decade has the best dances? Comment below!',
+   tags:['#DecadeDance','#SeniorTikTok','#Throwback','#ActivityDirector','#SeniorLiving']},
+  {cat:'dance',emoji:'\U0001f30a',title:'Wave Challenge',
+   hook:'The human wave just got a whole lot more fun \U0001f30a',
+   desc:'A seated wave traveling down a row of residents is visually satisfying, easy to film, and almost always goes viral.',
+   steps:['Seat 6-12 residents in a straight line or arc',
+     'Practice the wave: raise arms, pass to next person',
+     'Try slow, fast, and silly versions',
+     'Film from the side to capture the wave traveling',
+     'End with an all-at-once finale'],
+   caption:'Our residents just pulled off the smoothest wave \U0001f30a Drop a \U0001f3c4 if you are impressed!',
+   tags:['#WaveChallenge','#SeniorTikTok','#SeniorLiving','#ActivityDirector','#NeverTooOld']},
+  {cat:'dance',emoji:'\U0001f920',title:'Line Dance Tutorial',
+   hook:'Line dancing — timeless, joyful, and absolutely contagious \U0001f920',
+   desc:'Many seniors already know classic line dances. Teaching one on camera is great content — instructional videos do very well.',
+   steps:['Choose Electric Slide, Cotton Eye Joe, or Boot Scootin Boogie',
+     'Break into 4-count sections and teach slowly',
+     'Film the teaching process — learning moments are gold',
+     'Do a full run-through at the end',
+     'Overlay step names as text during the tutorial'],
+   caption:'Line dancing tutorial with our amazing residents! \U0001f920 Save this for your next activity! Which line dance next?',
+   tags:['#LineDance','#ElectricSlide','#SeniorTikTok','#ActivityDirector','#SeniorFitness','#DanceTutorial']},
+  {cat:'dance',emoji:'\U0001faa9',title:'Mirror Dance / Copy Me',
+   hook:'Can you keep up? Our residents are QUICK \U0001faa9',
+   desc:'Staff does a move, residents copy it. Simple, fun, and captures genuine laughter and reactions every time.',
+   steps:['Stand facing residents',
+     'Start easy: clap twice, snap, wave, shoulder shimmy',
+     'Gradually speed up or add silly moves to get reactions',
+     'Capture moments when residents beat you to the move',
+     'End with a group move everyone does together'],
+   caption:'Copy me if you can! \U0001f602 Our residents kept up WAY better than expected. Drop a \U0001faa9 if this made you smile!',
+   tags:['#CopyMe','#MirrorDance','#SeniorTikTok','#SeniorLiving','#ActivityDirector']},
+  {cat:'dance',emoji:'\U0001f941',title:'Rhythm and Percussion Circle',
+   hook:'When everyone finds the beat together — pure magic \U0001f941',
+   desc:'Clapping, drumming, and rhythm games work for ALL mobility levels and film beautifully.',
+   steps:['Give residents percussion instruments or use hands',
+     'Start a simple 4-beat clap pattern',
+     'Add call-and-response: you clap a pattern, they echo it back',
+     'Layer different rhythms across the group',
+     'Build to a big finale where everyone plays together'],
+   caption:'When the rhythm takes over \U0001f941 This is pure joy. Drop a \U0001f3b6 if music is your medicine!',
+   tags:['#RhythmCircle','#MusicTherapy','#SeniorTikTok','#ActivityDirector','#SeniorLiving']}
 ];
 
 var smTTFilter = 'all';
@@ -17337,8 +17418,8 @@ function filterTT(cat) {
   renderTTGrid(cat);
 }
 
-var TT_CAT_COLORS = { heartwarming:'#d97706', trending:'#dc2626', bts:'#7c3aed', educational:'#0369a1', holiday:'#166534' };
-var TT_CAT_LABELS = { heartwarming:'💛 Heartwarming', trending:'🔥 Trending', bts:'🎬 BTS', educational:'💡 Educational', holiday:'🎉 Holiday' };
+var TT_CAT_COLORS = { heartwarming:'#d97706', trending:'#dc2626', bts:'#7c3aed', educational:'#0369a1', holiday:'#166534', dance:'#db2777' };
+var TT_CAT_LABELS = { heartwarming:'💛 Heartwarming', trending:'🔥 Trending', bts:'🎬 BTS', educational:'💡 Educational', holiday:'🎉 Holiday', dance:'💃 Dance' };
 
 function renderTTGrid(cat) {
   var grid = document.getElementById('sm-tt-grid'); if (!grid) return;
@@ -17419,6 +17500,171 @@ var SM_CAPTIONS = [
 ];
 
 var smCapFilter = 'all';
+var SM_FACEBOOK = [
+  // RESIDENT MOMENTS
+  {cat:'moments',emoji:'🎂',title:'Birthday Spotlight',
+   hook:'It\'s a birthday worth celebrating! 🎂',
+   desc:'Spotlight a resident\'s birthday with a fun fact or milestone. These posts get the most family engagement of anything you\'ll post.',
+   post:'Today we\'re celebrating [Name]\'s [age]th birthday! 🎉 [He/She/They] loves [hobby] and has called our community home for [X] years. Help us shower [him/her/them] with birthday love in the comments! 🎂❤️',
+   image:'Close-up of resident with birthday cake or balloon. Bright, warm lighting.',
+   tip:'Tag family members if they follow your page — they\'ll share it to their own feeds.'},
+  {cat:'moments',emoji:'🏆',title:'Resident Achievement',
+   hook:'Big news from one of our amazing residents! 🏆',
+   desc:'Celebrate a personal milestone — a finished puzzle, a new hobby, a recovery win. These posts build community pride.',
+   post:'Meet [Name] — who just [achievement]! 🌟 At [age] years young, [he/she/they] proves that every day is a chance to grow. We are SO proud. Drop a ❤️ to celebrate [him/her/them]!',
+   image:'Resident proudly holding their work, award, or achievement item.',
+   tip:'Ask the resident what they\'d like to share before posting — builds trust and participation.'},
+  {cat:'moments',emoji:'👴',title:'Meet a Resident',
+   hook:'Get to know one of the incredible people who call this home. 💛',
+   desc:'A short "getting to know you" post with a few fun facts. Families love these and often share them widely.',
+   post:'Meet [Name]! 👋 Here are 3 things you might not know about [him/her/them]:\n✅ [Fun fact 1]\n✅ [Fun fact 2]\n✅ [Fun fact 3]\nWhat\'s YOUR favorite fun fact about someone you love? Share below! 👇',
+   image:'Candid photo of the resident doing something they enjoy.',
+   tip:'Do a "Resident of the Week" series — consistency builds a loyal follower base.'},
+  {cat:'moments',emoji:'🤝',title:'Friendship Spotlight',
+   hook:'Some friendships are just meant to be. 🤝',
+   desc:'Highlight two residents who have become close friends. These posts consistently go viral within local communities.',
+   post:'Meet [Name] and [Name] — inseparable since [Name] moved in [timeframe] ago. ❤️ They [shared activity] together every [day]. This is exactly why we do what we do. Drop a 💛 if this made your day!',
+   image:'Two residents laughing or doing an activity together.',
+   tip:'These posts often get shared by family members — great for organic reach.'},
+
+  // ACTIVITIES & EVENTS
+  {cat:'activities',emoji:'📸',title:'Activity Recap',
+   hook:'Look at the fun we had today! 📸',
+   desc:'A simple photo recap of an activity that happened. Easy to create, always gets reactions from families.',
+   post:'Today\'s [activity name] was a HIT! 🎉 Our residents brought so much energy and creativity. This is why activity programming matters — moments like these. 💛 What activities do YOUR loved ones enjoy most? Tell us below! 👇',
+   image:'Grid of 3-4 photos showing different moments from the activity.',
+   tip:'Post within 24 hours while the memory is fresh — timeliness boosts engagement.'},
+  {cat:'activities',emoji:'📅',title:'Weekly Activity Preview',
+   hook:'Here\'s what\'s coming up this week! 🗓️',
+   desc:'Post your weekly activity highlights every Monday morning. Families will start checking in every week for the preview.',
+   post:'✨ This week at [Community Name]! ✨\n\n📅 Monday: [Activity]\n🎨 Tuesday: [Activity]\n🎵 Wednesday: [Activity]\n🌿 Thursday: [Activity]\n🎉 Friday: [Activity]\n\nWhich one would YOU want to join? Comment below! 👇',
+   image:'Bright graphic with your community colors and the week\'s schedule.',
+   tip:'Turn this into a recurring Monday post — followers will look forward to it weekly.'},
+  {cat:'activities',emoji:'🎵',title:'Music Moment',
+   hook:'There\'s nothing like the power of music. 🎵',
+   desc:'Share a moment from music therapy, a singalong, or a live performance. Music posts have extremely high emotional engagement.',
+   post:'Today our residents sang their hearts out to [song name/artist]! 🎶 Music has such an incredible power to bring people together and spark memories. What song always takes YOU back? Share it below! 🎵',
+   image:'Video clip or photo of residents singing or enjoying live music.',
+   tip:'Even a 15-second video clip of singing will outperform a static photo every time.'},
+  {cat:'activities',emoji:'🌿',title:'Outdoor/Nature Activity',
+   hook:'Fresh air and good company — the perfect combination. 🌿',
+   desc:'Showcase time spent outdoors — garden clubs, walks, patio time. Nature posts resonate strongly with families.',
+   post:'Our residents soaked up some sunshine today in the garden! ☀️ [Activity description] — it was a beautiful day to be outside together. What\'s your favorite outdoor activity? 🌸',
+   image:'Bright outdoor photo with natural lighting. Wide shot showing the space.',
+   tip:'Seasonal outdoor posts perform especially well — lean into spring blooms, fall leaves, etc.'},
+
+  // FAMILY ENGAGEMENT
+  {cat:'family',emoji:'💌',title:'Family Visit Invitation',
+   hook:'The door is always open. Come say hello! 💌',
+   desc:'A warm, welcoming post inviting families to visit or join an upcoming event. Reduces family anxiety and increases visits.',
+   post:'Families — we\'d love to see you! 💛 Join us [date/time] for [event]. Your presence means the world to your loved ones and to our whole community. RSVP in the comments or call us at [phone]. We can\'t wait to see you! 🏡',
+   image:'Warm photo of residents and family members together laughing.',
+   tip:'Tag the event in your Facebook Events section for additional reach.'},
+  {cat:'family',emoji:'❓',title:'Ask a Family Question',
+   hook:'We want to hear from you! ❓',
+   desc:'Pose a question that gets families talking and sharing memories. Drives comments, which boosts reach significantly.',
+   post:'Families — we\'d love your help! 💛 We\'re putting together a special [project/display/activity] and want to know: What is your loved one\'s all-time favorite [song / meal / memory / hobby]? Drop it in the comments! ⬇️',
+   image:'Graphic with the question displayed prominently, community branding.',
+   tip:'Use the answers to personalize upcoming activities — then post a follow-up about it!'},
+  {cat:'family',emoji:'🙏',title:'Family Appreciation Post',
+   hook:'To our amazing families — thank you. 🙏',
+   desc:'A heartfelt appreciation post for family members. These get shared widely and build incredible goodwill.',
+   post:'We just want to take a moment to say THANK YOU to the incredible families who trust us with their loved ones. 💛 Your support, your visits, your cards and calls — they mean everything to our residents and to our team. We are grateful every single day. ❤️',
+   image:'Collage of family visit moments or a warm community gathering photo.',
+   tip:'Post around major family holidays — Mother\'s Day, Father\'s Day, Thanksgiving.'},
+
+  // INSPIRATION
+  {cat:'inspiration',emoji:'💬',title:'Resident Quote of the Day',
+   hook:'Words of wisdom from someone who\'s earned them. 💬',
+   desc:'Share an inspiring quote from a resident. These posts perform extremely well and residents love being featured.',
+   post:'"[Quote from resident]" — [Resident Name], age [X]\n\n✨ We\'re surrounded by wisdom every single day. This one stopped us in our tracks. Share this with someone who needs to hear it today. 💛',
+   image:'Simple graphic with the quote in large text, resident photo if they consent.',
+   tip:'Keep a running note of great things residents say — you\'ll never run out of content.'},
+  {cat:'inspiration',emoji:'🌅',title:'Good Morning Post',
+   hook:'Good morning! Start the day with something warm. 🌅',
+   desc:'A simple, uplifting morning post with a photo or quote. Consistent morning posts build a loyal daily audience.',
+   post:'Good morning from [Community Name]! ☀️\n\n[Uplifting quote or observation]\n\nWishing you a beautiful day filled with joy and connection. 💛 What are you grateful for today? Share below! 👇',
+   image:'Beautiful sunrise photo, fresh flowers, or a cheerful community moment.',
+   tip:'Post between 8-9am for maximum reach — people check Facebook over morning coffee.'},
+  {cat:'inspiration',emoji:'🌟',title:'Staff Appreciation',
+   hook:'Behind every great community is an extraordinary team. 🌟',
+   desc:'Highlight a staff member or the whole team. Humanizes your community and builds public trust.',
+   post:'We are so incredibly lucky to have [Name/our team] caring for our residents every day. 💛 [Name] has been with us for [X] years and [fun fact about them]. Take a moment to show some love in the comments! ❤️\n\n#TeamWork #SeniorLiving #CaringHands',
+   image:'Natural photo of staff member(s) with residents or doing their work.',
+   tip:'Staff posts also boost recruitment — prospective employees see a positive workplace culture.'},
+
+  // BEHIND THE SCENES
+  {cat:'bts',emoji:'🎨',title:'Activity Prep Behind the Scenes',
+   hook:'All the magic that happens before the fun begins. 🎨',
+   desc:'Show the setup, the prep, the planning. Families love seeing the effort that goes into programming.',
+   post:'Setting up for today\'s [activity] and we are SO excited! 🎉 Behind every great activity is a lot of love and preparation. Swipe to see the before and after! ➡️ What activity would YOU add to our calendar? 💡',
+   image:'Flat-lay of supplies, decorated tables, or activity setup in progress.',
+   tip:'Before/after setups perform especially well — show the transformation.'},
+  {cat:'bts',emoji:'🍳',title:'Kitchen / Cooking Moment',
+   hook:'Something delicious is happening in the kitchen. 🍳',
+   desc:'Food content always performs well. Show residents cooking, baking, or enjoying a meal together.',
+   post:'Smell that? 😍 Today our residents made [dish] from scratch — and it was INCREDIBLE. There\'s nothing like cooking together to bring people joy. 🍽️ Drop your favorite comfort food recipe in the comments! 👇',
+   image:'Close-up of the food plus residents enjoying it. Warm, inviting tones.',
+   tip:'Recipe roundups from resident favorites make great follow-up posts or newsletters.'},
+  {cat:'bts',emoji:'🌱',title:'Garden / Nature Update',
+   hook:'Look what\'s growing! 🌱',
+   desc:'Regular garden updates create an ongoing story that followers return to check on.',
+   post:'Update from our resident garden! 🌿 [What\'s growing/blooming/happening]. Our green thumbs have been working hard and we couldn\'t be prouder! 🌸 Do you have a garden at home? What are you growing this season? 👇',
+   image:'Close-up of plants, flowers, or residents tending the garden.',
+   tip:'Document growth over time — "week 1 vs week 8" posts get huge engagement.'},
+
+  // HOLIDAY & SEASONAL
+  {cat:'holiday',emoji:'🎉',title:'Holiday Celebration Recap',
+   hook:'We celebrated in style! 🎉',
+   desc:'Post-holiday recap with photos. Families who couldn\'t attend love seeing their loved ones in the celebration.',
+   post:'What a [holiday] celebration! 🎊 Our residents pulled out all the stops — [brief description of festivities]. The joy in this room was absolutely contagious. 💛 Who\'s your favorite person to celebrate holidays with? Tell us below! 👇',
+   image:'Wide shot of the decorated space plus close-ups of residents celebrating.',
+   tip:'Post holiday recaps within 48 hours — engagement drops quickly after the holiday passes.'},
+  {cat:'holiday',emoji:'🌸',title:'Seasonal Activity Post',
+   hook:'A new season means new adventures! 🌸',
+   desc:'Mark the change of season with a themed activity. Seasonal content always gets strong engagement.',
+   post:'[Season] has officially arrived at [Community Name]! 🍂☀️🌸❄️ We\'re kicking it off with [activity] and our residents are absolutely loving it. What\'s your favorite thing about [season]? Drop it below! 👇',
+   image:'Residents doing a seasonal activity with natural seasonal elements in the frame.',
+   tip:'Seasonal posts work well as a series — one post per week through the season builds momentum.'},
+  {cat:'holiday',emoji:'🙌',title:'Community Giving / Volunteer Spotlight',
+   hook:'Giving back feels SO good. 🙌',
+   desc:'Highlight a community service project or donation drive. These posts inspire others and build community pride.',
+   post:'Our residents have the biggest hearts. 💛 This week we [donated / collected / volunteered] for [cause/organization] and contributed [amount/items]. No matter your age, you can make a difference. 🌟 Comment ❤️ to show your support for our amazing residents!',
+   image:'Residents with donated items, handmade cards, or during volunteer activity.',
+   tip:'Tag the receiving organization — they\'ll often share it to their own audience.'}];
+
+var fbFilteredIdeas = SM_FACEBOOK.slice();
+
+function renderFBGrid(cat) {
+  var grid = document.getElementById('sm-fb-grid');
+  if (!grid) return;
+  fbFilteredIdeas = cat === 'all' ? SM_FACEBOOK.slice() : SM_FACEBOOK.filter(function(i){ return i.cat === cat; });
+  grid.innerHTML = fbFilteredIdeas.map(function(idea, idx) {
+    var b64post = btoa(unescape(encodeURIComponent(idea.post)));
+    var b64image = btoa(unescape(encodeURIComponent('📷 IMAGE TIP: ' + idea.image)));
+    var b64tip = btoa(unescape(encodeURIComponent('💡 PRO TIP: ' + idea.tip)));
+    return '<div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;">'
+      + '<div style="display:flex;align-items:flex-start;gap:10px;">'
+      + '<div style="font-size:28px;line-height:1;">' + idea.emoji + '</div>'
+      + '<div style="flex:1;">'
+      + '<div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:2px;">' + idea.title + '</div>'
+      + '<div style="font-size:12px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;">' + idea.hook + '</div>'
+      + '</div></div>'
+      + '<div style="font-size:13px;color:var(--gray-600);line-height:1.5;">' + idea.desc + '</div>'
+      + '<div style="background:#f0f4ff;border-radius:8px;padding:12px;font-size:13px;color:#1e3a5f;line-height:1.6;white-space:pre-line;">' + idea.post.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+      + '<button onclick="copySMText(\'' + b64post + '\',this)" style="background:#1877f2;color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy Post</button>'
+      + '<button onclick="copySMText(\'' + b64image + '\',this)" style="background:var(--gray-100);color:var(--gray-700);border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">📷 Image Tip</button>'
+      + '<button onclick="copySMText(\'' + b64tip + '\',this)" style="background:var(--gray-100);color:var(--gray-700);border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">💡 Pro Tip</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+function filterFB(cat) {
+  document.querySelectorAll('[data-fbcat]').forEach(function(b){ b.classList.toggle('sm-tab-active', b.dataset.fbcat === cat); });
+  renderFBGrid(cat);
+}
+
 function filterCaptions(cat) {
   smCapFilter = cat;
   document.querySelectorAll('.sm-tab[data-capcat]').forEach(function(b){ b.classList.toggle('sm-tab-active', b.dataset.capcat===cat); });
