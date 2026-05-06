@@ -1135,6 +1135,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="games" id="games-tab" onclick="switchTab('games')">🎮 Games</button>
     <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
     <button class="tab-btn" data-tab="family" id="family-tab" onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
+    <button class="tab-btn" data-tab="social" id="social-tab" onclick="switchTab('social')">📱 Social Media</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="about">ℹ️ About</button>
@@ -3317,6 +3318,143 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     </div>
   </div>
 </section>
+<section class="tab-panel" id="panel-social">
+  <style>
+    .sm-tab{background:var(--gray-100);border:none;padding:9px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all 0.15s;}
+    .sm-tab:hover{background:var(--gray-200);}
+    .sm-tab.sm-tab-active{background:#0f172a;color:#fff;}
+    .sm-panel{display:none;}
+    .sm-panel.sm-panel-active{display:block;}
+    .tt-card{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;transition:box-shadow 0.15s;}
+    .tt-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1);}
+    .tt-header{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:10px;}
+    .tt-body{padding:14px 16px;background:#fff;}
+    .cap-card{border:1px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:10px;}
+    .ht-set{border:1px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:10px;}
+    .plat-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+    .cal-cell{min-height:72px;border:1px solid var(--gray-100);border-radius:6px;padding:4px;font-size:11px;cursor:pointer;transition:background 0.1s;position:relative;}
+    .cal-cell:hover{background:var(--gray-50);}
+    .cal-cell.has-post{background:#f0fdf4;border-color:#86efac;}
+    .cal-header-cell{font-size:11px;font-weight:700;color:var(--gray-500);text-align:center;padding:4px;}
+    .cal-day-num{font-size:12px;font-weight:700;color:var(--gray-700);margin-bottom:2px;}
+    .cal-day-num.today{background:var(--navy);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
+    .post-pill{border-radius:4px;padding:2px 5px;font-size:10px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .sm-modal{display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.55);overflow:auto;}
+    .sm-modal-inner{background:#fff;border-radius:16px;max-width:520px;margin:60px auto;padding:28px;position:relative;}
+  </style>
+
+  <div class="panel-header">
+    <h2>📱 Social Media</h2>
+    <p class="panel-subtitle">Plan your content, get TikTok ideas, grab captions &amp; hashtags — all in one place</p>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+    <button class="sm-tab sm-tab-active" data-sm="calendar" onclick="switchSMTab('calendar')">📅 Content Calendar</button>
+    <button class="sm-tab" data-sm="tiktok" onclick="switchSMTab('tiktok')">🎵 TikTok Ideas</button>
+    <button class="sm-tab" data-sm="captions" onclick="switchSMTab('captions')">✍️ Caption Templates</button>
+    <button class="sm-tab" data-sm="hashtags" onclick="switchSMTab('hashtags')">🏷️ Hashtag Library</button>
+  </div>
+
+  <!-- CONTENT CALENDAR -->
+  <div id="sm-calendar" class="sm-panel sm-panel-active">
+    <div class="section-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="btn btn-secondary" style="font-size:18px;padding:4px 12px;" onclick="smCalShift(-1)">‹</button>
+          <h3 id="sm-cal-title" style="margin:0;font-size:18px;min-width:160px;text-align:center;"></h3>
+          <button class="btn btn-secondary" style="font-size:18px;padding:4px 12px;" onclick="smCalShift(1)">›</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="smCalToday()">Today</button>
+          <button class="btn btn-secondary" onclick="printSMCalendar()">🖨️ Print</button>
+        </div>
+      </div>
+      <!-- Platform legend -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;">
+        <span><span class="plat-dot" style="background:#010101;"></span>TikTok</span>
+        <span><span class="plat-dot" style="background:#E1306C;"></span>Instagram</span>
+        <span><span class="plat-dot" style="background:#1877F2;"></span>Facebook</span>
+        <span><span class="plat-dot" style="background:#6B7280;"></span>All Platforms</span>
+        <span style="margin-left:auto;color:var(--gray-400);">Click any day to add a post</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;" id="sm-cal-grid"></div>
+    </div>
+  </div>
+
+  <!-- TIKTOK IDEAS -->
+  <div id="sm-tiktok" class="sm-panel">
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="sm-tab sm-tab-active" data-ttcat="all" onclick="filterTT('all')">All Ideas</button>
+        <button class="sm-tab" data-ttcat="heartwarming" onclick="filterTT('heartwarming')">💛 Heartwarming</button>
+        <button class="sm-tab" data-ttcat="trending" onclick="filterTT('trending')">🔥 Trending Formats</button>
+        <button class="sm-tab" data-ttcat="bts" onclick="filterTT('bts')">🎬 Behind the Scenes</button>
+        <button class="sm-tab" data-ttcat="educational" onclick="filterTT('educational')">💡 Educational</button>
+        <button class="sm-tab" data-ttcat="holiday" onclick="filterTT('holiday')">🎉 Holiday &amp; Seasonal</button>
+      </div>
+    </div>
+    <div id="sm-tt-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+  </div>
+
+  <!-- CAPTION TEMPLATES -->
+  <div id="sm-captions" class="sm-panel">
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+        <button class="sm-tab sm-tab-active" data-capcat="all" onclick="filterCaptions('all')">All</button>
+        <button class="sm-tab" data-capcat="activities" onclick="filterCaptions('activities')">🎨 Activities</button>
+        <button class="sm-tab" data-capcat="milestones" onclick="filterCaptions('milestones')">🌟 Milestones</button>
+        <button class="sm-tab" data-capcat="holidays" onclick="filterCaptions('holidays')">🎉 Holidays</button>
+        <button class="sm-tab" data-capcat="engagement" onclick="filterCaptions('engagement')">💬 Engagement</button>
+        <button class="sm-tab" data-capcat="wellness" onclick="filterCaptions('wellness')">🌿 Wellness</button>
+      </div>
+      <p style="font-size:13px;color:var(--gray-500);">Click any caption to copy it. Text in <strong>[brackets]</strong> are placeholders — customize before posting.</p>
+    </div>
+    <div id="sm-cap-list"></div>
+  </div>
+
+  <!-- HASHTAG LIBRARY -->
+  <div id="sm-hashtags" class="sm-panel">
+    <p style="color:var(--gray-500);font-size:14px;margin-bottom:20px;">Click any set to copy all hashtags at once. Mix and match sets for the best reach.</p>
+    <div id="sm-ht-list"></div>
+  </div>
+
+  <!-- Post Modal -->
+  <div id="sm-post-modal" class="sm-modal" onclick="if(event.target===this)closeSMModal()">
+    <div class="sm-modal-inner">
+      <button onclick="closeSMModal()" style="position:absolute;top:14px;right:16px;background:var(--gray-100);border:none;border-radius:8px;padding:4px 12px;font-size:18px;cursor:pointer;">✕</button>
+      <h3 id="sm-modal-date-label" style="margin:0 0 16px;"></h3>
+      <div style="margin-bottom:12px;">
+        <label class="form-label">Platform</label>
+        <div style="display:flex;gap:8px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="radio" name="sm-plat" value="tiktok" checked> 🎵 TikTok</label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="radio" name="sm-plat" value="instagram"> 📸 Instagram</label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="radio" name="sm-plat" value="facebook"> 👍 Facebook</label>
+          <label style="display:flex;align-items:center;gap=5px;cursor:pointer;"><input type="radio" name="sm-plat" value="all"> 📲 All</label>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label class="form-label">Content Idea / Post Title</label>
+        <input class="form-input" id="sm-post-title" placeholder="e.g. Bingo night highlight reel">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label class="form-label">Notes / Caption Draft</label>
+        <textarea class="form-input" id="sm-post-notes" rows="3" placeholder="Caption, filming notes, or reminders..."></textarea>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label class="form-label">Status</label>
+        <select class="form-input" id="sm-post-status">
+          <option value="planned">📋 Planned</option>
+          <option value="filmed">🎬 Filmed</option>
+          <option value="posted">✅ Posted</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="saveSMPost()">💾 Save</button>
+        <button class="btn" id="sm-delete-btn" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;flex:1;" onclick="deleteSMPost()">🗑️ Delete</button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-settings">
   <h1>Settings</h1>
@@ -3917,6 +4055,7 @@ function switchTab(name) {
   if (name === 'biggames') renderBigGames();
   if (name === 'travel') initTravel();
   if (name === 'family') initFamily();
+  if (name === 'social') initSocial();
   if (name === 'games') initGames();
   if (name === 'crafts') initCrafts();
   if (name === 'food') initFood();
@@ -16878,6 +17017,462 @@ function switchWellnessTab(tab) {
     mfcRenderPatterns();
     mfcBreathInited = true;
   }
+}
+</script>
+
+<script>
+// ── SOCIAL MEDIA HUB ───────────────────────────────────────────────────────
+var SM_KEY = 'anchor_engage_v3_sm_posts';
+var smCalYear = new Date().getFullYear();
+var smCalMonth = new Date().getMonth(); // 0-indexed
+var smEditDate = null;
+var smInited = false;
+
+var SM_PLAT_COLORS = { tiktok:'#010101', instagram:'#E1306C', facebook:'#1877F2', all:'#6B7280' };
+var SM_PLAT_LABELS = { tiktok:'TikTok', instagram:'Instagram', facebook:'Facebook', all:'All Platforms' };
+var SM_STATUS_LABELS = { planned:'📋 Planned', filmed:'🎬 Filmed', posted:'✅ Posted' };
+
+function initSocial() {
+  if (!smInited) {
+    renderSMCalendar();
+    renderTTGrid('all');
+    renderCaptions('all');
+    renderHashtags();
+    smInited = true;
+  }
+}
+
+function switchSMTab(tab) {
+  document.querySelectorAll('.sm-tab[data-sm]').forEach(function(b){ b.classList.toggle('sm-tab-active', b.dataset.sm===tab); });
+  document.querySelectorAll('.sm-panel').forEach(function(p){ p.classList.toggle('sm-panel-active', p.id==='sm-'+tab); });
+}
+
+// ── CONTENT CALENDAR ──────────────────────────────────────────────────────
+var SM_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var SM_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function smCalShift(dir) { smCalMonth += dir; if(smCalMonth>11){smCalMonth=0;smCalYear++;} if(smCalMonth<0){smCalMonth=11;smCalYear--;} renderSMCalendar(); }
+function smCalToday() { smCalYear=new Date().getFullYear(); smCalMonth=new Date().getMonth(); renderSMCalendar(); }
+
+function renderSMCalendar() {
+  var title = document.getElementById('sm-cal-title');
+  if (title) title.textContent = SM_MONTHS[smCalMonth] + ' ' + smCalYear;
+  var grid = document.getElementById('sm-cal-grid');
+  if (!grid) return;
+  var posts = lsGet(SM_KEY, {});
+  var today = new Date(); var todayStr = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var firstDay = new Date(smCalYear, smCalMonth, 1).getDay();
+  var daysInMonth = new Date(smCalYear, smCalMonth+1, 0).getDate();
+  var html2 = SM_DAYS.map(function(d){ return '<div class="cal-header-cell">'+d+'</div>'; }).join('');
+  // Empty cells before first day
+  for (var i=0; i<firstDay; i++) html2 += '<div></div>';
+  for (var d=1; d<=daysInMonth; d++) {
+    var dateKey = smCalYear+'-'+(smCalMonth+1)+'-'+d;
+    var dayPosts = posts[dateKey] || [];
+    var isToday = dateKey === todayStr;
+    var hasPosts = dayPosts.length > 0;
+    html2 += '<div class="cal-cell'+(hasPosts?' has-post':'')+'" onclick="openSMModal(\''+dateKey+'\')">';
+    html2 += '<div class="cal-day-num'+(isToday?' today':'')+'">'+d+'</div>';
+    dayPosts.slice(0,2).forEach(function(p){
+      var col = SM_PLAT_COLORS[p.platform] || '#6B7280';
+      html2 += '<div class="post-pill" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40;">'+p.title+'</div>';
+    });
+    if (dayPosts.length > 2) html2 += '<div style="font-size:10px;color:var(--gray-400);">+' + (dayPosts.length-2) + ' more</div>';
+    html2 += '</div>';
+  }
+  grid.innerHTML = html2;
+}
+
+function openSMModal(dateKey) {
+  smEditDate = dateKey;
+  var parts = dateKey.split('-');
+  var d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  document.getElementById('sm-modal-date-label').textContent = '📅 ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  // Load first post for this date if exists
+  var posts = lsGet(SM_KEY, {});
+  var dayPosts = posts[dateKey] || [];
+  var p = dayPosts[0] || {};
+  // Reset form
+  document.getElementById('sm-post-title').value = p.title || '';
+  document.getElementById('sm-post-notes').value = p.notes || '';
+  var platVal = p.platform || 'tiktok';
+  document.querySelectorAll('input[name="sm-plat"]').forEach(function(r){ r.checked = r.value===platVal; });
+  document.getElementById('sm-post-status').value = p.status || 'planned';
+  document.getElementById('sm-delete-btn').style.display = dayPosts.length ? '' : 'none';
+  document.getElementById('sm-post-modal').style.display = '';
+}
+
+function closeSMModal() { document.getElementById('sm-post-modal').style.display = 'none'; smEditDate = null; }
+
+function saveSMPost() {
+  if (!smEditDate) return;
+  var title = document.getElementById('sm-post-title').value.trim();
+  if (!title) { alert('Please enter a content idea or title.'); return; }
+  var plat = (document.querySelector('input[name="sm-plat"]:checked')||{value:'tiktok'}).value;
+  var notes = document.getElementById('sm-post-notes').value.trim();
+  var status = document.getElementById('sm-post-status').value;
+  var posts = lsGet(SM_KEY, {});
+  posts[smEditDate] = posts[smEditDate] || [];
+  // Replace first entry or add new
+  if (posts[smEditDate].length > 0) {
+    posts[smEditDate][0] = {title:title, platform:plat, notes:notes, status:status};
+  } else {
+    posts[smEditDate].push({title:title, platform:plat, notes:notes, status:status});
+  }
+  lsSet(SM_KEY, posts);
+  closeSMModal();
+  renderSMCalendar();
+}
+
+function deleteSMPost() {
+  if (!smEditDate || !confirm('Delete this post?')) return;
+  var posts = lsGet(SM_KEY, {});
+  delete posts[smEditDate];
+  lsSet(SM_KEY, posts);
+  closeSMModal();
+  renderSMCalendar();
+}
+
+function printSMCalendar() {
+  var posts = lsGet(SM_KEY, {});
+  var daysInMonth = new Date(smCalYear, smCalMonth+1, 0).getDate();
+  var firstDay = new Date(smCalYear, smCalMonth, 1).getDay();
+  var profile = {}; try{ profile=lsGet('communityProfile',{}); }catch(e){}
+  var community = (profile&&profile.name)||lsGet('communityName','')||'Our Community';
+  var platColors = SM_PLAT_COLORS;
+  var w = window.open('','_blank');
+  var css = '*{box-sizing:border-box;}body{font-family:Arial,sans-serif;padding:24px;max-width:900px;margin:0 auto;}h1{font-size:18px;color:#0f172a;margin:0 0 4px;}p{margin:0 0 16px;font-size:12px;color:#6b7280;}.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}.hdr{font-size:11px;font-weight:700;color:#6b7280;text-align:center;padding:4px;}.cell{min-height:80px;border:1px solid #e5e7eb;border-radius:4px;padding:4px;font-size:10px;}.day{font-size:11px;font-weight:700;color:#374151;margin-bottom:3px;}.pill{border-radius:3px;padding:2px 4px;font-size:9px;font-weight:600;margin-bottom:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}@media print{body{padding:12px;}}';
+  w.document.write('<!DOCTYPE html><html><head><title>Content Calendar</title><style>'+css+'<\/style></head><body>');
+  w.document.write('<h1>📱 Social Media Content Calendar &mdash; '+SM_MONTHS[smCalMonth]+' '+smCalYear+'</h1><p>'+community+'</p>');
+  w.document.write('<div class="grid">');
+  SM_DAYS.forEach(function(d){ w.document.write('<div class="hdr">'+d+'</div>'); });
+  for(var i=0;i<firstDay;i++) w.document.write('<div class="cell"></div>');
+  for(var d=1;d<=daysInMonth;d++){
+    var dk = smCalYear+'-'+(smCalMonth+1)+'-'+d;
+    var dp = posts[dk]||[];
+    w.document.write('<div class="cell"><div class="day">'+d+'</div>');
+    dp.forEach(function(p){
+      var col = platColors[p.platform]||'#6b7280';
+      w.document.write('<div class="pill" style="background:'+col+'20;color:'+col+';">'+p.title+'</div>');
+    });
+    w.document.write('</div>');
+  }
+  w.document.write('</div><'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+// ── TIKTOK IDEAS ──────────────────────────────────────────────────────────
+var SM_TIKTOK = [
+  // HEARTWARMING
+  {cat:'heartwarming', emoji:'💛', title:'Ask a Resident for Life Advice',
+   hook:'"I asked a 94-year-old for the secret to a happy life. Her answer stopped me cold."',
+   desc:'Sit down with a resident and ask 2-3 life advice questions. Film their genuine answers. Short, candid, unscripted.',
+   steps:['Find a willing, expressive resident','Ask: "What is one thing you wish you knew at 30?" or "What is the secret to a happy marriage?"','Film their answer in one continuous shot — no editing needed','Add soft background music and their quote as text overlay'],
+   caption:'The wisdom in this room 💛 [Resident name] has lived [age] years and this is what she wants YOU to know. #SeniorWisdom #LifeAdvice #AgingGracefully',
+   tags:['#SeniorWisdom','#LifeAdvice','#AgingGracefully','#fyp','#SeniorLiving']},
+  {cat:'heartwarming', emoji:'🎂', title:'Surprise Birthday Reaction',
+   hook:'"She had no idea we planned all of this."',
+   desc:'Film the moment a resident walks into their birthday surprise. Capture the genuine reaction — tears, laughter, disbelief.',
+   steps:['Coordinate with family if possible','Set up beforehand — decorations, friends gathered','Have someone ready with camera at door','Capture the walk-in moment and immediate reaction'],
+   caption:'She thought it was a normal Tuesday 🎂✨ Happy [age] birthday to our absolute gem, [Name]! We love you! #BirthdaySurprise #SeniorLiving #HappyBirthday',
+   tags:['#BirthdaySurprise','#SeniorLiving','#HappyBirthday','#fyp','#HeartWarming']},
+  {cat:'heartwarming', emoji:'🐶', title:'Pet Therapy Visit Reactions',
+   hook:'"Watch what happens when we bring puppies to visit our residents."',
+   desc:'Film residents interacting with therapy animals — the joy is instant and completely authentic.',
+   steps:['Film from a few feet away to catch natural reactions','Get close-ups of hands petting animals','Capture any laughter or conversation with the animal','Ask residents their favorite pet memory on camera'],
+   caption:'There is NO bad day that a puppy cannot fix 🐶💛 Pet therapy day is everyone\'s favorite day here! #PetTherapy #SeniorLiving #TherapyDogs #fyp',
+   tags:['#PetTherapy','#TherapyDogs','#SeniorLiving','#fyp','#AnimalLove']},
+  {cat:'heartwarming', emoji:'🎨', title:'Art Class Reveal',
+   hook:'"Before and after: What our residents created in one hour."',
+   desc:'Start/stop video showing a blank canvas at the beginning of class and the finished artwork at the end.',
+   steps:['Film the blank canvas at the start of class','Film residents working at their tables','Do a reveal at the end — pan each finished piece','Let artists hold up their work for the camera'],
+   caption:'Blank canvas to THIS in one hour 🎨 The talent in this room is absolutely unreal. Every. Single. Time. #SeniorArt #ActiveAging #ArtClass #fyp',
+   tags:['#SeniorArt','#ActiveAging','#ArtClass','#fyp','#CreativeAging']},
+  {cat:'heartwarming', emoji:'💃', title:'Resident Dance Moment',
+   hook:'"Nobody told him the camera was rolling."',
+   desc:'Catch a resident dancing during music time — unscripted and genuine. These are pure gold.',
+   steps:['Have camera rolling during a music activity','Look for residents who naturally start moving','Film from a distance first so they don\'t notice','Ask permission before posting — most love the attention!'],
+   caption:'He\'s [age] years old and he\'s still got IT 💃🕺 This man is our absolute inspiration. Turn your sound on! 🎵 #DadJokes #SeniorLiving #StillGotIt #fyp',
+   tags:['#StillGotIt','#SeniorLiving','#DanceTok','#fyp','#ActiveAging']},
+  // TRENDING
+  {cat:'trending', emoji:'🔥', title:'"Put a Finger Down" Senior Edition',
+   hook:'"Put a finger down if you\'ve lived through ALL of these."',
+   desc:'Use the popular "put a finger down" format with historical events residents lived through. Powerful and shareable.',
+   steps:['Write a list: "Put a finger down if you remember the moon landing... if you danced to Frank Sinatra live... if you lived without a TV..."','Film a resident playing along','Add trending audio from a "put a finger down" sound'],
+   caption:'Put a finger down if you\'ve seen it ALL 👇 [Name] has lived through EVERYTHING. The last one got us. #PutAFingerDown #SeniorTikTok #fyp #viral',
+   tags:['#PutAFingerDown','#SeniorTikTok','#fyp','#viral','#SeniorLiving']},
+  {cat:'trending', emoji:'📱', title:'Residents React to Modern Slang',
+   hook:'"I asked 5 seniors what \'no cap\' means. Their answers are everything."',
+   desc:'Show residents a list of Gen Z slang and film their genuine reactions and guesses.',
+   steps:['Make a list: "no cap", "slay", "it\'s giving", "lowkey", "bussin"','Ask each resident what they think it means','Film their confused / amused / horrified reactions','Reveal the real meaning and film their response'],
+   caption:'I asked our residents what "slay" means and I am NOT okay 😭😂 These reactions are EVERYTHING #GenZ #SeniorTikTok #Slang #fyp #Relatable',
+   tags:['#GenZ','#SeniorTikTok','#Slang','#fyp','#Funny']},
+  {cat:'trending', emoji:'🎭', title:'Expectation vs Reality: Senior Living',
+   hook:'"What people think senior living looks like vs. what it actually looks like."',
+   desc:'Side-by-side comparison of the boring stereotype vs. your actual vibrant community.',
+   steps:['Film stereotypical "expectation" shots (empty hallway, quiet room, sad face)','Cut to your actual fun activities — bingo cheering, dancing, laughing, crafts','Use "expectation/reality" text overlay','Trending audio works great here'],
+   caption:'What people THINK senior living looks like vs. what it ACTUALLY looks like here 😂🎉 We are NOT your grandma\'s nursing home. #MythBusting #SeniorLiving #fyp #viral',
+   tags:['#ExpectationVsReality','#SeniorLiving','#MythBusting','#fyp','#viral']},
+  {cat:'trending', emoji:'🏆', title:'Day in the Life of an Activity Director',
+   hook:'"Nobody knows what an activity director actually does. Let me show you."',
+   desc:'A fast-paced "day in the life" from setup to cleanup. Educational for families AND great for recruitment.',
+   steps:['Start with morning setup (7am energy)','Film activity highlights throughout the day','Include the chaos and the wins','End with a genuine moment of connection — why you do this job'],
+   caption:'7am: setting up for bingo. 3pm: ugly crying at a birthday surprise. This is my job and I would not trade it 💛 #ActivityDirector #DayInMyLife #SeniorLiving #fyp',
+   tags:['#ActivityDirector','#DayInMyLife','#SeniorLiving','#fyp','#ActivityProfessionals']},
+  {cat:'trending', emoji:'🤔', title:'"Hot Takes" from Residents',
+   hook:'"I asked our residents for their hottest takes. They did not disappoint."',
+   desc:'Go around and ask residents for their unpopular opinions on anything — music, food, life. Unfiltered answers are content gold.',
+   steps:['Ask: "What is your hottest take? What do you believe that most people would disagree with?"','Film each answer','Edit together the best clips','Add a fun "hot takes" graphic overlay'],
+   caption:'Our residents have ZERO filter and honestly? We respect it 😂 Hot takes from the wisest people in the room. #HotTakes #SeniorTikTok #Unfiltered #fyp',
+   tags:['#HotTakes','#SeniorTikTok','#Unfiltered','#fyp','#Funny']},
+  // BEHIND THE SCENES
+  {cat:'bts', emoji:'🎬', title:'Activity Setup Timelapse',
+   hook:'"POV: You\'re an activity director transforming a room in 45 minutes."',
+   desc:'Film a timelapse of your room setup for a big event. Shows the love and effort behind every activity.',
+   steps:['Set your phone in a fixed position with a wide view','Hit timelapse and start setting up','Speed up 10x-15x in editing','Add upbeat audio and a text reveal of the finished room'],
+   caption:'POV: You have 45 minutes to transform a blank room into THIS 🎉 The setup is half the magic. #BehindTheScenes #ActivityDirector #fyp #SeniorLiving',
+   tags:['#BehindTheScenes','#ActivityDirector','#fyp','#SeniorLiving','#Timelapse']},
+  {cat:'bts', emoji:'👀', title:'Things You Overhear at Bingo',
+   hook:'"Real things overheard at our bingo night."',
+   desc:'Text-on-screen compilation of funny/wise/sweet things residents say during bingo. Huge relatability factor.',
+   steps:['Collect 5-8 real quotes over several bingo sessions (with permission)','Film bingo in progress as B-roll','Add quotes as text overlays one by one','Pick a fun/dramatic sound effect for reveals'],
+   caption:'Bingo is a full contact sport at [Community Name] 😂🎱 These are real things overheard this week. The last one sent me 💀 #Bingo #SeniorLiving #fyp #Relatable',
+   tags:['#Bingo','#SeniorLiving','#fyp','#Relatable','#SeniorHumor']},
+  {cat:'bts', emoji:'🍳', title:'Residents Run the Kitchen',
+   hook:'"Our 88-year-old resident taught our kitchen staff her secret family recipe today."',
+   desc:'Film a resident sharing or demonstrating a family recipe with staff. Warm, authentic, shareable.',
+   steps:['Find a resident who loves to cook','Ask if they would share a family recipe','Film the demonstration in the kitchen','Capture the moment staff or other residents taste it'],
+   caption:'She\'s been making this recipe since 1965 and NOTHING has changed 🍳💛 [Name] just took over our kitchen and we are so here for it. #RecipeVideo #SeniorLiving #CookingTok #fyp',
+   tags:['#RecipeVideo','#SeniorLiving','#CookingTok','#fyp','#FamilyRecipe']},
+  {cat:'bts', emoji:'🌸', title:'Garden Day Walk-Along',
+   hook:'"Come spend a morning in our garden with us."',
+   desc:'A peaceful, slow-paced walk through your outdoor space with residents. Works on any platform.',
+   steps:['Film a slow morning garden walk','Include residents watering, touching plants, smelling flowers','Add ambient garden sounds or soft music','Keep it unhurried — the peace IS the content'],
+   caption:'Come spend a slow morning with us in the garden 🌸 No rush. No agenda. Just sunshine and good company. #GardenLife #SeniorLiving #MorningVibes #fyp',
+   tags:['#GardenLife','#SeniorLiving','#MorningVibes','#fyp','#SlowLiving']},
+  // EDUCATIONAL
+  {cat:'educational', emoji:'💡', title:'5 Myths About Senior Living — Busted',
+   hook:'"Everything you think you know about senior living is wrong."',
+   desc:'Address the top 5 misconceptions families have. Build trust, educate, and show your community\'s real culture.',
+   steps:['List myths: "It\'s sad / It\'s boring / Residents lose independence / It\'s only for the sick / Families visit less"','Film yourself (or a resident) busting each one','Keep it conversational — not a lecture','End with an invitation: "Come see for yourself"'],
+   caption:'Let\'s talk about what senior living actually looks like in [Year] 💡 These myths need to GO. #SeniorLivingMyths #AgingGracefully #FamilyCaregiving #fyp',
+   tags:['#SeniorLivingMyths','#AgingGracefully','#FamilyCaregiving','#fyp','#EducationTok']},
+  {cat:'educational', emoji:'🧠', title:'Why We Play Bingo (It\'s Not What You Think)',
+   hook:'"Bingo isn\'t just a game. Here\'s the science behind why we play it."',
+   desc:'Brief educational video on the cognitive, social, and emotional benefits of bingo and group activities.',
+   steps:['Script 3 benefits: focus, social connection, fine motor skills','Film yourself explaining OR use text on screen with bingo B-roll','Keep it under 60 seconds','End with a fun clip of residents cheering'],
+   caption:'Why do we play bingo every week? Because science says we should 🧠🎱 The benefits go WAY beyond the game. #ActivityScience #CognitivHealth #SeniorLiving #fyp',
+   tags:['#ActivityScience','#CognitiveHealth','#SeniorLiving','#fyp','#HealthTok']},
+  {cat:'educational', emoji:'❤️', title:'How to Have a Great Visit with Your Loved One',
+   hook:'"Family members always ask me what to DO during visits. Here\'s my answer."',
+   desc:'Quick tips for families on how to make visits more meaningful. Positions your staff as experts and helps families feel confident.',
+   steps:['Share 3-5 practical tips: bring an old photo, ask a specific question, bring a small treat, do an activity together','Film yourself sharing the tips casually','Keep it warm, not clinical'],
+   caption:'Family visits can feel awkward. Here are 5 things that actually WORK 💛 Our activity director shares her best tips. #FamilyVisit #SeniorCare #CaregiverTips #fyp',
+   tags:['#FamilyVisit','#SeniorCare','#CaregiverTips','#fyp','#SeniorLiving']},
+  // HOLIDAY & SEASONAL
+  {cat:'holiday', emoji:'🎃', title:'Resident Halloween Costume Parade',
+   hook:'"Annual costume parade. These 80 and 90-year-olds are NOT playing around."',
+   desc:'Film residents in their Halloween costumes doing a mini parade or reveal. Always goes viral.',
+   steps:['Have a designated parade route or reveal spot','Film each resident\'s costume reveal','Capture their personalities — poses, jokes, reactions','Edit to upbeat Halloween music'],
+   caption:'Annual Halloween parade and THE BAR IS HIGH 🎃👻 These costumes are INCREDIBLE. Who wins?! Comment below! #Halloween #SeniorLiving #CostumeParade #fyp',
+   tags:['#Halloween','#SeniorLiving','#CostumeParade','#fyp','#HalloweenCostume']},
+  {cat:'holiday', emoji:'🎄', title:'Residents\' Holiday Wish List',
+   hook:'"I asked our residents what they want for the holidays. These answers."',
+   desc:'Simple interview-style video asking residents their holiday wishes. Heartwarming and often surprising.',
+   steps:['Ask each resident: "What is your wish for this holiday season?"','Film each answer on its own','Edit together the best ones','Add holiday music'],
+   caption:'All they want for the holidays is... 🎄 We asked our residents and these answers are everything. Tag someone who needs to see this 💛 #HolidayWishes #SeniorLiving #fyp #Christmas',
+   tags:['#HolidayWishes','#SeniorLiving','#fyp','#Christmas','#HeartWarming']},
+  {cat:'holiday', emoji:'🦃', title:'Residents\' Thanksgiving Memories',
+   hook:'"I asked our residents about their best Thanksgiving. 70+ years of memories."',
+   desc:'Short interview clips of residents sharing their favorite Thanksgiving memory. Perfect for November.',
+   steps:['Ask: "Tell me about your most memorable Thanksgiving"','Film each answer in a comfortable setting','Edit together 4-6 clips','Add warm autumn music'],
+   caption:'70 years of Thanksgiving memories in one room 🦃💛 We asked. They delivered. These stories are EVERYTHING. #Thanksgiving #SeniorWisdom #fyp #FamilyTraditions',
+   tags:['#Thanksgiving','#SeniorWisdom','#fyp','#FamilyTraditions','#SeniorLiving']},
+  {cat:'holiday', emoji:'🎆', title:'New Year\'s Predictions from the Wisest People in the Room',
+   hook:'"People born in the 1930s make better predictions than any algorithm."',
+   desc:'Ask residents for their predictions for the new year. Funny, wise, and always quotable.',
+   steps:['Ask: "What do you predict will happen this year?"','Film each answer','Let their personalities shine — the funnier the better','Edit to NYE countdown music'],
+   caption:'New Year\'s predictions from people who\'ve seen it all 🎆 Born in the 1930s. Wiser than the internet. #NewYear #SeniorWisdom #NYE #fyp #Predictions',
+   tags:['#NewYear','#SeniorWisdom','#NYE','#fyp','#Predictions']}
+];
+
+var smTTFilter = 'all';
+function filterTT(cat) {
+  smTTFilter = cat;
+  document.querySelectorAll('.sm-tab[data-ttcat]').forEach(function(b){ b.classList.toggle('sm-tab-active', b.dataset.ttcat===cat); });
+  renderTTGrid(cat);
+}
+
+var TT_CAT_COLORS = { heartwarming:'#d97706', trending:'#dc2626', bts:'#7c3aed', educational:'#0369a1', holiday:'#166534' };
+var TT_CAT_LABELS = { heartwarming:'💛 Heartwarming', trending:'🔥 Trending', bts:'🎬 BTS', educational:'💡 Educational', holiday:'🎉 Holiday' };
+
+function renderTTGrid(cat) {
+  var grid = document.getElementById('sm-tt-grid'); if (!grid) return;
+  var ideas = cat==='all' ? SM_TIKTOK : SM_TIKTOK.filter(function(t){ return t.cat===cat; });
+  grid.innerHTML = ideas.map(function(t,i) {
+    var col = TT_CAT_COLORS[t.cat]||'#6b7280';
+    return '<div class="tt-card">'
+      +'<div class="tt-header" style="background:'+col+';">'
+      +'<span style="font-size:24px;">'+t.emoji+'</span>'
+      +'<div><div style="font-weight:700;font-size:14px;">'+t.title+'</div>'
+      +'<div style="font-size:11px;opacity:0.85;">'+TT_CAT_LABELS[t.cat]+'</div></div>'
+      +'</div>'
+      +'<div class="tt-body">'
+      +'<div style="background:#f1f5f9;border-radius:6px;padding:8px 10px;font-size:13px;font-style:italic;color:#334155;margin-bottom:10px;border-left:3px solid '+col+';">'+t.hook+'</div>'
+      +'<div style="font-size:13px;color:#374151;margin-bottom:10px;line-height:1.5;">'+t.desc+'</div>'
+      +'<div style="margin-bottom:10px;"><strong style="font-size:12px;color:'+col+';">HOW TO FILM</strong><ol style="margin:4px 0;padding-left:18px;">'+t.steps.map(function(s){return '<li style="font-size:12px;margin-bottom:3px;">'+s+'</li>';}).join('')+'</ol></div>'
+      +'<div style="background:#f8fafc;border-radius:6px;padding:8px 10px;font-size:12px;color:#475569;margin-bottom:10px;"><strong>Suggested caption:</strong><br>'+t.caption+'</div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">'+t.tags.map(function(h){return '<span style="background:#e0f2fe;color:#0369a1;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:600;">'+h+'</span>';}).join('')+'</div>'
+      +'<div style="display:flex;gap:6px;">'
+      +'<button class="btn btn-secondary" style="font-size:12px;flex:1;" onclick="copySMText(\''+btoa(unescape(encodeURIComponent(t.caption)))+'\',this)">📋 Copy Caption</button>'
+      +'<button class="btn btn-secondary" style="font-size:12px;flex:1;" onclick="copyHashtags(\''+t.tags.join(' ')+'\',this)">🏷️ Copy Tags</button>'
+      +'</div>'
+      +'</div></div>';
+  }).join('');
+}
+
+// ── CAPTION TEMPLATES ─────────────────────────────────────────────────────
+var SM_CAPTIONS = [
+  // ACTIVITIES
+  {cat:'activities', platform:'all', emoji:'🎱', title:'Bingo Night',
+   text:'🎱 BINGO! Another legendary game night at [Community Name]! These folks are SERIOUS about their bingo — and we are here for every second of it. Who has the most competitive grandparent? 😂 #Bingo #SeniorLiving #GameNight #ActiveAging'},
+  {cat:'activities', platform:'all', emoji:'🎨', title:'Arts & Crafts',
+   text:'🎨 The talent in this room is absolutely UNREAL. Our residents created these beautiful pieces today and we could not be more proud. Never stop creating! ✨ #SeniorArt #ActiveAging #ArtsAndCrafts #CreativeAging #SeniorLiving'},
+  {cat:'activities', platform:'all', emoji:'💪', title:'Exercise / Fitness Class',
+   text:'💪 Moving and grooving! Our morning fitness class had everyone feeling strong and energized today. Proof that it is NEVER too late to feel your best. 🌟 #SeniorFitness #ActiveAging #WellnessWednesday #SeniorLiving #ChairYoga'},
+  {cat:'activities', platform:'all', emoji:'🍳', title:'Cooking / Baking Activity',
+   text:'🍳 In the kitchen with the BEST cooks we know! Today [residents / our group] made [what was made] and it was absolutely delicious. Nothing brings people together like food 💛 #SeniorCooking #BakingTok #SeniorLiving #ActiveAging'},
+  {cat:'activities', platform:'all', emoji:'🌱', title:'Gardening',
+   text:'🌱 Green thumbs at work! Our residents have been tending to our garden and the results speak for themselves. There is something so healing about getting your hands in the soil. 🌻 #Gardening #GardenLife #SeniorLiving #NatureTherapy #ActiveAging'},
+  {cat:'activities', platform:'all', emoji:'📚', title:'Book Club / Reading',
+   text:'📚 Our book club is back and the discussion was LIVELY today. These readers bring a lifetime of perspective to every page — we learn from them every single week. 💛 #BookClub #SeniorLiving #Reading #BookTok #ActiveAging'},
+  {cat:'activities', platform:'tiktok', emoji:'🎵', title:'Music / Dance Activity',
+   text:'🎵 Turn your sound on! Music time hits different here. The energy, the smiles, the moves — this is what it\'s all about. 💛🕺 #MusicTherapy #SeniorLiving #DanceTok #fyp #ActiveAging'},
+  // MILESTONES
+  {cat:'milestones', platform:'all', emoji:'🎂', title:'Birthday Celebration',
+   text:'🎂 Wishing the most wonderful [age]th birthday to our absolute gem, [Name]! [He/She/They] has been such a light in our community and we are SO grateful to celebrate together. Here\'s to [age] more! 🎉 #HappyBirthday #SeniorLiving #BirthdayCelebration #CommunityLove'},
+  {cat:'milestones', platform:'all', emoji:'💍', title:'Anniversary',
+   text:'💍 [X] years of love! We are so honored to celebrate [Name & Name]\'s [X]th anniversary with them today. Their love story is our favorite. 💛 What is your secret? #Anniversary #LoveStory #SeniorLiving #MarriageGoals #Blessed'},
+  {cat:'milestones', platform:'all', emoji:'🎓', title:'Personal Achievement',
+   text:'🌟 Huge congratulations to [Name] on [achievement]! We are so incredibly proud — this is what thriving looks like. Never let anyone put a ceiling on what you can accomplish. 🙌 #SeniorAchievement #NeverStopGrowing #SeniorLiving #Proud #ActiveAging'},
+  {cat:'milestones', platform:'all', emoji:'🥳', title:'New Resident Welcome',
+   text:'🥳 Please help us give the warmest welcome to [Name], who just joined our [Community Name] family! We are SO happy you are here. Your next great chapter starts NOW. 💛 #WelcomeHome #SeniorLiving #CommunityFamily #NewHome'},
+  // HOLIDAYS
+  {cat:'holidays', platform:'all', emoji:'🎃', title:'Halloween',
+   text:'🎃 The costumes. THE COSTUMES. Our residents absolutely showed UP for Halloween this year and we are in awe. Comment below — who wins?! 👻🏆 #Halloween #SeniorLiving #CostumeContest #HalloweenTok #SpookySeason'},
+  {cat:'holidays', platform:'all', emoji:'🦃', title:'Thanksgiving',
+   text:'🦃 This Thanksgiving, we are grateful for every single person in this community — residents, families, and staff alike. From our family to yours — Happy Thanksgiving! 💛 #Thanksgiving #Grateful #SeniorLiving #CommunityLove #HappyThanksgiving'},
+  {cat:'holidays', platform:'all', emoji:'🎄', title:'Christmas / Winter Holidays',
+   text:'🎄 The spirit of the season is ALIVE and well at [Community Name]! Wishing everyone in our community and families a warm, joyful, and peaceful holiday season. From all of us, with so much love 💛 #MerryChristmas #HappyHolidays #SeniorLiving #HolidaySpirit'},
+  {cat:'holidays', platform:'all', emoji:'🎆', title:'New Year',
+   text:'🎆 Out with the old, in with the new! Wishing everyone a Happy New Year filled with health, joy, and beautiful moments. We cannot wait to see what [Year] brings for our amazing community! 🥂 #HappyNewYear #NewYear #SeniorLiving #Cheers #NewBeginnings'},
+  // ENGAGEMENT
+  {cat:'engagement', platform:'all', emoji:'💬', title:'This or That Question',
+   text:'💬 Big question for today: [Coffee or Tea / Bingo or Trivia / Beach or Mountains]? Our residents are split! Tell us your answer in the comments 👇 #ThisOrThat #SeniorLiving #QuestionOfTheDay #EngagementPost'},
+  {cat:'engagement', platform:'all', emoji:'🤔', title:'Trivia Question',
+   text:'🧠 Trivia time! Can YOU answer this? "[Trivia question here]" Drop your answer in the comments — no Googling! 😄 Our residents nailed it. #Trivia #BrainTeaser #SeniorLiving #QuizTime #MentalHealth'},
+  {cat:'engagement', platform:'all', emoji:'💭', title:'Fill in the Blank',
+   text:'📝 Fill in the blank: The best advice I ever received was ___. Our residents had the most incredible answers today — drop yours below! 💛 #FillInTheBlank #LifeAdvice #SeniorWisdom #SeniorLiving #Community'},
+  {cat:'engagement', platform:'all', emoji:'📸', title:'Tag a Family Member',
+   text:'💛 Tag a parent, grandparent, or someone you love who deserves to be celebrated today! They worked hard, lived fully, and they deserve to know how much they are loved. 🌟 #TagYourLoved #SeniorLiving #FamilyLove #Grateful #Community'},
+  // WELLNESS
+  {cat:'wellness', platform:'all', emoji:'🧘', title:'Mindfulness / Meditation',
+   text:'🧘 Taking a moment to breathe. Today\'s mindfulness session reminded us that peace is always available — we just have to pause and find it. 💛 #Mindfulness #MindfulLiving #SeniorWellness #SeniorLiving #MentalHealthMatters'},
+  {cat:'wellness', platform:'all', emoji:'🌿', title:'Nature Walk',
+   text:'🌿 There is no therapy quite like a walk outside. Our residents soaked up the sunshine today and we could all feel the shift. Nature truly heals. 💛☀️ #NatureWalk #OutdoorTherapy #SeniorLiving #SeniorWellness #FreshAir'},
+  {cat:'wellness', platform:'all', emoji:'😊', title:'Gratitude Moment',
+   text:'💛 Today we asked our residents: "What are you grateful for today?" Their answers reminded all of us how much beauty there is in the everyday. What are YOU grateful for? Tell us below 👇 #Gratitude #GratefulHeart #SeniorLiving #Mindfulness #CountYourBlessings'}
+];
+
+var smCapFilter = 'all';
+function filterCaptions(cat) {
+  smCapFilter = cat;
+  document.querySelectorAll('.sm-tab[data-capcat]').forEach(function(b){ b.classList.toggle('sm-tab-active', b.dataset.capcat===cat); });
+  renderCaptions(cat);
+}
+
+function renderCaptions(cat) {
+  var el = document.getElementById('sm-cap-list'); if (!el) return;
+  var caps = cat==='all' ? SM_CAPTIONS : SM_CAPTIONS.filter(function(c){ return c.cat===cat; });
+  var platColors = {all:'#6b7280',tiktok:'#010101',instagram:'#E1306C',facebook:'#1877F2'};
+  var platLabels = {all:'All Platforms',tiktok:'TikTok',instagram:'Instagram',facebook:'Facebook'};
+  el.innerHTML = caps.map(function(c) {
+    var col = platColors[c.platform]||'#6b7280';
+    return '<div class="cap-card">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
+      +'<div style="display:flex;align-items:center;gap:8px;">'
+      +'<span style="font-size:20px;">'+c.emoji+'</span>'
+      +'<strong style="font-size:14px;">'+c.title+'</strong>'
+      +'<span style="background:'+col+'20;color:'+col+';border-radius:99px;padding:2px 8px;font-size:11px;font-weight:600;">'+platLabels[c.platform]+'</span>'
+      +'</div>'
+      +'<button class="btn btn-secondary" style="font-size:12px;" onclick="copySMText(\''+btoa(unescape(encodeURIComponent(c.text)))+'\',this)">📋 Copy</button>'
+      +'</div>'
+      +'<div style="font-size:13px;color:#374151;line-height:1.6;background:var(--gray-50);border-radius:6px;padding:10px;cursor:pointer;" onclick="copySMText(\''+btoa(unescape(encodeURIComponent(c.text)))+'\',this)">'+c.text+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── HASHTAG LIBRARY ───────────────────────────────────────────────────────
+var SM_HASHTAGS = [
+  { emoji:'🏠', name:'Senior Living Core', color:'#1e40af',
+    desc:'Essential tags for all senior living content.',
+    tags:['#SeniorLiving','#SeniorCare','#SeniorLife','#SeniorCommunity','#RetirementLiving','#AsssistedLiving','#SeniorActivities','#SeniorWellness','#AgingGracefully','#ElderCare'] },
+  { emoji:'🎯', name:'Activity Directors', color:'#7c3aed',
+    desc:'Professional tags that connect with the activity director community.',
+    tags:['#ActivityDirector','#ActivityProfessionals','#NAAP','#NCCAP','#CreativeAging','#TherapeuticRecreation','#RecreationTherapy','#ActivityCoordinator','#SeniorActivities','#ActiveAging'] },
+  { emoji:'💪', name:'Active Aging & Wellness', color:'#0d9488',
+    desc:'Wellness and fitness content tags.',
+    tags:['#ActiveAging','#AgingWell','#SeniorFitness','#SeniorWellness','#ChairYoga','#SeniorHealth','#WellnessWednesday','#HealthyAging','#MindBodySpirit','#SeniorStrong'] },
+  { emoji:'💛', name:'Heartwarming & Viral', color:'#d97706',
+    desc:'Tags used by viral senior living content — great for emotional posts.',
+    tags:['#GoldenYears','#WisdomOfAge','#StillGotIt','#AgingBeautifully','#SeniorMoments','#HeartOfGold','#GrandpaGoals','#GrandmaGoals','#SeniorJoy','#LoveWhatYouDo'] },
+  { emoji:'🎵', name:'TikTok & Viral Reach', color:'#010101',
+    desc:'Broad reach tags for TikTok and Reels. Add to every post.',
+    tags:['#fyp','#foryoupage','#viral','#trending','#SeniorTikTok','#GrandmaTikTok','#GrandpaTikTok','#SeniorOfTikTok','#HeartwarmingTok','#RealLife'] },
+  { emoji:'🎨', name:'Arts & Creative Activities', color:'#dc2626',
+    desc:'Tags for art, crafts, music, and creative programs.',
+    tags:['#SeniorArt','#CreativeAging','#ArtTherapy','#SeniorCrafts','#MusicTherapy','#ArtClass','#HandmadeWithLove','#SeniorCreatives','#NeverStopCreating','#AgeIsJustANumber'] },
+  { emoji:'🌿', name:'Nature & Outdoors', color:'#166534',
+    desc:'Tags for garden, outdoor, and nature-based activities.',
+    tags:['#GardenLife','#NatureTherapy','#OutdoorActivities','#GreenThumb','#SeniorGarden','#HorticulturalTherapy','#NatureHeals','#GardenTherapy','#OutdoorLiving','#FreshAir'] },
+  { emoji:'👨‍👩‍👧', name:'Family & Caregiving', color:'#0369a1',
+    desc:'Tags that reach family members and caregivers.',
+    tags:['#FamilyCaregiving','#CaregiverLife','#SeniorParents','#ElderCare','#CaregiverSupport','#FamilyFirst','#AgingParents','#CaregivingJourney','#FamilyCare','#LovingCare'] }
+];
+
+function renderHashtags() {
+  var el = document.getElementById('sm-ht-list'); if (!el) return;
+  el.innerHTML = SM_HASHTAGS.map(function(set) {
+    return '<div class="ht-set">'
+      +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;">'
+      +'<div><span style="font-size:20px;">'+set.emoji+'</span> <strong style="font-size:15px;">'+set.name+'</strong><br>'
+      +'<span style="font-size:13px;color:var(--gray-500);">'+set.desc+'</span></div>'
+      +'<button class="btn btn-primary" style="background:'+set.color+';border-color:'+set.color+';white-space:nowrap;font-size:13px;" onclick="copyHashtags(\''+set.tags.join(' ')+'\',this)">📋 Copy All</button>'
+      +'</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:6px;">'+set.tags.map(function(h){
+        return '<span onclick="copyHashtags(\''+h+'\',this)" style="background:'+set.color+'15;color:'+set.color+';border:1px solid '+set.color+'30;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer;" title="Click to copy">'
+          +h+'</span>';
+      }).join('')+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────
+function copySMText(b64, btn) {
+  var text;
+  try { text = decodeURIComponent(escape(atob(b64))); } catch(e) { text = b64; }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){
+      if(btn){var orig=btn.textContent;btn.textContent='✅ Copied!';setTimeout(function(){btn.textContent=orig;},1500);}
+    });
+  } else {
+    var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    if(btn){var orig=btn.textContent;btn.textContent='✅ Copied!';setTimeout(function(){btn.textContent=orig;},1500);}
+  }
+}
+
+function copyHashtags(tags, btn) {
+  copySMText(btoa(unescape(encodeURIComponent(tags))), btn);
 }
 </script>
 </body>
