@@ -51,6 +51,21 @@ html, body {
 .tab-btn { background: none; border: none; padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--gray-500); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 6px; font-family: inherit; }
 .tab-btn:hover { color: var(--navy); background: var(--gray-50); }
 .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+/* ── New grouped nav ─────────────────────────────────────── */
+.nav-pinned { background: #1A2A5C; }
+.nav-pinned-inner { max-width:1400px; margin:0 auto; display:flex; gap:2px; padding:4px 16px; overflow-x:auto; }
+.pin-btn { color:rgba(255,255,255,.70) !important; border-bottom:3px solid transparent !important; padding:10px 13px !important; font-size:12px !important; border-radius:0; }
+.pin-btn:hover { color:#fff !important; background:rgba(255,255,255,.12) !important; }
+.pin-btn.active { color:#fff !important; border-bottom-color:#F5C842 !important; background:rgba(255,255,255,.10); }
+.nav-categories { background:#EEF2FF; border-bottom:1px solid #C7D2FE; }
+.nav-cat-inner { max-width:1400px; margin:0 auto; display:flex; gap:6px; padding:7px 16px; overflow-x:auto; flex-wrap:wrap; }
+.cat-btn { background:#fff; color:#1A2A5C; border:1.5px solid #C7D2FE; padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; transition:all .15s; font-family:inherit; }
+.cat-btn:hover { background:#E0E7FF; border-color:#1A2A5C; }
+.cat-btn.active { background:#1A2A5C; color:#fff; border-color:#1A2A5C; }
+.nav-sub-tabs { background:#fff; border-bottom:2px solid #F5C842; display:none; }
+.nav-sub-inner { max-width:1400px; margin:0 auto; display:flex; gap:2px; padding:0 16px; overflow-x:auto; }
+.nav-sub-tabs .tab-btn { padding:10px 14px; font-size:13px; }
+/* hide old flat tab-bar-inner on the new nav (pin + cat rows replace it) */
 main { max-width: 1400px; margin: 0 auto; padding: 24px; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
@@ -1107,40 +1122,88 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 </header>
 
 <nav class="tab-bar">
-  <div class="tab-bar-inner">
-    <button class="tab-btn active" data-tab="calendar">📅 Calendar</button>
-    <button class="tab-btn" data-tab="daily">📋 Daily Sheets</button>
-    <button class="tab-btn" data-tab="bonus">⭐ Bonus Events</button>
-    <button class="tab-btn" data-tab="charting">📊 Charting</button>
-    <button class="tab-btn" data-tab="roster">👥 Residents</button>
-    <button class="tab-btn" data-tab="puzzles">🧩 Resident Puzzles</button>
-    <button class="tab-btn" data-tab="tv">📺 TV Display</button>
-    <button class="tab-btn" data-tab="library">📚 Library</button>
-    <button class="tab-btn" data-tab="birthday">🎂 Birthdays</button>
-    <button class="tab-btn" data-tab="empower-moments">🌿 The Empowered Sage</button>
-    <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
-    <button class="tab-btn" data-tab="materials">🎵 Materials</button>
-    <button class="tab-btn" data-tab="build">🛠️ Build My Cal</button>
-          <button class="tab-btn" data-tab="actlib" id="actlib-tab">📚 Library</button>
-    <button class="tab-btn" data-tab="attlog" id="attlog-tab" onclick="switchTab('attlog')">📋 Log</button>
-    <button class="tab-btn" data-tab="busters" id="busters-tab" onclick="switchTab('busters')">🎉 Boredom Busters</button>
-    <button class="tab-btn" data-tab="bblog" id="bblog-tab" onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
-    <button class="tab-btn" data-tab="ratings" id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
-    <button class="tab-btn" data-tab="punchcard" id="punchcard-tab" onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
-    <button class="tab-btn" data-tab="spotlight" id="spotlight-tab" onclick="switchTab('spotlight')">🌟 Spotlight</button>
-    <button class="tab-btn" data-tab="music" id="music-tab" onclick="switchTab('music')">🎵 Music</button>
-    <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
-    <button class="tab-btn" data-tab="food" id="food-tab" onclick="switchTab('food')">🍽️ Food & Cooking</button>
-    <button class="tab-btn" data-tab="crafts" id="crafts-tab" onclick="switchTab('crafts')">🎨 Arts & Crafts</button>
-    <button class="tab-btn" data-tab="games" id="games-tab" onclick="switchTab('games')">🎮 Games</button>
-    <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
-    <button class="tab-btn" data-tab="family" id="family-tab" onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
-    <button class="tab-btn" data-tab="social" id="social-tab" onclick="switchTab('social')">🎯 Marketing Hub</button>
-    <button class="tab-btn" data-tab="community" id="community-tab" onclick="switchTab('community')">🔑 365 Members Exchange</button>
-    <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
-    <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
-    <button class="tab-btn" data-tab="about">ℹ️ About</button>
+
+  <!-- ── Row 1: Pinned quick-access ────────────────────────── -->
+  <div class="nav-pinned">
+    <div class="nav-pinned-inner">
+      <button class="tab-btn pin-btn active" data-tab="calendar" onclick="switchTab('calendar')">📅 Calendar</button>
+      <button class="tab-btn pin-btn" data-tab="build" onclick="switchTab('build')">🛠️ Build My Cal</button>
+      <button class="tab-btn pin-btn" data-tab="daily" onclick="switchTab('daily')">📋 Daily Sheets</button>
+      <button class="tab-btn pin-btn" data-tab="tv" onclick="switchTab('tv')">📺 TV Display</button>
+      <button class="tab-btn pin-btn" data-tab="puzzles" onclick="switchTab('puzzles')">🧩 Puzzles</button>
+      <button class="tab-btn pin-btn" data-tab="settings" onclick="switchTab('settings')">⚙️ Settings</button>
+    </div>
   </div>
+
+  <!-- ── Row 2: Category pills ─────────────────────────────── -->
+  <div class="nav-categories">
+    <div class="nav-cat-inner">
+      <button class="cat-btn" data-cat="programming" onclick="switchCat('programming')">📚 Core Programming</button>
+      <button class="cat-btn" data-cat="activities"  onclick="switchCat('activities')">🎯 Activities Hub</button>
+      <button class="cat-btn" data-cat="residents"   onclick="switchCat('residents')">👥 Resident Mgmt</button>
+      <button class="cat-btn" data-cat="comms"       onclick="switchCat('comms')">📣 Communications</button>
+      <button class="cat-btn" data-cat="community"   onclick="switchCat('community')">🌟 Community</button>
+      <button class="cat-btn" data-cat="more"        onclick="switchCat('more')">ℹ️ More</button>
+    </div>
+  </div>
+
+  <!-- ── Row 3: Sub-tabs (shown when category selected) ─────── -->
+  <div class="nav-sub-tabs" id="cat-tabs-programming">
+    <div class="nav-sub-inner">
+      <button class="tab-btn" data-tab="bonus"           onclick="switchTab('bonus')">⭐ Bonus Events</button>
+      <button class="tab-btn" data-tab="library"         onclick="switchTab('library')">📚 Library</button>
+      <button class="tab-btn" data-tab="actlib"  id="actlib-tab" onclick="switchTab('actlib')">📖 Activity Library</button>
+      <button class="tab-btn" data-tab="empower-moments" onclick="switchTab('empower-moments')">🌿 Empowered Sage</button>
+      <button class="tab-btn" data-tab="materials"       onclick="switchTab('materials')">📦 Monthly Materials</button>
+    </div>
+  </div>
+
+  <div class="nav-sub-tabs" id="cat-tabs-activities">
+    <div class="nav-sub-inner">
+      <button class="tab-btn" data-tab="busters"  id="busters-tab"  onclick="switchTab('busters')">🎉 Boredom Busters</button>
+      <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🏆 Big Games</button>
+      <button class="tab-btn" data-tab="games"    id="games-tab"    onclick="switchTab('games')">🎮 Games</button>
+      <button class="tab-btn" data-tab="crafts"   id="crafts-tab"   onclick="switchTab('crafts')">🎨 Arts &amp; Crafts</button>
+      <button class="tab-btn" data-tab="food"     id="food-tab"     onclick="switchTab('food')">🍽️ Food &amp; Cooking</button>
+      <button class="tab-btn" data-tab="music"    id="music-tab"    onclick="switchTab('music')">🎵 Music</button>
+      <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
+      <button class="tab-btn" data-tab="travel"   id="travel-tab"   onclick="switchTab('travel')">✈️ Travel Hub</button>
+      <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
+    </div>
+  </div>
+
+  <div class="nav-sub-tabs" id="cat-tabs-residents">
+    <div class="nav-sub-inner">
+      <button class="tab-btn" data-tab="roster"   onclick="switchTab('roster')">👥 Residents</button>
+      <button class="tab-btn" data-tab="charting" onclick="switchTab('charting')">📊 Charting</button>
+      <button class="tab-btn" data-tab="birthday" onclick="switchTab('birthday')">🎂 Birthdays</button>
+      <button class="tab-btn" data-tab="attlog"   id="attlog-tab" onclick="switchTab('attlog')">📋 Log</button>
+      <button class="tab-btn" data-tab="ratings"  id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
+    </div>
+  </div>
+
+  <div class="nav-sub-tabs" id="cat-tabs-comms">
+    <div class="nav-sub-inner">
+      <button class="tab-btn" data-tab="newsletter" onclick="switchTab('newsletter')">📰 Newsletter</button>
+      <button class="tab-btn" data-tab="family"     id="family-tab"     onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
+      <button class="tab-btn" data-tab="social"     id="social-tab"     onclick="switchTab('social')">🎯 Marketing Hub</button>
+      <button class="tab-btn" data-tab="spotlight"  id="spotlight-tab"  onclick="switchTab('spotlight')">🌟 Spotlight</button>
+    </div>
+  </div>
+
+  <div class="nav-sub-tabs" id="cat-tabs-community">
+    <div class="nav-sub-inner">
+      <button class="tab-btn" data-tab="punchcard"  id="punchcard-tab"  onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
+      <button class="tab-btn" data-tab="community"  id="community-tab"  onclick="switchTab('community')">🔑 365 Members Exchange</button>
+    </div>
+  </div>
+
+  <div class="nav-sub-tabs" id="cat-tabs-more">
+    <div class="nav-sub-inner">
+      <button class="tab-btn" data-tab="about" onclick="switchTab('about')">ℹ️ About</button>
+    </div>
+  </div>
+
 </nav>
 
 <main>
@@ -4200,9 +4263,55 @@ function switchTab(name) {
     clearInterval(tvRefreshInterval);
     tvRefreshInterval = null;
   }
+  _updateNavState(name);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+// ── Grouped nav helpers ──────────────────────────────────────
+var _PINNED_TABS = ['calendar','build','daily','tv','puzzles','settings'];
+var _TAB_CAT = {
+  bonus:'programming', library:'programming', actlib:'programming',
+  'empower-moments':'programming', materials:'programming',
+  busters:'activities', biggames:'activities', games:'activities',
+  crafts:'activities', food:'activities', music:'activities',
+  wellness:'activities', travel:'activities', bblog:'activities',
+  roster:'residents', charting:'residents', birthday:'residents',
+  attlog:'residents', ratings:'residents',
+  newsletter:'comms', family:'comms', social:'comms', spotlight:'comms',
+  punchcard:'community', community:'community',
+  about:'more'
+};
+
+function _updateNavState(name) {
+  var isPinned = _PINNED_TABS.indexOf(name) !== -1;
+  var cat = _TAB_CAT[name];
+  // Update category pills
+  document.querySelectorAll('.cat-btn').forEach(function(b) {
+    b.classList.toggle('active', !isPinned && b.dataset.cat === cat);
+  });
+  // Show/hide sub-tab rows
+  document.querySelectorAll('.nav-sub-tabs').forEach(function(el) {
+    el.style.display = (!isPinned && el.id === 'cat-tabs-' + cat) ? 'block' : 'none';
+  });
+}
+
+function switchCat(cat) {
+  // Show the sub-tab row and switch to first visible tab in that category
+  document.querySelectorAll('.nav-sub-tabs').forEach(function(el) {
+    el.style.display = (el.id === 'cat-tabs-' + cat) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.cat-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  // Switch to first visible tab in this category
+  var row = document.getElementById('cat-tabs-' + cat);
+  if (row) {
+    var first = row.querySelector('.tab-btn:not([style*="display:none"])');
+    if (first) switchTab(first.dataset.tab);
+  }
+}
+
 
 const SLOT_LABELS_SHORT = { PHYSICAL: 'AM', TRIVIA: 'Triv', NEWS: 'News', MELLOW: 'Mlw', BIG_GROUP: 'PM', WORD_GAME: 'Word', WIND_DOWN: 'Eve' };
 const DOW = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
