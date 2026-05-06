@@ -3001,6 +3001,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="fc-tab" data-fc="invites" onclick="switchFCTab('invites')">🎟️ Invitations</button>
     <button class="fc-tab" data-fc="moments" onclick="switchFCTab('moments')">📸 Photo Moments</button>
     <button class="fc-tab" data-fc="wishlist" onclick="switchFCTab('wishlist')">🎁 Wish Lists</button>
+    <button class="fc-tab" data-fc="seasonal" onclick="switchFCTab('seasonal')">🌸 Seasonal Guide</button>
   </div>
 
   <!-- ── UPDATE LETTER ─────────────────────────────────────── -->
@@ -3190,6 +3191,47 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <h3 style="margin-bottom:16px;">Saved Wish Lists</h3>
         <div id="wl-saved-lists"><p style="color:var(--gray-400);text-align:center;padding:40px 0;">No wish lists yet. Create one on the left!</p></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ── SEASONAL GUIDE ──────────────────────────────────── -->
+  <div id="fc-seasonal" class="fc-panel">
+    <div class="section-card">
+      <h3 style="margin-bottom:6px;">🌸 Seasonal &amp; Holiday Guide</h3>
+      <p style="color:var(--gray-500);margin-bottom:20px;font-size:14px;">Quarterly family newsletter + take-home activity guide. Auto-updates to the current quarter — publish 4 times a year.</p>
+
+      <!-- Quarter display bar -->
+      <div id="sg-quarter-bar" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div id="sg-quarter-label" style="font-size:18px;font-weight:700;color:var(--navy);"></div>
+          <div id="sg-months-label" style="font-size:13px;color:var(--gray-500);margin-top:2px;"></div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary" style="font-size:13px;" onclick="sgShiftQuarter(-1)">← Previous</button>
+          <button class="btn btn-secondary" style="font-size:13px;" onclick="sgShiftQuarter(0)">Today's Quarter</button>
+          <button class="btn btn-secondary" style="font-size:13px;" onclick="sgShiftQuarter(1)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Customization -->
+      <div class="fc-form-grid" style="margin-bottom:16px;">
+        <div><label class="form-label">Community Name</label><input class="form-input" id="sg-community" placeholder="e.g. Sunrise Gardens"></div>
+        <div><label class="form-label">From / Activity Director</label><input class="form-input" id="sg-from" placeholder="e.g. The Activity Team"></div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label class="form-label">Opening Note (optional — appears at top of both pieces)</label>
+        <textarea class="form-input" id="sg-intro" rows="2" placeholder="e.g. We have such a wonderful quarter planned — we can't wait to celebrate these seasons with your loved ones!"></textarea>
+      </div>
+
+      <!-- Print buttons -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;">
+        <button class="btn btn-primary" onclick="printSeasonalNewsletter()">🖨️ Print Quarterly Newsletter</button>
+        <button class="btn btn-primary" style="background:var(--teal,#0d9488);" onclick="printActivityGuide()">📋 Print Activity Guide</button>
+        <button class="btn btn-secondary" onclick="copySeasonalEmail()">📧 Copy Newsletter for Email</button>
+      </div>
+
+      <!-- Month preview cards -->
+      <div id="sg-preview" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"></div>
     </div>
   </div>
 </section>
@@ -16082,6 +16124,313 @@ function deleteWishList(idx){
   if(!confirm('Delete this wish list?')) return;
   var lists = lsGet(FC_WISHLISTS_KEY, []);
   lists.splice(idx,1); lsSet(FC_WISHLISTS_KEY, lists); renderWishLists();
+}
+</script>
+
+<script>
+// ── SEASONAL GUIDE DATA ────────────────────────────────────────────────────
+var SEASONAL = {
+  1:  { name:'January',   short:'Jan', season:'Winter',             emoji:'❄️',  qEmoji:'❄️',
+        color:'#1e40af', bg:'#eff6ff', textColor:'#1e3a8a',
+        holidays:["New Year's Day (January 1st)","Martin Luther King Jr. Day (3rd Monday)"],
+        themes:['New Beginnings','Winter Warmth','Cozy Comfort'],
+        activities:["Watch old family videos or movies together","Work on a winter-themed jigsaw puzzle","Play card games or board games","Write New Year's wishes or goals together","Make paper snowflakes and decorate their room"],
+        convos:["What was your best New Year's celebration ever?","What are you most proud of in your life?","What tradition do you hope our family keeps forever?"],
+        bring:["Hot cocoa or tea supplies","Cozy socks or a warm throw blanket","A family photo album to look through","A winter-themed jigsaw puzzle"] },
+  2:  { name:'February',  short:'Feb', season:'Late Winter',        emoji:'💝',  qEmoji:'💝',
+        color:'#be123c', bg:'#fff1f2', textColor:'#9f1239',
+        holidays:["Groundhog Day (February 2nd)","Valentine's Day (February 14th)","Presidents' Day (3rd Monday)"],
+        themes:["Love & Connection","Hearts & Flowers","Winter Romance"],
+        activities:["Make Valentine's Day cards together to send to the family","Share love stories and favorite memories","Watch a classic romantic film together","Create a 'love jar' — write things you love about each other on slips of paper","Look through old photos and share the stories behind them"],
+        convos:["Tell me about your love story — how did you meet?","Who has been the most important person in your life?","What's the most romantic or loving thing you ever witnessed?"],
+        bring:["A bouquet of their favorite flowers","Valentine's chocolates or sweets","Blank Valentine's cards to fill out together","A framed family photo as a gift"] },
+  3:  { name:'March',     short:'Mar', season:'Early Spring',       emoji:'🍀',  qEmoji:'🌸',
+        color:'#166534', bg:'#f0fdf4', textColor:'#14532d',
+        holidays:["Women's History Month (All Month)","St. Patrick's Day (March 17th)","First Day of Spring (March 19-21)"],
+        themes:["Luck & Spring","New Growth","Honoring Women"],
+        activities:["Take a short walk in the garden or courtyard","Plant a small herb or flower pot together","Make a St. Patrick's Day shamrock craft","Share stories about inspiring women in your life","Do a light spring refresh of their room — fresh flowers, new photos"],
+        convos:["What does spring remind you of from your childhood?","Did your family have a garden? What did you grow?","Who is the most inspiring woman you have ever known?"],
+        bring:["A small potted plant or spring bulbs","Green treats for St. Patrick's Day","Fresh spring flowers","Seeds to plant together in a small pot"] },
+  4:  { name:'April',     short:'Apr', season:'Spring',             emoji:'🌷',  qEmoji:'🌷',
+        color:'#9d174d', bg:'#fdf2f8', textColor:'#831843',
+        holidays:["Easter Sunday (varies, early-mid April)","Passover (varies)","Earth Day (April 22nd)"],
+        themes:["Renewal & Hope","Spring Gardens","New Life"],
+        activities:["Decorate Easter eggs together","Go on a spring nature walk to find blooming flowers","Make a spring flower arrangement with fresh or paper flowers","Read spring poetry aloud together","Plan an Earth Day craft — a birdfeeder or seed bombs"],
+        convos:["What were your Easter or spring holiday traditions growing up?","What is your favorite spring flower?","What's your favorite memory of being outside in nature?"],
+        bring:["Easter treats or a spring-themed gift basket","Fresh spring flowers or a blooming plant","Art supplies for egg decorating","A packet of wildflower seeds"] },
+  5:  { name:'May',       short:'May', season:'Spring',             emoji:'🌸',  qEmoji:'🌷',
+        color:'#6d28d9', bg:'#faf5ff', textColor:'#4c1d95',
+        holidays:["Mother's Day (2nd Sunday)","Cinco de Mayo (May 5th)","Memorial Day (Last Monday)"],
+        themes:["Mother's Love","Spring Blooms","Honoring the Fallen"],
+        activities:["Create a 'memory bouquet' — write favorite memories on paper flower petals","Bring ingredients for a favorite family recipe and enjoy together","Make a spring memory scrapbook page","Share stories about mothers, grandmothers, and family matriarchs","Honor Memorial Day by sharing stories of family members who served"],
+        convos:["What was your mother like? What do you miss most about her?","What's your favorite memory of being a parent or grandparent?","What family recipe or tradition must never be forgotten?"],
+        bring:["A bouquet of their favorite flowers","Ingredients for a simple favorite recipe","A Mother's Day card signed by the whole family","A framed photo of mom or grandma"] },
+  6:  { name:'June',      short:'Jun', season:'Early Summer',       emoji:'☀️',  qEmoji:'☀️',
+        color:'#b45309', bg:'#fffbeb', textColor:'#92400e',
+        holidays:["Father's Day (3rd Sunday)","Juneteenth (June 19th)","First Day of Summer (June 19-21)"],
+        themes:["Father & Family","Freedom","Summer Begins"],
+        activities:["Share father and grandfather stories over old photos","Make lemonade or a summer drink together","Play a simple outdoor game if able (lawn bowling, ring toss)","Watch a classic summer film together","Make a Father's Day card or memory book"],
+        convos:["Tell me about your father — what was he like?","What's your favorite summer memory from childhood?","If you could relive one summer from your past, which would it be?"],
+        bring:["Fresh lemonade or a summer treat","A Father's Day card from the grandchildren","Ice cream — a summer tradition!","A lawn game to play together"] },
+  7:  { name:'July',      short:'Jul', season:'Summer',             emoji:'🎆',  qEmoji:'🌻',
+        color:'#b91c1c', bg:'#fff1f2', textColor:'#991b1b',
+        holidays:["Independence Day (July 4th)","National Ice Cream Month (All Month)"],
+        themes:['Patriotism','American Heritage','Fireworks & Fun'],
+        activities:["Watch the 4th of July parade or fireworks on TV together","Share memories of past 4th of July celebrations","Make a patriotic craft — flag art or red, white & blue decorations","Listen to patriotic songs and sing along","Have an ice cream social — bring their favorite flavor!"],
+        convos:["What does the 4th of July mean to you personally?","Do you remember where you were for a big moment in American history?","What are your most patriotic or proudest American memories?"],
+        bring:["Ice cream in their favorite flavor","Red, white, and blue decorations for their room","A patriotic music playlist","A small American flag pin or decoration"] },
+  8:  { name:'August',    short:'Aug', season:'Late Summer',        emoji:'🌻',  qEmoji:'🌻',
+        color:'#a16207', bg:'#fefce8', textColor:'#854d0e',
+        holidays:["National Senior Citizens Day (August 21st)","Summer's End Celebration"],
+        themes:['Dog Days of Summer','Nostalgia','Harvest Preparation'],
+        activities:["Make a 'summer memory jar' — write your best memories on slips of paper","Share back-to-school stories and memories from school days","Bring fresh summer produce and enjoy together (peaches, corn, tomatoes)","Make a sunflower or summer nature craft","Watch a classic summer movie from their era"],
+        convos:["What was your very first day of school like?","What did you do on summer vacations as a child?","What do you miss most about summers when you were young?"],
+        bring:["Fresh summer fruit — peaches, cherries, watermelon","Nostalgic treats or candy from their era","Sunflowers — they're in full bloom in August!","A summer scrapbook craft kit"] },
+  9:  { name:'September', short:'Sep', season:'Early Fall',         emoji:'🍂',  qEmoji:'🍂',
+        color:'#92400e', bg:'#fff7ed', textColor:'#7c2d12',
+        holidays:["Labor Day (1st Monday)","Hispanic Heritage Month Begins (Sep 15th)","First Day of Fall (Sep 22-23)"],
+        themes:['Harvest Season','Autumn Beginnings','Back to Roots'],
+        activities:["Collect and press fall leaves together on a walk","Bake something warm together — bring apple muffin or pumpkin bread ingredients","Start a cozy fall-themed jigsaw puzzle","Decorate their room for fall with a small leaf arrangement","Share stories about harvest time, farm life, or autumn traditions"],
+        convos:["Did you ever live near or visit a farm? What was harvest time like?","What does fall smell like to you? What does it remind you of?","What was your favorite autumn tradition with your family?"],
+        bring:["Apples and apple cider","Pumpkin bread or apple muffins (homemade is extra special)","A cozy light sweater or fall scarf","Small autumn decorations — mini gourds, colored leaves"] },
+  10: { name:'October',   short:'Oct', season:'Fall',               emoji:'🎃',  qEmoji:'🍂',
+        color:'#c2410c', bg:'#fff7ed', textColor:'#9a3412',
+        holidays:["Halloween (October 31st)","Breast Cancer Awareness Month (All Month)"],
+        themes:['Halloween Fun','Harvest & Pumpkins','Spooky Nostalgia'],
+        activities:["Paint a mini pumpkin together (safer and cleaner than carving!)","Watch classic, lighthearted Halloween movies","Make Halloween crafts — paper bats, ghost window clings","Share Halloween costume memories and childhood stories","Bring Halloween candy and do a fun 'trick-or-treat' visit"],
+        convos:["What was your most memorable Halloween costume ever?","Did you go trick-or-treating as a child — what do you remember?","What's the funniest or spookiest Halloween story you have?"],
+        bring:["A small pumpkin to paint or decorate","Halloween candy — their favorite kind","Fall-themed cookies or treats","A festive Halloween decoration for their room"] },
+  11: { name:'November',  short:'Nov', season:'Late Fall',          emoji:'🦃',  qEmoji:'🍂',
+        color:'#5b21b6', bg:'#f5f3ff', textColor:'#4c1d95',
+        holidays:["Veterans Day (November 11th)","Native American Heritage Month (All Month)","Thanksgiving (4th Thursday)"],
+        themes:['Gratitude','Family Gatherings','Honoring Veterans'],
+        activities:["Write a gratitude tree together — fill paper leaves with what you are thankful for","Plan your Thanksgiving visit and ask what they most want to share that day","Share family Thanksgiving recipes and traditions","Honor Veterans Day by sharing stories of family members who served","Make a family gratitude journal — one page per person"],
+        convos:["What are you most grateful for in your life?","Tell me about your best Thanksgiving memory.","Did anyone in our family serve in the military? What do you remember about them?"],
+        bring:["A pumpkin pie or Thanksgiving treat","A gratitude journal or blank book to fill in together","A fall-scented candle","Photos from past Thanksgivings to look through and remember"] },
+  12: { name:'December',  short:'Dec', season:'Winter Holidays',    emoji:'🎄',  qEmoji:'❄️',
+        color:'#166534', bg:'#f0fdf4', textColor:'#14532d',
+        holidays:["Hanukkah (varies — late Nov to late Dec)","Christmas (December 25th)","Kwanzaa (December 26th - January 1st)","New Year's Eve (December 31st)"],
+        themes:['Holiday Magic','Giving & Gratitude','Family Traditions','Lights & Joy'],
+        activities:["Decorate together — bring small ornaments or lights for their room","Share your favorite holiday traditions and family stories","Make holiday cards together to send to family and friends","Listen to favorite holiday music and sing along","Watch a classic holiday film with hot cocoa and cookies"],
+        convos:["What was your favorite holiday tradition growing up?","What is the best gift you ever gave or ever received?","What holiday memory makes you smile the most?"],
+        bring:["Holiday cookies or their favorite seasonal treats","A small ornament or decoration for their room","A holiday music playlist on your phone","Blank holiday cards to sign and send together"] }
+};
+
+// Quarter definitions: [Q label, months array, season name, print color, print bg]
+var SG_QUARTERS = [
+  null, // index 0 unused
+  { label:'Q1 — Winter Quarter',    months:[1,2,3],   season:'Winter',        color:'#1e40af', bg:'#eff6ff', emoji:'❄️' },
+  { label:'Q2 — Spring Quarter',    months:[4,5,6],   season:'Spring',        color:'#166534', bg:'#f0fdf4', emoji:'🌸' },
+  { label:'Q3 — Summer Quarter',    months:[7,8,9],   season:'Summer',        color:'#b45309', bg:'#fffbeb', emoji:'🌞' },
+  { label:'Q4 — Fall & Holidays',   months:[10,11,12],season:'Fall & Holidays',color:'#92400e', bg:'#fff7ed', emoji:'🍂' }
+];
+
+var sgOffset = 0; // quarter offset from current
+
+function sgCurrentQuarter() {
+  var m = new Date().getMonth() + 1;
+  return m <= 3 ? 1 : m <= 6 ? 2 : m <= 9 ? 3 : 4;
+}
+
+function sgGetDisplayQuarter() {
+  var q = sgCurrentQuarter() + sgOffset;
+  if (q < 1) q += 4;
+  if (q > 4) q -= 4;
+  return q;
+}
+
+function sgShiftQuarter(dir) {
+  if (dir === 0) { sgOffset = 0; }
+  else { sgOffset += dir; if(sgOffset>3)sgOffset=3; if(sgOffset<-3)sgOffset=-3; }
+  sgRenderQuarter();
+}
+
+function sgRenderQuarter() {
+  var q = sgGetDisplayQuarter();
+  var qd = SG_QUARTERS[q];
+  var year = new Date().getFullYear();
+  // Adjust year for offset
+  var baseQ = sgCurrentQuarter();
+  var displayQ = baseQ + sgOffset;
+  if (displayQ > 4) year++;
+  if (displayQ < 1) year--;
+
+  var monthNames = qd.months.map(function(m){ return SEASONAL[m].name; });
+  document.getElementById('sg-quarter-label').textContent = qd.emoji + ' ' + qd.label + ' ' + year;
+  document.getElementById('sg-months-label').textContent = monthNames.join(' · ') + ' ' + year;
+  document.getElementById('sg-quarter-bar').style.borderColor = qd.color;
+
+  // Render preview cards
+  var preview = document.getElementById('sg-preview');
+  if (!preview) return;
+  preview.innerHTML = qd.months.map(function(m) {
+    var sd = SEASONAL[m];
+    return '<div style="border:2px solid '+sd.color+';border-radius:10px;overflow:hidden;">'
+      +'<div style="background:'+sd.color+';color:#fff;padding:10px 14px;display:flex;align-items:center;gap:8px;">'
+      +'<span style="font-size:20px;">'+sd.emoji+'</span>'
+      +'<div><strong style="font-size:15px;">'+sd.name+'</strong><br><span style="font-size:11px;opacity:0.85;">'+sd.season+'</span></div>'
+      +'</div>'
+      +'<div style="background:'+sd.bg+';padding:10px 14px;font-size:12px;">'
+      +'<div style="margin-bottom:6px;"><strong style="color:'+sd.textColor+';">Holidays</strong><br>'
+      +sd.holidays.map(function(h){return '• '+h;}).join('<br>')+'</div>'
+      +'<div><strong style="color:'+sd.textColor+';">Activity Ideas</strong><br>'
+      +sd.activities.slice(0,3).map(function(a){return '• '+a;}).join('<br>')+'</div>'
+      +'</div></div>';
+  }).join('');
+}
+
+function initFamily() {
+  var today = new Date();
+  var monthStr = today.toISOString().slice(0,7);
+  var dateStr = today.toISOString().slice(0,10);
+  var el;
+  el = document.getElementById('fc-letter-month'); if(el && !el.value) el.value = monthStr;
+  el = document.getElementById('fn-month'); if(el && !el.value) el.value = monthStr;
+  el = document.getElementById('pm-date'); if(el && !el.value) el.value = dateStr;
+  el = document.getElementById('inv-date'); if(el && !el.value) el.value = dateStr;
+  try {
+    var profile = lsGet('communityProfile', {});
+    var cname = (profile && profile.name) ? profile.name : (lsGet('communityName','') || '');
+    el = document.getElementById('fn-community'); if(el && !el.value && cname) el.value = cname;
+    el = document.getElementById('sg-community'); if(el && !el.value && cname) el.value = cname;
+  } catch(e){}
+  renderMoments();
+  renderWishLists();
+  sgRenderQuarter();
+}
+
+// ── SEASONAL PRINT HELPERS ─────────────────────────────────────────────────
+function sgGetPrintData() {
+  var q = sgGetDisplayQuarter();
+  var qd = SG_QUARTERS[q];
+  var year = new Date().getFullYear();
+  var baseQ = sgCurrentQuarter();
+  var displayQ = baseQ + sgOffset;
+  if (displayQ > 4) year++;
+  if (displayQ < 1) year--;
+  var community = (document.getElementById('sg-community')||{value:''}).value.trim() || 'Our Community';
+  var from = (document.getElementById('sg-from')||{value:''}).value.trim() || 'The Activity Team';
+  var intro = (document.getElementById('sg-intro')||{value:''}).value.trim();
+  var monthNames = qd.months.map(function(m){ return SEASONAL[m].name; });
+  return { q:q, qd:qd, year:year, community:community, from:from, intro:intro, monthNames:monthNames };
+}
+
+function sgPrintBaseCSS(extraCSS) {
+  return '<style>*{box-sizing:border-box;}body{font-family:Arial,sans-serif;margin:0;padding:0;color:#222;}h1,h2,h3,h4{margin:0;}p{margin:0 0 8px;line-height:1.6;}.no-print{display:none;}@media print{.no-print{display:none;}}' + (extraCSS||'') + '<\/style>';
+}
+
+// ── PRINT QUARTERLY NEWSLETTER ────────────────────────────────────────────
+function printSeasonalNewsletter() {
+  var d = sgGetPrintData();
+  var qd = d.qd;
+  var monthRange = d.monthNames[0] + ' – ' + d.monthNames[2] + ' ' + d.year;
+  var extraCSS = '.nl-wrap{max-width:720px;margin:0 auto;padding:32px;}.nl-header{background:'+qd.color+';color:#fff;padding:28px 32px;margin:-32px -32px 28px;}.nl-header h1{font-size:26px;color:#fff;margin-bottom:4px;}.nl-header .sub{opacity:0.85;font-size:14px;}.nl-intro{font-style:italic;margin-bottom:24px;padding:14px 18px;border-left:4px solid '+qd.color+';background:'+qd.bg+';border-radius:0 6px 6px 0;color:#444;font-size:14px;}.month-card{border:1px solid #e5e7eb;border-radius:8px;margin-bottom:20px;overflow:hidden;page-break-inside:avoid;}.month-header{background:'+qd.color+';color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;}.month-header h2{font-size:16px;color:#fff;}.month-header .season{font-size:12px;opacity:0.8;}.month-body{padding:14px 16px;background:'+qd.bg+';}.month-body h4{font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:'+qd.color+';margin-bottom:6px;margin-top:12px;}.month-body h4:first-child{margin-top:0;}.month-body ul{margin:0;padding-left:18px;}.month-body li{font-size:13px;margin-bottom:3px;}.visit-box{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;margin-top:24px;}.visit-box h3{color:'+qd.color+';font-size:15px;margin-bottom:8px;}.visit-box ul{padding-left:18px;margin:0;}.visit-box li{font-size:13px;margin-bottom:4px;}.footer{border-top:1px solid #ddd;margin-top:24px;padding-top:12px;font-size:12px;color:#888;text-align:center;}';
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Seasonal Newsletter</title>'+sgPrintBaseCSS(extraCSS)+'</head><body><div class="nl-wrap">');
+  w.document.write('<div class="nl-header"><h1>'+d.community+'</h1><div class="sub">Family Newsletter &mdash; '+qd.emoji+' '+qd.label+' &mdash; '+monthRange+'</div></div>');
+  if(d.intro) w.document.write('<div class="nl-intro">'+d.intro+'</div>');
+  w.document.write('<p style="margin-bottom:20px;font-size:14px;">Dear Families,<br><br>What a wonderful season ahead! Here is a look at the highlights, holidays, and activity ideas for the coming months. We look forward to sharing these special moments with your loved ones.</p>');
+
+  qd.months.forEach(function(m) {
+    var sd = SEASONAL[m];
+    w.document.write('<div class="month-card">');
+    w.document.write('<div class="month-header"><span style="font-size:22px;">'+sd.emoji+'</span><div><h2>'+sd.name+' '+d.year+'</h2><div class="season">'+sd.season+'</div></div></div>');
+    w.document.write('<div class="month-body">');
+    w.document.write('<h4>Holidays &amp; Observances</h4><ul>'+sd.holidays.map(function(h){return '<li>'+h+'</li>';}).join('')+'</ul>');
+    w.document.write('<h4>Activity Highlights This Month</h4><ul>'+sd.activities.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul>');
+    w.document.write('<h4>Conversation Starters for Your Visit</h4><ul>'+sd.convos.map(function(c){return '<li>'+c+'</li>';}).join('')+'</ul>');
+    w.document.write('</div></div>');
+  });
+
+  w.document.write('<div class="visit-box"><h3>'+qd.emoji+' Tips for Visiting This '+qd.season+'</h3><ul>');
+  w.document.write('<li>Check in with our activity team when you arrive &mdash; we love connecting families with what your loved one has been enjoying.</li>');
+  w.document.write('<li>Bring a small seasonal treat or activity from the list above &mdash; it makes a wonderful conversation starter.</li>');
+  w.document.write('<li>Ask about our upcoming '+qd.season+' events &mdash; families are always welcome!</li>');
+  w.document.write('<li>Take a photo together during your visit and share it with us &mdash; we love celebrating family moments.</li>');
+  w.document.write('</ul></div>');
+  w.document.write('<div class="footer">With warmth, '+d.from+' &mdash; '+d.community+'</div>');
+  w.document.write('<\/div><'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+// ── PRINT ACTIVITY GUIDE ──────────────────────────────────────────────────
+function printActivityGuide() {
+  var d = sgGetPrintData();
+  var qd = d.qd;
+  var monthRange = d.monthNames[0] + ' – ' + d.monthNames[2] + ' ' + d.year;
+  var extraCSS = '.wrap{max-width:750px;margin:0 auto;padding:28px;}.ag-header{background:'+qd.color+';color:#fff;padding:18px 28px;margin:-28px -28px 22px;display:flex;align-items:center;justify-content:space-between;}.ag-header h1{font-size:20px;color:#fff;margin:0;}.ag-header .sub{font-size:12px;opacity:0.85;margin-top:2px;}.ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}.month-card{border:2px solid '+qd.color+';border-radius:8px;overflow:hidden;page-break-inside:avoid;}.mh{background:'+qd.color+';color:#fff;padding:8px 12px;}.mh h2{font-size:14px;color:#fff;margin:0;}.mh .em{font-size:18px;}.mb{padding:10px 12px;background:'+qd.bg+';}.mb h4{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:'+qd.color+';margin:8px 0 4px;}.mb h4:first-child{margin-top:0;}.mb ul{margin:0;padding-left:14px;}.mb li{font-size:11px;margin-bottom:3px;line-height:1.4;}.bring-box{margin-top:18px;border:1px solid '+qd.color+';border-radius:6px;padding:10px 14px;background:'+qd.bg+';}.bring-box h3{font-size:12px;color:'+qd.color+';margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;}.bring-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}.bring-item{font-size:11px;background:#fff;border-radius:4px;padding:6px 8px;border:1px solid #e5e7eb;}.footer{text-align:center;margin-top:16px;font-size:10px;color:#999;border-top:1px solid #eee;padding-top:10px;}@media print{body{font-size:11px;}}';
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Activity Guide</title>'+sgPrintBaseCSS(extraCSS)+'</head><body><div class="wrap">');
+  w.document.write('<div class="ag-header"><div><h1>'+qd.emoji+' '+qd.season+' Family Activity Guide</h1><div class="sub">'+d.community+' &mdash; '+monthRange+'</div></div><div style="font-size:11px;opacity:0.85;text-align:right;">Take this home!<br>Visit ideas for every month.</div></div>');
+  if(d.intro) w.document.write('<p style="font-style:italic;font-size:12px;margin-bottom:14px;color:#555;">'+d.intro+'</p>');
+  w.document.write('<div class="ag-grid">');
+  qd.months.forEach(function(m) {
+    var sd = SEASONAL[m];
+    w.document.write('<div class="month-card">');
+    w.document.write('<div class="mh"><span class="em">'+sd.emoji+'</span> <h2>'+sd.name+'</h2></div>');
+    w.document.write('<div class="mb">');
+    w.document.write('<h4>🎉 Holidays</h4><ul>'+sd.holidays.map(function(h){return '<li>'+h+'</li>';}).join('')+'</ul>');
+    w.document.write('<h4>🎨 Do Together</h4><ul>'+sd.activities.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul>');
+    w.document.write('<h4>💬 Ask Them</h4><ul>'+sd.convos.map(function(c){return '<li>'+c+'</li>';}).join('')+'</ul>');
+    w.document.write('<h4>🎁 Bring Along</h4><ul>'+sd.bring.map(function(b){return '<li>'+b+'</li>';}).join('')+'</ul>');
+    w.document.write('</div></div>');
+  });
+  w.document.write('</div>');
+  w.document.write('<div class="footer">Prepared with love by '+d.from+' at '+d.community+' &mdash; We are so grateful for your family!</div>');
+  w.document.write('<\/div><'+'\/body><'+'\/html>');
+  w.document.close(); w.print();
+}
+
+// ── COPY EMAIL VERSION ────────────────────────────────────────────────────
+function copySeasonalEmail() {
+  var d = sgGetPrintData();
+  var qd = d.qd;
+  var monthRange = d.monthNames[0] + ' - ' + d.monthNames[2] + ' ' + d.year;
+  var lines = [
+    d.community.toUpperCase() + ' FAMILY NEWSLETTER',
+    qd.emoji + ' ' + qd.label + ' | ' + monthRange,
+    '================================================', ''
+  ];
+  if(d.intro) { lines.push(d.intro); lines.push(''); }
+  lines.push('Dear Families,');
+  lines.push('');
+  lines.push('Here is a look at the special holidays, activity ideas, and visiting tips for the coming season. We hope this inspires some wonderful moments with your loved ones!');
+  lines.push('');
+
+  qd.months.forEach(function(m) {
+    var sd = SEASONAL[m];
+    lines.push('');
+    lines.push('── ' + sd.emoji + ' ' + sd.name.toUpperCase() + ' (' + sd.season + ') ──');
+    lines.push('');
+    lines.push('Holidays & Observances:');
+    sd.holidays.forEach(function(h){ lines.push('  * ' + h); });
+    lines.push('');
+    lines.push('Activity Ideas for Your Visit:');
+    sd.activities.forEach(function(a){ lines.push('  * ' + a); });
+    lines.push('');
+    lines.push('Conversation Starters:');
+    sd.convos.forEach(function(c){ lines.push('  * ' + c); });
+    lines.push('');
+    lines.push('Ideas for What to Bring:');
+    sd.bring.forEach(function(b){ lines.push('  * ' + b); });
+  });
+
+  lines.push('');
+  lines.push('================================================');
+  lines.push('With warmth,');
+  lines.push(d.from);
+  lines.push(d.community);
+
+  var box = document.createElement('div');
+  box.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:2px solid var(--navy);border-radius:12px;padding:20px;z-index:9999;width:560px;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
+  box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">'
+    +'<strong>Email-Ready Text — Click to Select All</strong>'
+    +'<button onclick="this.closest(\'div[style]\').remove()" style="background:none;border:none;font-size:18px;cursor:pointer;">✕</button>'
+    +'</div>'
+    +'<textarea onclick="this.select()" style="width:100%;height:300px;font-family:monospace;font-size:11px;border:1px solid #ddd;border-radius:6px;padding:8px;" readonly></textarea>';
+  document.body.appendChild(box);
+  box.querySelector('textarea').value = lines.join('\n');
+  box.querySelector('textarea').select();
 }
 </script>
 </body>
