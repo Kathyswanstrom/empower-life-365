@@ -3372,7 +3372,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-secondary" onclick="smCalToday()">Today</button>
-          <button class="btn btn-secondary" onclick="printSMCalendar()">🖨️ Print</button>
+          <button class="btn btn-secondary" onclick="printContentCalendar()">🖨️ Print Calendar</button>
         </div>
       </div>
       <!-- Platform legend -->
@@ -17180,6 +17180,42 @@ var SM_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 function smCalShift(dir) { smCalMonth += dir; if(smCalMonth>11){smCalMonth=0;smCalYear++;} if(smCalMonth<0){smCalMonth=11;smCalYear--;} renderSMCalendar(); }
 function smCalToday() { smCalYear=new Date().getFullYear(); smCalMonth=new Date().getMonth(); renderSMCalendar(); }
 
+var CAL_FIXED={
+  '1/1':{label:"New Year's Day",emoji:'&#127878;',type:'holiday'},'1/21':{label:'National Hugging Day',emoji:'&#129303;',type:'fun'},
+  '2/2':{label:'Groundhog Day',emoji:'&#128063;',type:'fun'},'2/7':{label:'Send a Card Day',emoji:'&#128140;',type:'fun'},
+  '2/14':{label:"Valentine's Day",emoji:'&#10084;',type:'holiday'},'3/8':{label:"Women's Day",emoji:'&#128105;',type:'awareness'},
+  '3/21':{label:'World Down Syndrome Day',emoji:'&#10084;',type:'awareness'},'4/2':{label:'World Autism Day',emoji:'&#129689;',type:'awareness'},
+  '4/11':{label:'National Pet Day',emoji:'&#128062;',type:'fun'},'4/22':{label:'Earth Day',emoji:'&#127757;',type:'awareness'},
+  '5/8':{label:'Nurses Day',emoji:'&#128105;',type:'awareness'},'6/15':{label:'Elder Abuse Awareness',emoji:'&#128308;',type:'awareness'},
+  '6/21':{label:'World Music Day',emoji:'&#127925;',type:'fun'},'7/4':{label:'Independence Day',emoji:'&#127482;&#127480;',type:'holiday'},
+  '7/30':{label:'Friendship Day',emoji:'&#129309;',type:'fun'},'8/21':{label:'National Senior Citizens Day',emoji:'&#11088;',type:'awareness'},
+  '8/26':{label:'National Dog Day',emoji:'&#128021;',type:'fun'},'9/11':{label:'Patriot Day',emoji:'&#127482;&#127480;',type:'holiday'},
+  '9/21':{label:"World Alzheimer's Day",emoji:'&#129504;',type:'awareness'},'10/1':{label:"Int'l Day Older Persons",emoji:'&#127775;',type:'awareness'},
+  '10/10':{label:'World Mental Health Day',emoji:'&#128154;',type:'awareness'},'10/31':{label:'Halloween',emoji:'&#127875;',type:'holiday'},
+  '11/11':{label:'Veterans Day',emoji:'&#127894;',type:'holiday'},'12/24':{label:'Christmas Eve',emoji:'&#127876;',type:'holiday'},
+  '12/25':{label:'Christmas Day',emoji:'&#127876;',type:'holiday'},'12/31':{label:"New Year's Eve",emoji:'&#127878;',type:'holiday'}
+};
+var CAL_AWARENESS_MONTHS={5:'Older Americans Month',9:"World Alzheimer's Month",11:"Alzheimer's Awareness Month"};
+
+function getFloatingAwareness(year,month){
+  var r=[];
+  function nthWD(n,wd){var d=new Date(year,month,1),c=0;while(d.getMonth()===month){if(d.getDay()===wd){c++;if(c===n)return d.getDate();}d.setDate(d.getDate()+1);}return -1;}
+  function lastWD(wd){var d=new Date(year,month+1,0);while(d.getDay()!==wd)d.setDate(d.getDate()-1);return d.getDate();}
+  if(month===0){var d=nthWD(3,1);if(d>0)r.push({day:d,label:'MLK Day',emoji:'&#9994;',type:'awareness'});}
+  if(month===4){var d=nthWD(2,0);if(d>0)r.push({day:d,label:"Mother's Day",emoji:'&#128144;',type:'holiday'});var d2=lastWD(1);if(d2>0)r.push({day:d2,label:'Memorial Day',emoji:'&#127482;&#127480;',type:'holiday'});}
+  if(month===5){var d=nthWD(3,0);if(d>0)r.push({day:d,label:"Father's Day",emoji:'&#128081;',type:'holiday'});}
+  if(month===8){var ld=nthWD(1,1);if(ld>0)r.push({day:ld,label:'Labor Day',emoji:'&#127477;',type:'holiday'});var gp=ld+1,gt=new Date(year,month,gp);while(gt.getDay()!==0){gp++;gt=new Date(year,month,gp);}r.push({day:gp,label:'Grandparents Day',emoji:'&#128116;&#128117;',type:'intergenerational'});}
+  if(month===10){var d=nthWD(4,4);if(d>0)r.push({day:d,label:'Thanksgiving',emoji:'&#129395;',type:'holiday'});}
+  return r;
+}
+
+var ATC_PENDING='';
+function openATCModal(title){ATC_PENDING=title;var m=document.getElementById('atc-modal');m.style.display='flex';document.getElementById('atc-title-display').textContent='"'+title+'"';var t=new Date(),dd=String(t.getDate()).padStart(2,'0'),mm=String(t.getMonth()+1).padStart(2,'0');document.getElementById('atc-date').value=t.getFullYear()+'-'+mm+'-'+dd;document.getElementById('atc-notes').value='';document.querySelectorAll('[name="atc-plat"]').forEach(function(r){r.checked=r.value==='facebook';});}
+function closeATCModal(){document.getElementById('atc-modal').style.display='none';}
+function confirmATC(){var dv=document.getElementById('atc-date').value;if(!dv){alert('Please pick a date!');return;}var p=dv.split('-');var dk=parseInt(p[0])+'-'+parseInt(p[1])+'-'+parseInt(p[2]);var pl='facebook';document.querySelectorAll('[name="atc-plat"]').forEach(function(r){if(r.checked)pl=r.value;});var notes=document.getElementById('atc-notes').value;var posts=lsGet(SM_KEY,{});if(!posts[dk])posts[dk]=[];posts[dk].push({title:ATC_PENDING,platform:pl,notes:notes,status:'planned'});lsSet(SM_KEY,posts);closeATCModal();if(document.getElementById('sm-calendar').classList.contains('sm-panel-active'))renderSMCalendar();alert('Added to your content calendar!');}
+
+function printContentCalendar(){var community=(lsGet('anchor_engage_v3_community_profile',{}).name)||'My Community';var posts=lsGet(SM_KEY,{});var din=new Date(smCalYear,smCalMonth+1,0).getDate();var fd=new Date(smCalYear,smCalMonth,1).getDay();var fl=getFloatingAwareness(smCalYear,smCalMonth);var tds=new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate();var w=window.open('','_blank');var css='<style>body{font-family:Arial,sans-serif;margin:0;padding:16px;}h1{color:#1F3864;font-size:17px;margin-bottom:2px;}.sub{color:#666;font-size:11px;margin-bottom:12px;}.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}.hdr{background:#1F3864;color:#fff;text-align:center;padding:5px;font-size:10px;font-weight:700;border-radius:3px;}.cell{border:1px solid #e5e7eb;border-radius:4px;min-height:80px;padding:4px;}.num{font-weight:800;font-size:12px;color:#1F3864;}.today{background:#eff6ff;border-color:#1F3864;}.empty{background:#f9fafb;}.aw{font-size:8px;padding:1px 3px;border-radius:3px;margin-bottom:1px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.pl{font-size:8px;padding:2px 4px;border-radius:4px;margin-bottom:1px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}@media print{body{padding:6px;}}</style>';var h='<!DOCTYPE html><html><head><title>Content Calendar</title>'+css+'</head><body>';h+='<h1>&#128247; '+community+' - Content Calendar</h1>';h+='<div class="sub">'+SM_MONTHS[smCalMonth]+' '+smCalYear+' | Empower Life 365</div>';h+='<div class="grid">';['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(function(d){h+='<div class="hdr">'+d+'</div>';});for(var i=0;i<fd;i++)h+='<div class="cell empty"></div>';var awC={awareness:'#7c3aed',holiday:'#1d4ed8',fun:'#c2410c',intergenerational:'#16a34a'};for(var d=1;d<=din;d++){var dk=smCalYear+'-'+(smCalMonth+1)+'-'+d;var dp=posts[dk]||[];var fk=(smCalMonth+1)+'/'+d;var aw=CAL_FIXED[fk]?[CAL_FIXED[fk]]:[];fl.forEach(function(f){if(f.day===d)aw.push(f);});h+='<div class="cell'+(dk===tds?' today':'')+'"><div class="num">'+d+'</div>';aw.forEach(function(a){var c=awC[a.type]||'#666';h+='<span class="aw" style="background:'+c+'15;color:'+c+';">'+a.emoji+' '+a.label+'</span>';});dp.forEach(function(p){var c=p.platform==='tiktok'?'#010101':p.platform==='instagram'?'#E1306C':p.platform==='facebook'?'#1877F2':'#6B7280';h+='<span class="pl" style="background:'+c+'20;color:'+c+';">'+p.title+'</span>';});if(!dp.length&&!aw.length)h+='<div style="font-size:8px;color:#d1d5db;margin-top:3px;">plan here</div>';h+='</div>';}h+='</div>';var maw=CAL_AWARENESS_MONTHS[smCalMonth+1];if(maw)h+='<div style="margin-top:10px;background:#f3e8ff;border-radius:5px;padding:7px 10px;font-size:10px;color:#7c3aed;font-weight:600;">&#128204; This Month: '+maw+'</div>';h+='<div style="margin-top:6px;font-size:8px;color:#9ca3af;text-align:center;">Empower Life 365 - empowerlife365.app</div></body></html>';w.document.write(h);w.document.close();setTimeout(function(){w.print();},400);}
+
 function renderSMCalendar() {
   var title = document.getElementById('sm-cal-title');
   if (title) title.textContent = SM_MONTHS[smCalMonth] + ' ' + smCalYear;
@@ -17197,8 +17233,13 @@ function renderSMCalendar() {
     var dayPosts = posts[dateKey] || [];
     var isToday = dateKey === todayStr;
     var hasPosts = dayPosts.length > 0;
+    var fk=(smCalMonth+1)+'/'+d;
+    var dayAware=CAL_FIXED[fk]?[CAL_FIXED[fk]]:[];
+    getFloatingAwareness(smCalYear,smCalMonth).forEach(function(f){if(f.day===d)dayAware.push(f);});
+    var awCols={awareness:'#7c3aed',holiday:'#1d4ed8',fun:'#c2410c',intergenerational:'#16a34a'};
     html2 += '<div class="cal-cell'+(hasPosts?' has-post':'')+'" onclick="openSMModal(\''+dateKey+'\')">';
     html2 += '<div class="cal-day-num'+(isToday?' today':'')+'">'+d+'</div>';
+    dayAware.forEach(function(a){var ac=awCols[a.type]||'#6b7280';html2+='<div style="font-size:9px;color:'+ac+';background:'+ac+'15;border-radius:4px;padding:1px 4px;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+a.emoji+' '+a.label+'</div>';});
     dayPosts.slice(0,2).forEach(function(p){
       var col = SM_PLAT_COLORS[p.platform] || '#6B7280';
       html2 += '<div class="post-pill" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40;">'+p.title+'</div>';
@@ -17517,6 +17558,7 @@ function renderTTGrid(cat) {
       +'<div style="display:flex;gap:6px;">'
       +'<button class="btn btn-secondary" style="font-size:12px;flex:1;" onclick="copySMText(\''+btoa(unescape(encodeURIComponent(t.caption)))+'\',this)">📋 Copy Caption</button>'
       +'<button class="btn btn-secondary" style="font-size:12px;flex:1;" onclick="copyHashtags(\''+t.tags.join(' ')+'\',this)">🏷️ Copy Tags</button>'
+      +'<button class="btn btn-secondary" style="font-size:12px;flex:1;background:#e0f2fe;color:#0369a1;" onclick="openATCModal(t.title)">&#128197; Add to Calendar</button>'
       +'</div>'
       +'</div></div>';
   }).join('');
@@ -17732,6 +17774,7 @@ function renderFBGrid(cat) {
       + '<button onclick="copySMText(\'' + b64post + '\',this)" style="background:#1877f2;color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy Post</button>'
       + '<button onclick="copySMText(\'' + b64image + '\',this)" style="background:var(--gray-100);color:var(--gray-700);border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">📷 Image Tip</button>'
       + '<button onclick="copySMText(\'' + b64tip + '\',this)" style="background:var(--gray-100);color:var(--gray-700);border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">💡 Pro Tip</button>'
+      + '<button onclick="openATCModal(idea.title)" style="background:#e0f2fe;color:#0369a1;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">&#128197; Add to Calendar</button>'
       + '</div></div>';
   }).join('');
 }
@@ -18093,6 +18136,7 @@ function renderOutreachGrid() {
       + '<div style="font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:6px;text-transform:uppercase;">🛒 What You\'ll Need</div>'
       + '<div style="display:flex;flex-wrap:wrap;gap:5px;">'
       + ev.needs.map(function(n){ return '<span style="background:var(--gray-100);border-radius:12px;padding:3px 10px;font-size:12px;color:var(--gray-600);">' + n + '</span>'; }).join('')
+      + '<div style="padding:0 16px 14px;"><button onclick="openATCModal(\'Promote: \'+ev.title)" style="width:100%;background:#e0f2fe;color:#0369a1;border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;">&#128197; Add Promo to Calendar</button></div>'
       + '</div></div></div></div>';
   }).join('');
 }
