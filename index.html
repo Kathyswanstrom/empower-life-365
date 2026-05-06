@@ -1135,7 +1135,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="tab-btn" data-tab="games" id="games-tab" onclick="switchTab('games')">🎮 Games</button>
     <button class="tab-btn" data-tab="travel" id="travel-tab" onclick="switchTab('travel')">✈️ Travel Hub</button>
     <button class="tab-btn" data-tab="family" id="family-tab" onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
-    <button class="tab-btn" data-tab="social" id="social-tab" onclick="switchTab('social')">📱 Social Media</button>
+    <button class="tab-btn" data-tab="social" id="social-tab" onclick="switchTab('social')">🎯 Marketing Hub</button>
     <button class="tab-btn" data-tab="community" id="community-tab" onclick="switchTab('community')">🔑 365 Members Exchange</button>
     <button class="tab-btn" data-tab="biggames" id="biggames-tab" onclick="switchTab('biggames')">🎯 Big Games</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
@@ -3326,6 +3326,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     .sm-tab.sm-tab-active{background:#0f172a;color:#fff;}
     .sm-panel{display:none;}
     .sm-panel.sm-panel-active{display:block;}
+    .cb-pill{background:var(--gray-100);border:2px solid transparent;padding:7px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all .15s;}
+    .cb-pill:hover{background:var(--gray-200);}
+    .cb-pill.cb-pill-active{background:var(--navy);color:#fff;border-color:var(--navy);}
     .tt-card{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;transition:box-shadow 0.15s;}
     .tt-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1);}
     .tt-header{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:10px;}
@@ -3345,7 +3348,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </style>
 
   <div class="panel-header">
-    <h2>📱 Social Media</h2>
+    <h2>🎯 Marketing Hub</h2>
     <p class="panel-subtitle">Plan your content, get TikTok ideas, grab captions &amp; hashtags — all in one place</p>
   </div>
 
@@ -3353,6 +3356,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="sm-tab sm-tab-active" data-sm="calendar" onclick="switchSMTab('calendar')">📅 Content Calendar</button>
     <button class="sm-tab" data-sm="tiktok" onclick="switchSMTab('tiktok')">🎵 TikTok Ideas</button>
     <button class="sm-tab" data-sm="facebook" onclick="switchSMTab('facebook')">📘 Facebook Ideas</button>
+    <button class="sm-tab" data-sm="outreach" onclick="switchSMTab('outreach')">📣 Outreach &amp; Caption Builder</button>
     <button class="sm-tab" data-sm="captions" onclick="switchSMTab('captions')">✍️ Caption Templates</button>
     <button class="sm-tab" data-sm="hashtags" onclick="switchSMTab('hashtags')">🏷️ Hashtag Library</button>
   </div>
@@ -3411,6 +3415,77 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="sm-tab" data-fbcat="holiday" onclick="filterFB('holiday')">🎉 Holiday &amp; Seasonal</button>
     </div>
     <div id="sm-fb-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+  </div>
+
+  <div id="sm-outreach" class="sm-panel">
+
+    <!-- CAPTION BUILDER -->
+    <div style="background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:22px;margin-bottom:28px;">
+      <h3 style="margin:0 0 4px;color:var(--navy);font-size:17px;">📸 Caption Builder</h3>
+      <p style="margin:0 0 18px;color:var(--gray-500);font-size:13px;">Upload a photo, pick your post type and vibe — get 3 ready-to-post captions instantly.</p>
+
+      <!-- Upload area -->
+      <div id="cb-upload-area" onclick="document.getElementById('cb-file-input').click()"
+        style="border:2px dashed var(--gray-300);border-radius:12px;padding:28px;text-align:center;cursor:pointer;margin-bottom:16px;transition:border-color .2s;position:relative;background:var(--gray-50);"
+        ondragover="event.preventDefault();this.style.borderColor='var(--navy)'"
+        ondragleave="this.style.borderColor='var(--gray-300)'"
+        ondrop="cbHandleDrop(event)">
+        <input type="file" id="cb-file-input" accept="image/*" style="display:none" onchange="cbHandleFile(this.files[0])">
+        <div id="cb-upload-placeholder">
+          <div style="font-size:36px;margin-bottom:8px;">📷</div>
+          <div style="font-weight:700;color:var(--navy);font-size:14px;">Click or drag a photo here</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">JPG, PNG, HEIC — any size</div>
+        </div>
+        <img id="cb-preview" style="display:none;max-width:100%;max-height:220px;border-radius:8px;object-fit:contain;" alt="preview">
+        <button id="cb-clear-btn" onclick="event.stopPropagation();cbClearPhoto()" style="display:none;position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:20px;padding:4px 10px;font-size:12px;cursor:pointer;">✕ Clear</button>
+      </div>
+
+      <!-- Post type -->
+      <div style="margin-bottom:14px;">
+        <div style="font-weight:700;font-size:13px;color:var(--gray-700);margin-bottom:8px;">What type of post?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;" id="cb-type-btns">
+          <button class="cb-pill" data-cbtype="birthday" onclick="cbSetType(this,'birthday')">🎂 Birthday</button>
+          <button class="cb-pill" data-cbtype="activity" onclick="cbSetType(this,'activity')">🎨 Activity Recap</button>
+          <button class="cb-pill" data-cbtype="outreach" onclick="cbSetType(this,'outreach')">📣 Outreach Event</button>
+          <button class="cb-pill" data-cbtype="spotlight" onclick="cbSetType(this,'spotlight')">🌟 Resident Spotlight</button>
+          <button class="cb-pill" data-cbtype="holiday" onclick="cbSetType(this,'holiday')">🎉 Holiday</button>
+          <button class="cb-pill" data-cbtype="food" onclick="cbSetType(this,'food')">🍽️ Food &amp; Cooking</button>
+          <button class="cb-pill" data-cbtype="music" onclick="cbSetType(this,'music')">🎵 Music Moment</button>
+          <button class="cb-pill" data-cbtype="outdoor" onclick="cbSetType(this,'outdoor')">🌿 Outdoor / Nature</button>
+          <button class="cb-pill" data-cbtype="staff" onclick="cbSetType(this,'staff')">🤝 Staff Appreciation</button>
+          <button class="cb-pill" data-cbtype="general" onclick="cbSetType(this,'general')">💬 General Moment</button>
+        </div>
+      </div>
+
+      <!-- Vibe -->
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:13px;color:var(--gray-700);margin-bottom:8px;">What's the vibe?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;" id="cb-vibe-btns">
+          <button class="cb-pill" data-cbvibe="heartwarming" onclick="cbSetVibe(this,'heartwarming')">💛 Heartwarming</button>
+          <button class="cb-pill" data-cbvibe="funny" onclick="cbSetVibe(this,'funny')">😄 Fun &amp; Playful</button>
+          <button class="cb-pill" data-cbvibe="inspirational" onclick="cbSetVibe(this,'inspirational')">✨ Inspirational</button>
+          <button class="cb-pill" data-cbvibe="promotional" onclick="cbSetVibe(this,'promotional')">📢 Promotional</button>
+        </div>
+      </div>
+
+      <button onclick="cbGenerate()" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px 24px;font-weight:700;font-size:14px;cursor:pointer;width:100%;">✨ Generate Captions</button>
+      <div id="cb-output" style="margin-top:20px;"></div>
+    </div>
+
+    <!-- OUTREACH EVENT IDEAS -->
+    <div>
+      <h3 style="margin:0 0 4px;color:var(--navy);font-size:17px;">🌍 Community Outreach Event Ideas</h3>
+      <p style="margin:0 0 16px;color:var(--gray-500);font-size:13px;">Events that open your doors and bring the community in.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+        <button class="cb-pill cb-pill-active" data-orcat="all" onclick="filterOutreach('all')">All Events</button>
+        <button class="cb-pill" data-orcat="easy" onclick="filterOutreach('easy')">🟢 Easy</button>
+        <button class="cb-pill" data-orcat="medium" onclick="filterOutreach('medium')">🟡 Medium</button>
+        <button class="cb-pill" data-orcat="big" onclick="filterOutreach('big')">🔴 Big Event</button>
+        <button class="cb-pill" data-orcat="seasonal" onclick="filterOutreach('seasonal')">🌸 Seasonal</button>
+        <button class="cb-pill" data-orcat="intergenerational" onclick="filterOutreach('intergenerational')">👧 Intergenerational</button>
+      </div>
+      <div id="sm-outreach-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+    </div>
   </div>
 
   <div id="sm-captions" class="sm-panel">
@@ -17086,6 +17161,7 @@ function initSocial() {
     renderSMCalendar();
     renderTTGrid('all');
     renderFBGrid('all');
+    renderOutreachGrid();
     renderCaptions('all');
     renderHashtags();
     smInited = true;
@@ -17663,6 +17739,362 @@ function renderFBGrid(cat) {
 function filterFB(cat) {
   document.querySelectorAll('[data-fbcat]').forEach(function(b){ b.classList.toggle('sm-tab-active', b.dataset.fbcat === cat); });
   renderFBGrid(cat);
+}
+
+// ── CAPTION BUILDER DATA ─────────────────────────────────────────────────────
+var CB_CAPTIONS = {
+  birthday:{
+    heartwarming:['Today we celebrate [Name] — [age] years of kindness, laughter, and love. ❤️ We are so grateful for every single day with you. Help us shower [him/her/them] with birthday love in the comments! \U0001f382',
+      'Happy [age]th Birthday to one of the most wonderful souls in our community! \U0001f38a [Name], your smile lights up every room. Drop a \U0001f49b below to wish [him/her/them] a beautiful day!',
+      'Birthday love is in the air! \U0001f382 [Name] is celebrating today and we could not be prouder to call [him/her/them] part of our family. ❤️ Share your birthday wishes below!'],
+    funny:['Guess who just leveled up?! \U0001f3ae [Name] is officially [age] years young today and still the most fun person in the building. \U0001f602 Drop a candle emoji for every year... just kidding, we would be here all day! \U0001f36e',
+      '[Name] has been around the sun [age] times and honestly? [He/She/They] make it look easy. \U0001f3c6 Happy Birthday to our reigning champion of good vibes! \U0001f382\U0001f602',
+      'Birthday alert! \U0001f6a8 [Name] is [age] today and [he/she/they] is already planning tomorrow\'s activities. Zero chill. Maximum joy. Drop a \U0001f382 to celebrate! \U0001f602'],
+    inspirational:['[age] years of wisdom, strength, and grace. Happy Birthday to [Name] — a living reminder that life only gets richer with time. ✨ Thank you for inspiring all of us every single day.',
+      'Today [Name] turns [age] — and what a [age] years it has been. \U0001f31f A life well-lived, a heart full of love, a community forever grateful. Happy Birthday! ✨',
+      'They say age is just a number. [Name] is proof that the best chapters are still being written. \U0001f4d6 Happy [age]th Birthday — we love you! \U0001f31f'],
+    promotional:['Join us in celebrating [Name]\'s [age]th birthday this [day]! \U0001f382 Stop by [location] to share in the joy. All are welcome. \U0001f38a Call us at [phone] for details!',
+      'Big birthday celebration happening at [Community Name]! \U0001f3e0 [Name] is turning [age] and we are throwing a party. Families and friends welcome — [date/time]. Hope to see you there! \U0001f382',
+      'We are celebrating [Name] turning [age] and we want YOU there! \U0001f38a Join us [date] at [Community Name]. Light refreshments served. RSVP in the comments or call us! \U0001f4de']},
+  activity:{
+    heartwarming:['Look at the pure joy in this room! \U0001f4f8 Today\'s [activity] brought out the very best in our residents. These are the moments we live for. \U0001f49b What activity would YOU love to try?',
+      'Moments like this one remind us why we do what we do. \U0001f49b Today our residents dove into [activity] with so much heart and enthusiasm. We are forever grateful for this community. ❤️',
+      'Today was a good day. \U0001f49b Our residents showed up, showed out, and made [activity] absolutely magical. This is what living fully looks like. \U0001f31f Drop a ❤️ if this made your day!'],
+    funny:['They came. They saw. They absolutely dominated [activity]. \U0001f3c6 Our residents are not here to play... except they totally are. \U0001f602 Drop a \U0001f44f if you want to join next time!',
+      'Warning: our residents are dangerously good at [activity]. \U0001f605 Do not challenge them unless you are ready to lose. \U0001f602 Who wants to come try to beat them? \U0001f447',
+      'Competitive? Us? Never. \U0001f609 Okay maybe a little. Today\'s [activity] got a little intense and we are not sorry about it. \U0001f602 Tag someone who needs this kind of energy in their life!'],
+    inspirational:['Every day is an opportunity to create something beautiful. ✨ Today our residents proved that with [activity]. Age is never a barrier to creativity, joy, or growth. \U0001f31f',
+      'This is what thriving looks like. \U0001f31f Our residents brought their whole hearts to [activity] today — and the results speak for themselves. Never stop doing what lights you up. ✨',
+      'They showed up today and gave it everything. ✨ [activity] brought out incredible creativity and connection. This is what meaningful living looks like every single day. \U0001f31f'],
+    promotional:['Join us next [day] for [activity]! \U0001f3a8 Open to residents, families, and community members. [Time] at [Community Name]. Light refreshments provided. Call [phone] to reserve your spot! \U0001f4de',
+      'Sneak peek at what\'s happening at [Community Name] this week! \U0001f4c5 [Activity] is on the calendar and there is still room for you to join. Call us or stop by to learn more! \U0001f3e0',
+      'This week at [Community Name]: [Activity]! \U0001f4cb Families are always welcome to join in the fun. [Day] at [time]. See you there! \U0001f44b']},
+  outreach:{
+    heartwarming:['Our doors are open and our hearts even more so. \U0001f49b Join us for [event name] on [date] — a chance to connect, share, and build something beautiful together in our community. All are welcome! \U0001f3e0',
+      'There is something special about neighbors coming together. \U0001f49b We are hosting [event name] on [date] and we would love to see YOUR face. Come meet our amazing residents and be part of our story. ❤️',
+      'Community is everything to us. \U0001f49b [Event name] is happening [date] at [Community Name] and we cannot wait to open our home to you. Light refreshments. Warm hearts. All are welcome! \U0001f38a'],
+    funny:['PSA: Our residents have been baking/planning/preparing for [event name] and things are getting VERY serious. \U0001f605 Join us [date] — they are ready to show off and they need an audience! \U0001f602 All are welcome! \U0001f3e0',
+      'Fair warning: if you come to [event name] on [date], you WILL have a good time. Our residents will make sure of it. \U0001f602 They have been preparing for days. You have been warned. \U0001f3e0',
+      'Our residents have been waiting to meet you. \U0001f605 [Event name] is [date] and the hype is REAL. Come for the [food/fun/event]. Stay for the stories. \U0001f602 All neighbors welcome!'],
+    inspirational:['It takes a village — and we are proud to be part of yours. ✨ Join us for [event name] on [date]. A chance to connect across generations and strengthen the ties that make a community great. All welcome! \U0001f31f',
+      'The best communities are built on connection. ✨ We are opening our doors for [event name] on [date] and inviting YOU to be part of our story. Come as you are. Leave inspired. \U0001f3e0',
+      'Neighbors become family when you let them in. ✨ [Event name] at [Community Name] on [date] — because community means showing up for each other. All are warmly welcome. \U0001f49b'],
+    promotional:['[Event name] at [Community Name]! \U0001f4e3 [Date] from [start time] to [end time]. [Brief description — bake sale / open house / social]. Free admission. [Address]. Call [phone] for info! \U0001f3e0\U0001f4de',
+      'SAVE THE DATE! \U0001f4c5 [Event name] at [Community Name] — [Date] at [Time]. Come meet our residents, enjoy [refreshments/activities], and see what we are all about. Free and open to the community! \U0001f3e0',
+      'You are invited! \U0001f38a [Community Name] is hosting [event name] on [date]. Open to all neighbors and community members. [Address]. Parking available. See you there! \U0001f44b']},
+  spotlight:{
+    heartwarming:['We want you to meet someone very special. \U0001f49b [Name] has called [Community Name] home for [time] and every single day [he/she/they] make this place brighter. Tell us one thing that makes someone in YOUR life special! ❤️',
+      'Every person has a story worth telling. \U0001f4d6 Today we are spotlighting [Name] — [brief description]. We are so grateful [he/she/they] chose us. Drop a \U0001f49b to show some love!',
+      'Behind every great community are extraordinary people. \U0001f31f Meet [Name] — [brief description]. [He/She/They] inspire us every single day. We could not imagine this place without [him/her/them]. ❤️'],
+    funny:['We are legally required to warn you: [Name] is the funniest/most competitive/most stylish person here and [he/she/they] KNOWS it. \U0001f602 We are so lucky to have [him/her/them]! Drop a \U0001f31f below!',
+      'Spotlight on [Name] today — officially our most [fun/witty/talented] resident and [he/she/they] will absolutely tell you so themselves. \U0001f602 We love [him/her/them] for it! Drop a \U0001f44f below!',
+      'Meet [Name]. Hobbies include: [hobby], [hobby], and winning. \U0001f3c6 We do not make the rules. \U0001f602 Drop a \U0001f31f to celebrate this legend!'],
+    inspirational:['Some people make the world better just by being in it. ✨ [Name] is one of those people. [Brief description of their spirit/contribution]. We are endlessly inspired by [him/her/them]. \U0001f31f',
+      '[Name] has seen so much of life — and chooses joy every single day. ✨ That kind of spirit is contagious. We are better for knowing [him/her/them]. Share this with someone who needs a reminder to choose joy! \U0001f31f',
+      'A life well lived looks like this. ✨ Meet [Name] — [brief description]. A reminder to us all that our best days are always ahead of us. \U0001f31f We love you, [Name]!'],
+    promotional:['Want to learn more about life at [Community Name]? \U0001f3e0 Come meet wonderful people like [Name] for yourself! Schedule a tour by calling [phone] or DM us. We would love to show you around! \U0001f49b',
+      'This is who lives at [Community Name]. \U0001f3e0 Extraordinary people living full, joyful lives. If you have a loved one who deserves this community, call us at [phone] to learn more! \U0001f49b',
+      'Life at [Community Name] looks like this. \U0001f31f If you or a loved one is exploring senior living options, we would love to connect. Call [phone] or stop by for a tour. Our door is always open! \U0001f3e0']},
+  holiday:{
+    heartwarming:['The holidays hit different when you celebrate with people you love. \U0001f49b Our residents brought so much warmth and joy to [holiday] — moments like these are what it is all about. Wishing everyone a beautiful season! ❤️',
+      '[Holiday] at [Community Name] was pure magic. \U0001f38a The decorations, the laughter, the togetherness — our residents made it absolutely unforgettable. Sending holiday love to all our families and neighbors! \U0001f49b',
+      'The best gift is time spent together. \U0001f381 Our residents showed us that this [holiday] — full hearts, big smiles, and memories that will last forever. Wishing everyone a season full of love! ❤️'],
+    funny:['Our residents do not mess around when it comes to [holiday]. \U0001f605 The decorating/baking/celebrating was INTENSE and honestly we are a little scared of how good they are. \U0001f602 Happy [holiday] from the most extra community around! \U0001f38a',
+      'We went a little overboard for [holiday]. Zero regrets. \U0001f602 Our residents demanded maximum festivity and we delivered. Happy [holiday] from [Community Name]! \U0001f38a\U0001f605',
+      'Did someone say [holiday] competition? Because our residents heard it and they showed UP. \U0001f3c6 Winners of [holiday] spirit? Definitely us. \U0001f602 Happy [holiday] from our whole crew! \U0001f38a'],
+    inspirational:['[Holiday] is a reminder of what matters most — connection, gratitude, and love. ✨ Our residents embodied all of that and more today. Wishing everyone a season filled with peace and joy. \U0001f31f',
+      'Gratitude looks good on everyone. ✨ This [holiday] our residents reminded us to slow down, look around, and appreciate every beautiful moment. Wishing you all the same. \U0001f31f Happy [holiday]!',
+      'Every year the holidays remind us: community is everything. ✨ We are endlessly grateful for our residents, our families, and our neighbors. Happy [holiday] from all of us at [Community Name]. \U0001f31f'],
+    promotional:['Join us for our [holiday] celebration! \U0001f38a [Date] from [time] at [Community Name]. Families, friends, and neighbors are all welcome. Light refreshments served. Call [phone] for details! \U0001f3e0',
+      'The holidays are better together! \U0001f381 [Community Name] is hosting a [holiday] open house on [date]. Come celebrate with us! Free admission, festive refreshments, and lots of joy. All welcome! \U0001f38a',
+      'Holiday event alert! \U0001f4e3 [Community Name] is celebrating [holiday] on [date] and we want you there! Stop by [time] for [brief description]. Open to the whole community. See you soon! \U0001f3e0']},
+  food:{
+    heartwarming:['Food made with love tastes different — and our residents KNOW how to cook with love. \U0001f49b Today\'s [dish/activity] was absolutely incredible. What\'s the dish that always reminds you of home? Share below! \U0001f37d️',
+      'Some things are just better homemade. \U0001f49b Our residents proved that today with [dish]. The smiles around that table said everything. Drop a \U0001f368 if you wish you were here! \U0001f37d️',
+      'There is something deeply comforting about cooking and eating together. \U0001f49b Today our residents made [dish] and the whole community came alive. What\'s your favorite comfort food? \U0001f37d️'],
+    funny:['Okay who gave our residents access to the kitchen?! \U0001f605 Because [dish] came out absolutely PERFECT and now they will never let us forget it. \U0001f602 Drop a \U0001f9c0 if this looks as good as it smells!',
+      'Professional chefs? Please. Our residents have been doing this for decades. \U0001f468‍\U0001f373 Today\'s [dish] was no exception. Gordon Ramsay would be shaking. \U0001f602 Drop a \U0001f525 if this looks delicious!',
+      'We tried to sneak a taste before the photo and got caught immediately. \U0001f605 Our residents run a TIGHT kitchen. Today\'s [dish] was worth every second of waiting. \U0001f37d️ Drop a \U0001f60b below!'],
+    inspirational:['Cooking is creativity. Cooking is memory. Cooking is love. ✨ Today our residents poured all three into [dish] — and the result was extraordinary. Never underestimate the power of a shared meal. \U0001f31f',
+      'A recipe is just a blueprint. Our residents bring the heart. ✨ Today\'s [dish] was proof that the best ingredient is always the person making it. Drop a \U0001f37d️ if food is your love language! \U0001f31f',
+      'Some of the greatest wisdom in the world lives in grandmothers\' kitchens. ✨ Today our residents shared their stories, their recipes, and their love. This is what nourishing a community looks like. \U0001f31f'],
+    promotional:['Join us for [event/meal name] at [Community Name]! \U0001f37d️ [Date] at [time]. [Brief description — cooking class / bake sale / tasting event]. Open to the community! Call [phone] to learn more. \U0001f3e0',
+      'Our residents are sharing their best recipes — and you are invited to taste them! \U0001f368 [Event name] at [Community Name] on [date]. All neighbors welcome. Free admission! Call [phone] for details.',
+      'Bake sale / cooking event at [Community Name]! \U0001f370 [Date] from [time]. Everything made by our incredible residents. Proceeds go to [cause]. Come hungry! [Address] \U0001f3e0']},
+  music:{
+    heartwarming:['Music has a way of reaching places words cannot. \U0001f49b Today our residents proved that — every note, every rhythm, every smile. There is pure magic in this room when music plays. \U0001f3b5 What song always moves you?',
+      'Watch what happens when music meets a room full of beautiful people. \U0001f49b Today\'s [music activity] was everything. The joy was absolutely contagious. Drop a \U0001f3b5 if music heals your heart too! ❤️',
+      'These voices. These faces. This joy. \U0001f49b Music brought everyone together today in the most beautiful way. We are so grateful for every note and every smile. \U0001f3b6 Drop a ❤️ below!'],
+    funny:['Our residents have been holding OUT on us. \U0001f62e Today\'s [music activity] revealed that we are living with some seriously talented people and they have known this the whole time. \U0001f602 Drop a \U0001f3b5 if you are impressed!',
+      'American Idol? The Voice? Please. Our residents have been doing this longer and doing it BETTER. \U0001f3b5\U0001f3c6 Today\'s performance was legendary. \U0001f602 Tag a music lover who needs to see this!',
+      'We came for the activity. We stayed for the concert. \U0001f602 Our residents absolutely took over today and honestly? We are here for it. \U0001f3b5\U0001f3c6 Drop a \U0001f3b6 if you want an encore!'],
+    inspirational:['Music is timeless — and so is the joy it brings. ✨ Today our residents reminded us that a song can carry you back to your favorite memory in an instant. What song takes YOU back? Share below! \U0001f3b5',
+      'They say music is the universal language. ✨ Today our residents spoke it fluently — with every note carrying decades of memory, emotion, and life. This is what thriving looks like. \U0001f31f \U0001f3b5',
+      'A song can hold an entire lifetime. ✨ Today our residents poured theirs into [activity] and it was breathtaking. Music is medicine. Music is memory. Music is life. \U0001f3b5\U0001f31f'],
+    promotional:['Music at [Community Name]! \U0001f3b5 Join us for [event name] on [date] at [time]. Live music / singalong / performance — all neighbors and families welcome! Free admission. [Address] \U0001f3e0',
+      'You are invited to an evening of music at [Community Name]! \U0001f3b6 [Date] at [time]. Our talented residents will be performing and they would love an audience. All welcome! Call [phone] for details.',
+      'Music event open to the community! \U0001f3b5 [Event name] at [Community Name] — [Date] at [time]. Free and open to all. Come share in the joy of music with our amazing residents! \U0001f3e0']},
+  outdoor:{
+    heartwarming:['Fresh air, sunshine, and good company — the recipe for a perfect day. \U0001f49b Our residents soaked it all in today and the smiles say it all. What\'s your favorite thing to do outdoors? Share below! \U0001f33b',
+      'Nature has a way of reminding us what matters. \U0001f49b Today our residents spent time outside in [location/garden/courtyard] and the peace and joy on their faces was everything. \U0001f33f Drop a ☀️ below!',
+      'There is something healing about being outside together. \U0001f49b Today our residents enjoyed [outdoor activity] and it was pure bliss. We are grateful for every sunny day and every shared moment. \U0001f31f'],
+    funny:['Our residents had a full outdoor adventure today and honestly they left the rest of us exhausted just watching. \U0001f605 [Outdoor activity] hit different in this weather! \U0001f602 Drop a \U0001f33b if you wish you were here!',
+      'Forget the gym. Our residents have a whole [garden / courtyard / walking path] and they USE it. \U0001f605 Today\'s outdoor adventure was no joke. \U0001f33f\U0001f602 Tag someone who needs this energy! ☀️',
+      'We said "a little fresh air." Our residents said "a full adventure." \U0001f605 Today\'s [outdoor activity] got OUT of hand in the best way. \U0001f602 Drop a \U0001f331 if this looks like your kind of day!'],
+    inspirational:['There is a whole world outside these walls — and our residents explore it with joy every single day. ✨ Today\'s [outdoor activity] was a reminder that every breath of fresh air is a gift. \U0001f33f\U0001f31f',
+      'Growth happens outside your comfort zone — and outside in general. ✨ Our residents headed outdoors today and came back glowing. Nature is the best medicine. \U0001f33b\U0001f31f Drop a ☀️ below!',
+      'The garden does not care how old you are. ✨ It just grows. Our residents understand this better than anyone — showing up, tending to things, watching them bloom. \U0001f331 Lessons in every leaf. \U0001f31f'],
+    promotional:['Outdoor event at [Community Name]! \U0001f33f Join us for [event name] in our [garden / courtyard / grounds] on [date] at [time]. Open to the community! Light refreshments. All welcome! \U0001f3e0\U0001f33b',
+      'Our garden / grounds are open for [event name]! ☀️ [Date] at [time]. Neighbors, families, and community members all welcome. Come enjoy the outdoors with us! Call [phone] for details.',
+      'Come outside with us! \U0001f331 [Community Name] is hosting [outdoor event] on [date]. Fresh air, friendly faces, and [brief description]. All are welcome — bring the whole family! \U0001f3e0\U0001f33b']},
+  staff:{
+    heartwarming:['Every single day they show up — with their whole hearts. \U0001f49b Today we want to celebrate [Name / our incredible team] for the tireless love and dedication they pour into this community. We are so grateful. ❤️',
+      'Behind every smile in this community is a team that truly cares. \U0001f49b We are so thankful for [Name] and everyone who makes [Community Name] feel like home every single day. Drop a \U0001f49b to show some love! ❤️',
+      'Not all heroes wear capes — some wear scrubs and sneakers. \U0001f49b [Name] has been part of our family for [time] and [he/she/they] make everything better just by being here. Thank you from the bottom of our hearts. ❤️'],
+    funny:['Official warning: [Name] is TOO good at their job and has set an impossible standard for the rest of us. \U0001f605 We are so lucky to have [him/her/them]! Drop a \U0001f31f to embarrass [him/her/them] in the best way! \U0001f602',
+      'We tried to find something [Name] is NOT great at. Still looking. \U0001f605 [He/She/They] make everything look effortless and we are not sure how. Drop a \U0001f44f if you appreciate people like this in your life! \U0001f602',
+      'Plot twist: our staff is actually the funniest people here. \U0001f602 Shoutout to [Name] for keeping us laughing, showing up every day, and making this place the best it can be. We love you! \U0001f31f'],
+    inspirational:['The right people in the right place change everything. ✨ [Name] is proof of that every single day. Thank you for your dedication, your compassion, and your heart. You make a difference. \U0001f31f',
+      'Some people are called to care for others — and you can always tell who they are. ✨ [Name] walks through that door every day and gives it everything. We see you. We thank you. We are better for you. \U0001f31f',
+      'Caregiving is not a job. It is a calling. ✨ [Name] lives that truth every single day and our whole community is better for it. Thank you for being exactly who you are. \U0001f31f'],
+    promotional:['Inspired by our team? \U0001f3e0 [Community Name] is always looking for compassionate people to join us. Visit [website] or call [phone] to learn about career opportunities. Make a difference every day! ✨',
+      'Great care starts with great people. \U0001f31f Meet our incredible team at [Community Name]. If you are looking for a community where your loved one will truly be cherished, call us at [phone] for a tour! \U0001f3e0',
+      'This is what our team looks like. \U0001f31f Dedicated, compassionate, incredible people who show up every day for our residents. Learn more about life at [Community Name] — call [phone] today! \U0001f3e0']},
+  general:{
+    heartwarming:['Moments like this one — this is why we love what we do. \U0001f49b Every day at [Community Name] brings something worth celebrating. Today it was this. What made YOU smile today? ❤️',
+      'Ordinary moments. Extraordinary people. \U0001f49b We are so grateful for every single day in this community. Drop a ❤️ if something made you smile today too!',
+      'This right here is everything. \U0001f49b The laughter, the connection, the joy — it happens here every single day and we never take it for granted. Thank you for being part of our story. ❤️'],
+    funny:['Nobody told us this job would be THIS fun. \U0001f602 Every day at [Community Name] is an adventure and we absolutely love it. Drop a \U0001f602 if this made your day a little brighter!',
+      'Reporting live from [Community Name] where things are always a little bit extra and we would not have it any other way. \U0001f602 Drop a \U0001f31f if your day needed this! \U0001f3e0',
+      'Another day, another incredible moment we are legally required to share. \U0001f605 [Community Name] — where the fun never stops and the residents run the show. \U0001f602 Tag someone who would love it here!'],
+    inspirational:['Every day is a gift. Every moment a chance to grow, connect, and find joy. ✨ Our residents know this better than anyone — and they remind us every single day. \U0001f31f What are YOU grateful for today?',
+      'Life at any age can be full, rich, and joyful. ✨ Our residents prove it every single day. This is what thriving looks like. Never stop living fully. \U0001f31f Drop a ✨ if this inspires you!',
+      'The best stories are the ones still being written. ✨ Every day at [Community Name] is a new page — full of laughter, connection, and meaning. We are so grateful to be part of it. \U0001f31f'],
+    promotional:['Curious about life at [Community Name]? \U0001f3e0 We would love to show you around! Schedule a tour by calling [phone] or sending us a DM. Come see for yourself why our residents love calling this home. \U0001f49b',
+      'This is everyday life at [Community Name]. \U0001f3e0 If you have a loved one exploring senior living options, we would love to connect. Call [phone] or stop by for a tour — no pressure, just conversation. \U0001f49b',
+      'Life here is full of moments like this one. \U0001f31f To learn more about [Community Name] and schedule a visit, call us at [phone] or visit [website]. We cannot wait to meet you! \U0001f3e0']}
+};
+
+var CB_HASHTAGS = {
+  birthday:['#HappyBirthday','#BirthdayCelebration','#SeniorLiving','#AgingGracefully','#BirthdayLove','#CommunityLove','#SeniorLife','#NeverTooOld','#CelebrateBig','#ActivityDirector'],
+  activity:['#SeniorLiving','#ActivityDirector','#SeniorActivities','#ActiveAging','#CommunityLife','#SeniorLife','#ThrivingNotJustSurviving','#ActivityProgramming','#JoyfulAging','#SeniorFun'],
+  outreach:['#CommunityOutreach','#OpenDoors','#SeniorLiving','#CommunityEvent','#NeighborhoodLove','#TogetherWeThrive','#OpenHouse','#CommunityFirst','#ConnectingGenerations','#LocalCommunity'],
+  spotlight:['#ResidentSpotlight','#SeniorLiving','#MeetOurResidents','#AgingGracefully','#CommunityStories','#SeniorLife','#InspiringStories','#WisdomAndGrace','#CommunityLove','#ActivityDirector'],
+  holiday:['#HolidayCheer','#SeniorLiving','#HolidayCelebration','#FestiveFun','#CommunitySpirit','#HolidayJoy','#SeniorLife','#TisTheSeason','#TogetherForTheHolidays','#ActivityDirector'],
+  food:['#SeniorLiving','#CookingWithHeart','#FoodLove','#HomeCooking','#CommunityKitchen','#SeniorLife','#RecipeShare','#ComfortFood','#ActivityDirector','#TasteOfHome'],
+  music:['#MusicHeals','#SeniorLiving','#MusicTherapy','#SingAlong','#MusicAndMemory','#SeniorLife','#MusicIsLife','#CommunityMusic','#ActivityDirector','#JoyfulNoise'],
+  outdoor:['#OutdoorLiving','#SeniorLiving','#GardeningLife','#FreshAirFriday','#NatureHeals','#SeniorLife','#GardenTherapy','#OutsideIsTherapy','#ActivityDirector','#GreenThumb'],
+  staff:['#TeamAppreciation','#SeniorCare','#CaregiverLove','#StaffAppreciation','#SeniorLiving','#ThankYou','#CaringHands','#CommunityHeroes','#ActivityDirector','#Grateful'],
+  general:['#SeniorLiving','#CommunityLife','#SeniorLife','#ActivityDirector','#AgingGracefully','#JoyfulLiving','#ThrivingNotJustSurviving','#SeniorCommunity','#DailyJoy','#ActiveAging']
+};
+
+var CB_HASHTAG_EXTRAS = {
+  heartwarming:['#HeartfeltMoments','#PureLove','#GratefulHeart','#MakingMemories'],
+  funny:['#TooFunny','#SendHelp','#Goals','#UnexpectedJoy'],
+  inspirational:['#InspirationDaily','#LiveFullyEachDay','#Wisdom','#NeverStopGrowing'],
+  promotional:['#ScheduleATour','#JoinOurCommunity','#OpenDoors','#AllAreWelcome']
+};
+
+var OUTREACH_EVENTS = [
+  {cat:'easy',emoji:'🍪',title:'Bake Sale on the Front Lawn',
+   desc:'Residents bake their best recipes and sell to neighbors and passersby. Easy to set up, builds community pride, and lets residents shine.',
+   season:'Spring, Summer, Fall',
+   promote:['Post photos of residents baking the day before — builds anticipation','Create a Facebook event and boost to a 5-mile radius','Put a sign out front 3 days early'],
+   needs:['Folding tables','Pricing tags & cash box','Plastic wrap/boxes for items','Printed resident name cards for each item'],
+   difficulty:'easy'},
+  {cat:'easy',emoji:'☕',title:'Neighbor Coffee Morning',
+   desc:'Open your doors on a Saturday morning for free coffee, pastries, and conversation. A zero-pressure way to let neighbors see your community.',
+   season:'Year-round',
+   promote:['Flyer in the neighborhood 2 weeks before','Post on local Facebook community groups','Door hangers on nearby streets'],
+   needs:['Coffee urns','Pastries or donuts','Name tags','Community tour sign-up sheet'],
+   difficulty:'easy'},
+  {cat:'easy',emoji:'📚',title:'Book Drive & Mini Library',
+   desc:'Collect donated books from the community, then let residents curate a little free library outside. Ongoing engagement with neighbors.',
+   season:'Year-round',
+   promote:['Facebook post asking for donations','Flyer at local library and coffee shops','Partner with a local school for donation drop-off'],
+   needs:['Collection bins or boxes','Shelving or a little free library box','Resident volunteer committee','Signage'],
+   difficulty:'easy'},
+  {cat:'easy',emoji:'🌱',title:'Plant & Seed Swap',
+   desc:'Residents share seedlings, cuttings, and seeds from their gardens with neighbors. A springtime classic that draws a surprising crowd.',
+   season:'Spring',
+   promote:['Post on neighborhood gardening Facebook groups','Craigslist and Nextdoor free section','Local garden center partnership'],
+   needs:['Potting soil & small pots','Resident garden club organizing','Labeling tags','Folding tables outdoors'],
+   difficulty:'easy'},
+  {cat:'medium',emoji:'🎨',title:'Art Show & Gallery Opening',
+   desc:'Display resident artwork, crafts, and photography in a formal gallery-style show open to the public. Wine and cheese optional but recommended.',
+   season:'Fall or Spring',
+   promote:['Submit to local events calendar 3 weeks out','Invite local art teachers and clubs','Personal invitations to families and residents\' social circles'],
+   needs:['Display panels or wall space','Frame or mat key pieces','Name cards for each artist','Light refreshments','Guest book'],
+   difficulty:'medium'},
+  {cat:'medium',emoji:'🍳',title:'Community Pancake Breakfast',
+   desc:'Open invitation breakfast — residents help serve and mingle. One of the highest-turnout outreach events for senior communities.',
+   season:'Year-round',
+   promote:['Flyer at local churches, schools, and community centers','Facebook event with RSVP','Email to family contact list'],
+   needs:['Griddles and supplies','Resident volunteer servers','Ticket or donation jar','Tables and chairs for 50+'],
+   difficulty:'medium'},
+  {cat:'medium',emoji:'🎵',title:'Music in the Courtyard',
+   desc:'Free outdoor live music open to the neighborhood. Residents enjoy front-row seats and neighbors drift in — no pressure, pure joy.',
+   season:'Spring through Fall',
+   promote:['Contact local music schools and community bands','Facebook event and local events sites','Yard signs and neighborhood flyers a week before'],
+   needs:['Local musician or student group (often free!)','PA system or amp','Chairs and blankets for audience','Lemonade/snacks table'],
+   difficulty:'medium'},
+  {cat:'medium',emoji:'🏡',title:'Open House & Community Tour',
+   desc:'Formal open house where families and neighbors can tour the community, meet residents, and enjoy light refreshments. Great for occupancy and PR.',
+   season:'Year-round',
+   promote:['Facebook and Instagram ads targeted to local area','Email blast to family network','Local newspaper community calendar'],
+   needs:['Printed tour guides','Staff stationed in each area','Light refreshments','Welcome packets','Sign-in sheet'],
+   difficulty:'medium'},
+  {cat:'big',emoji:'🎪',title:'Community Fair / Festival',
+   desc:'A full-scale outdoor fair with resident booths, games, food, and live entertainment. Your biggest outreach event of the year.',
+   season:'Summer or early Fall',
+   promote:['6-week promotional campaign across all channels','Partner with local businesses for booths','Submit to city events calendar','Press release to local newspaper'],
+   needs:['Tents and tables','Resident booth assignments','Food vendors or catering','Entertainment lineup','Volunteers and staff coordination'],
+   difficulty:'big'},
+  {cat:'big',emoji:'🎭',title:'Talent Show Open to the Community',
+   desc:'Residents perform alongside community members — singers, dancers, comedians, magicians. Tickets optional as a fundraiser.',
+   season:'Winter or Spring',
+   promote:['Open audition call on Facebook 6 weeks before','Partner with local schools for student performers','Sell tickets through Eventbrite or at the door'],
+   needs:['Stage or performance area','Sound system','Printed programs','Emcee (staff or resident)','Light refreshments for audience'],
+   difficulty:'big'},
+  {cat:'big',emoji:'🎄',title:'Holiday Craft Bazaar',
+   desc:'Residents sell handmade crafts, baked goods, and gifts. Invite outside vendors for a full holiday market experience.',
+   season:'November/December',
+   promote:['Vendor recruitment 8 weeks out','Facebook event and local craft fair listings','Flyers at churches, schools, community centers'],
+   needs:['Vendor table rentals','Holiday decorations','Cash boxes per booth','Community map/program','Live holiday music'],
+   difficulty:'big'},
+  {cat:'seasonal',emoji:'🐣',title:'Easter Egg Hunt for the Neighborhood',
+   desc:'Invite neighborhood children for an egg hunt on your grounds — residents hide the eggs and cheer on the kids. Wildly popular and heartwarming.',
+   season:'Spring',
+   promote:['Nextdoor and local Facebook parent groups','Flyers at nearby elementary schools','City community board'],
+   needs:['Plastic eggs and candy fills','Baskets for kids','Resident volunteer hiders','Photo station backdrop','Age-divided hunt areas'],
+   difficulty:'seasonal'},
+  {cat:'seasonal',emoji:'🎃',title:'Trunk or Treat Halloween Event',
+   desc:'Residents decorate their scooters, wheelchairs, and golf carts for trick-or-treaters from the neighborhood. Everyone wins.',
+   season:'Fall',
+   promote:['Nextdoor and Facebook neighborhood groups','Flyers at local schools 2 weeks before','City community events calendar'],
+   needs:['Candy donations','Decoration supplies for residents','Judges for decorating contest','Staff coordination for safety','Photo station'],
+   difficulty:'seasonal'},
+  {cat:'intergenerational',emoji:'👧',title:'School Partnership Day',
+   desc:'Partner with a local elementary or high school for visits where students and residents do activities together — art, music, reading, games.',
+   season:'School year',
+   promote:['Reach out directly to local school principals','Contact district volunteer coordinator','Pitch as a service learning opportunity for students'],
+   needs:['Activity plan for visit','Snacks for students','Permission slip coordination with school','Staff to facilitate pairings'],
+   difficulty:'intergenerational'},
+  {cat:'intergenerational',emoji:'🎓',title:'Senior Wisdom Speaker Series',
+   desc:'Partner with a local college or high school — residents share life wisdom, career stories, or historical accounts with students.',
+   season:'Year-round',
+   promote:['Contact college service learning offices','High school history or civics departments','Local library speaker series'],
+   needs:['Speaker schedule (resident volunteers)','Microphone and seating setup','Thank-you cards for residents','Optional recording for social media'],
+   difficulty:'intergenerational'},
+  {cat:'intergenerational',emoji:'🐶',title:'Pet Therapy & Adoption Fair Partnership',
+   desc:'Partner with a local animal shelter for a pet therapy day open to the community. Residents get animal time, shelter gets exposure.',
+   season:'Spring or Fall',
+   promote:['Partner with shelter for co-promotion on their channels','Nextdoor and Facebook animal lover groups','Local news pitch — always a feel-good story'],
+   needs:['Shelter partnership agreement','Outdoor space or activity room','Waivers if needed','Water bowls and treats','Photographer for content'],
+   difficulty:'intergenerational'}
+];
+
+var cbPostType = null, cbVibe = null, cbPhotoData = null, cbOutreachFilter = 'all';
+
+function cbHandleFile(file) {
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    cbPhotoData = e.target.result;
+    document.getElementById('cb-preview').src = cbPhotoData;
+    document.getElementById('cb-preview').style.display = 'block';
+    document.getElementById('cb-upload-placeholder').style.display = 'none';
+    document.getElementById('cb-clear-btn').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function cbHandleDrop(e) {
+  e.preventDefault();
+  document.getElementById('cb-upload-area').style.borderColor = 'var(--gray-300)';
+  var file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) cbHandleFile(file);
+}
+
+function cbClearPhoto() {
+  cbPhotoData = null;
+  document.getElementById('cb-preview').style.display = 'none';
+  document.getElementById('cb-preview').src = '';
+  document.getElementById('cb-upload-placeholder').style.display = 'block';
+  document.getElementById('cb-clear-btn').style.display = 'none';
+  document.getElementById('cb-file-input').value = '';
+}
+
+function cbSetType(btn, type) {
+  cbPostType = type;
+  document.querySelectorAll('[data-cbtype]').forEach(function(b){ b.classList.toggle('cb-pill-active', b.dataset.cbtype === type); });
+}
+
+function cbSetVibe(btn, vibe) {
+  cbVibe = vibe;
+  document.querySelectorAll('[data-cbvibe]').forEach(function(b){ b.classList.toggle('cb-pill-active', b.dataset.cbvibe === vibe); });
+}
+
+function cbGenerate() {
+  var out = document.getElementById('cb-output');
+  if (!cbPostType) { out.innerHTML = '<p style="color:#e11d48;font-weight:600;">Please select a post type first!</p>'; return; }
+  if (!cbVibe) { out.innerHTML = '<p style="color:#e11d48;font-weight:600;">Please select a vibe!</p>'; return; }
+  var captions = (CB_CAPTIONS[cbPostType] && CB_CAPTIONS[cbPostType][cbVibe]) || CB_CAPTIONS.general.heartwarming;
+  var tags = (CB_HASHTAGS[cbPostType] || CB_HASHTAGS.general).concat(CB_HASHTAG_EXTRAS[cbVibe] || []);
+  var tagsStr = tags.join(' ');
+  var b64tags = btoa(unescape(encodeURIComponent(tagsStr)));
+  var html2 = '<div style="display:flex;flex-direction:column;gap:14px;">';
+  captions.forEach(function(cap, i) {
+    var b64 = btoa(unescape(encodeURIComponent(cap)));
+    html2 += '<div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px;">'
+      + '<div style="font-size:12px;font-weight:700;color:var(--gray-400);margin-bottom:8px;text-transform:uppercase;">Option ' + (i+1) + '</div>'
+      + '<div style="font-size:14px;color:var(--gray-700);line-height:1.6;white-space:pre-wrap;margin-bottom:10px;">' + cap.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'
+      + '<button onclick="copySMText(\'' + b64 + '\',this)" style="background:var(--navy);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy Caption</button>'
+      + '</div>';
+  });
+  html2 += '</div>';
+  html2 += '<div style="margin-top:16px;background:#f0f4ff;border-radius:10px;padding:14px;">'
+    + '<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">🏷️ SUGGESTED HASHTAGS</div>'
+    + '<div style="font-size:13px;color:#1e3a5f;line-height:1.8;">' + tags.join(' &nbsp;') + '</div>'
+    + '<button onclick="copySMText(\'' + b64tags + '\',this)" style="margin-top:10px;background:#1e3a5f;color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy All Hashtags</button>'
+    + '</div>';
+  out.innerHTML = html2;
+}
+
+function filterOutreach(cat) {
+  cbOutreachFilter = cat;
+  document.querySelectorAll('[data-orcat]').forEach(function(b){ b.classList.toggle('cb-pill-active', b.dataset.orcat === cat); });
+  renderOutreachGrid();
+}
+
+function renderOutreachGrid() {
+  var grid = document.getElementById('sm-outreach-grid');
+  if (!grid) return;
+  var filtered = cbOutreachFilter === 'all' ? OUTREACH_EVENTS : OUTREACH_EVENTS.filter(function(e){ return e.cat === cbOutreachFilter; });
+  var diffColors = {easy:'#16a34a', medium:'#d97706', big:'#dc2626', seasonal:'#7c3aed', intergenerational:'#0369a1'};
+  var diffLabels = {easy:'🟢 Easy', medium:'🟡 Medium', big:'🔴 Big Event', seasonal:'🌸 Seasonal', intergenerational:'👧 Intergenerational'};
+  grid.innerHTML = filtered.map(function(ev) {
+    var col = diffColors[ev.cat] || '#6b7280';
+    var lbl = diffLabels[ev.cat] || ev.cat;
+    return '<div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">'
+      + '<div style="background:' + col + ';padding:12px 16px;display:flex;align-items:center;gap:10px;">'
+      + '<div style="font-size:24px;">' + ev.emoji + '</div>'
+      + '<div style="flex:1;">'
+      + '<div style="font-weight:800;color:#fff;font-size:15px;">' + ev.title + '</div>'
+      + '<div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;">' + lbl + ' &nbsp;·&nbsp; ' + ev.season + '</div>'
+      + '</div></div>'
+      + '<div style="padding:16px;display:flex;flex-direction:column;gap:12px;">'
+      + '<div style="font-size:13px;color:var(--gray-600);line-height:1.5;">' + ev.desc + '</div>'
+      + '<div>'
+      + '<div style="font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:6px;text-transform:uppercase;">📣 How to Promote</div>'
+      + ev.promote.map(function(p){ return '<div style="font-size:13px;color:var(--gray-700);padding:3px 0 3px 16px;position:relative;">&#8226; ' + p + '</div>'; }).join('')
+      + '</div>'
+      + '<div>'
+      + '<div style="font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:6px;text-transform:uppercase;">🛒 What You\'ll Need</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:5px;">'
+      + ev.needs.map(function(n){ return '<span style="background:var(--gray-100);border-radius:12px;padding:3px 10px;font-size:12px;color:var(--gray-600);">' + n + '</span>'; }).join('')
+      + '</div></div></div></div>';
+  }).join('');
 }
 
 function filterCaptions(cat) {
