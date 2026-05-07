@@ -3846,7 +3846,11 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <!-- Header -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
       <h2 style="margin:0;font-size:1.4rem;">🏅 Recognition Board</h2>
-      <button class="btn" onclick="openRcgModal()">+ Give a Shoutout</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="printShoutoutDigest()" style="font-size:.85rem;">📋 Weekly Digest</button>
+        <button class="btn btn-secondary" onclick="openShoutoutDisplay()" style="font-size:.85rem;">📺 Display Mode</button>
+        <button class="btn" onclick="openRcgModal()">+ Give a Shoutout</button>
+      </div>
     </div>
 
     <!-- Pills -->
@@ -6462,7 +6466,8 @@ function printWordSearch() {
       <div class="ws-words">${ansWordListHtml}</div>
       <div class="footer">empowerlife365.app · Answer key — for staff use</div>
     </div>
-  </body></html>`;
+  </script>
+</body></html>`;
 
   const w = window.open('','_blank','width=900,height=700');
   w.document.write(docHtml); w.document.close(); w.focus();
@@ -22277,12 +22282,16 @@ function renderRcgShoutouts() {
       +'<div><div style="font-weight:700;font-size:.95rem;color:#1E1B4B;">'+s.name+'</div>'
       +'<div style="font-size:.75rem;color:#6B7280;">'+(isRes?'Resident':'Staff Member')+'</div></div>'
       +'</div>'
-      +'<button onclick="deleteRcgShoutout(this.dataset.sid)" data-sid="'+s.id+'" style="background:none;border:none;color:#D1D5DB;cursor:pointer;font-size:1rem;" title="Remove">✕</button>'
       +'</div>'
       +'<div style="background:#F8FAFF;border-radius:8px;padding:10px 12px;font-size:.88rem;color:#374151;margin-bottom:10px;line-height:1.5;">'+s.msg+'</div>'
       +'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">'
       +'<span style="background:'+col+'1A;color:'+col+';padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;">'+s.cat+'</span>'
-      +'<div style="font-size:.78rem;color:#9CA3AF;">'+(s.givenBy?'From: '+s.givenBy+' &bull; ':'')+_rcgFmtDate(s.date)+'</div>'
+      +'<div style="font-size:.78rem;color:#9CA3AF;">'+(s.givenBy?'From: '+s.givenBy+' • ':'')+_rcgFmtDate(s.date)+'</div>'
+      +'</div>'
+      +'<div style="display:flex;gap:6px;margin-top:10px;border-top:1px solid #F0F0FF;padding-top:10px;">'
+      +'<button onclick="printShoutoutCert(\'' +s.id+ '\')" style="flex:1;background:#EEF2FF;color:#4338CA;border:none;border-radius:7px;padding:5px 8px;font-size:.75rem;cursor:pointer;font-weight:600;">&#x1F5A8;&#xFE0F; Certificate</button>'
+      +'<button onclick="emailShoutout(\'' +s.id+ '\')" style="flex:1;background:#F0FDF4;color:#15803D;border:none;border-radius:7px;padding:5px 8px;font-size:.75rem;cursor:pointer;font-weight:600;">&#x1F4E7; Email Family</button>'
+      +'<button onclick="deleteRcgShoutout(\'' +s.id+ '\')" style="background:#FEF2F2;color:#B91C1C;border:none;border-radius:7px;padding:5px 8px;font-size:.75rem;cursor:pointer;font-weight:600;">&#x2715; Remove</button>'
       +'</div>'
       +'</div>';
   }).join('');
@@ -22322,6 +22331,145 @@ function deleteRcgShoutout(id) {
   _saveRcgShoutouts(_getRcgShoutouts().filter(function(x){return x.id!==id;}));
   renderRcgShoutouts();
 }
+/* ── Shoutout Sharing Features ── */
+
+function _shoutoutCertHtml(s) {
+  var catColors = {
+    'Participation':'#6366F1','Attitude & Spirit':'#EC4899','Achievement':'#F59E0B',
+    'Kindness':'#10B981','Leadership':'#3B82F6','Above & Beyond':'#8B5CF6',
+    'Milestone':'#EF4444','Other':'#6B7280'
+  };
+  var col      = catColors[s.cat] || '#6B7280';
+  var isRes    = s.type === 'resident';
+  var emoji    = isRes ? '\u{1F31F}' : '⭐';
+  var typeLabel = isRes ? 'Resident' : 'Team Member';
+  var givenLbl  = s.givenBy ? 'Recognized By' : 'Activity Director';
+  var givenLine = s.givenBy || 'Activity Director';
+  var d = s.date ? new Date(s.date + 'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Shoutout Certificate<\/title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#f5f5f0;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:Georgia,serif;}
+@media print{body{background:white;}@page{size:landscape;margin:0.5in;}}
+.cert{width:880px;background:white;border:4px double #1E3A5F;padding:50px 64px;text-align:center;position:relative;}
+.cert::before{content:'';position:absolute;inset:10px;border:1px solid ${col};pointer-events:none;}
+.cert-top{font-size:10px;font-weight:bold;letter-spacing:5px;text-transform:uppercase;color:#9CA3AF;margin-bottom:8px;}
+.cert-org{font-size:28px;font-weight:bold;color:#1E3A5F;margin-bottom:2px;}
+.cert-sub{font-size:11px;color:#6B7280;letter-spacing:3px;text-transform:uppercase;margin-bottom:30px;}
+.cert-presents{font-size:13px;color:#6B7280;margin-bottom:4px;}
+.cert-award{font-size:13px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;color:${col};margin-bottom:4px;}
+.cert-name{font-size:46px;color:#1E3A5F;border-bottom:2px solid ${col};display:inline-block;padding-bottom:6px;margin-bottom:6px;}
+.cert-type{font-size:13px;color:#6B7280;margin-bottom:24px;}
+.cert-msg{font-size:15px;color:#374151;line-height:1.8;max-width:620px;margin:0 auto 30px;font-style:italic;}
+.cert-footer{display:flex;justify-content:space-around;margin-top:10px;}
+.cert-field{min-width:200px;}
+.cert-label{font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;}
+.cert-value{font-size:14px;font-weight:bold;color:#374151;border-top:1px solid #E5E7EB;padding-top:6px;margin-top:6px;}
+.cert-seal{position:absolute;right:52px;top:52px;width:72px;height:72px;border-radius:50%;background:${col}18;border:2px solid ${col};display:flex;align-items:center;justify-content:center;font-size:30px;}
+<\/style><\/head><body>
+<div class="cert">
+  <div class="cert-seal">${emoji}<\/div>
+  <div class="cert-top">Certificate of Recognition<\/div>
+  <div class="cert-org">Empower Life 365<\/div>
+  <div class="cert-sub">Senior Living Community<\/div>
+  <div class="cert-presents">This certificate is proudly presented to<\/div>
+  <div class="cert-award">${s.cat}<\/div>
+  <div class="cert-name">${s.name}<\/div>
+  <div class="cert-type">${typeLabel}<\/div>
+  <div class="cert-msg">&ldquo;${s.msg}&rdquo;<\/div>
+  <div class="cert-footer">
+    <div class="cert-field"><div class="cert-label">Date<\/div><div class="cert-value">${d}<\/div><\/div>
+    <div class="cert-field"><div class="cert-label">${givenLbl}<\/div><div class="cert-value">${givenLine}<\/div><\/div>
+  <\/div>
+<\/div>
+<script>window.onload=function(){window.print();}<\/script>
+<\/body><\/html>`;
+}
+
+function printShoutoutCert(id) {
+  var s = _getRcgShoutouts().filter(function(x){ return x.id === id; })[0];
+  if (!s) { alert('Shoutout not found.'); return; }
+  var w = window.open('', '_blank', 'width=1000,height=700');
+  w.document.write(_shoutoutCertHtml(s));
+  w.document.close();
+}
+
+function printShoutoutDigest() {
+  var all = _getRcgShoutouts();
+  if (!all.length) { alert('No shoutouts yet! Add some first.'); return; }
+  var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+  var cutStr = cutoff.toISOString().substring(0, 10);
+  var week = all.filter(function(s){ return (s.date || '') >= cutStr; });
+  if (!week.length) week = all.slice();
+  week.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+  var catColors = {
+    'Participation':'#6366F1','Attitude & Spirit':'#EC4899','Achievement':'#F59E0B',
+    'Kindness':'#10B981','Leadership':'#3B82F6','Above & Beyond':'#8B5CF6',
+    'Milestone':'#EF4444','Other':'#6B7280'
+  };
+  var weekLabel = (week.length === all.length) ? 'All Shoutouts' : "This Week's Shoutouts";
+  var today = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var cards = week.map(function(s) {
+    var col   = catColors[s.cat] || '#6B7280';
+    var isRes = s.type === 'resident';
+    var icon  = isRes ? '👴' : '❤';
+    var d = s.date ? new Date(s.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
+    return `<div style="background:white;border:1px solid #e5e7eb;border-left:4px solid ${col};border-radius:8px;padding:14px 16px;break-inside:avoid;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <strong style="font-size:.95rem;color:#1E3A5F;">${icon} ${s.name}<\/strong>
+        <span style="background:${col}18;color:${col};padding:2px 10px;border-radius:999px;font-size:.7rem;font-weight:700;">${s.cat}<\/span>
+      <\/div>
+      <p style="font-size:.85rem;color:#374151;line-height:1.5;margin:0 0 6px;font-style:italic;">&ldquo;${s.msg}&rdquo;<\/p>
+      <div style="font-size:.72rem;color:#9CA3AF;">${s.givenBy ? 'From '+s.givenBy+' &middot; ' : ''}${d}<\/div>
+    <\/div>`;
+  }).join('');
+  var html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Shoutout Digest<\/title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:#f8fafc;padding:24px;}
+@media print{body{background:white;padding:0;}@page{margin:.6in;}}
+.hdr{background:linear-gradient(135deg,#1E3A5F,#2563EB);color:white;border-radius:10px;padding:20px 24px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;}
+.hdr h1{font-size:1.4rem;margin-bottom:2px;}.hdr p{font-size:.82rem;opacity:.8;}
+.badge{background:rgba(255,255,255,.2);border-radius:999px;padding:5px 14px;font-size:.8rem;font-weight:700;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.footer{text-align:center;margin-top:18px;font-size:.72rem;color:#9CA3AF;border-top:1px solid #e5e7eb;padding-top:12px;}
+<\/style><\/head><body>
+<div class="hdr">
+  <div><h1>🏅 ${weekLabel}<\/h1><p>Empower Life 365 &middot; Printed ${today}<\/p><\/div>
+  <div class="badge">${week.length} Shoutout${week.length !== 1 ? 's' : ''}<\/div>
+<\/div>
+<div class="grid">${cards}<\/div>
+<div class="footer">Post on the community bulletin board to celebrate our amazing residents and staff! ⭐<\/div>
+<script>window.onload=function(){window.print();}<\/script>
+<\/body><\/html>`;
+  var w = window.open('', '_blank', 'width=900,height=700');
+  w.document.write(html);
+  w.document.close();
+}
+
+function emailShoutout(id) {
+  var s = _getRcgShoutouts().filter(function(x){ return x.id === id; })[0];
+  if (!s) { alert('Shoutout not found.'); return; }
+  var d = s.date ? new Date(s.date + 'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+  var subject = encodeURIComponent('A Special Recognition for ' + s.name + ' ⭐');
+  var body = encodeURIComponent(
+    'Dear Family,\n\n'
+    + 'We are delighted to share some wonderful news about ' + s.name + '!\n\n'
+    + '“' + s.msg + '”\n\n'
+    + 'Category: ' + s.cat + '\n'
+    + (s.givenBy ? 'Recognized by: ' + s.givenBy + '\n' : '')
+    + (d ? 'Date: ' + d + '\n' : '')
+    + '\nWe are so proud to have ' + s.name + ' as part of our community. '
+    + 'They bring such joy and inspiration to everyone around them!\n\n'
+    + 'Warm regards,\nThe Activity Team\nEmpower Life 365'
+  );
+  window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+}
+
+function openShoutoutDisplay() {
+  window.open('shoutout-display.html', '_blank', 'width=1280,height=800');
+}
+
 
 /* ── Monthly Honorees ── */
 function loadMonthlyHonoree(which) {
@@ -22447,47 +22595,46 @@ function printCertificate() {
 
 
 
-// ════════════════════════════════════════════════
-// NEW RESIDENT TAB
-// ════════════════════════════════════════════════
-const NR_KEY = 'el365_new_resident';
-const NR_BUDDY_KEY = 'el365_nr_buddies';
+</script>
+
+<script>
+// ════════════ NEW RESIDENT TAB JS ════════════
+var NR_KEY = 'el365_new_resident';
+var NR_BUDDY_KEY = 'el365_nr_buddies';
 
 function nrSection(name) {
-  document.querySelectorAll('.nr-pill').forEach(p => p.classList.toggle('active', p.dataset.section === name));
-  document.querySelectorAll('.nr-section').forEach(s => s.classList.toggle('active', s.id === 'nr-sec-' + name));
+  document.querySelectorAll('.nr-pill').forEach(function(p){ p.classList.toggle('active', p.dataset.section === name); });
+  document.querySelectorAll('.nr-section').forEach(function(s){ s.classList.toggle('active', s.id === 'nr-sec-' + name); });
   if (name === 'buddy') nrRenderBuddies();
-  if (name === 'activities') nrRenderActivities();
+  if (name === 'activities') nrFilterActivities();
 }
 
-// ── CHECKLIST ────────────────────────────────────
-const NR_TASKS = [
-  {id:'sign',    label:'Place welcome sign on door',           note:'Choose navy, teal, or bunting sign — write name before hanging', phase:'day1'},
-  {id:'tea',     label:'Welcome morning tea or visit',          note:'Small group, staff-led — keep it relaxed', phase:'day1'},
-  {id:'orient',  label:'Room orientation walk',                 note:'Show key areas: dining, lounge, garden, activities room', phase:'day1'},
-  {id:'buddy',   label:'Introduce to buddy resident',           note:'Brief buddy beforehand — share name & 1–2 interests', phase:'day1'},
-  {id:'pack',    label:'Deliver welcome pack',                  note:'Welcome letter, activity guide, and interest profile form', phase:'day1'},
-  {id:'profile', label:'Note 1–2 interests in profile',        note:'Ask family or chat with resident on arrival', phase:'day1'},
-  {id:'activ1',  label:'Invite to first group activity',        note:'Choose a gentle, low-pressure option from the activity ideas', phase:'week1'},
-  {id:'meal',    label:'Introduce at meal time',                note:'Seat near buddy or a friendly established resident', phase:'week1'},
-  {id:'checkin', label:'1-on-1 check-in with staff',            note:"Ask 'How are you settling in?' and listen", phase:'week1'},
-  {id:'interp',  label:'Complete interest profile form',        note:'Return completed form to activities file', phase:'week1'},
-  {id:'buddychk',label:'Check buddy pairing is working',        note:'Check in with both after 3 days — swap if needed', phase:'week1'},
-  {id:'family',  label:'Update family contact sheet',           note:'Confirm family preferences for communication', phase:'week1'},
-  {id:'actrev',  label:'Review & update activity preferences',  note:'What has the resident engaged with so far?', phase:'month1'},
-  {id:'signrm',  label:'Remove welcome sign (ask resident)',    note:'After 3–5 days, or when resident feels at home', phase:'month1'},
-  {id:'30day',   label:'30-day wellbeing check-in',             note:'Brief conversation with resident and family', phase:'month1'},
-  {id:'file',    label:'File welcome pack in resident folder',  note:'Keep for records and future reference', phase:'month1'},
+var NR_TASKS = [
+  {id:'sign', label:'Place welcome sign on door', note:'Choose navy, teal, or bunting sign', phase:'day1'},
+  {id:'tea', label:'Welcome morning tea or visit', note:'Small group, staff-led, keep it relaxed', phase:'day1'},
+  {id:'orient', label:'Room orientation walk', note:'Show dining, lounge, garden, activities room', phase:'day1'},
+  {id:'buddy', label:'Introduce to buddy resident', note:'Brief buddy with name and 1-2 interests', phase:'day1'},
+  {id:'pack', label:'Deliver welcome pack', note:'Welcome letter, activity guide, interest profile', phase:'day1'},
+  {id:'profile', label:'Note 1-2 interests in profile', note:'Ask family or chat with resident on arrival', phase:'day1'},
+  {id:'activ1', label:'Invite to first group activity', note:'Choose a gentle, low-pressure option', phase:'week1'},
+  {id:'meal', label:'Introduce at meal time', note:'Seat near buddy or friendly established resident', phase:'week1'},
+  {id:'checkin', label:'1-on-1 check-in with staff', note:'Ask how they are settling in and listen', phase:'week1'},
+  {id:'interp', label:'Complete interest profile form', note:'Return completed form to activities file', phase:'week1'},
+  {id:'buddychk', label:'Check buddy pairing is working', note:'Check in with both after 3 days, swap if needed', phase:'week1'},
+  {id:'family', label:'Update family contact sheet', note:'Confirm family preferences for communication', phase:'week1'},
+  {id:'actrev', label:'Review and update activity preferences', note:'What has the resident engaged with so far?', phase:'month1'},
+  {id:'signrm', label:'Remove welcome sign (ask resident)', note:'After 3-5 days, or when resident feels at home', phase:'month1'},
+  {id:'30day', label:'30-day wellbeing check-in', note:'Brief conversation with resident and family', phase:'month1'},
+  {id:'file', label:'File welcome pack in resident folder', note:'Keep for records and future reference', phase:'month1'},
 ];
 
 function nrStartChecklist() {
-  const name = document.getElementById('nr-name').value.trim();
-  const room = document.getElementById('nr-room').value.trim();
-  const movein = document.getElementById('nr-movein').value;
+  var name = document.getElementById('nr-name').value.trim();
+  var room = document.getElementById('nr-room').value.trim();
+  var movein = document.getElementById('nr-movein').value;
   if (!name) { alert('Please enter a resident name.'); return; }
-  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
-  const id = Date.now().toString();
-  data.push({ id, name, room, movein, tasks: {}, created: new Date().toISOString() });
+  var data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
+  data.push({ id: Date.now().toString(), name: name, room: room, movein: movein, tasks: {}, created: new Date().toISOString() });
   localStorage.setItem(NR_KEY, JSON.stringify(data));
   document.getElementById('nr-name').value = '';
   document.getElementById('nr-room').value = '';
@@ -22495,254 +22642,271 @@ function nrStartChecklist() {
   nrRenderChecklists();
 }
 
+function nrMakeRow(res, t) {
+  var d = document.createElement('div');
+  d.className = 'nr-check-row' + (res.tasks[t.id] ? ' done' : '');
+  d.id = 'nrrow-' + res.id + '-' + t.id;
+  var cb = document.createElement('input');
+  cb.type = 'checkbox';
+  if (res.tasks[t.id]) cb.checked = true;
+  cb.dataset.resId = res.id;
+  cb.dataset.taskId = t.id;
+  cb.addEventListener('change', function(){ nrToggle(this.dataset.resId, this.dataset.taskId, this.checked); });
+  var inner = document.createElement('div');
+  var lbl = document.createElement('div'); lbl.className = 'nr-check-label'; lbl.textContent = t.label;
+  var note = document.createElement('div'); note.className = 'nr-check-note'; note.textContent = t.note;
+  inner.appendChild(lbl); inner.appendChild(note);
+  d.appendChild(cb); d.appendChild(inner);
+  return d;
+}
+
 function nrRenderChecklists() {
-  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
-  const wrap = document.getElementById('nr-checklists-wrap');
-  if (!data.length) { wrap.innerHTML = ''; return; }
-  wrap.innerHTML = data.map((res, ri) => {
-    const done = NR_TASKS.filter(t => res.tasks[t.id]).length;
-    const pct = Math.round(done / NR_TASKS.length * 100);
-    const phases = ['day1','week1','month1'];
-    const phaseLabels = {'day1':'Day 1','week1':'First Week','month1':'First Month'};
-    const phaseBadge = {'day1':'nr-badge-day1','week1':'nr-badge-week1','month1':'nr-badge-month1'};
-    let taskHtml = phases.map(phase => {
-      const ptasks = NR_TASKS.filter(t => t.phase === phase);
-      return \`<div style="margin-bottom:10px;">
-        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:0 0 4px;color:var(--gray-500);">\${phaseLabels[phase]}</p>
-        \${ptasks.map(t => \`<div class="nr-check-row \${res.tasks[t.id]?'done':''}" id="nrrow-\${res.id}-\${t.id}">
-          <input type="checkbox" \${res.tasks[t.id]?'checked':''} onchange="nrToggle('\${res.id}','\${t.id}',this.checked)">
-          <div><div class="nr-check-label">\${t.label}</div><div class="nr-check-note">\${t.note}</div></div>
-        </div>\`).join('')}
-      </div>\`;
-    }).join('');
-    return \`<div class="nr-card" style="margin-bottom:14px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-        <div>
-          <h3 style="margin:0;font-size:16px;">\${res.name}\${res.room?' · Room '+res.room:''}</h3>
-          \${res.movein?'<p style="margin:2px 0 0;font-size:12px;color:var(--gray-500);">Move-in: '+new Date(res.movein+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})+'</p>':''}
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span style="font-size:13px;font-weight:700;color:var(--primary);">\${done}/\${NR_TASKS.length} done</span>
-          <button onclick="nrDeleteChecklist('\${res.id}')" style="padding:4px 10px;background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-200);border-radius:6px;font-size:12px;cursor:pointer;">Remove</button>
-        </div>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width:\${pct}%"></div></div>
-      <div style="margin-top:12px;">\${taskHtml}</div>
-    </div>\`;
-  }).join('');
+  var data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
+  var wrap = document.getElementById('nr-checklists-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!data.length) return;
+  var phaseLabels = {day1:'Day 1', week1:'First Week', month1:'First Month'};
+  data.forEach(function(res) {
+    var done = NR_TASKS.filter(function(t){ return res.tasks[t.id]; }).length;
+    var pct = Math.round(done / NR_TASKS.length * 100);
+    var card = document.createElement('div');
+    card.className = 'nr-card'; card.style.marginBottom = '14px';
+    var dateStr = '';
+    if (res.movein) { try { dateStr = new Date(res.movein + 'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}); } catch(e){} }
+    var header = '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'
+      + '<div><h3 style="margin:0;font-size:16px;">' + res.name + (res.room ? ' &middot; Room ' + res.room : '') + '</h3>'
+      + (dateStr ? '<p style="margin:2px 0 0;font-size:12px;color:var(--gray-500);">Move-in: ' + dateStr + '</p>' : '') + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center;">'
+      + '<span style="font-size:13px;font-weight:700;color:var(--primary);">' + done + '/' + NR_TASKS.length + ' done</span>';
+    card.innerHTML = header;
+    var delBtn = document.createElement('button');
+    delBtn.textContent = 'Remove'; delBtn.dataset.resId = res.id;
+    delBtn.style.cssText = 'padding:4px 10px;background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-200);border-radius:6px;font-size:12px;cursor:pointer;';
+    delBtn.addEventListener('click', function(){ nrDeleteChecklist(this.dataset.resId); });
+    card.querySelector('div > div:last-child').appendChild(delBtn);
+    var closeDiv = document.createElement('div');
+    card.appendChild(closeDiv);
+    var prog = '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    card.insertAdjacentHTML('beforeend', prog);
+    ['day1','week1','month1'].forEach(function(phase) {
+      var sec = document.createElement('div'); sec.style.marginBottom = '10px';
+      var hdr = document.createElement('p');
+      hdr.style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:0 0 4px;color:var(--gray-500);';
+      hdr.textContent = phaseLabels[phase]; sec.appendChild(hdr);
+      NR_TASKS.filter(function(t){ return t.phase === phase; }).forEach(function(t){ sec.appendChild(nrMakeRow(res, t)); });
+      card.appendChild(sec);
+    });
+    wrap.appendChild(card);
+  });
 }
 
 function nrToggle(resId, taskId, checked) {
-  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
-  const res = data.find(r => r.id === resId);
+  var data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
+  var res = data.find(function(r){ return r.id === resId; });
   if (!res) return;
   res.tasks[taskId] = checked;
   localStorage.setItem(NR_KEY, JSON.stringify(data));
-  const row = document.getElementById('nrrow-' + resId + '-' + taskId);
-  if (row) row.classList.toggle('done', checked);
   nrRenderChecklists();
 }
 
 function nrDeleteChecklist(id) {
   if (!confirm('Remove this checklist?')) return;
-  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]').filter(r => r.id !== id);
+  var data = JSON.parse(localStorage.getItem(NR_KEY) || '[]').filter(function(r){ return r.id !== id; });
   localStorage.setItem(NR_KEY, JSON.stringify(data));
   nrRenderChecklists();
 }
 
-// ── BUDDY TRACKER ─────────────────────────────────
+// BUDDY TRACKER
 function nrAddBuddy() {
   document.getElementById('nr-buddy-form').style.display = 'block';
   document.getElementById('buddy-date').value = new Date().toISOString().split('T')[0];
 }
 
 function nrSaveBuddy() {
-  const newRes = document.getElementById('buddy-new-res').value.trim();
-  const buddy = document.getElementById('buddy-buddy').value.trim();
-  const date = document.getElementById('buddy-date').value;
-  const interests = document.getElementById('buddy-interests').value.trim();
+  var newRes = document.getElementById('buddy-new-res').value.trim();
+  var buddy = document.getElementById('buddy-buddy').value.trim();
+  var date = document.getElementById('buddy-date').value;
+  var interests = document.getElementById('buddy-interests').value.trim();
   if (!newRes || !buddy) { alert('Please fill in both resident names.'); return; }
-  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
-  data.push({ id: Date.now().toString(), newRes, buddy, date, interests, status: 'active', notes: '' });
+  var data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
+  data.push({ id: Date.now().toString(), newRes: newRes, buddy: buddy, date: date, interests: interests, status: 'active' });
   localStorage.setItem(NR_BUDDY_KEY, JSON.stringify(data));
   document.getElementById('nr-buddy-form').style.display = 'none';
-  ['buddy-new-res','buddy-buddy','buddy-interests'].forEach(id => document.getElementById(id).value = '');
+  ['buddy-new-res','buddy-buddy','buddy-interests'].forEach(function(id){ document.getElementById(id).value = ''; });
   nrRenderBuddies();
 }
 
 function nrSetBuddyStatus(id, status) {
-  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
-  const item = data.find(d => d.id === id);
+  var data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
+  var item = data.find(function(d){ return d.id === id; });
   if (item) { item.status = status; localStorage.setItem(NR_BUDDY_KEY, JSON.stringify(data)); nrRenderBuddies(); }
 }
 
 function nrDeleteBuddy(id) {
   if (!confirm('Remove this buddy pairing?')) return;
-  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]').filter(d => d.id !== id);
+  var data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]').filter(function(d){ return d.id !== id; });
   localStorage.setItem(NR_BUDDY_KEY, JSON.stringify(data));
   nrRenderBuddies();
 }
 
-function nrRenderBuddies() {
-  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
-  const list = document.getElementById('nr-buddy-list');
-  const empty = document.getElementById('nr-buddy-empty');
-  if (!list) return;
-  if (!data.length) { list.innerHTML = ''; if(empty) empty.style.display='block'; return; }
-  if(empty) empty.style.display='none';
-  list.innerHTML = data.map(d => {
-    const statusMap = {active:'✅ Active',pending:'⏳ Pending',followup:'⚠️ Follow-up needed'};
-    const dateStr = d.date ? new Date(d.date+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '';
-    return \`<div class="buddy-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-        <div>
-          <div style="font-size:15px;font-weight:700;">\${d.newRes}</div>
-          <div style="font-size:13px;color:var(--gray-500);">Buddy: <strong>\${d.buddy}</strong></div>
-          \${d.interests?'<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Shared: \${d.interests}</div>':''}
-          \${dateStr?'<div style="font-size:12px;color:var(--gray-400);margin-top:2px;">Paired \${dateStr}</div>':''}
-        </div>
-        <span class="buddy-status \${d.status}">\${statusMap[d.status]||d.status}</span>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button onclick="nrSetBuddyStatus('\${d.id}','active')" style="padding:4px 10px;font-size:12px;border-radius:6px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;cursor:pointer;">✅ Active</button>
-        <button onclick="nrSetBuddyStatus('\${d.id}','followup')" style="padding:4px 10px;font-size:12px;border-radius:6px;border:1px solid #fecaca;background:#fff5f5;color:#991b1b;cursor:pointer;">⚠️ Follow-up</button>
-        <button onclick="nrDeleteBuddy('\${d.id}')" style="padding:4px 10px;font-size:12px;border-radius:6px;border:1px solid var(--gray-200);background:var(--gray-100);color:var(--gray-500);cursor:pointer;">Remove</button>
-      </div>
-    </div>\`;
-  }).join('');
+function nrMakeBuddyCard(d) {
+  var card = document.createElement('div'); card.className = 'buddy-card';
+  var dateStr = '';
+  if (d.date) { try { dateStr = new Date(d.date + 'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); } catch(e){} }
+  var statusMap = {active:'Active', pending:'Pending', followup:'Follow-up needed'};
+  card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">'
+    + '<div><div style="font-size:15px;font-weight:700;">' + d.newRes + '</div>'
+    + '<div style="font-size:13px;color:var(--gray-500);">Buddy: <strong>' + d.buddy + '</strong></div>'
+    + (d.interests ? '<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Shared: ' + d.interests + '</div>' : '')
+    + (dateStr ? '<div style="font-size:12px;color:var(--gray-400);margin-top:2px;">Paired ' + dateStr + '</div>' : '') + '</div>'
+    + '<span class="buddy-status ' + d.status + '">' + (statusMap[d.status] || d.status) + '</span></div>';
+  var btns = [
+    {label:'Active',   id:d.id, st:'active',   style:'border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;'},
+    {label:'Follow-up',id:d.id, st:'followup',  style:'border:1px solid #fecaca;background:#fff5f5;color:#991b1b;'},
+    {label:'Remove',   id:d.id, st:null,        style:'border:1px solid var(--gray-200);background:var(--gray-100);color:var(--gray-500);'},
+  ];
+  var btnRow = document.createElement('div'); btnRow.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+  btns.forEach(function(b) {
+    var btn = document.createElement('button');
+    btn.textContent = b.label; btn.dataset.id = b.id; btn.dataset.st = b.st || '';
+    btn.style.cssText = 'padding:4px 10px;font-size:12px;border-radius:6px;cursor:pointer;' + b.style;
+    btn.addEventListener('click', function() {
+      if (!this.dataset.st) nrDeleteBuddy(this.dataset.id);
+      else nrSetBuddyStatus(this.dataset.id, this.dataset.st);
+    });
+    btnRow.appendChild(btn);
+  });
+  card.appendChild(btnRow);
+  return card;
 }
 
-// ── ACTIVITY IDEAS ────────────────────────────────
-const NR_ACTIVITIES = [
-  {cat:'firstweek', name:'Welcome morning tea',        note:'Small group, staff-led',           icon:'☕'},
-  {cat:'firstweek', name:'Facility orientation walk',  note:'Buddy shows them around',          icon:'🏡'},
-  {cat:'firstweek', name:'1-on-1 chat with staff',     note:'Learn their interests',            icon:'💬'},
-  {cat:'firstweek', name:'Name that tune',              note:'Music from their era',             icon:'🎵'},
-  {cat:'firstweek', name:'Welcome card from residents', note:'Signed by the floor',             icon:'💌'},
-  {cat:'firstweek', name:'Colouring or simple craft',  note:'No pressure, drop-in',             icon:'🎨'},
-  {cat:'social',    name:'Morning coffee club',         note:'Regular, familiar faces',          icon:'☕'},
-  {cat:'social',    name:'Table games afternoon',       note:'Cards, scrabble, chess',           icon:'🎲'},
-  {cat:'social',    name:'Show & tell',                 note:'Bring a favourite photo',          icon:'📸'},
-  {cat:'social',    name:'Garden walk with buddy',      note:'',                                 icon:'🌿'},
-  {cat:'social',    name:'Happy hour / mocktail bar',   note:'',                                 icon:'🥂'},
-  {cat:'social',    name:'Trivia teams',                note:'Pair new + established residents', icon:'🏆'},
-  {cat:'social',    name:'Pet therapy visit',           note:'Animals help ease anxiety',        icon:'🐾'},
-  {cat:'social',    name:'Birthday celebrations',       note:'',                                 icon:'🎂'},
-  {cat:'memory',    name:'Memory box display',          note:'Family photos, keepsakes',         icon:'🗂️'},
-  {cat:'memory',    name:'Life story interview',        note:'Recorded or written',              icon:'📖'},
-  {cat:'memory',    name:'Where I'm from',             note:'Share your story with the group',  icon:'🗺️'},
-  {cat:'memory',    name:'Old recipe swap',             note:'',                                 icon:'🍳'},
-  {cat:'memory',    name:'Decade playlist',             note:'Music from their 20s era',         icon:'📻'},
-  {cat:'memory',    name:'Newspaper from birth year',   note:'',                                 icon:'📰'},
-  {cat:'creative',  name:'Watercolour painting',        note:'',                                 icon:'🖌️'},
-  {cat:'creative',  name:'Knitting / crochet circle',   note:'',                                 icon:'🧶'},
-  {cat:'creative',  name:'Flower arranging',            note:'',                                 icon:'🌸'},
-  {cat:'creative',  name:'Photo collage making',        note:'',                                 icon:'🖼️'},
-  {cat:'creative',  name:'Pottery / clay modelling',    note:'',                                 icon:'🏺'},
-  {cat:'creative',  name:'Writing group',               note:'Poetry, short stories',            icon:'✍️'},
-  {cat:'creative',  name:'Card making',                 note:"For other residents' birthdays",   icon:'💐'},
-  {cat:'creative',  name:'Cooking demo / baking',       note:'',                                 icon:'🧁'},
-  {cat:'movement',  name:'Chair yoga',                  note:'',                                 icon:'🧘'},
-  {cat:'movement',  name:'Gentle stretching',           note:'',                                 icon:'🌅'},
-  {cat:'movement',  name:'Garden walk group',           note:'',                                 icon:'🌳'},
-  {cat:'movement',  name:'Balloon volleyball',          note:'',                                 icon:'🎈'},
-  {cat:'movement',  name:'Seated bowls / bocce',        note:'',                                 icon:'⚽'},
-  {cat:'movement',  name:'Dance to your favourite song',note:'',                                 icon:'💃'},
-  {cat:'movement',  name:'Breathing & relaxation',      note:'',                                 icon:'🌬️'},
-  {cat:'entertainment', name:'Movie afternoon',         note:'Choose from their era',            icon:'🎬'},
-  {cat:'entertainment', name:'Live music or sing-along',note:'',                                 icon:'🎤'},
-  {cat:'entertainment', name:'Virtual travel tour',     note:'Screen + stories',                 icon:'✈️'},
-  {cat:'entertainment', name:'Guest speaker / entertainer',note:'',                              icon:'🎭'},
-  {cat:'entertainment', name:'Local café outing',       note:'Small group, once settled',        icon:'🚐'},
-  {cat:'entertainment', name:'Bingo with prizes',       note:'',                                 icon:'🎯'},
-  {cat:'entertainment', name:'Cooking show watch party',note:'',                                 icon:'📺'},
-  {cat:'family',    name:'Family welcome morning tea',  note:'',                                 icon:'👨‍👩‍👧'},
-  {cat:'family',    name:'Family photo wall setup',     note:'In their room',                    icon:'🖼️'},
-  {cat:'family',    name:'Video call setup session',    note:'Help them connect remotely',       icon:'📱'},
-  {cat:'family',    name:'Cook a family recipe together',note:'',                                icon:'🍲'},
-  {cat:'family',    name:'Family open day / tour',      note:'',                                 icon:'🏡'},
+function nrRenderBuddies() {
+  var data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
+  var list = document.getElementById('nr-buddy-list');
+  var empty = document.getElementById('nr-buddy-empty');
+  if (!list) return;
+  list.innerHTML = '';
+  if (!data.length) { if (empty) empty.style.display = 'block'; return; }
+  if (empty) empty.style.display = 'none';
+  data.forEach(function(d) { list.appendChild(nrMakeBuddyCard(d)); });
+}
+
+// ACTIVITY IDEAS
+var NR_ACTIVITIES = [
+  {cat:'firstweek', name:'Welcome morning tea', note:'Small group, staff-led'},
+  {cat:'firstweek', name:'Facility orientation walk', note:'Buddy shows them around'},
+  {cat:'firstweek', name:'1-on-1 chat with staff', note:'Learn their interests'},
+  {cat:'firstweek', name:'Name that tune', note:'Music from their era'},
+  {cat:'firstweek', name:'Welcome card from residents', note:'Signed by the floor'},
+  {cat:'firstweek', name:'Colouring or simple craft', note:'No pressure, drop-in'},
+  {cat:'social', name:'Morning coffee club', note:'Regular, familiar faces'},
+  {cat:'social', name:'Table games afternoon', note:'Cards, scrabble, chess'},
+  {cat:'social', name:'Show and tell', note:'Bring a favourite photo'},
+  {cat:'social', name:'Garden walk with buddy', note:''},
+  {cat:'social', name:'Happy hour mocktail bar', note:''},
+  {cat:'social', name:'Trivia teams', note:'Pair new and established residents'},
+  {cat:'social', name:'Pet therapy visit', note:'Animals help ease anxiety'},
+  {cat:'social', name:'Birthday celebrations', note:''},
+  {cat:'memory', name:'Memory box display', note:'Family photos, keepsakes'},
+  {cat:'memory', name:'Life story interview', note:'Recorded or written'},
+  {cat:'memory', name:'Where I am from', note:'Share your story with the group'},
+  {cat:'memory', name:'Old recipe swap', note:''},
+  {cat:'memory', name:'Decade playlist', note:'Music from their 20s era'},
+  {cat:'memory', name:'Newspaper from birth year', note:''},
+  {cat:'creative', name:'Watercolour painting', note:''},
+  {cat:'creative', name:'Knitting and crochet circle', note:''},
+  {cat:'creative', name:'Flower arranging', note:''},
+  {cat:'creative', name:'Photo collage making', note:''},
+  {cat:'creative', name:'Pottery and clay modelling', note:''},
+  {cat:'creative', name:'Writing group', note:'Poetry, short stories'},
+  {cat:'creative', name:'Card making', note:'For other residents birthdays'},
+  {cat:'creative', name:'Cooking demo and baking', note:''},
+  {cat:'movement', name:'Chair yoga', note:''},
+  {cat:'movement', name:'Gentle stretching', note:''},
+  {cat:'movement', name:'Garden walk group', note:''},
+  {cat:'movement', name:'Balloon volleyball', note:''},
+  {cat:'movement', name:'Seated bowls and bocce', note:''},
+  {cat:'movement', name:'Dance to your favourite song', note:''},
+  {cat:'movement', name:'Breathing and relaxation', note:''},
+  {cat:'entertainment', name:'Movie afternoon', note:'Choose from their era'},
+  {cat:'entertainment', name:'Live music or sing-along', note:''},
+  {cat:'entertainment', name:'Virtual travel tour', note:'Screen and stories'},
+  {cat:'entertainment', name:'Guest speaker or entertainer', note:''},
+  {cat:'entertainment', name:'Local cafe outing', note:'Small group, once settled'},
+  {cat:'entertainment', name:'Bingo with prizes', note:''},
+  {cat:'entertainment', name:'Cooking show watch party', note:''},
+  {cat:'family', name:'Family welcome morning tea', note:''},
+  {cat:'family', name:'Family photo wall setup', note:'In their room'},
+  {cat:'family', name:'Video call setup session', note:'Help them connect remotely'},
+  {cat:'family', name:'Cook a family recipe together', note:''},
+  {cat:'family', name:'Family open day tour', note:''},
 ];
 
-let nrActiveCat = 'all';
+var nrActiveCat = 'all';
 
 function nrSetCat(btn, cat) {
   nrActiveCat = cat;
-  document.querySelectorAll('.nr-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  document.querySelectorAll('.nr-filter-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.cat === cat); });
   nrFilterActivities();
 }
 
 function nrFilterActivities() {
-  const q = (document.getElementById('nr-act-search')?.value || '').toLowerCase();
-  const grid = document.getElementById('nr-act-grid');
+  var searchEl = document.getElementById('nr-act-search');
+  var q = searchEl ? searchEl.value.toLowerCase() : '';
+  var grid = document.getElementById('nr-act-grid');
   if (!grid) return;
-  const filtered = NR_ACTIVITIES.filter(a =>
-    (nrActiveCat === 'all' || a.cat === nrActiveCat) &&
-    (!q || a.name.toLowerCase().includes(q) || a.note.toLowerCase().includes(q))
-  );
-  if (!filtered.length) {
-    grid.innerHTML = '<p style="color:var(--gray-400);font-size:14px;text-align:center;padding:30px;grid-column:1/-1;">No activities match your search.</p>';
-    return;
-  }
-  const catColors = {
-    firstweek:'#dcfce7:#166534', social:'#dbeafe:#1e40af', memory:'#fef9c3:#854d0e',
-    creative:'#fae8ff:#7e22ce', movement:'#dcfce7:#15803d',
-    entertainment:'#fee2e2:#991b1b', family:'#ffe4e6:#9f1239'
-  };
-  grid.innerHTML = filtered.map(a => {
-    const [bg, tc] = (catColors[a.cat] || '#f3f4f6:#374151').split(':');
-    return \`<div style="background:var(--card-bg,#fff);border:1px solid var(--gray-200);border-radius:10px;padding:12px;cursor:pointer;transition:all .12s;" onclick="nrCopyActivity('\${a.name}')" title="Click to copy to clipboard">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span style="font-size:20px;">\${a.icon}</span>
-        <span style="font-size:13px;font-weight:700;color:var(--gray-800);">\${a.name}</span>
-      </div>
-      \${a.note?'<div style="font-size:12px;color:var(--gray-500);margin-left:28px;">\${a.note}</div>':''}
-      <div style="margin-top:6px;margin-left:28px;"><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:\${bg};color:\${tc};">\${a.cat==='firstweek'?'First Week':a.cat.charAt(0).toUpperCase()+a.cat.slice(1)}</span></div>
-    </div>\`;
-  }).join('');
+  var catColors = {firstweek:'#dcfce7|#166534',social:'#dbeafe|#1e40af',memory:'#fef9c3|#854d0e',creative:'#fae8ff|#7e22ce',movement:'#dcfce7|#15803d',entertainment:'#fee2e2|#991b1b',family:'#ffe4e6|#9f1239'};
+  var catLabels = {firstweek:'First Week',social:'Social',memory:'Memory',creative:'Creative',movement:'Movement',entertainment:'Entertainment',family:'Family'};
+  var filtered = NR_ACTIVITIES.filter(function(a) {
+    return (nrActiveCat === 'all' || a.cat === nrActiveCat) && (!q || a.name.toLowerCase().indexOf(q) > -1 || a.note.toLowerCase().indexOf(q) > -1);
+  });
+  grid.innerHTML = '';
+  if (!filtered.length) { grid.innerHTML = '<p style="color:var(--gray-400);font-size:14px;text-align:center;padding:30px;grid-column:1/-1;">No activities match.</p>'; return; }
+  filtered.forEach(function(a) {
+    var parts = (catColors[a.cat] || '#f3f4f6|#374151').split('|');
+    var card = document.createElement('div');
+    card.style.cssText = 'background:var(--card-bg,#fff);border:1px solid var(--gray-200);border-radius:10px;padding:12px;cursor:pointer;';
+    card.title = 'Click to copy';
+    card.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">' + a.name + '</div>'
+      + (a.note ? '<div style="font-size:12px;color:var(--gray-500);margin-bottom:6px;">' + a.note + '</div>' : '')
+      + '<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:' + parts[0] + ';color:' + parts[1] + ';">' + (catLabels[a.cat]||a.cat) + '</span>';
+    card.addEventListener('click', function() { nrCopyActivity(a.name); });
+    grid.appendChild(card);
+  });
 }
 
 function nrCopyActivity(name) {
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(name).then(() => {
-      const toast = document.createElement('div');
-      toast.textContent = '✅ Copied: ' + name;
-      toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1a2a5c;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;animation:fadeIn .2s ease;';
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2200);
+    navigator.clipboard.writeText(name).then(function() {
+      var t = document.createElement('div');
+      t.textContent = 'Copied: ' + name;
+      t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1a2a5c;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;';
+      document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 2000);
     });
   }
 }
 
-// ── PRINT GUIDES ─────────────────────────────────
 function nrPrintGuide(type) {
-  const msgs = {
-    pack: 'Open the New-Resident-Welcome-Pack.pdf from your Activity Planning folder and print.',
-    letter: 'Open Welcome-Letter-Fillable.pdf, fill in the resident details, then print.',
-    signs: 'Open Welcome-Door-Sign.pdf. Page 1 is staff notes — print pages 2–4 for the signs.',
-    actguide: 'Open New-Resident-Activity-Guide.pdf from your Activity Planning folder and print.'
-  };
-  alert('📋 ' + (msgs[type] || 'Open the PDF from your Activity Planning folder.'));
+  var msgs = {pack:'Open New-Resident-Welcome-Pack.pdf and print.',letter:'Open Welcome-Letter-Fillable.pdf, fill in the details, then print.',signs:'Open Welcome-Door-Sign.pdf - print pages 2-4 for the signs.',actguide:'Open New-Resident-Activity-Guide.pdf and print.'};
+  alert(msgs[type] || 'Open the PDF from your Activity Planning folder.');
 }
 
 function nrPrintAll() {
-  alert('📦 Print All 4 Guides\n\nOpen these files from your Activity Planning folder:\n\n1. New-Resident-Welcome-Pack.pdf (14 pages)\n2. Welcome-Letter-Fillable.pdf (1 page — fill in first)\n3. Welcome-Door-Sign.pdf (print pages 2–4)\n4. New-Resident-Activity-Guide.pdf (4 pages)');
+  alert('Print All 4 Guides from your Activity Planning folder:\n\n1. New-Resident-Welcome-Pack.pdf (14 pages)\n2. Welcome-Letter-Fillable.pdf (fill in first)\n3. Welcome-Door-Sign.pdf (print pages 2-4)\n4. New-Resident-Activity-Guide.pdf (4 pages)');
 }
 
-// Initialise on tab switch
-const _origSwitchTab = switchTab;
-// Patch switchTab to init new resident tab
-(function(){
-  const orig = window.switchTab;
-  window.switchTab = function(name) {
-    orig(name);
-    if (name === 'newresident') {
-      nrRenderChecklists();
-      nrRenderBuddies();
-      nrFilterActivities();
-    }
-  };
-})();
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof switchTab === 'function') {
+    var _nrOrig = switchTab;
+    switchTab = function(name) {
+      _nrOrig(name);
+      if (name === 'newresident') { nrRenderChecklists(); nrRenderBuddies(); nrFilterActivities(); }
+    };
+  }
+});
 </script>
+
 
 </body>
 </html>
