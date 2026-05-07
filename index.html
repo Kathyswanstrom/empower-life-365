@@ -1184,6 +1184,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="birthday" onclick="switchTab('birthday')">🎂 Birthdays</button>
       <button class="tab-btn" data-tab="attlog"   id="attlog-tab" onclick="switchTab('attlog')">📋 Log</button>
       <button class="tab-btn" data-tab="ratings"  id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
+      <button class="tab-btn" data-tab="newresident" id="newresident-tab" onclick="switchTab('newresident')">🏠 New Resident</button>
     </div>
   </div>
 
@@ -4619,6 +4620,260 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     </div>
   </div>
 </section>
+
+<!-- ══════════ NEW RESIDENT TAB ══════════ -->
+<section class="tab-panel" id="panel-newresident">
+<div style="max-width:1100px;margin:0 auto;padding:16px;">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;font-size:22px;">🏠 New Resident Onboarding</h2>
+      <p style="margin:4px 0 0;color:var(--gray-500);font-size:14px;">Welcome checklist, buddy tracker, and activity ideas to help new residents settle in</p>
+    </div>
+  </div>
+
+  <!-- Section Pills -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;" id="nr-pills">
+    <button class="nr-pill active" data-section="checklist" onclick="nrSection('checklist')">✅ Welcome Checklist</button>
+    <button class="nr-pill" data-section="buddy" onclick="nrSection('buddy')">🤝 Buddy Tracker</button>
+    <button class="nr-pill" data-section="activities" onclick="nrSection('activities')">🎯 Activity Ideas</button>
+    <button class="nr-pill" data-section="guides" onclick="nrSection('guides')">📋 Print Guides</button>
+  </div>
+
+  <style>
+    .nr-pill{background:var(--gray-100);border:1.5px solid var(--gray-200);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray-700);transition:all .15s;}
+    .nr-pill.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+    .nr-pill:hover:not(.active){background:var(--gray-200);}
+    .nr-section{display:none;}.nr-section.active{display:block;}
+    .nr-card{background:var(--card-bg,#fff);border:1px solid var(--gray-200);border-radius:12px;padding:18px;margin-bottom:14px;}
+    .nr-check-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-100);}
+    .nr-check-row:last-child{border-bottom:none;}
+    .nr-check-row input[type=checkbox]{width:17px;height:17px;margin-top:1px;accent-color:var(--primary);flex-shrink:0;}
+    .nr-check-label{font-size:14px;color:var(--gray-700);line-height:1.4;}
+    .nr-check-note{font-size:12px;color:var(--gray-500);margin-top:2px;}
+    .nr-check-row.done .nr-check-label{text-decoration:line-through;color:var(--gray-400);}
+    .nr-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;}
+    .nr-badge-day1{background:#dcfce7;color:#166534;}
+    .nr-badge-week1{background:#dbeafe;color:#1e40af;}
+    .nr-badge-month1{background:#fef9c3;color:#854d0e;}
+    .buddy-card{background:var(--card-bg,#fff);border:1px solid var(--gray-200);border-radius:12px;padding:16px;position:relative;}
+    .buddy-status{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;}
+    .buddy-status.active{background:#dcfce7;color:#166534;}
+    .buddy-status.pending{background:#fef9c3;color:#854d0e;}
+    .buddy-status.followup{background:#fee2e2;color:#991b1b;}
+    .act-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gray-50,#f9fafb);border:1px solid var(--gray-200);border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;transition:all .12s;margin:3px;}
+    .act-chip:hover{border-color:var(--primary);color:var(--primary);}
+    .act-chip.fav{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8;}
+    .nr-filter-btn{padding:5px 13px;border-radius:16px;border:1.5px solid var(--gray-200);background:var(--gray-100);font-size:12px;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all .12s;}
+    .nr-filter-btn.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+    .nr-guide-card{background:var(--card-bg,#fff);border:1px solid var(--gray-200);border-radius:12px;padding:20px;display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;}
+    .nr-guide-icon{font-size:32px;flex-shrink:0;line-height:1;}
+    .progress-bar{height:6px;border-radius:3px;background:var(--gray-200);overflow:hidden;margin-top:8px;}
+    .progress-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .3s;}
+  </style>
+
+  <!-- ════════════════════════════════
+       SECTION 1: WELCOME CHECKLIST
+  ════════════════════════════════ -->
+  <div class="nr-section active" id="nr-sec-checklist">
+
+    <!-- New Resident Input -->
+    <div class="nr-card" style="background:linear-gradient(135deg,#eff6ff,#f0fdfa);border-color:#bfdbfe;">
+      <h3 style="margin:0 0 12px;font-size:15px;color:var(--primary);">🆕 New Resident</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Resident Name</label>
+          <input id="nr-name" type="text" placeholder="e.g. Dorothy Smith" style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:14px;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Room</label>
+          <input id="nr-room" type="text" placeholder="e.g. 14B" style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:14px;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Move-in Date</label>
+          <input id="nr-movein" type="date" style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:14px;">
+        </div>
+        <button onclick="nrStartChecklist()" style="padding:8px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">Start Checklist ▶</button>
+      </div>
+    </div>
+
+    <!-- Active Checklists -->
+    <div id="nr-checklists-wrap"></div>
+
+    <!-- Checklist Template -->
+    <div class="nr-card" style="border-style:dashed;">
+      <h3 style="margin:0 0 14px;font-size:14px;color:var(--gray-500);">📋 Standard Checklist (auto-applied to each new resident)</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 24px;">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:#166534;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px;">Day 1</p>
+          <div style="font-size:13px;color:var(--gray-600);line-height:2;">
+            ✓ Place welcome sign on door<br>
+            ✓ Welcome morning tea or visit<br>
+            ✓ Room orientation walk<br>
+            ✓ Introduce to buddy resident<br>
+            ✓ Deliver welcome pack<br>
+            ✓ Note 1–2 interests in profile
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:#1e40af;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px;">First Week</p>
+          <div style="font-size:13px;color:var(--gray-600);line-height:2;">
+            ✓ Invite to first group activity<br>
+            ✓ Introduce at meal time<br>
+            ✓ 1-on-1 check-in with staff<br>
+            ✓ Complete interest profile<br>
+            ✓ Check buddy pairing is working<br>
+            ✓ Update family contact sheet
+          </div>
+          <p style="font-size:12px;font-weight:700;color:#854d0e;margin:8px 0 6px;text-transform:uppercase;letter-spacing:.5px;">First Month</p>
+          <div style="font-size:13px;color:var(--gray-600);line-height:2;">
+            ✓ Review & update activity preferences<br>
+            ✓ Remove welcome sign (ask resident)<br>
+            ✓ Complete 30-day wellbeing check-in<br>
+            ✓ File welcome pack in resident folder
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SECTION 2: BUDDY TRACKER
+  ════════════════════════════════ -->
+  <div class="nr-section" id="nr-sec-buddy">
+    <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap;">
+      <h3 style="margin:0;font-size:16px;">🤝 Buddy Pairings</h3>
+      <button onclick="nrAddBuddy()" style="padding:7px 16px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">+ New Pairing</button>
+    </div>
+
+    <div id="nr-buddy-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;"></div>
+
+    <!-- Add Buddy Form (hidden by default) -->
+    <div id="nr-buddy-form" class="nr-card" style="display:none;border-color:var(--primary);border-width:2px;margin-top:14px;">
+      <h4 style="margin:0 0 12px;font-size:14px;">New Buddy Pairing</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">New Resident</label>
+          <input id="buddy-new-res" type="text" placeholder="New resident name" style="width:100%;padding:8px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Buddy Resident</label>
+          <input id="buddy-buddy" type="text" placeholder="Buddy resident name" style="width:100%;padding:8px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Paired Date</label>
+          <input id="buddy-date" type="date" style="width:100%;padding:8px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Shared Interests</label>
+          <input id="buddy-interests" type="text" placeholder="e.g. music, gardening" style="width:100%;padding:8px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="nrSaveBuddy()" style="padding:8px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">Save Pairing</button>
+        <button onclick="document.getElementById('nr-buddy-form').style.display='none'" style="padding:8px 16px;background:var(--gray-100);color:var(--gray-600);border:1px solid var(--gray-200);border-radius:8px;font-size:13px;cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <div id="nr-buddy-empty" style="text-align:center;padding:40px;color:var(--gray-400);font-size:14px;">
+      <div style="font-size:36px;margin-bottom:8px;">🤝</div>
+      No buddy pairings yet. Click <strong>+ New Pairing</strong> to get started.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SECTION 3: ACTIVITY IDEAS
+  ════════════════════════════════ -->
+  <div class="nr-section" id="nr-sec-activities">
+    <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;">
+      <input id="nr-act-search" type="text" placeholder="🔍  Search activities..." oninput="nrFilterActivities()" style="flex:1;min-width:200px;padding:9px 14px;border:1.5px solid var(--gray-200);border-radius:20px;font-size:14px;">
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="nr-act-filters">
+      <button class="nr-filter-btn active" data-cat="all" onclick="nrSetCat(this,'all')">All</button>
+      <button class="nr-filter-btn" data-cat="firstweek" onclick="nrSetCat(this,'firstweek')">🌱 First Week</button>
+      <button class="nr-filter-btn" data-cat="social" onclick="nrSetCat(this,'social')">☕ Social</button>
+      <button class="nr-filter-btn" data-cat="memory" onclick="nrSetCat(this,'memory')">📸 Memory</button>
+      <button class="nr-filter-btn" data-cat="creative" onclick="nrSetCat(this,'creative')">🎨 Creative</button>
+      <button class="nr-filter-btn" data-cat="movement" onclick="nrSetCat(this,'movement')">🌿 Movement</button>
+      <button class="nr-filter-btn" data-cat="entertainment" onclick="nrSetCat(this,'entertainment')">🎬 Entertainment</button>
+      <button class="nr-filter-btn" data-cat="family" onclick="nrSetCat(this,'family')">👨‍👩‍👧 Family</button>
+    </div>
+    <div id="nr-act-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-400);">💡 Click any card to copy it to your activity planner ideas</p>
+  </div>
+
+  <!-- ════════════════════════════════
+       SECTION 4: PRINT GUIDES
+  ════════════════════════════════ -->
+  <div class="nr-section" id="nr-sec-guides">
+    <p style="color:var(--gray-500);font-size:14px;margin-bottom:18px;">A complete set of printable resources for welcoming new residents. Download or print from your Activity Planning folder.</p>
+
+    <div class="nr-guide-card">
+      <div class="nr-guide-icon">📦</div>
+      <div style="flex:1;">
+        <h3 style="margin:0 0 4px;font-size:15px;">New Resident Welcome Pack</h3>
+        <p style="margin:0 0 6px;font-size:13px;color:var(--gray-500);">14-page comprehensive pack — checklists, interest profile, family sheet, word games, newsletter template, gift ideas, and back cover.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:12px;background:#eff6ff;color:#1e40af;border-radius:10px;padding:2px 9px;font-weight:600;">14 pages</span>
+          <span style="font-size:12px;background:#f0fdf4;color:#166534;border-radius:10px;padding:2px 9px;font-weight:600;">Print-ready</span>
+        </div>
+      </div>
+      <button onclick="nrPrintGuide('pack')" style="padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:center;">🖨️ Print Guide</button>
+    </div>
+
+    <div class="nr-guide-card">
+      <div class="nr-guide-icon">✉️</div>
+      <div style="flex:1;">
+        <h3 style="margin:0 0 4px;font-size:15px;">Welcome Letter — Fillable Template</h3>
+        <p style="margin:0 0 6px;font-size:13px;color:var(--gray-500);">Click-to-type PDF with your facility letterhead. Fill in resident name, date, personal note, and staff signature — then print.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:12px;background:#eff6ff;color:#1e40af;border-radius:10px;padding:2px 9px;font-weight:600;">Fillable PDF</span>
+          <span style="font-size:12px;background:#fdf4ff;color:#7e22ce;border-radius:10px;padding:2px 9px;font-weight:600;">Personalised</span>
+        </div>
+      </div>
+      <button onclick="nrPrintGuide('letter')" style="padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:center;">🖨️ Print Guide</button>
+    </div>
+
+    <div class="nr-guide-card">
+      <div class="nr-guide-icon">🚪</div>
+      <div style="flex:1;">
+        <h3 style="margin:0 0 4px;font-size:15px;">Welcome Door Signs</h3>
+        <p style="margin:0 0 6px;font-size:13px;color:var(--gray-500);">4-page pack — staff notes (internal), bold navy sign, teal horizontal sign, and festive bunting banner. Write resident name and place on door.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:12px;background:#eff6ff;color:#1e40af;border-radius:10px;padding:2px 9px;font-weight:600;">4 pages</span>
+          <span style="font-size:12px;background:#fff7ed;color:#9a3412;border-radius:10px;padding:2px 9px;font-weight:600;">3 sign styles</span>
+        </div>
+      </div>
+      <button onclick="nrPrintGuide('signs')" style="padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:center;">🖨️ Print Guide</button>
+    </div>
+
+    <div class="nr-guide-card">
+      <div class="nr-guide-icon">🎯</div>
+      <div style="flex:1;">
+        <h3 style="margin:0 0 4px;font-size:15px;">New Resident Activity Guide</h3>
+        <p style="margin:0 0 6px;font-size:13px;color:var(--gray-500);">4-page printable guide — 50+ activity ideas across 7 categories, plus planning tips for the first week, running groups, and involving families.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:12px;background:#eff6ff;color:#1e40af;border-radius:10px;padding:2px 9px;font-weight:600;">4 pages</span>
+          <span style="font-size:12px;background:#f0fdf4;color:#166534;border-radius:10px;padding:2px 9px;font-weight:600;">50+ ideas</span>
+        </div>
+      </div>
+      <button onclick="nrPrintGuide('actguide')" style="padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:center;">🖨️ Print Guide</button>
+    </div>
+
+    <!-- Quick-print all -->
+    <div style="background:linear-gradient(135deg,#eff6ff,#f0fdfa);border:1.5px solid #bfdbfe;border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:6px;">
+      <div>
+        <h4 style="margin:0 0 3px;font-size:14px;color:#1e40af;">📦 Full Welcome Pack — Print All</h4>
+        <p style="margin:0;font-size:13px;color:#3b82f6;">Print all 4 documents at once for a complete new resident welcome kit.</p>
+      </div>
+      <button onclick="nrPrintAll()" style="padding:10px 24px;background:#1e40af;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">🖨️ Print All 4 Guides</button>
+    </div>
+  </div>
+
+</div>
+</section>
+
 
 </main>
 
@@ -22190,6 +22445,303 @@ function printCertificate() {
   w.document.close();
 }
 
+
+
+// ════════════════════════════════════════════════
+// NEW RESIDENT TAB
+// ════════════════════════════════════════════════
+const NR_KEY = 'el365_new_resident';
+const NR_BUDDY_KEY = 'el365_nr_buddies';
+
+function nrSection(name) {
+  document.querySelectorAll('.nr-pill').forEach(p => p.classList.toggle('active', p.dataset.section === name));
+  document.querySelectorAll('.nr-section').forEach(s => s.classList.toggle('active', s.id === 'nr-sec-' + name));
+  if (name === 'buddy') nrRenderBuddies();
+  if (name === 'activities') nrRenderActivities();
+}
+
+// ── CHECKLIST ────────────────────────────────────
+const NR_TASKS = [
+  {id:'sign',    label:'Place welcome sign on door',           note:'Choose navy, teal, or bunting sign — write name before hanging', phase:'day1'},
+  {id:'tea',     label:'Welcome morning tea or visit',          note:'Small group, staff-led — keep it relaxed', phase:'day1'},
+  {id:'orient',  label:'Room orientation walk',                 note:'Show key areas: dining, lounge, garden, activities room', phase:'day1'},
+  {id:'buddy',   label:'Introduce to buddy resident',           note:'Brief buddy beforehand — share name & 1–2 interests', phase:'day1'},
+  {id:'pack',    label:'Deliver welcome pack',                  note:'Welcome letter, activity guide, and interest profile form', phase:'day1'},
+  {id:'profile', label:'Note 1–2 interests in profile',        note:'Ask family or chat with resident on arrival', phase:'day1'},
+  {id:'activ1',  label:'Invite to first group activity',        note:'Choose a gentle, low-pressure option from the activity ideas', phase:'week1'},
+  {id:'meal',    label:'Introduce at meal time',                note:'Seat near buddy or a friendly established resident', phase:'week1'},
+  {id:'checkin', label:'1-on-1 check-in with staff',            note:"Ask 'How are you settling in?' and listen", phase:'week1'},
+  {id:'interp',  label:'Complete interest profile form',        note:'Return completed form to activities file', phase:'week1'},
+  {id:'buddychk',label:'Check buddy pairing is working',        note:'Check in with both after 3 days — swap if needed', phase:'week1'},
+  {id:'family',  label:'Update family contact sheet',           note:'Confirm family preferences for communication', phase:'week1'},
+  {id:'actrev',  label:'Review & update activity preferences',  note:'What has the resident engaged with so far?', phase:'month1'},
+  {id:'signrm',  label:'Remove welcome sign (ask resident)',    note:'After 3–5 days, or when resident feels at home', phase:'month1'},
+  {id:'30day',   label:'30-day wellbeing check-in',             note:'Brief conversation with resident and family', phase:'month1'},
+  {id:'file',    label:'File welcome pack in resident folder',  note:'Keep for records and future reference', phase:'month1'},
+];
+
+function nrStartChecklist() {
+  const name = document.getElementById('nr-name').value.trim();
+  const room = document.getElementById('nr-room').value.trim();
+  const movein = document.getElementById('nr-movein').value;
+  if (!name) { alert('Please enter a resident name.'); return; }
+  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
+  const id = Date.now().toString();
+  data.push({ id, name, room, movein, tasks: {}, created: new Date().toISOString() });
+  localStorage.setItem(NR_KEY, JSON.stringify(data));
+  document.getElementById('nr-name').value = '';
+  document.getElementById('nr-room').value = '';
+  document.getElementById('nr-movein').value = '';
+  nrRenderChecklists();
+}
+
+function nrRenderChecklists() {
+  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
+  const wrap = document.getElementById('nr-checklists-wrap');
+  if (!data.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = data.map((res, ri) => {
+    const done = NR_TASKS.filter(t => res.tasks[t.id]).length;
+    const pct = Math.round(done / NR_TASKS.length * 100);
+    const phases = ['day1','week1','month1'];
+    const phaseLabels = {'day1':'Day 1','week1':'First Week','month1':'First Month'};
+    const phaseBadge = {'day1':'nr-badge-day1','week1':'nr-badge-week1','month1':'nr-badge-month1'};
+    let taskHtml = phases.map(phase => {
+      const ptasks = NR_TASKS.filter(t => t.phase === phase);
+      return \`<div style="margin-bottom:10px;">
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:0 0 4px;color:var(--gray-500);">\${phaseLabels[phase]}</p>
+        \${ptasks.map(t => \`<div class="nr-check-row \${res.tasks[t.id]?'done':''}" id="nrrow-\${res.id}-\${t.id}">
+          <input type="checkbox" \${res.tasks[t.id]?'checked':''} onchange="nrToggle('\${res.id}','\${t.id}',this.checked)">
+          <div><div class="nr-check-label">\${t.label}</div><div class="nr-check-note">\${t.note}</div></div>
+        </div>\`).join('')}
+      </div>\`;
+    }).join('');
+    return \`<div class="nr-card" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <div>
+          <h3 style="margin:0;font-size:16px;">\${res.name}\${res.room?' · Room '+res.room:''}</h3>
+          \${res.movein?'<p style="margin:2px 0 0;font-size:12px;color:var(--gray-500);">Move-in: '+new Date(res.movein+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})+'</p>':''}
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span style="font-size:13px;font-weight:700;color:var(--primary);">\${done}/\${NR_TASKS.length} done</span>
+          <button onclick="nrDeleteChecklist('\${res.id}')" style="padding:4px 10px;background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-200);border-radius:6px;font-size:12px;cursor:pointer;">Remove</button>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:\${pct}%"></div></div>
+      <div style="margin-top:12px;">\${taskHtml}</div>
+    </div>\`;
+  }).join('');
+}
+
+function nrToggle(resId, taskId, checked) {
+  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]');
+  const res = data.find(r => r.id === resId);
+  if (!res) return;
+  res.tasks[taskId] = checked;
+  localStorage.setItem(NR_KEY, JSON.stringify(data));
+  const row = document.getElementById('nrrow-' + resId + '-' + taskId);
+  if (row) row.classList.toggle('done', checked);
+  nrRenderChecklists();
+}
+
+function nrDeleteChecklist(id) {
+  if (!confirm('Remove this checklist?')) return;
+  const data = JSON.parse(localStorage.getItem(NR_KEY) || '[]').filter(r => r.id !== id);
+  localStorage.setItem(NR_KEY, JSON.stringify(data));
+  nrRenderChecklists();
+}
+
+// ── BUDDY TRACKER ─────────────────────────────────
+function nrAddBuddy() {
+  document.getElementById('nr-buddy-form').style.display = 'block';
+  document.getElementById('buddy-date').value = new Date().toISOString().split('T')[0];
+}
+
+function nrSaveBuddy() {
+  const newRes = document.getElementById('buddy-new-res').value.trim();
+  const buddy = document.getElementById('buddy-buddy').value.trim();
+  const date = document.getElementById('buddy-date').value;
+  const interests = document.getElementById('buddy-interests').value.trim();
+  if (!newRes || !buddy) { alert('Please fill in both resident names.'); return; }
+  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
+  data.push({ id: Date.now().toString(), newRes, buddy, date, interests, status: 'active', notes: '' });
+  localStorage.setItem(NR_BUDDY_KEY, JSON.stringify(data));
+  document.getElementById('nr-buddy-form').style.display = 'none';
+  ['buddy-new-res','buddy-buddy','buddy-interests'].forEach(id => document.getElementById(id).value = '');
+  nrRenderBuddies();
+}
+
+function nrSetBuddyStatus(id, status) {
+  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
+  const item = data.find(d => d.id === id);
+  if (item) { item.status = status; localStorage.setItem(NR_BUDDY_KEY, JSON.stringify(data)); nrRenderBuddies(); }
+}
+
+function nrDeleteBuddy(id) {
+  if (!confirm('Remove this buddy pairing?')) return;
+  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]').filter(d => d.id !== id);
+  localStorage.setItem(NR_BUDDY_KEY, JSON.stringify(data));
+  nrRenderBuddies();
+}
+
+function nrRenderBuddies() {
+  const data = JSON.parse(localStorage.getItem(NR_BUDDY_KEY) || '[]');
+  const list = document.getElementById('nr-buddy-list');
+  const empty = document.getElementById('nr-buddy-empty');
+  if (!list) return;
+  if (!data.length) { list.innerHTML = ''; if(empty) empty.style.display='block'; return; }
+  if(empty) empty.style.display='none';
+  list.innerHTML = data.map(d => {
+    const statusMap = {active:'✅ Active',pending:'⏳ Pending',followup:'⚠️ Follow-up needed'};
+    const dateStr = d.date ? new Date(d.date+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '';
+    return \`<div class="buddy-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+        <div>
+          <div style="font-size:15px;font-weight:700;">\${d.newRes}</div>
+          <div style="font-size:13px;color:var(--gray-500);">Buddy: <strong>\${d.buddy}</strong></div>
+          \${d.interests?'<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Shared: \${d.interests}</div>':''}
+          \${dateStr?'<div style="font-size:12px;color:var(--gray-400);margin-top:2px;">Paired \${dateStr}</div>':''}
+        </div>
+        <span class="buddy-status \${d.status}">\${statusMap[d.status]||d.status}</span>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button onclick="nrSetBuddyStatus('\${d.id}','active')" style="padding:4px 10px;font-size:12px;border-radius:6px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;cursor:pointer;">✅ Active</button>
+        <button onclick="nrSetBuddyStatus('\${d.id}','followup')" style="padding:4px 10px;font-size:12px;border-radius:6px;border:1px solid #fecaca;background:#fff5f5;color:#991b1b;cursor:pointer;">⚠️ Follow-up</button>
+        <button onclick="nrDeleteBuddy('\${d.id}')" style="padding:4px 10px;font-size:12px;border-radius:6px;border:1px solid var(--gray-200);background:var(--gray-100);color:var(--gray-500);cursor:pointer;">Remove</button>
+      </div>
+    </div>\`;
+  }).join('');
+}
+
+// ── ACTIVITY IDEAS ────────────────────────────────
+const NR_ACTIVITIES = [
+  {cat:'firstweek', name:'Welcome morning tea',        note:'Small group, staff-led',           icon:'☕'},
+  {cat:'firstweek', name:'Facility orientation walk',  note:'Buddy shows them around',          icon:'🏡'},
+  {cat:'firstweek', name:'1-on-1 chat with staff',     note:'Learn their interests',            icon:'💬'},
+  {cat:'firstweek', name:'Name that tune',              note:'Music from their era',             icon:'🎵'},
+  {cat:'firstweek', name:'Welcome card from residents', note:'Signed by the floor',             icon:'💌'},
+  {cat:'firstweek', name:'Colouring or simple craft',  note:'No pressure, drop-in',             icon:'🎨'},
+  {cat:'social',    name:'Morning coffee club',         note:'Regular, familiar faces',          icon:'☕'},
+  {cat:'social',    name:'Table games afternoon',       note:'Cards, scrabble, chess',           icon:'🎲'},
+  {cat:'social',    name:'Show & tell',                 note:'Bring a favourite photo',          icon:'📸'},
+  {cat:'social',    name:'Garden walk with buddy',      note:'',                                 icon:'🌿'},
+  {cat:'social',    name:'Happy hour / mocktail bar',   note:'',                                 icon:'🥂'},
+  {cat:'social',    name:'Trivia teams',                note:'Pair new + established residents', icon:'🏆'},
+  {cat:'social',    name:'Pet therapy visit',           note:'Animals help ease anxiety',        icon:'🐾'},
+  {cat:'social',    name:'Birthday celebrations',       note:'',                                 icon:'🎂'},
+  {cat:'memory',    name:'Memory box display',          note:'Family photos, keepsakes',         icon:'🗂️'},
+  {cat:'memory',    name:'Life story interview',        note:'Recorded or written',              icon:'📖'},
+  {cat:'memory',    name:'Where I'm from',             note:'Share your story with the group',  icon:'🗺️'},
+  {cat:'memory',    name:'Old recipe swap',             note:'',                                 icon:'🍳'},
+  {cat:'memory',    name:'Decade playlist',             note:'Music from their 20s era',         icon:'📻'},
+  {cat:'memory',    name:'Newspaper from birth year',   note:'',                                 icon:'📰'},
+  {cat:'creative',  name:'Watercolour painting',        note:'',                                 icon:'🖌️'},
+  {cat:'creative',  name:'Knitting / crochet circle',   note:'',                                 icon:'🧶'},
+  {cat:'creative',  name:'Flower arranging',            note:'',                                 icon:'🌸'},
+  {cat:'creative',  name:'Photo collage making',        note:'',                                 icon:'🖼️'},
+  {cat:'creative',  name:'Pottery / clay modelling',    note:'',                                 icon:'🏺'},
+  {cat:'creative',  name:'Writing group',               note:'Poetry, short stories',            icon:'✍️'},
+  {cat:'creative',  name:'Card making',                 note:"For other residents' birthdays",   icon:'💐'},
+  {cat:'creative',  name:'Cooking demo / baking',       note:'',                                 icon:'🧁'},
+  {cat:'movement',  name:'Chair yoga',                  note:'',                                 icon:'🧘'},
+  {cat:'movement',  name:'Gentle stretching',           note:'',                                 icon:'🌅'},
+  {cat:'movement',  name:'Garden walk group',           note:'',                                 icon:'🌳'},
+  {cat:'movement',  name:'Balloon volleyball',          note:'',                                 icon:'🎈'},
+  {cat:'movement',  name:'Seated bowls / bocce',        note:'',                                 icon:'⚽'},
+  {cat:'movement',  name:'Dance to your favourite song',note:'',                                 icon:'💃'},
+  {cat:'movement',  name:'Breathing & relaxation',      note:'',                                 icon:'🌬️'},
+  {cat:'entertainment', name:'Movie afternoon',         note:'Choose from their era',            icon:'🎬'},
+  {cat:'entertainment', name:'Live music or sing-along',note:'',                                 icon:'🎤'},
+  {cat:'entertainment', name:'Virtual travel tour',     note:'Screen + stories',                 icon:'✈️'},
+  {cat:'entertainment', name:'Guest speaker / entertainer',note:'',                              icon:'🎭'},
+  {cat:'entertainment', name:'Local café outing',       note:'Small group, once settled',        icon:'🚐'},
+  {cat:'entertainment', name:'Bingo with prizes',       note:'',                                 icon:'🎯'},
+  {cat:'entertainment', name:'Cooking show watch party',note:'',                                 icon:'📺'},
+  {cat:'family',    name:'Family welcome morning tea',  note:'',                                 icon:'👨‍👩‍👧'},
+  {cat:'family',    name:'Family photo wall setup',     note:'In their room',                    icon:'🖼️'},
+  {cat:'family',    name:'Video call setup session',    note:'Help them connect remotely',       icon:'📱'},
+  {cat:'family',    name:'Cook a family recipe together',note:'',                                icon:'🍲'},
+  {cat:'family',    name:'Family open day / tour',      note:'',                                 icon:'🏡'},
+];
+
+let nrActiveCat = 'all';
+
+function nrSetCat(btn, cat) {
+  nrActiveCat = cat;
+  document.querySelectorAll('.nr-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  nrFilterActivities();
+}
+
+function nrFilterActivities() {
+  const q = (document.getElementById('nr-act-search')?.value || '').toLowerCase();
+  const grid = document.getElementById('nr-act-grid');
+  if (!grid) return;
+  const filtered = NR_ACTIVITIES.filter(a =>
+    (nrActiveCat === 'all' || a.cat === nrActiveCat) &&
+    (!q || a.name.toLowerCase().includes(q) || a.note.toLowerCase().includes(q))
+  );
+  if (!filtered.length) {
+    grid.innerHTML = '<p style="color:var(--gray-400);font-size:14px;text-align:center;padding:30px;grid-column:1/-1;">No activities match your search.</p>';
+    return;
+  }
+  const catColors = {
+    firstweek:'#dcfce7:#166534', social:'#dbeafe:#1e40af', memory:'#fef9c3:#854d0e',
+    creative:'#fae8ff:#7e22ce', movement:'#dcfce7:#15803d',
+    entertainment:'#fee2e2:#991b1b', family:'#ffe4e6:#9f1239'
+  };
+  grid.innerHTML = filtered.map(a => {
+    const [bg, tc] = (catColors[a.cat] || '#f3f4f6:#374151').split(':');
+    return \`<div style="background:var(--card-bg,#fff);border:1px solid var(--gray-200);border-radius:10px;padding:12px;cursor:pointer;transition:all .12s;" onclick="nrCopyActivity('\${a.name}')" title="Click to copy to clipboard">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span style="font-size:20px;">\${a.icon}</span>
+        <span style="font-size:13px;font-weight:700;color:var(--gray-800);">\${a.name}</span>
+      </div>
+      \${a.note?'<div style="font-size:12px;color:var(--gray-500);margin-left:28px;">\${a.note}</div>':''}
+      <div style="margin-top:6px;margin-left:28px;"><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:\${bg};color:\${tc};">\${a.cat==='firstweek'?'First Week':a.cat.charAt(0).toUpperCase()+a.cat.slice(1)}</span></div>
+    </div>\`;
+  }).join('');
+}
+
+function nrCopyActivity(name) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(name).then(() => {
+      const toast = document.createElement('div');
+      toast.textContent = '✅ Copied: ' + name;
+      toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1a2a5c;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;animation:fadeIn .2s ease;';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2200);
+    });
+  }
+}
+
+// ── PRINT GUIDES ─────────────────────────────────
+function nrPrintGuide(type) {
+  const msgs = {
+    pack: 'Open the New-Resident-Welcome-Pack.pdf from your Activity Planning folder and print.',
+    letter: 'Open Welcome-Letter-Fillable.pdf, fill in the resident details, then print.',
+    signs: 'Open Welcome-Door-Sign.pdf. Page 1 is staff notes — print pages 2–4 for the signs.',
+    actguide: 'Open New-Resident-Activity-Guide.pdf from your Activity Planning folder and print.'
+  };
+  alert('📋 ' + (msgs[type] || 'Open the PDF from your Activity Planning folder.'));
+}
+
+function nrPrintAll() {
+  alert('📦 Print All 4 Guides\n\nOpen these files from your Activity Planning folder:\n\n1. New-Resident-Welcome-Pack.pdf (14 pages)\n2. Welcome-Letter-Fillable.pdf (1 page — fill in first)\n3. Welcome-Door-Sign.pdf (print pages 2–4)\n4. New-Resident-Activity-Guide.pdf (4 pages)');
+}
+
+// Initialise on tab switch
+const _origSwitchTab = switchTab;
+// Patch switchTab to init new resident tab
+(function(){
+  const orig = window.switchTab;
+  window.switchTab = function(name) {
+    orig(name);
+    if (name === 'newresident') {
+      nrRenderChecklists();
+      nrRenderBuddies();
+      nrFilterActivities();
+    }
+  };
+})();
 </script>
 
 </body>
