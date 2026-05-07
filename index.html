@@ -1188,6 +1188,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="family"     id="family-tab"     onclick="switchTab('family')">👨‍👩‍👧 Family Connection</button>
       <button class="tab-btn" data-tab="social"     id="social-tab"     onclick="switchTab('social')">🎯 Marketing Hub</button>
       <button class="tab-btn" data-tab="spotlight"  id="spotlight-tab"  onclick="switchTab('spotlight')">🌟 Spotlight</button>
+      <button class="tab-btn" data-tab="report"   id="report-tab"   onclick="switchTab('report')">📊 Monthly Report</button>
+      <button class="tab-btn" data-tab="portal"   id="portal-tab"   onclick="switchTab('portal')">🏠 Family Portal</button>
     </div>
   </div>
 
@@ -1298,6 +1300,16 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 </section>
 
 <section class="tab-panel" id="panel-roster">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+    <div>
+      <h1 style="font-size:22px;font-weight:900;color:#1A2A5C;margin:0 0 2px;">👥 Residents &amp; Profiles</h1>
+      <p style="color:var(--gray-500);font-size:13px;margin:0;">Manage residents, bios, interests &amp; assessments</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="addNewResident()">➕ Add Resident</button>
+      <button class="btn btn-secondary" onclick="toggleBioMode()">📋 Bio / Assessment View</button>
+    </div>
+  </div>
   <h1>Resident Roster</h1>
   <p class="subtitle">Add residents, tag them with a care level. They flow into Charting and Puzzles.</p>
   <div class="roster-grid">
@@ -3778,6 +3790,44 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════════
+     MONTHLY REPORT GENERATOR
+════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-report">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div>
+      <h1 style="font-size:24px;font-weight:900;color:#1A2A5C;margin:0 0 4px;">📊 Monthly Report</h1>
+      <p style="color:var(--gray-500);font-size:13px;margin:0;">Auto-generated from your ratings, calendar &amp; attendance data</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-primary"   id="report-don-btn"  onclick="switchReportView('don')">🏥 DON Report</button>
+      <button class="btn btn-secondary" id="report-corp-btn" onclick="switchReportView('corporate')">🏢 Corporate Summary</button>
+      <button class="btn btn-gold"      onclick="printMonthlyReport()">🖨️ Print Report</button>
+    </div>
+  </div>
+  <div id="report-content" style="max-width:900px;"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     FAMILY PORTAL
+════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-portal">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div>
+      <h1 style="font-size:24px;font-weight:900;color:#1A2A5C;margin:0 0 4px;">🏠 Family Portal</h1>
+      <p style="color:var(--gray-500);font-size:13px;margin:0;">A family-friendly view of this month's programming — print or share with loved ones</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-gold"      onclick="printFamilyPortal()">🖨️ Print / Save PDF</button>
+      <button class="btn btn-primary"   onclick="copyPortalLink()">🔗 Copy Share Link</button>
+    </div>
+  </div>
+  <div id="portal-content" style="max-width:900px;"></div>
+  <div id="portal-link-toast" style="display:none;margin-top:12px;padding:12px 16px;background:#D1FAE5;border:1px solid #6EE7B7;border-radius:10px;font-size:13px;font-weight:600;color:#065F46;">
+    ✅ Share link copied to clipboard! Families can open it in any browser.
+  </div>
+</section>
+
 <section class="tab-panel" id="panel-about">
   <h1>About Empower Life 365</h1>
   <p class="subtitle">Powered by Empower Life 365</p>
@@ -4243,6 +4293,8 @@ function switchTab(name) {
   if (name === 'travel') initTravel();
   if (name === 'family') initFamily();
   if (name === 'social') initSocial();
+  if (name === 'report') initReport();
+  if (name === 'portal') initPortal();
   if (name === 'community') initCommunity();
   if (name === 'games') initGames();
   if (name === 'crafts') initCrafts();
@@ -4278,7 +4330,7 @@ var _TAB_CAT = {
   wellness:'activities', travel:'activities', bblog:'activities',
   roster:'residents', charting:'residents', birthday:'residents',
   attlog:'residents', ratings:'residents',
-  newsletter:'comms', family:'comms', social:'comms', spotlight:'comms',
+  newsletter:'comms', family:'comms', social:'comms', spotlight:'comms', report:'comms', portal:'comms',
   punchcard:'community', community:'community',
   about:'more'
 };
@@ -18932,6 +18984,569 @@ async function renderNetworkInsights(el) {
   } catch(e) {
     el.innerHTML = '<div style="text-align:center;padding:40px;color:#DC2626;">⚠️ Could not load network data. Check your internet connection and try again.<br><small>' + escapeHtml(String(e)) + '</small></div>';
   }
+}
+</script>
+
+
+<script>
+// ════════════════════════════════════════════════════════════
+// MONTHLY REPORT GENERATOR
+// ════════════════════════════════════════════════════════════
+var _reportView = 'don';
+
+function initReport() {
+  document.getElementById('report-don-btn').className = 'btn btn-primary';
+  document.getElementById('report-corp-btn').className = 'btn btn-secondary';
+  renderReport(_reportView);
+}
+
+function switchReportView(view) {
+  _reportView = view;
+  document.getElementById('report-don-btn').className  = view === 'don'       ? 'btn btn-primary' : 'btn btn-secondary';
+  document.getElementById('report-corp-btn').className = view === 'corporate' ? 'btn btn-primary' : 'btn btn-secondary';
+  renderReport(view);
+}
+
+function renderReport(view) {
+  var el = document.getElementById('report-content');
+  var ratings  = getAllRatings();
+  var entries  = Object.values(ratings);
+  var totalRatings = entries.reduce(function(s,a){ return s+a.count; }, 0);
+  var totalStars   = entries.reduce(function(s,a){ return s+a.totalStars; }, 0);
+  var avgAll       = totalRatings ? (totalStars / totalRatings).toFixed(1) : 0;
+  var ranked       = entries.filter(function(a){ return a.count>0; }).sort(function(a,b){ return b.avg-a.avg || b.count-a.count; });
+  var lowPerf      = entries.filter(function(a){ return a.count>=2 && a.avg<3; }).sort(function(a,b){ return a.avg-b.avg; });
+  var community    = (typeof DATA!=='undefined' && DATA.communityName) ? DATA.communityName : 'Our Community';
+  var monthName    = (typeof DATA!=='undefined' && DATA.monthName)     ? DATA.monthName     : '';
+  var year         = (typeof DATA!=='undefined' && DATA.year)          ? DATA.year          : new Date().getFullYear();
+  var monthTheme   = (typeof DATA!=='undefined' && DATA.monthTheme)    ? DATA.monthTheme    : '';
+  var today        = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  if (view === 'don') {
+    el.innerHTML = buildDONReport(community, monthName, year, monthTheme, today, totalRatings, avgAll, ranked, lowPerf, entries);
+  } else {
+    el.innerHTML = buildCorpReport(community, monthName, year, monthTheme, today, totalRatings, avgAll, ranked, lowPerf);
+  }
+}
+
+function buildDONReport(community, month, year, theme, today, totalRatings, avgAll, ranked, lowPerf, entries) {
+  var topFive = ranked.slice(0,5);
+  var totalActivities = ranked.length;
+
+  var topRows = topFive.map(function(a,i){
+    return '<tr style="border-bottom:1px solid #F3F4F6;">'
+      +'<td style="padding:10px 12px;font-weight:700;color:#1A2A5C;">'+(i+1)+'</td>'
+      +'<td style="padding:10px 12px;font-weight:600;">'+escapeHtml(a.name)+'</td>'
+      +'<td style="padding:10px 12px;">'+starsDisplay(a.avg)+' <span style="font-weight:700;color:#92400E;">'+a.avg+'/5</span></td>'
+      +'<td style="padding:10px 12px;color:var(--gray-500);">'+a.count+' rating'+(a.count===1?'':'s')+'</td>'
+      +'</tr>';
+  }).join('');
+
+  var allRows = ranked.map(function(a,i){
+    var bar = Math.round((a.avg/5)*100);
+    return '<tr style="border-bottom:1px solid #F9FAFB;">'
+      +'<td style="padding:8px 10px;color:var(--gray-500);font-size:12px;">'+(i+1)+'</td>'
+      +'<td style="padding:8px 10px;font-weight:600;font-size:13px;">'+escapeHtml(a.name)+'</td>'
+      +'<td style="padding:8px 10px;"><div style="display:flex;align-items:center;gap:8px;">'
+      +'<div style="width:80px;height:6px;background:#F3F4F6;border-radius:99px;"><div style="width:'+bar+'%;height:6px;background:linear-gradient(90deg,#F59E0B,#10B981);border-radius:99px;"></div></div>'
+      +'<span style="font-size:12px;font-weight:700;color:#92400E;">'+a.avg+'/5</span>'
+      +'</div></td>'
+      +'<td style="padding:8px 10px;font-size:12px;color:var(--gray-500);">'+a.count+'</td>'
+      +'</tr>';
+  }).join('');
+
+  var lowSection = lowPerf.length ? (
+    '<div style="margin-top:28px;padding:18px 20px;background:#FEF2F2;border:2px solid #FECACA;border-radius:12px;">'
+    +'<div style="font-weight:800;color:#991B1B;font-size:15px;margin-bottom:12px;">⚠️ Activities Needing Improvement</div>'
+    +'<table style="width:100%;border-collapse:collapse;">'
+    +lowPerf.map(function(a){
+      return '<tr style="border-bottom:1px solid #FECACA;">'
+        +'<td style="padding:8px 10px;font-weight:600;">'+escapeHtml(a.name)+'</td>'
+        +'<td style="padding:8px 10px;">'+starsDisplay(a.avg)+' <span style="color:#DC2626;font-weight:700;">'+a.avg+'/5</span></td>'
+        +'<td style="padding:8px 10px;color:#9CA3AF;font-size:12px;">'+a.count+' rating'+(a.count===1?'':'s')+'</td>'
+        +'</tr>';
+    }).join('')
+    +'</table></div>'
+  ) : '<div style="margin-top:20px;padding:14px 16px;background:#F0FDF4;border-radius:10px;color:#166534;font-weight:600;">✅ No activities rated below 3 stars this month — great work!</div>';
+
+  return '<div style="font-family:Georgia,serif;max-width:850px;" id="report-printable">'
+    // Header
+    +'<div style="text-align:center;padding:28px 0 20px;border-bottom:3px solid #1A2A5C;margin-bottom:24px;">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#6B7280;text-transform:uppercase;margin-bottom:6px;">Activity Department Report</div>'
+    +'<div style="font-size:28px;font-weight:900;color:#1A2A5C;">'+escapeHtml(community)+'</div>'
+    +'<div style="font-size:18px;color:#4B5563;margin-top:4px;">'+month+' '+year+'</div>'
+    +(theme ? '<div style="font-size:13px;color:#9CA3AF;margin-top:4px;font-style:italic;">Monthly Theme: '+escapeHtml(theme)+'</div>' : '')
+    +'<div style="font-size:11px;color:#9CA3AF;margin-top:8px;">Generated '+today+'</div>'
+    +'</div>'
+    // Stat tiles
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:28px;">'
+    +[{icon:'⭐',val:avgAll ? avgAll+' / 5' : '—',label:'Avg Activity Rating'},
+      {icon:'📝',val:totalRatings||'0',label:'Total Ratings Logged'},
+      {icon:'🏆',val:totalActivities||'0',label:'Activities Rated'},
+      {icon:'⚠️',val:lowPerf.length||'0',label:'Need Attention'}
+    ].map(function(s){
+      return '<div style="background:#F8FAFF;border:1px solid #E0E7FF;border-radius:12px;padding:16px;text-align:center;">'
+        +'<div style="font-size:24px;margin-bottom:4px;">'+s.icon+'</div>'
+        +'<div style="font-size:22px;font-weight:900;color:#1A2A5C;">'+s.val+'</div>'
+        +'<div style="font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">'+s.label+'</div>'
+        +'</div>';
+    }).join('')
+    +'</div>'
+    // Top 5
+    +(topFive.length ? '<div style="margin-bottom:28px;"><div style="font-size:16px;font-weight:800;color:#1A2A5C;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">🏆 Top Rated Activities</div>'
+    +'<table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    +'<thead><tr style="background:#F8FAFF;"><th style="padding:10px 12px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">#</th>'
+    +'<th style="padding:10px 12px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">Activity</th>'
+    +'<th style="padding:10px 12px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">Rating</th>'
+    +'<th style="padding:10px 12px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">Votes</th></tr></thead>'
+    +'<tbody>'+topRows+'</tbody></table></div>' : '')
+    // Low performers
+    +lowSection
+    // Full log
+    +(allRows ? '<div style="margin-top:28px;"><div style="font-size:16px;font-weight:800;color:#1A2A5C;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">📋 Complete Activity Log</div>'
+    +'<table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    +'<thead><tr style="background:#F8FAFF;"><th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">#</th>'
+    +'<th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">Activity</th>'
+    +'<th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">Avg Rating</th>'
+    +'<th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;font-weight:700;text-transform:uppercase;">Ratings</th></tr></thead>'
+    +'<tbody>'+allRows+'</tbody></table></div>' : '')
+    // Signature block
+    +'<div style="margin-top:40px;padding-top:20px;border-top:1px solid #E5E7EB;display:grid;grid-template-columns:1fr 1fr;gap:30px;">'
+    +'<div><div style="border-bottom:1px solid #374151;margin-bottom:6px;height:36px;"></div><div style="font-size:11px;color:#6B7280;">Activity Director Signature &amp; Date</div></div>'
+    +'<div><div style="border-bottom:1px solid #374151;margin-bottom:6px;height:36px;"></div><div style="font-size:11px;color:#6B7280;">Director of Nursing / Administrator</div></div>'
+    +'</div>'
+    +'</div>';
+}
+
+function buildCorpReport(community, month, year, theme, today, totalRatings, avgAll, ranked, lowPerf) {
+  var score = totalRatings ? Math.round((avgAll / 5) * 100) : 0;
+  var topThree = ranked.slice(0,3);
+  var trend = avgAll >= 4 ? 'Exceeding expectations' : avgAll >= 3 ? 'Meeting expectations' : 'Needs improvement';
+  var trendColor = avgAll >= 4 ? '#166534' : avgAll >= 3 ? '#92400E' : '#991B1B';
+  var trendBg    = avgAll >= 4 ? '#F0FDF4' : avgAll >= 3 ? '#FFFBEB' : '#FEF2F2';
+
+  return '<div style="font-family:Georgia,serif;max-width:750px;" id="report-printable">'
+    // Executive header
+    +'<div style="background:linear-gradient(135deg,#1A2A5C,#2E4099);color:#fff;border-radius:16px;padding:28px 32px;margin-bottom:24px;text-align:center;">'
+    +'<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:8px;">Executive Summary</div>'
+    +'<div style="font-size:26px;font-weight:900;">'+escapeHtml(community)+'</div>'
+    +'<div style="font-size:16px;opacity:.85;margin-top:4px;">'+month+' '+year+' Activity Report</div>'
+    +(theme ? '<div style="font-size:12px;opacity:.65;margin-top:6px;font-style:italic;">Theme: '+escapeHtml(theme)+'</div>' : '')
+    +'</div>'
+    // Engagement score
+    +'<div style="text-align:center;margin-bottom:28px;">'
+    +'<div style="display:inline-block;background:'+trendBg+';border:2px solid currentColor;border-radius:16px;padding:20px 36px;color:'+trendColor+'">'
+    +'<div style="font-size:48px;font-weight:900;line-height:1;">'+score+'<span style="font-size:24px;">%</span></div>'
+    +'<div style="font-size:13px;font-weight:700;margin-top:4px;">Resident Engagement Score</div>'
+    +'<div style="font-size:12px;margin-top:2px;opacity:.8;">'+trend+'</div>'
+    +'</div></div>'
+    // KPIs
+    +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;">'
+    +[{label:'Avg Rating',val:avgAll ? avgAll+' / 5' : '—'},
+      {label:'Ratings Logged',val:totalRatings||'0'},
+      {label:'Improvement Areas',val:lowPerf.length||'0'}
+    ].map(function(s){
+      return '<div style="text-align:center;padding:18px;border:1px solid #E5E7EB;border-radius:12px;">'
+        +'<div style="font-size:26px;font-weight:900;color:#1A2A5C;">'+s.val+'</div>'
+        +'<div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;">'+s.label+'</div>'
+        +'</div>';
+    }).join('')
+    +'</div>'
+    // Highlights
+    +(topThree.length ? '<div style="margin-bottom:20px;"><div style="font-size:15px;font-weight:800;color:#1A2A5C;margin-bottom:10px;">🏆 This Month\'s Wins</div>'
+    +topThree.map(function(a,i){
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#F8FAFF;border-radius:10px;margin-bottom:8px;">'
+        +'<div style="font-size:20px;font-weight:900;color:#1A2A5C;min-width:28px;">'+(i+1)+'</div>'
+        +'<div style="flex:1;font-weight:700;color:#1A2A5C;">'+escapeHtml(a.name)+'</div>'
+        +'<div style="font-size:16px;">'+starsDisplay(a.avg)+'</div>'
+        +'<div style="font-weight:700;color:#92400E;font-size:13px;">'+a.avg+'/5</div>'
+        +'</div>';
+    }).join('')+'</div>' : '')
+    // Focus area
+    +(lowPerf.length ? '<div style="padding:16px 18px;background:#FEF2F2;border-radius:10px;margin-bottom:20px;">'
+    +'<div style="font-weight:800;color:#991B1B;margin-bottom:6px;">📌 Focus Area for Next Month</div>'
+    +'<div style="font-size:13px;color:#7F1D1D;">'+escapeHtml(lowPerf[0].name)+' rated '+lowPerf[0].avg+'/5 — recommend reviewing format, timing, or supplies.</div>'
+    +'</div>' : '')
+    // Signature
+    +'<div style="margin-top:32px;padding-top:16px;border-top:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9CA3AF;">'
+    +'<div>'+escapeHtml(community)+' · '+month+' '+year+'</div>'
+    +'<div>Generated '+today+' via Empower Life 365</div>'
+    +'</div>'
+    +'</div>';
+}
+
+function printMonthlyReport() {
+  var content = document.getElementById('report-printable');
+  if (!content) return;
+  var win = window.open('','_blank','width=900,height=700');
+  win.document.write('<html><head><title>Monthly Activity Report</title>'
+    +'<style>body{font-family:Georgia,serif;padding:32px;max-width:850px;margin:0 auto;}table{width:100%;border-collapse:collapse;}'
+    +'@media print{body{padding:16px;}}</style></head><body>'
+    +content.outerHTML+'</body></html>');
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 400);
+}
+
+// ════════════════════════════════════════════════════════════
+// FAMILY PORTAL
+// ════════════════════════════════════════════════════════════
+function initPortal() {
+  renderPortal();
+}
+
+function renderPortal() {
+  var el = document.getElementById('portal-content');
+  var community = (typeof DATA!=='undefined' && DATA.communityName) ? DATA.communityName : 'Our Community';
+  var monthName = (typeof DATA!=='undefined' && DATA.monthName)     ? DATA.monthName     : '';
+  var year      = (typeof DATA!=='undefined' && DATA.year)          ? DATA.year          : new Date().getFullYear();
+  var monthTheme= (typeof DATA!=='undefined' && DATA.monthTheme)    ? DATA.monthTheme    : '';
+  var daysInMonth = (typeof DATA!=='undefined' && DATA.days)        ? DATA.days          : [];
+
+  // Collect special events / highlights from the calendar
+  var highlights = [];
+  daysInMonth.forEach(function(day) {
+    if (!day || !day.slots) return;
+    Object.values(day.slots).forEach(function(slot) {
+      if (!slot) return;
+      var name = typeof slot === 'string' ? slot : (slot.name || '');
+      var lower = name.toLowerCase();
+      if (lower.includes('special') || lower.includes('birthday') || lower.includes('party')
+          || lower.includes('bingo') || lower.includes('outing') || lower.includes('concert')
+          || lower.includes('holiday') || lower.includes('celebrat')) {
+        highlights.push({ day: day.dayNum, name: name });
+      }
+    });
+  });
+
+  // Build weekly calendar blocks
+  var weeks = [];
+  var week = [];
+  var firstDay = (typeof DATA!=='undefined' && typeof DATA.firstDow !== 'undefined') ? DATA.firstDow : 0;
+  // pad start
+  for (var p=0; p<firstDay; p++) week.push(null);
+  daysInMonth.forEach(function(day) {
+    week.push(day);
+    if (week.length === 7) { weeks.push(week); week = []; }
+  });
+  if (week.length) { while(week.length<7) week.push(null); weeks.push(week); }
+
+  var DOW_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var SLOT_DISPLAY = {PHYSICAL:'Morning',TRIVIA:'Mid-Morning',NEWS:'News Time',MELLOW:'Afternoon',BIG_GROUP:'Main Event',WORD_GAME:'Word Time',WIND_DOWN:'Evening'};
+
+  var calHtml = '<table style="width:100%;border-collapse:collapse;">'
+    +'<thead><tr>'+DOW_SHORT.map(function(d){
+      return '<th style="padding:8px;font-size:12px;font-weight:700;color:#6B7280;text-align:center;border-bottom:2px solid #E5E7EB;">'+d+'</th>';
+    }).join('')+'</tr></thead><tbody>';
+
+  weeks.forEach(function(wk) {
+    calHtml += '<tr>';
+    wk.forEach(function(day) {
+      if (!day) {
+        calHtml += '<td style="padding:8px;border:1px solid #F3F4F6;background:#FAFAFA;min-height:80px;vertical-align:top;"></td>';
+      } else {
+        var activities = [];
+        if (day.slots) {
+          ['PHYSICAL','TRIVIA','NEWS','MELLOW','BIG_GROUP','WORD_GAME','WIND_DOWN'].forEach(function(k){
+            var s = day.slots[k];
+            if (s) {
+              var name = typeof s === 'string' ? s : (s.name || '');
+              if (name) activities.push(name);
+            }
+          });
+        }
+        var today = new Date();
+        var isToday = (today.getDate()===day.dayNum && today.getMonth()+1===(typeof DATA!=='undefined'?DATA.monthNum:0) && today.getFullYear()===(typeof DATA!=='undefined'?DATA.year:0));
+        calHtml += '<td style="padding:8px;border:1px solid #F3F4F6;vertical-align:top;min-height:80px;background:'+(isToday?'#EFF6FF':'#fff')+'">'
+          +'<div style="font-size:13px;font-weight:800;color:'+(isToday?'#1D4ED8':'#1A2A5C')+';margin-bottom:4px;">'+day.dayNum+'</div>'
+          +activities.slice(0,3).map(function(a){
+            return '<div style="font-size:10px;color:#374151;padding:2px 4px;margin-bottom:2px;background:#F9FAFB;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">'+escapeHtml(a)+'</div>';
+          }).join('')
+          +(activities.length>3 ? '<div style="font-size:10px;color:#9CA3AF;">+'+( activities.length-3)+' more</div>' : '')
+          +'</td>';
+      }
+    });
+    calHtml += '</tr>';
+  });
+  calHtml += '</tbody></table>';
+
+  el.innerHTML = '<div id="portal-printable">'
+    // Header
+    +'<div style="text-align:center;padding:24px;background:linear-gradient(135deg,#EFF6FF,#F5F3FF);border-radius:16px;margin-bottom:20px;border:1px solid #C7D2FE;">'
+    +'<div style="font-size:13px;font-weight:700;color:#4338CA;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Activity Calendar</div>'
+    +'<div style="font-size:26px;font-weight:900;color:#1A2A5C;">'+escapeHtml(community)+'</div>'
+    +'<div style="font-size:18px;color:#4B5563;margin-top:4px;">'+monthName+' '+year+'</div>'
+    +(monthTheme ? '<div style="margin-top:10px;display:inline-block;background:#fff;border-radius:20px;padding:4px 16px;font-size:13px;color:#6D28D9;font-weight:600;border:1px solid #DDD6FE;">✨ Monthly Theme: '+escapeHtml(monthTheme)+'</div>' : '')
+    +'</div>'
+    // Highlights
+    +(highlights.length ? '<div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:16px 18px;margin-bottom:20px;">'
+    +'<div style="font-weight:800;color:#92400E;margin-bottom:10px;font-size:14px;">⭐ Special Events This Month</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:8px;">'
+    +highlights.slice(0,8).map(function(h){
+      return '<div style="background:#fff;border:1px solid #FDE68A;border-radius:8px;padding:6px 12px;font-size:13px;"><strong>Day '+h.day+':</strong> '+escapeHtml(h.name)+'</div>';
+    }).join('')
+    +'</div></div>' : '')
+    // Calendar
+    +'<div style="overflow-x:auto;margin-bottom:20px;">'+calHtml+'</div>'
+    // Footer
+    +'<div style="text-align:center;padding:16px;font-size:11px;color:#9CA3AF;border-top:1px solid #F3F4F6;margin-top:12px;">'
+    +'We would love to see you at our events! Please contact the activity office for more information.<br>'
+    +'Powered by Empower Life 365 · empowerlife365.app'
+    +'</div>'
+    +'</div>';
+}
+
+function printFamilyPortal() {
+  var content = document.getElementById('portal-printable');
+  if (!content) return;
+  var win = window.open('','_blank','width=1000,height=700');
+  win.document.write('<html><head><title>Family Activity Calendar</title>'
+    +'<style>body{font-family:system-ui,sans-serif;padding:24px;max-width:950px;margin:0 auto;}'
+    +'table{width:100%;border-collapse:collapse;} td,th{border:1px solid #E5E7EB;}'
+    +'@media print{body{padding:8px;}}</style></head><body>'
+    +content.outerHTML+'</body></html>');
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 400);
+}
+
+function copyPortalLink() {
+  try {
+    // Build a shareable snapshot of key data
+    var community = (typeof DATA!=='undefined' && DATA.communityName) ? DATA.communityName : '';
+    var monthName = (typeof DATA!=='undefined' && DATA.monthName)     ? DATA.monthName     : '';
+    var year      = (typeof DATA!=='undefined' && DATA.year)          ? DATA.year          : '';
+    var theme     = (typeof DATA!=='undefined' && DATA.monthTheme)    ? DATA.monthTheme    : '';
+    var payload   = { c: community, m: monthName, y: year, t: theme, v: '1' };
+    var encoded   = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    var url = window.location.origin + window.location.pathname + '?portal=' + encoded;
+    navigator.clipboard.writeText(url).then(function() {
+      var toast = document.getElementById('portal-link-toast');
+      toast.style.display = 'block';
+      setTimeout(function(){ toast.style.display='none'; }, 4000);
+    }).catch(function() {
+      prompt('Copy this link to share with families:', url);
+    });
+  } catch(e) {
+    alert('Could not generate share link. Try printing instead.');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// RESIDENT BIOS & ASSESSMENTS
+// ════════════════════════════════════════════════════════════
+var BIO_KEY = 'el365_resident_bios';
+var _bioMode = false;
+
+function getAllBios() {
+  try { return JSON.parse(localStorage.getItem(BIO_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveBio(residentId, bioData) {
+  var all = getAllBios();
+  all[residentId] = bioData;
+  localStorage.setItem(BIO_KEY, JSON.stringify(all));
+}
+
+function toggleBioMode() {
+  _bioMode = !_bioMode;
+  var btn = document.querySelector('[onclick="toggleBioMode()"]');
+  if (btn) btn.textContent = _bioMode ? '👥 Roster View' : '📋 Bio / Assessment View';
+  // Re-render roster panel to show bio cards
+  if (_bioMode) renderBioCards();
+  else renderRosterPanel && renderRosterPanel();
+}
+
+function addNewResident() {
+  openBioModal(null);
+}
+
+function renderBioCards() {
+  var bios = getAllBios();
+  var ratings = getAllRatings();
+  var container = document.querySelector('#panel-roster .roster-bio-area');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'roster-bio-area';
+    var panel = document.getElementById('panel-roster');
+    panel.appendChild(container);
+  }
+
+  var bioList = Object.values(bios);
+  if (!bioList.length) {
+    container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--gray-500);">'
+      +'<div style="font-size:48px;margin-bottom:12px;">👤</div>'
+      +'<div style="font-size:18px;font-weight:700;margin-bottom:8px;">No resident profiles yet</div>'
+      +'<div style="font-size:14px;margin-bottom:20px;">Build bios for each resident to track interests, care needs, and life stories.</div>'
+      +'<button class="btn btn-primary" onclick="openBioModal(null)">➕ Add First Resident Profile</button>'
+      +'</div>';
+    return;
+  }
+
+  container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:8px;">'
+    +bioList.map(function(bio) {
+      var rid = bio.id;
+      // Find their ratings
+      var myRatings = [];
+      Object.values(ratings).forEach(function(r) {
+        (r.entries||[]).forEach(function(e) { myRatings.push({name:r.name,stars:e.stars}); });
+      });
+      var favs = myRatings.sort(function(a,b){return b.stars-a.stars;}).slice(0,3);
+      var interestTags = (bio.interests||[]).map(function(i){
+        return '<span style="background:#EFF6FF;color:#1D4ED8;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #BFDBFE;">'+escapeHtml(i)+'</span>';
+      }).join(' ');
+      return '<div style="background:#fff;border-radius:16px;border:1px solid var(--gray-100);box-shadow:0 2px 8px rgba(0,0,0,.06);padding:20px;position:relative;">'
+        +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;">'
+        +'<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#C7D2FE,#DDD6FE);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">'+( bio.emoji||'👤')+'</div>'
+        +'<div style="flex:1;">'
+        +'<div style="font-size:16px;font-weight:800;color:#1A2A5C;">'+escapeHtml(bio.name||'')+'</div>'
+        +'<div style="font-size:12px;color:var(--gray-500);">Room '+escapeHtml(String(bio.room||'—'))+' &nbsp;·&nbsp; '+(bio.careLevel||'AL')+'</div>'
+        +(bio.hometown ? '<div style="font-size:12px;color:var(--gray-500);">📍 '+escapeHtml(bio.hometown)+'</div>' : '')
+        +'</div>'
+        +'<button onclick="openBioModal(&apos;'+rid+'&apos;)" style="background:none;border:1px solid var(--gray-200);border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;color:#6B7280;">Edit</button>'
+        +'</div>'
+        +(interestTags ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;">'+interestTags+'</div>' : '')
+        +(bio.story ? '<div style="font-size:12px;color:#6B7280;font-style:italic;margin-bottom:10px;line-height:1.5;">"'+escapeHtml(bio.story.slice(0,120))+(bio.story.length>120?'…':'') +'"</div>' : '')
+        +(bio.careNotes ? '<div style="padding:8px 10px;background:#FFF7ED;border-radius:8px;font-size:12px;color:#92400E;margin-bottom:8px;">⚕️ '+escapeHtml(bio.careNotes.slice(0,100))+'</div>' : '')
+        +'<div style="display:flex;gap:8px;margin-top:10px;">'
+        +'<button onclick="printBioCard(&apos;'+rid+'&apos;)" style="flex:1;background:none;border:1px solid var(--gray-200);border-radius:8px;padding:6px;font-size:12px;cursor:pointer;">🖨️ Print Bio</button>'
+        +'<button onclick="deleteBio(&apos;'+rid+'&apos;)" style="background:none;border:1px solid #FECACA;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div>'
+        +'</div>';
+    }).join('')
+    +'</div>'
+    +'<div style="margin-top:16px;"><button class="btn btn-primary" onclick="openBioModal(null)">➕ Add Resident Profile</button></div>';
+}
+
+var _editingBioId = null;
+var INTERESTS_LIST = ['Bingo','Music','Dancing','Gardening','Cooking','Reading','Art','Trivia','Movies','Religion/Spirituality','Sports','Cards/Games','Walking','Exercise','Puzzles','Animals','Travel','Family Visits','Singing','Crafts'];
+
+function openBioModal(id) {
+  _editingBioId = id;
+  var bios = getAllBios();
+  var bio = id ? (bios[id] || {}) : {};
+
+  var modal = document.getElementById('bio-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'bio-modal';
+    modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:9200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;overflow-y:auto;padding:20px;';
+    document.body.appendChild(modal);
+  }
+
+  var interestChecks = INTERESTS_LIST.map(function(interest){
+    var checked = (bio.interests||[]).indexOf(interest)!==-1 ? 'checked' : '';
+    return '<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;padding:4px 0;">'
+      +'<input type="checkbox" value="'+interest+'" '+checked+' class="bio-interest-chk"> '+interest+'</label>';
+  }).join('');
+
+  modal.innerHTML = '<div style="background:#fff;border-radius:20px;padding:28px;max-width:560px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.3);margin:auto;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">'
+    +'<div style="font-size:18px;font-weight:900;color:#1A2A5C;">'+(id?'Edit':'Add')+' Resident Profile</div>'
+    +'<button onclick="closeBioModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#9CA3AF;">✕</button>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">'
+    +'<div><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">FULL NAME *</label>'
+    +'<input id="bio-name" type="text" value="'+escapeHtml(bio.name||'')+'" placeholder="First Last" style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">ROOM #</label>'
+    +'<input id="bio-room" type="text" value="'+escapeHtml(String(bio.room||''))+'" placeholder="101" style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">'
+    +'<div><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">CARE LEVEL</label>'
+    +'<select id="bio-care" style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;">'
+    +'<option value="AL" '+(bio.careLevel==='AL'?'selected':'')+'>Assisted Living</option>'
+    +'<option value="MC" '+(bio.careLevel==='MC'?'selected':'')+'>Memory Care</option>'
+    +'<option value="IL" '+(bio.careLevel==='IL'?'selected':'')+'>Independent</option>'
+    +'</select></div>'
+    +'<div><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">HOMETOWN</label>'
+    +'<input id="bio-hometown" type="text" value="'+escapeHtml(bio.hometown||'')+'" placeholder="City, State" style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'</div>'
+    +'<div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:8px;">INTERESTS &amp; HOBBIES</label>'
+    +'<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0 16px;padding:12px;border:1.5px solid #E5E7EB;border-radius:8px;max-height:160px;overflow-y:auto;">'+interestChecks+'</div></div>'
+    +'<div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">CARE &amp; MOBILITY NOTES</label>'
+    +'<textarea id="bio-care-notes" rows="2" placeholder="Mobility aids, dietary restrictions, contraindications, cognitive notes..." style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;">'+escapeHtml(bio.careNotes||'')+'</textarea></div>'
+    +'<div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">LIFE STORY &amp; BIOGRAPHY</label>'
+    +'<textarea id="bio-story" rows="3" placeholder="Career, family, proudest moments, fun facts, conversation starters..." style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;">'+escapeHtml(bio.story||'')+'</textarea></div>'
+    +'<div style="margin-bottom:20px;"><label style="font-size:12px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">PROFILE EMOJI</label>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;" id="bio-emoji-picker">'
+    +['👤','👴','👵','🧓','👨','👩','🎩','👒','🌸','⭐','🌟','💫'].map(function(e){
+      return '<button type="button" onclick="selectBioEmoji(&apos;'+e+'&apos;)" class="bio-emoji-opt" style="font-size:22px;padding:6px;border-radius:8px;border:2px solid '+(bio.emoji===e?'#1A2A5C':'#E5E7EB')+';background:'+(bio.emoji===e?'#EFF6FF':'white')+';cursor:pointer;">'+e+'</button>';
+    }).join('')
+    +'</div></div>'
+    +'<div style="display:flex;gap:10px;">'
+    +'<button class="btn btn-primary" onclick="saveBioModal()" style="flex:1;">💾 Save Profile</button>'
+    +'<button class="btn btn-secondary" onclick="closeBioModal()">Cancel</button>'
+    +'</div>'
+    +'</div>';
+
+  modal.style.display = 'flex';
+}
+
+function selectBioEmoji(e) {
+  document.querySelectorAll('.bio-emoji-opt').forEach(function(btn){
+    var isThis = btn.textContent===e;
+    btn.style.borderColor  = isThis ? '#1A2A5C' : '#E5E7EB';
+    btn.style.background   = isThis ? '#EFF6FF'  : 'white';
+  });
+}
+
+function closeBioModal() {
+  var modal = document.getElementById('bio-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function saveBioModal() {
+  var name = (document.getElementById('bio-name').value || '').trim();
+  if (!name) { alert('Please enter a resident name.'); return; }
+  var interests = [];
+  document.querySelectorAll('.bio-interest-chk:checked').forEach(function(chk){ interests.push(chk.value); });
+  var selectedEmoji = '';
+  document.querySelectorAll('.bio-emoji-opt').forEach(function(btn){
+    if (btn.style.background.includes('EFF6FF')) selectedEmoji = btn.textContent;
+  });
+  var id = _editingBioId || ('res_' + Date.now());
+  var bio = {
+    id:        id,
+    name:      name,
+    room:      document.getElementById('bio-room').value.trim(),
+    careLevel: document.getElementById('bio-care').value,
+    hometown:  document.getElementById('bio-hometown').value.trim(),
+    interests: interests,
+    careNotes: document.getElementById('bio-care-notes').value.trim(),
+    story:     document.getElementById('bio-story').value.trim(),
+    emoji:     selectedEmoji || '👤',
+    updatedAt: Date.now()
+  };
+  saveBio(id, bio);
+  closeBioModal();
+  showToast('✅ Profile saved for ' + name);
+  if (_bioMode) renderBioCards();
+}
+
+function deleteBio(id) {
+  if (!confirm('Remove this resident profile? This cannot be undone.')) return;
+  var all = getAllBios();
+  delete all[id];
+  localStorage.setItem(BIO_KEY, JSON.stringify(all));
+  if (_bioMode) renderBioCards();
+}
+
+function printBioCard(id) {
+  var bios = getAllBios();
+  var bio = bios[id];
+  if (!bio) return;
+  var win = window.open('','_blank','width=700,height=500');
+  win.document.write('<html><head><title>Resident Bio - '+bio.name+'</title>'
+    +'<style>body{font-family:system-ui,sans-serif;padding:32px;max-width:600px;margin:0 auto;} .tag{display:inline-block;background:#EFF6FF;color:#1D4ED8;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:600;margin:3px;border:1px solid #BFDBFE;}</style></head><body>'
+    +'<div style="text-align:center;padding:20px 0 16px;border-bottom:3px solid #1A2A5C;margin-bottom:20px;">'
+    +'<div style="font-size:48px;">'+( bio.emoji||'👤')+'</div>'
+    +'<div style="font-size:24px;font-weight:900;color:#1A2A5C;margin-top:8px;">'+bio.name+'</div>'
+    +'<div style="font-size:14px;color:#6B7280;margin-top:4px;">Room '+( bio.room||'—')+' &nbsp;·&nbsp; '+(bio.careLevel==='MC'?'Memory Care':bio.careLevel==='IL'?'Independent':'Assisted Living')+(bio.hometown?' &nbsp;·&nbsp; '+bio.hometown:'')+'</div>'
+    +'</div>'
+    +(bio.interests&&bio.interests.length ? '<div style="margin-bottom:16px;"><strong style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#6B7280;">Interests</strong><br><div style="margin-top:6px;">'+bio.interests.map(function(i){return '<span class="tag">'+i+'</span>';}).join('')+'</div></div>' : '')
+    +(bio.story ? '<div style="margin-bottom:16px;padding:14px 16px;background:#F9FAFB;border-radius:10px;"><strong style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#6B7280;">Life Story</strong><p style="margin:6px 0 0;line-height:1.6;font-size:14px;">'+bio.story+'</p></div>' : '')
+    +(bio.careNotes ? '<div style="margin-bottom:16px;padding:14px 16px;background:#FFF7ED;border-radius:10px;border:1px solid #FED7AA;"><strong style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#92400E;">Care Notes</strong><p style="margin:6px 0 0;line-height:1.6;font-size:14px;color:#92400E;">'+bio.careNotes+'</p></div>' : '')
+    +'<div style="margin-top:24px;text-align:center;font-size:11px;color:#9CA3AF;">Empower Life 365 · Resident Profile</div>'
+    +'</body></html>');
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 400);
 }
 </script>
 
