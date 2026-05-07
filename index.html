@@ -65,6 +65,9 @@ html, body {
 .nav-sub-tabs { background:#fff; border-bottom:2px solid #F5C842; display:none; }
 .nav-sub-inner { max-width:1400px; margin:0 auto; display:flex; gap:2px; padding:0 16px; overflow-x:auto; }
 .nav-sub-tabs .tab-btn { padding:10px 14px; font-size:13px; }
+.rc-pill { background:#fff; color:#1A2A5C; border:1.5px solid #C7D2FE; padding:7px 18px; border-radius:20px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; transition:all .15s; font-family:inherit; }
+.rc-pill:hover { background:#EEF2FF; }
+.rc-pill.active { background:#1A2A5C; color:#fff; border-color:#1A2A5C; }
 /* hide old flat tab-bar-inner on the new nav (pin + cat rows replace it) */
 main { max-width: 1400px; margin: 0 auto; padding: 24px; }
 .tab-panel { display: none; }
@@ -1197,6 +1200,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <div class="nav-sub-inner">
       <button class="tab-btn" data-tab="punchcard"  id="punchcard-tab"  onclick="switchTab('punchcard')">🎟️ Punch Cards</button>
       <button class="tab-btn" data-tab="community"  id="community-tab"  onclick="switchTab('community')">🔑 365 Members Exchange</button>
+      <button class="tab-btn" data-tab="council"    id="council-tab"    onclick="switchTab('council')">🏛️ Resident Council</button>
     </div>
   </div>
 
@@ -3828,6 +3832,29 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════════
+     RESIDENT COUNCIL
+════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="panel-council">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div>
+      <h1 style="font-size:24px;font-weight:900;color:#1A2A5C;margin:0 0 4px;">🏛️ Resident Council</h1>
+      <p style="color:var(--gray-500);font-size:13px;margin:0;">Officers · Meeting Minutes · Action Items · Grievance Log</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;" id="council-action-btns"></div>
+  </div>
+
+  <!-- Section pills -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #EEF2FF;">
+    <button class="rc-pill active" data-rc="officers"  onclick="switchCouncilSection('officers')">👑 Officers</button>
+    <button class="rc-pill"        data-rc="meetings"  onclick="switchCouncilSection('meetings')">📝 Meeting Minutes</button>
+    <button class="rc-pill"        data-rc="actions"   onclick="switchCouncilSection('actions')">✅ Action Items</button>
+    <button class="rc-pill"        data-rc="grievances" onclick="switchCouncilSection('grievances')">📋 Grievance Log</button>
+  </div>
+
+  <div id="council-content"></div>
+</section>
+
 <section class="tab-panel" id="panel-about">
   <h1>About Empower Life 365</h1>
   <p class="subtitle">Powered by Empower Life 365</p>
@@ -4294,6 +4321,7 @@ function switchTab(name) {
   if (name === 'family') initFamily();
   if (name === 'social') initSocial();
   if (name === 'report') initReport();
+  if (name === 'council') initCouncil();
   if (name === 'portal') initPortal();
   if (name === 'community') initCommunity();
   if (name === 'games') initGames();
@@ -4331,7 +4359,7 @@ var _TAB_CAT = {
   roster:'residents', charting:'residents', birthday:'residents',
   attlog:'residents', ratings:'residents',
   newsletter:'comms', family:'comms', social:'comms', spotlight:'comms', report:'comms', portal:'comms',
-  punchcard:'community', community:'community',
+  punchcard:'community', community:'community', council:'community',
   about:'more'
 };
 
@@ -19547,6 +19575,451 @@ function printBioCard(id) {
     +'</body></html>');
   win.document.close();
   setTimeout(function(){ win.print(); }, 400);
+}
+</script>
+
+
+<script>
+// ════════════════════════════════════════════════════════════
+// RESIDENT COUNCIL
+// ════════════════════════════════════════════════════════════
+function closeRC(id) { var m=document.getElementById(id); if(m) m.style.display='none'; }
+var RC_SECTION = 'officers';
+var RC_KEYS = { officers:'el365_rc_officers', meetings:'el365_rc_meetings', actions:'el365_rc_actions', grievances:'el365_rc_grievances' };
+
+function rcGet(key) { try { return JSON.parse(localStorage.getItem(RC_KEYS[key])||'[]'); } catch(e) { return []; } }
+function rcSave(key, data) { localStorage.setItem(RC_KEYS[key], JSON.stringify(data)); }
+
+function initCouncil() { switchCouncilSection(RC_SECTION); }
+
+function switchCouncilSection(sec) {
+  RC_SECTION = sec;
+  document.querySelectorAll('.rc-pill').forEach(function(b){ b.classList.toggle('active', b.dataset.rc===sec); });
+  var el = document.getElementById('council-content');
+  var btns = document.getElementById('council-action-btns');
+  if (sec === 'officers')   { renderCouncilOfficers(el, btns); }
+  else if (sec === 'meetings')   { renderCouncilMeetings(el, btns); }
+  else if (sec === 'actions')    { renderCouncilActions(el, btns); }
+  else if (sec === 'grievances') { renderCouncilGrievances(el, btns); }
+}
+
+// ── OFFICERS ─────────────────────────────────────────────────────
+var RC_OFFICER_ROLES = ['President','Vice President','Secretary','Treasurer','Member at Large','Chaplain/Spiritual Rep','Social Committee Chair','Activities Liaison'];
+
+function renderCouncilOfficers(el, btns) {
+  btns.innerHTML = '<button class="btn btn-primary" onclick="openOfficerModal(null)">➕ Add Officer</button>';
+  var officers = rcGet('officers');
+  if (!officers.length) {
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:var(--gray-500);">'
+      +'<div style="font-size:48px;margin-bottom:12px;">👑</div>'
+      +'<div style="font-size:18px;font-weight:700;margin-bottom:8px;">No officers on record yet</div>'
+      +'<div style="font-size:14px;margin-bottom:20px;">Add your council officers to get started.</div>'
+      +'<button class="btn btn-primary" onclick="openOfficerModal(null)">➕ Add First Officer</button>'
+      +'</div>';
+    return;
+  }
+  var roleOrder = RC_OFFICER_ROLES;
+  var sorted = officers.slice().sort(function(a,b){ return roleOrder.indexOf(a.role)-roleOrder.indexOf(b.role); });
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">'
+    +sorted.map(function(o){
+      return '<div style="background:#fff;border-radius:14px;border:1px solid #E0E7FF;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.05);">'
+        +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">'
+        +'<div>'
+        +'<div style="font-size:11px;font-weight:700;color:#4338CA;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">'+escapeHtml(o.role)+'</div>'
+        +'<div style="font-size:17px;font-weight:800;color:#1A2A5C;">'+escapeHtml(o.name)+'</div>'
+        +(o.room ? '<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Room '+escapeHtml(o.room)+'</div>' : '')
+        +(o.term  ? '<div style="font-size:12px;color:var(--gray-500);">Term: '+escapeHtml(o.term)+'</div>' : '')
+        +(o.notes ? '<div style="font-size:12px;color:#6B7280;margin-top:6px;font-style:italic;">'+escapeHtml(o.notes)+'</div>' : '')
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;gap:4px;">'
+        +'<button onclick="openOfficerModal(&apos;'+o.id+'&apos;)" style="background:none;border:1px solid #E0E7FF;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#6B7280;">Edit</button>'
+        +'<button onclick="deleteOfficer(&apos;'+o.id+'&apos;)" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div></div>';
+    }).join('')
+    +'</div>';
+}
+
+var _editOfficerId = null;
+function openOfficerModal(id) {
+  _editOfficerId = id;
+  var officers = rcGet('officers');
+  var o = id ? (officers.find(function(x){return x.id===id;})||{}) : {};
+  var modal = document.getElementById('rc-officer-modal');
+  if (!modal) { modal = document.createElement('div'); modal.id='rc-officer-modal'; modal.style.cssText='display:none;position:fixed;inset:0;z-index:9200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;'; document.body.appendChild(modal); }
+  var roleOpts = RC_OFFICER_ROLES.map(function(r){ return '<option value="'+r+'"'+(o.role===r?' selected':'')+'>'+r+'</option>'; }).join('');
+  modal.innerHTML = '<div style="background:#fff;border-radius:18px;padding:28px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;"><div style="font-size:17px;font-weight:900;color:#1A2A5C;">'+(id?'Edit':'Add')+' Officer</div>'
+    +'<button onclick="closeRC(\'rc-officer-modal\')" style="background:none;border:none;font-size:20px;cursor:pointer;color:#9CA3AF;">✕</button></div>'
+    +'<div style="display:grid;gap:12px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">ROLE</label>'
+    +'<select id="rc-off-role" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;">'+roleOpts+'</select></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">RESIDENT NAME *</label>'
+    +'<input id="rc-off-name" type="text" value="'+escapeHtml(o.name||'')+'" placeholder="Full name" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">ROOM #</label>'
+    +'<input id="rc-off-room" type="text" value="'+escapeHtml(o.room||'')+'" placeholder="101" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">TERM</label>'
+    +'<input id="rc-off-term" type="text" value="'+escapeHtml(o.term||'')+'" placeholder="Jan–Dec 2026" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">NOTES</label>'
+    +'<input id="rc-off-notes" type="text" value="'+escapeHtml(o.notes||'')+'" placeholder="Optional notes" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'</div><div style="display:flex;gap:10px;margin-top:18px;">'
+    +'<button class="btn btn-primary" onclick="saveOfficer()" style="flex:1;">💾 Save</button>'
+    +'<button class="btn btn-secondary" onclick="closeRC(\'rc-officer-modal\')">Cancel</button>'
+    +'</div></div>';
+  modal.style.display='flex';
+}
+
+function saveOfficer() {
+  var name = (document.getElementById('rc-off-name').value||'').trim();
+  if (!name) { alert('Please enter a name.'); return; }
+  var officers = rcGet('officers');
+  var id = _editOfficerId || ('off_'+Date.now());
+  var obj = { id:id, role:document.getElementById('rc-off-role').value, name:name, room:document.getElementById('rc-off-room').value.trim(), term:document.getElementById('rc-off-term').value.trim(), notes:document.getElementById('rc-off-notes').value.trim() };
+  if (_editOfficerId) { var idx=officers.findIndex(function(x){return x.id===id;}); if(idx>=0) officers[idx]=obj; else officers.push(obj); }
+  else officers.push(obj);
+  rcSave('officers', officers);
+  closeRC('rc-officer-modal');
+  showToast('✅ Officer saved');
+  switchCouncilSection('officers');
+}
+
+function deleteOfficer(id) {
+  if (!confirm('Remove this officer?')) return;
+  rcSave('officers', rcGet('officers').filter(function(o){return o.id!==id;}));
+  switchCouncilSection('officers');
+}
+
+// ── MEETING MINUTES ───────────────────────────────────────────────
+function renderCouncilMeetings(el, btns) {
+  btns.innerHTML = '<button class="btn btn-primary" onclick="openMeetingModal(null)">➕ New Meeting</button>';
+  var meetings = rcGet('meetings').slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  if (!meetings.length) {
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:var(--gray-500);"><div style="font-size:48px;margin-bottom:12px;">📝</div><div style="font-size:18px;font-weight:700;margin-bottom:8px;">No meetings recorded yet</div><button class="btn btn-primary" onclick="openMeetingModal(null)">➕ Record First Meeting</button></div>';
+    return;
+  }
+  el.innerHTML = '<div style="display:grid;gap:14px;">'
+    +meetings.map(function(m){
+      var actionCount = (m.actions||[]).length;
+      var attendeeCount = (m.attendees||'').split(',').filter(function(s){return s.trim();}).length;
+      return '<div style="background:#fff;border-radius:14px;border:1px solid #E5E7EB;box-shadow:0 2px 6px rgba(0,0,0,.05);">'
+        +'<div style="padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;cursor:pointer;" data-mid="'+m.id+'" onclick="toggleMeetingBody(\'mb_\'+this.dataset.mid)">'
+        +'<div>'
+        +'<div style="font-size:16px;font-weight:800;color:#1A2A5C;">'+escapeHtml(m.title||'Resident Council Meeting')+'</div>'
+        +'<div style="font-size:12px;color:var(--gray-500);margin-top:3px;">📅 '+escapeHtml(m.date||'')+(m.time?' &nbsp;·&nbsp; 🕐 '+escapeHtml(m.time):'')+' &nbsp;·&nbsp; '+attendeeCount+' attendee'+(attendeeCount===1?'':'s')+(actionCount?' &nbsp;·&nbsp; '+actionCount+' action item'+(actionCount===1?'':'s'):'')+' &nbsp;·&nbsp; <span style="color:#4338CA;font-weight:700;">'+escapeHtml(m.location||'')+'</span></div>'
+        +'</div>'
+        +'<div style="display:flex;gap:6px;flex-shrink:0;">'
+        +'<button onclick="event.stopPropagation();printMeetingMinutes(&apos;'+m.id+'&apos;)" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;">🖨️</button>'
+        +'<button onclick="event.stopPropagation();openMeetingModal(&apos;'+m.id+'&apos;)" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;">✏️</button>'
+        +'<button onclick="event.stopPropagation();deleteMeeting(&apos;'+m.id+'&apos;)" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div>'
+        +'<div id="mb_'+m.id+'" style="display:none;padding:0 20px 18px;border-top:1px solid #F3F4F6;">'
+        +(m.attendees ? '<div style="margin-top:14px;"><div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Attendees</div><div style="font-size:13px;color:#374151;">'+escapeHtml(m.attendees)+'</div></div>' : '')
+        +(m.agenda ? '<div style="margin-top:12px;"><div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Agenda</div><div style="font-size:13px;color:#374151;white-space:pre-wrap;">'+escapeHtml(m.agenda)+'</div></div>' : '')
+        +(m.notes ? '<div style="margin-top:12px;"><div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Minutes / Notes</div><div style="font-size:13px;color:#374151;white-space:pre-wrap;">'+escapeHtml(m.notes)+'</div></div>' : '')
+        +((m.actions&&m.actions.length) ? '<div style="margin-top:12px;"><div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Action Items From This Meeting</div>'
+          +m.actions.map(function(a){return '<div style="font-size:13px;color:#374151;padding:5px 0;border-bottom:1px solid #F9FAFB;">• '+escapeHtml(a)+'</div>';}).join('')+'</div>' : '')
+        +(m.nextDate ? '<div style="margin-top:12px;padding:10px 14px;background:#F0FDF4;border-radius:8px;font-size:13px;font-weight:600;color:#166534;">📅 Next Meeting: '+escapeHtml(m.nextDate)+(m.nextTime?' at '+escapeHtml(m.nextTime):'')+' </div>' : '')
+        +'</div>'
+        +'</div>';
+    }).join('')
+    +'</div>';
+}
+
+function toggleMeetingBody(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+var _editMeetingId = null;
+function openMeetingModal(id) {
+  _editMeetingId = id;
+  var meetings = rcGet('meetings');
+  var m = id ? (meetings.find(function(x){return x.id===id;})||{}) : {};
+  var today = new Date().toISOString().slice(0,10);
+  var modal = document.getElementById('rc-meeting-modal');
+  if (!modal) { modal=document.createElement('div'); modal.id='rc-meeting-modal'; modal.style.cssText='display:none;position:fixed;inset:0;z-index:9200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;overflow-y:auto;'; document.body.appendChild(modal); }
+  modal.innerHTML = '<div style="background:#fff;border-radius:18px;padding:28px;max-width:560px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;"><div style="font-size:17px;font-weight:900;color:#1A2A5C;">'+(id?'Edit':'Record')+' Meeting Minutes</div>'
+    +'<button onclick="closeRC(\'rc-meeting-modal\')" style="background:none;border:none;font-size:20px;cursor:pointer;color:#9CA3AF;">✕</button></div>'
+    +'<div style="display:grid;gap:12px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">MEETING TITLE</label>'
+    +'<input id="rc-mtg-title" type="text" value="'+escapeHtml(m.title||'Resident Council Meeting')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">DATE *</label>'
+    +'<input id="rc-mtg-date" type="date" value="'+(m.date||today)+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">TIME</label>'
+    +'<input id="rc-mtg-time" type="time" value="'+(m.time||'')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">LOCATION</label>'
+    +'<input id="rc-mtg-loc" type="text" value="'+escapeHtml(m.location||'Dining Room')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">ATTENDEES (comma-separated)</label>'
+    +'<input id="rc-mtg-att" type="text" value="'+escapeHtml(m.attendees||'')+'" placeholder="Jane D., Bob S., Mary K., Activity Director..." style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">AGENDA ITEMS</label>'
+    +'<textarea id="rc-mtg-agenda" rows="3" placeholder="1. Call to order&#10;2. Review last meeting&#10;3. New business..." style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;">'+escapeHtml(m.agenda||'')+'</textarea></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">MINUTES / DISCUSSION NOTES</label>'
+    +'<textarea id="rc-mtg-notes" rows="5" placeholder="Summary of discussion, decisions made, concerns raised..." style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;">'+escapeHtml(m.notes||'')+'</textarea></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">ACTION ITEMS (one per line)</label>'
+    +'<textarea id="rc-mtg-actions" rows="3" placeholder="Follow up on dining menu change&#10;Schedule entertainment for March&#10;Repair elevator button" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;">'+(m.actions||[]).join('\n')+'</textarea></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">NEXT MEETING DATE</label>'
+    +'<input id="rc-mtg-ndate" type="date" value="'+(m.nextDate||'')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">NEXT MEETING TIME</label>'
+    +'<input id="rc-mtg-ntime" type="time" value="'+(m.nextTime||'')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div></div>'
+    +'</div><div style="display:flex;gap:10px;margin-top:18px;">'
+    +'<button class="btn btn-primary" onclick="saveMeeting()" style="flex:1;">💾 Save Minutes</button>'
+    +'<button class="btn btn-secondary" onclick="closeRC(\'rc-meeting-modal\')">Cancel</button>'
+    +'</div></div>';
+  modal.style.display='flex';
+}
+
+function saveMeeting() {
+  var date = document.getElementById('rc-mtg-date').value;
+  if (!date) { alert('Please enter a meeting date.'); return; }
+  var meetings = rcGet('meetings');
+  var id = _editMeetingId || ('mtg_'+Date.now());
+  var actionsRaw = document.getElementById('rc-mtg-actions').value.trim();
+  var obj = { id:id, title:document.getElementById('rc-mtg-title').value.trim(), date:date, time:document.getElementById('rc-mtg-time').value, location:document.getElementById('rc-mtg-loc').value.trim(), attendees:document.getElementById('rc-mtg-att').value.trim(), agenda:document.getElementById('rc-mtg-agenda').value.trim(), notes:document.getElementById('rc-mtg-notes').value.trim(), actions:actionsRaw ? actionsRaw.split('\n').filter(function(s){return s.trim();}) : [], nextDate:document.getElementById('rc-mtg-ndate').value, nextTime:document.getElementById('rc-mtg-ntime').value };
+  if (_editMeetingId) { var idx=meetings.findIndex(function(x){return x.id===id;}); if(idx>=0) meetings[idx]=obj; else meetings.push(obj); }
+  else meetings.push(obj);
+  rcSave('meetings', meetings);
+  closeRC('rc-meeting-modal');
+  showToast('✅ Meeting minutes saved');
+  switchCouncilSection('meetings');
+}
+
+function deleteMeeting(id) {
+  if (!confirm('Delete these meeting minutes? This cannot be undone.')) return;
+  rcSave('meetings', rcGet('meetings').filter(function(m){return m.id!==id;}));
+  switchCouncilSection('meetings');
+}
+
+function printMeetingMinutes(id) {
+  var meetings = rcGet('meetings');
+  var m = meetings.find(function(x){return x.id===id;});
+  if (!m) return;
+  var community = (typeof DATA!=='undefined'&&DATA.communityName)?DATA.communityName:'Our Community';
+  var win = window.open('','_blank','width=800,height=600');
+  var dateStr = m.date ? new Date(m.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '';
+  win.document.write('<html><head><title>Meeting Minutes</title><style>body{font-family:Georgia,serif;padding:40px;max-width:750px;margin:0 auto;line-height:1.6;}h1{color:#1A2A5C;font-size:22px;}h2{font-size:15px;color:#374151;border-bottom:1px solid #E5E7EB;padding-bottom:6px;}p,li{font-size:14px;}ul{margin:0;padding-left:20px;}@media print{body{padding:20px;}}</style></head><body>'
+    +'<div style="text-align:center;margin-bottom:28px;padding-bottom:16px;border-bottom:3px solid #1A2A5C;">'
+    +'<div style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#6B7280;margin-bottom:4px;">Resident Council</div>'
+    +'<h1 style="margin:0 0 4px;">'+m.title+'</h1>'
+    +'<div style="color:#6B7280;font-size:14px;">'+dateStr+(m.time?' &nbsp;·&nbsp; '+m.time:'')+' &nbsp;·&nbsp; '+( m.location||'')+'</div>'
+    +'<div style="font-size:12px;color:#9CA3AF;margin-top:4px;">'+community+'</div>'
+    +'</div>'
+    +(m.attendees?'<h2>Attendees</h2><p>'+m.attendees+'</p>':'')
+    +(m.agenda?'<h2>Agenda</h2><pre style="font-family:Georgia,serif;font-size:14px;white-space:pre-wrap;margin:0;">'+m.agenda+'</pre>':'')
+    +(m.notes?'<h2>Minutes</h2><pre style="font-family:Georgia,serif;font-size:14px;white-space:pre-wrap;margin:0;">'+m.notes+'</pre>':'')
+    +((m.actions&&m.actions.length)?'<h2>Action Items</h2><ul>'+m.actions.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul>':'')
+    +(m.nextDate?'<div style="margin-top:20px;padding:12px 16px;background:#F0FDF4;border-radius:8px;font-weight:700;font-size:14px;color:#166534;">Next Meeting: '+m.nextDate+(m.nextTime?' at '+m.nextTime:'')+'</div>':'')
+    +'<div style="margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;">'
+    +'<div><div style="border-bottom:1px solid #374151;height:36px;margin-bottom:6px;"></div><div style="font-size:11px;color:#9CA3AF;">Activity Director / Facilitator &amp; Date</div></div>'
+    +'<div><div style="border-bottom:1px solid #374151;height:36px;margin-bottom:6px;"></div><div style="font-size:11px;color:#9CA3AF;">Council President &amp; Date</div></div>'
+    +'</div></body></html>');
+  win.document.close();
+  setTimeout(function(){win.print();},400);
+}
+
+// ── ACTION ITEMS ─────────────────────────────────────────────────
+var AI_STATUS = ['Open','In Progress','Resolved','Tabled'];
+var AI_STATUS_COLORS = {Open:'#FEF3C7,#92400E', 'In Progress':'#DBEAFE,#1E40AF', Resolved:'#D1FAE5,#065F46', Tabled:'#F3F4F6,#6B7280'};
+
+function renderCouncilActions(el, btns) {
+  btns.innerHTML = '<button class="btn btn-primary" onclick="openActionModal(null)">➕ Add Action Item</button>';
+  var items = rcGet('actions').slice().sort(function(a,b){
+    var order = {'Open':0,'In Progress':1,'Tabled':2,'Resolved':3};
+    return (order[a.status]||0)-(order[b.status]||0) || (a.due||'').localeCompare(b.due||'');
+  });
+  if (!items.length) {
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:var(--gray-500);"><div style="font-size:48px;margin-bottom:12px;">✅</div><div style="font-size:18px;font-weight:700;margin-bottom:8px;">No action items yet</div><button class="btn btn-primary" onclick="openActionModal(null)">➕ Add Action Item</button></div>';
+    return;
+  }
+  el.innerHTML = '<div style="display:grid;gap:10px;">'
+    +items.map(function(item){
+      var colors = (AI_STATUS_COLORS[item.status]||'#F3F4F6,#6B7280').split(',');
+      var overdue = item.due && item.status!=='Resolved' && new Date(item.due+'T12:00:00') < new Date();
+      return '<div style="background:#fff;border-radius:12px;border:1px solid '+(overdue?'#FECACA':'#E5E7EB')+';padding:14px 18px;box-shadow:0 1px 4px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:14px;">'
+        +'<div style="flex:1;">'
+        +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">'
+        +'<span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:'+colors[0]+';color:'+colors[1]+';">'+item.status+'</span>'
+        +(overdue?'<span style="font-size:11px;font-weight:700;color:#DC2626;background:#FEF2F2;padding:2px 8px;border-radius:20px;">⚠️ Overdue</span>':'')
+        +'</div>'
+        +'<div style="font-size:15px;font-weight:700;color:#1A2A5C;">'+escapeHtml(item.concern)+'</div>'
+        +(item.owner?'<div style="font-size:12px;color:var(--gray-500);margin-top:3px;">👤 '+escapeHtml(item.owner)+(item.due?' &nbsp;·&nbsp; 📅 Due: '+escapeHtml(item.due):'')+'</div>':'')
+        +(item.resolution&&item.status==='Resolved'?'<div style="margin-top:6px;padding:7px 10px;background:#F0FDF4;border-radius:7px;font-size:12px;color:#166534;">✓ '+escapeHtml(item.resolution)+'</div>':'')
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">'
+        +'<select onchange="quickStatusChange(&apos;'+item.id+'&apos;,this.value)" style="font-size:11px;padding:4px 6px;border:1px solid #E5E7EB;border-radius:6px;background:#fff;cursor:pointer;">'
+        +AI_STATUS.map(function(s){return '<option value="'+s+'"'+(s===item.status?' selected':'')+'>'+s+'</option>';}).join('')
+        +'</select>'
+        +'<button onclick="openActionModal(&apos;'+item.id+'&apos;)" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#6B7280;">Edit</button>'
+        +'<button onclick="deleteAction(&apos;'+item.id+'&apos;)" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div>';
+    }).join('')+'</div>';
+}
+
+function quickStatusChange(id, status) {
+  var items = rcGet('actions');
+  var item = items.find(function(x){return x.id===id;});
+  if (item) { item.status=status; rcSave('actions',items); showToast('Status updated to '+status); switchCouncilSection('actions'); }
+}
+
+var _editActionId = null;
+function openActionModal(id) {
+  _editActionId = id;
+  var items = rcGet('actions');
+  var item = id ? (items.find(function(x){return x.id===id;})||{}) : {};
+  var modal = document.getElementById('rc-action-modal');
+  if (!modal) { modal=document.createElement('div'); modal.id='rc-action-modal'; modal.style.cssText='display:none;position:fixed;inset:0;z-index:9200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;'; document.body.appendChild(modal); }
+  var statusOpts = AI_STATUS.map(function(s){return '<option value="'+s+'"'+(item.status===s?' selected':'')+'>'+s+'</option>';}).join('');
+  modal.innerHTML = '<div style="background:#fff;border-radius:18px;padding:28px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;"><div style="font-size:17px;font-weight:900;color:#1A2A5C;">'+(id?'Edit':'Add')+' Action Item</div>'
+    +'<button onclick="closeRC(\'rc-action-modal\')" style="background:none;border:none;font-size:20px;cursor:pointer;color:#9CA3AF;">✕</button></div>'
+    +'<div style="display:grid;gap:12px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">CONCERN / ACTION NEEDED *</label>'
+    +'<textarea id="rc-act-concern" rows="2" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;resize:vertical;" placeholder="Describe the issue or action needed...">'+escapeHtml(item.concern||'')+'</textarea></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">STATUS</label>'
+    +'<select id="rc-act-status" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;">'+statusOpts+'</select></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">DUE DATE</label>'
+    +'<input id="rc-act-due" type="date" value="'+(item.due||'')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">ASSIGNED TO</label>'
+    +'<input id="rc-act-owner" type="text" value="'+escapeHtml(item.owner||'')+'" placeholder="Activity Director, DON, Maintenance..." style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">RESOLUTION NOTES</label>'
+    +'<textarea id="rc-act-res" rows="2" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;" placeholder="How was this resolved? (fill in when complete)">'+escapeHtml(item.resolution||'')+'</textarea></div>'
+    +'</div><div style="display:flex;gap:10px;margin-top:18px;">'
+    +'<button class="btn btn-primary" onclick="saveAction()" style="flex:1;">💾 Save</button>'
+    +'<button class="btn btn-secondary" onclick="closeRC(\'rc-action-modal\')">Cancel</button>'
+    +'</div></div>';
+  modal.style.display='flex';
+}
+
+function saveAction() {
+  var concern = (document.getElementById('rc-act-concern').value||'').trim();
+  if (!concern) { alert('Please describe the concern or action needed.'); return; }
+  var items = rcGet('actions');
+  var id = _editActionId || ('act_'+Date.now());
+  var obj = { id:id, concern:concern, status:document.getElementById('rc-act-status').value, due:document.getElementById('rc-act-due').value, owner:document.getElementById('rc-act-owner').value.trim(), resolution:document.getElementById('rc-act-res').value.trim() };
+  if (_editActionId) { var idx=items.findIndex(function(x){return x.id===id;}); if(idx>=0) items[idx]=obj; else items.push(obj); }
+  else items.push(obj);
+  rcSave('actions', items);
+  closeRC('rc-action-modal');
+  showToast('✅ Action item saved');
+  switchCouncilSection('actions');
+}
+
+function deleteAction(id) {
+  if (!confirm('Delete this action item?')) return;
+  rcSave('actions', rcGet('actions').filter(function(a){return a.id!==id;}));
+  switchCouncilSection('actions');
+}
+
+// ── GRIEVANCE LOG ─────────────────────────────────────────────────
+var GR_STATUS = ['Open','Under Review','Responded','Closed'];
+var GR_STATUS_COLORS = {Open:'#FEF3C7,#92400E','Under Review':'#DBEAFE,#1E40AF',Responded:'#EDE9FE,#5B21B6',Closed:'#D1FAE5,#065F46'};
+
+function renderCouncilGrievances(el, btns) {
+  btns.innerHTML = '<button class="btn btn-primary" onclick="openGrievanceModal(null)">➕ Log Grievance</button>';
+  var items = rcGet('grievances').slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  if (!items.length) {
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:var(--gray-500);"><div style="font-size:48px;margin-bottom:12px;">📋</div><div style="font-size:18px;font-weight:700;margin-bottom:8px;">No grievances on record</div><div style="font-size:14px;color:var(--gray-500);margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;">Use this log to formally record resident concerns and management responses — important for state survey compliance.</div><button class="btn btn-primary" onclick="openGrievanceModal(null)">➕ Log First Grievance</button></div>';
+    return;
+  }
+  el.innerHTML = '<div style="display:grid;gap:12px;">'
+    +items.map(function(g){
+      var colors = (GR_STATUS_COLORS[g.status]||'#F3F4F6,#6B7280').split(',');
+      return '<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;box-shadow:0 1px 4px rgba(0,0,0,.04);">'
+        +'<div style="padding:14px 18px;display:flex;align-items:flex-start;gap:14px;">'
+        +'<div style="flex:1;">'
+        +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">'
+        +'<span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:'+colors[0]+';color:'+colors[1]+';">'+g.status+'</span>'
+        +(g.category?'<span style="font-size:11px;color:var(--gray-500);padding:2px 8px;border:1px solid #E5E7EB;border-radius:20px;">'+escapeHtml(g.category)+'</span>':'')
+        +'<span style="font-size:11px;color:var(--gray-500);">'+escapeHtml(g.date||'')+'</span>'
+        +'</div>'
+        +'<div style="font-size:15px;font-weight:700;color:#1A2A5C;">'+escapeHtml(g.concern)+'</div>'
+        +(g.submittedBy?'<div style="font-size:12px;color:var(--gray-500);margin-top:3px;">Raised by: '+escapeHtml(g.submittedBy)+'</div>':'')
+        +(g.response?'<div style="margin-top:10px;padding:10px 12px;background:#F0FDF4;border-left:3px solid #10B981;border-radius:0 8px 8px 0;"><div style="font-size:11px;font-weight:700;color:#065F46;margin-bottom:4px;">MANAGEMENT RESPONSE'+(g.responseDate?' ('+escapeHtml(g.responseDate)+')':'')+' </div><div style="font-size:13px;color:#374151;">'+escapeHtml(g.response)+'</div></div>':'')
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">'
+        +'<select onchange="quickGrievanceStatus(&apos;'+g.id+'&apos;,this.value)" style="font-size:11px;padding:4px 6px;border:1px solid #E5E7EB;border-radius:6px;background:#fff;cursor:pointer;">'
+        +GR_STATUS.map(function(s){return '<option value="'+s+'"'+(s===g.status?' selected':'')+'>'+s+'</option>';}).join('')
+        +'</select>'
+        +'<button onclick="openGrievanceModal(&apos;'+g.id+'&apos;)" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#6B7280;">Edit</button>'
+        +'<button onclick="deleteGrievance(&apos;'+g.id+'&apos;)" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div></div>';
+    }).join('')+'</div>'
+    +'<div style="margin-top:16px;padding:12px 16px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;font-size:12px;color:#92400E;">'
+    +'⚖️ <strong>Compliance note:</strong> All grievances must receive a written response within the timeframe required by your state. This log serves as your documentation record.'
+    +'</div>';
+}
+
+function quickGrievanceStatus(id, status) {
+  var items = rcGet('grievances');
+  var item = items.find(function(x){return x.id===id;});
+  if (item) { item.status=status; rcSave('grievances',items); showToast('Status updated to '+status); switchCouncilSection('grievances'); }
+}
+
+var _editGrievanceId = null;
+var GR_CATEGORIES = ['Dining / Food','Activities / Programming','Housekeeping','Maintenance','Staff Interaction','Medical / Nursing','Safety / Security','Visitor Policies','Billing / Financial','Other'];
+
+function openGrievanceModal(id) {
+  _editGrievanceId = id;
+  var items = rcGet('grievances');
+  var g = id ? (items.find(function(x){return x.id===id;})||{}) : {};
+  var today = new Date().toISOString().slice(0,10);
+  var modal = document.getElementById('rc-grievance-modal');
+  if (!modal) { modal=document.createElement('div'); modal.id='rc-grievance-modal'; modal.style.cssText='display:none;position:fixed;inset:0;z-index:9200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;overflow-y:auto;'; document.body.appendChild(modal); }
+  var catOpts = GR_CATEGORIES.map(function(c){return '<option value="'+c+'"'+(g.category===c?' selected':'')+'>'+c+'</option>';}).join('');
+  var statusOpts = GR_STATUS.map(function(s){return '<option value="'+s+'"'+(g.status===s?' selected':'')+'>'+s+'</option>';}).join('');
+  modal.innerHTML = '<div style="background:#fff;border-radius:18px;padding:28px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;"><div style="font-size:17px;font-weight:900;color:#1A2A5C;">'+(id?'Edit':'Log')+' Grievance</div>'
+    +'<button onclick="closeRC(\'rc-grievance-modal\')" style="background:none;border:none;font-size:20px;cursor:pointer;color:#9CA3AF;">✕</button></div>'
+    +'<div style="display:grid;gap:12px;">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">DATE *</label>'
+    +'<input id="rc-gr-date" type="date" value="'+(g.date||today)+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">CATEGORY</label>'
+    +'<select id="rc-gr-cat" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;"><option value="">-- Select --</option>'+catOpts+'</select></div></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">CONCERN / GRIEVANCE *</label>'
+    +'<textarea id="rc-gr-concern" rows="3" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;resize:vertical;" placeholder="Describe the concern in detail...">'+escapeHtml(g.concern||'')+'</textarea></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">SUBMITTED BY</label>'
+    +'<input id="rc-gr-by" type="text" value="'+escapeHtml(g.submittedBy||'')+'" placeholder="Resident name or Anonymous" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">STATUS</label>'
+    +'<select id="rc-gr-status" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;">'+statusOpts+'</select></div></div>'
+    +'<div style="padding:14px;background:#F8FAFF;border-radius:10px;border:1px solid #E0E7FF;">'
+    +'<div style="font-size:12px;font-weight:700;color:#4338CA;margin-bottom:10px;">📨 Management Response</div>'
+    +'<div style="display:grid;gap:10px;">'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">RESPONSE DATE</label>'
+    +'<input id="rc-gr-rdate" type="date" value="'+(g.responseDate||'')+'" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>'
+    +'<div><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">RESPONSE / RESOLUTION</label>'
+    +'<textarea id="rc-gr-response" rows="3" style="width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;box-sizing:border-box;resize:vertical;" placeholder="Management response and steps taken...">'+escapeHtml(g.response||'')+'</textarea></div>'
+    +'</div></div>'
+    +'</div><div style="display:flex;gap:10px;margin-top:18px;">'
+    +'<button class="btn btn-primary" onclick="saveGrievance()" style="flex:1;">💾 Save</button>'
+    +'<button class="btn btn-secondary" onclick="closeRC(\'rc-grievance-modal\')">Cancel</button>'
+    +'</div></div>';
+  modal.style.display='flex';
+}
+
+function saveGrievance() {
+  var concern = (document.getElementById('rc-gr-concern').value||'').trim();
+  var date = document.getElementById('rc-gr-date').value;
+  if (!concern||!date) { alert('Please enter a date and describe the concern.'); return; }
+  var items = rcGet('grievances');
+  var id = _editGrievanceId || ('gr_'+Date.now());
+  var obj = { id:id, date:date, category:document.getElementById('rc-gr-cat').value, concern:concern, submittedBy:document.getElementById('rc-gr-by').value.trim(), status:document.getElementById('rc-gr-status').value, responseDate:document.getElementById('rc-gr-rdate').value, response:document.getElementById('rc-gr-response').value.trim() };
+  if (_editGrievanceId) { var idx=items.findIndex(function(x){return x.id===id;}); if(idx>=0) items[idx]=obj; else items.push(obj); }
+  else items.push(obj);
+  rcSave('grievances', items);
+  closeRC('rc-grievance-modal');
+  showToast('✅ Grievance logged');
+  switchCouncilSection('grievances');
+}
+
+function deleteGrievance(id) {
+  if (!confirm('Delete this grievance record?')) return;
+  rcSave('grievances', rcGet('grievances').filter(function(g){return g.id!==id;}));
+  switchCouncilSection('grievances');
 }
 </script>
 
