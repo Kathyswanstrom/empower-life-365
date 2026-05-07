@@ -3850,6 +3850,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button class="rc-pill"        data-rc="meetings"  onclick="switchCouncilSection('meetings')">📝 Meeting Minutes</button>
     <button class="rc-pill"        data-rc="actions"   onclick="switchCouncilSection('actions')">✅ Action Items</button>
     <button class="rc-pill"        data-rc="grievances" onclick="switchCouncilSection('grievances')">📋 Grievance Log</button>
+    <button class="rc-pill"        data-rc="food"       onclick="switchCouncilSection('food')">🍽️ Food Committee</button>
   </div>
 
   <div id="council-content"></div>
@@ -19601,6 +19602,7 @@ function switchCouncilSection(sec) {
   else if (sec === 'meetings')   { renderCouncilMeetings(el, btns); }
   else if (sec === 'actions')    { renderCouncilActions(el, btns); }
   else if (sec === 'grievances') { renderCouncilGrievances(el, btns); }
+  else if (sec === 'food')        { renderCouncilFood(el, btns); }
 }
 
 // ── OFFICERS ─────────────────────────────────────────────────────
@@ -20021,6 +20023,460 @@ function deleteGrievance(id) {
   rcSave('grievances', rcGet('grievances').filter(function(g){return g.id!==id;}));
   switchCouncilSection('grievances');
 }
+</script>
+
+
+<script>
+// ════════════════════════════════════════════════════════════
+// FOOD COMMITTEE
+// ════════════════════════════════════════════════════════════
+var FC_KEYS = {
+  meetings:    'el365_fc_meetings',
+  suggestions: 'el365_fc_suggestions',
+  ratings:     'el365_fc_ratings',
+  menu:        'el365_fc_menu',
+  holidays:    'el365_fc_holidays',
+  complaints:  'el365_fc_complaints'
+};
+var FC_SECTION = 'meetings';
+
+function fcGet(k) { try { return JSON.parse(localStorage.getItem(FC_KEYS[k])||'[]'); } catch(e) { return []; } }
+function fcSave(k,d) { localStorage.setItem(FC_KEYS[k], JSON.stringify(d)); }
+
+function renderCouncilFood(el, btns) {
+  btns.innerHTML = '';
+  el.innerHTML =
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #E5E7EB;" id="fc-pills">'
+    +'<button class="fc-pill active" onclick="switchFCSection(\'meetings\')">📝 Meetings</button>'
+    +'<button class="fc-pill" onclick="switchFCSection(\'suggestions\')">💡 Menu Suggestions</button>'
+    +'<button class="fc-pill" onclick="switchFCSection(\'ratings\')">⭐ Dining Ratings</button>'
+    +'<button class="fc-pill" onclick="switchFCSection(\'menu\')">📋 Menu Builder</button>'
+    +'<button class="fc-pill" onclick="switchFCSection(\'holidays\')">🎄 Holiday Menus</button>'
+    +'<button class="fc-pill" onclick="switchFCSection(\'complaints\')">📢 Complaints</button>'
+    +'</div>'
+    +'<div id="fc-action-btns" style="margin-bottom:12px;"></div>'
+    +'<div id="fc-content"></div>';
+  // Inject pill CSS if needed
+  if (!document.getElementById('fc-pill-style')) {
+    var s = document.createElement('style');
+    s.id = 'fc-pill-style';
+    s.textContent = '.fc-pill{background:#fff;color:#1A2A5C;border:1.5px solid #D1D5DB;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s;}.fc-pill.active{background:#1A2A5C;color:#fff;border-color:#1A2A5C;}.fc-pill:hover{background:#EEF2FF;}';
+    document.head.appendChild(s);
+  }
+  switchFCSection(FC_SECTION);
+}
+
+function switchFCSection(sec) {
+  FC_SECTION = sec;
+  document.querySelectorAll('.fc-pill').forEach(function(b){
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(
+      sec==='meetings'?'meeting':sec==='suggestions'?'suggestion':sec==='ratings'?'rating':
+      sec==='menu'?'menu builder':sec==='holidays'?'holiday':'complaint'));
+  });
+  var el  = document.getElementById('fc-content');
+  var btn = document.getElementById('fc-action-btns');
+  if (!el || !btn) return;
+  if (sec==='meetings')    renderFCMeetings(el, btn);
+  else if (sec==='suggestions') renderFCSuggestions(el, btn);
+  else if (sec==='ratings')     renderFCRatings(el, btn);
+  else if (sec==='menu')        renderFCMenu(el, btn);
+  else if (sec==='holidays')    renderFCHolidays(el, btn);
+  else if (sec==='complaints')  renderFCComplaints(el, btn);
+}
+
+// ── FC MEETINGS ───────────────────────────────────────────────────
+var _editFCMtgId = null;
+function renderFCMeetings(el, btn) {
+  btn.innerHTML = '<button class="btn btn-primary" onclick="openFCMeetingModal(null)">➕ New Meeting</button>';
+  var items = fcGet('meetings').slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  if (!items.length) { el.innerHTML = emptyFC('📝','No food committee meetings yet','openFCMeetingModal(null)','Record First Meeting'); return; }
+  el.innerHTML = '<div style="display:grid;gap:12px;">'
+    +items.map(function(m){
+      var att = (m.attendees||'').split(',').filter(function(s){return s.trim();}).length;
+      return '<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;box-shadow:0 1px 4px rgba(0,0,0,.04);">'
+        +'<div style="padding:14px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'">'
+        +'<div><div style="font-size:15px;font-weight:800;color:#1A2A5C;">'+escapeHtml(m.title||'Food Committee Meeting')+'</div>'
+        +'<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">📅 '+escapeHtml(m.date||'')+' &nbsp;·&nbsp; '+att+' attendee'+(att===1?'':'s')+'</div></div>'
+        +'<div style="display:flex;gap:5px;">'
+        +'<button onclick="event.stopPropagation();printFCMinutes(\''+m.id+'\')" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;">🖨️</button>'
+        +'<button onclick="event.stopPropagation();openFCMeetingModal(\''+m.id+'\')" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;">✏️</button>'
+        +'<button onclick="event.stopPropagation();deleteFCMtg(\''+m.id+'\')" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div>'
+        +'<div style="display:none;padding:0 18px 16px;border-top:1px solid #F3F4F6;">'
+        +(m.attendees?'<div style="margin-top:12px;"><strong style="font-size:11px;color:#6B7280;text-transform:uppercase;">Attendees</strong><div style="font-size:13px;margin-top:4px;">'+escapeHtml(m.attendees)+'</div></div>':'')
+        +(m.discussed?'<div style="margin-top:10px;"><strong style="font-size:11px;color:#6B7280;text-transform:uppercase;">Items Discussed</strong><div style="font-size:13px;margin-top:4px;white-space:pre-wrap;">'+escapeHtml(m.discussed)+'</div></div>':'')
+        +(m.decisions?'<div style="margin-top:10px;"><strong style="font-size:11px;color:#6B7280;text-transform:uppercase;">Decisions / Action Items</strong><div style="font-size:13px;margin-top:4px;white-space:pre-wrap;">'+escapeHtml(m.decisions)+'</div></div>':'')
+        +(m.nextDate?'<div style="margin-top:10px;padding:8px 12px;background:#F0FDF4;border-radius:8px;font-size:13px;color:#166534;font-weight:600;">📅 Next Meeting: '+escapeHtml(m.nextDate)+'</div>':'')
+        +'</div></div>';
+    }).join('')+'</div>';
+}
+
+function openFCMeetingModal(id) {
+  _editFCMtgId = id;
+  var items = fcGet('meetings'); var m = id?(items.find(function(x){return x.id===id;})||{}):{};
+  var today = new Date().toISOString().slice(0,10);
+  showFCModal('fc-mtg-modal',
+    (id?'Edit':'Record')+' Food Committee Meeting',
+    '<div style="display:grid;gap:12px;">'
+    +fcField('TITLE','<input id="fcm-title" type="text" value="'+escapeHtml(m.title||'Food Committee Meeting')+'" style="'+fcInput()+'">','full')
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +fcField('DATE *','<input id="fcm-date" type="date" value="'+(m.date||today)+'" style="'+fcInput()+'">')
+    +fcField('LOCATION','<input id="fcm-loc" type="text" value="'+escapeHtml(m.location||'Dining Room')+'" placeholder="Dining Room" style="'+fcInput()+'">')
+    +'</div>'
+    +fcField('ATTENDEES','<input id="fcm-att" type="text" value="'+escapeHtml(m.attendees||'')+'" placeholder="Resident names, Dining Director, Chef..." style="'+fcInput()+'">','full')
+    +fcField('ITEMS DISCUSSED','<textarea id="fcm-discussed" rows="4" placeholder="Menu feedback, specific dishes discussed, dietary concerns..." style="'+fcInput()+'resize:vertical;">'+escapeHtml(m.discussed||'')+'</textarea>','full')
+    +fcField('DECISIONS & ACTION ITEMS','<textarea id="fcm-decisions" rows="3" placeholder="What was agreed on, changes to be made, follow-ups..." style="'+fcInput()+'resize:vertical;">'+escapeHtml(m.decisions||'')+'</textarea>','full')
+    +fcField('NEXT MEETING DATE','<input id="fcm-next" type="date" value="'+(m.nextDate||'')+'" style="'+fcInput()+'">','half')
+    +'</div>',
+    'saveFCMeeting()');
+}
+
+function saveFCMeeting() {
+  var date = (document.getElementById('fcm-date')||{}).value;
+  if (!date) { alert('Please enter a date.'); return; }
+  var items = fcGet('meetings'); var id = _editFCMtgId||('fcm_'+Date.now());
+  var obj = {id:id, title:(document.getElementById('fcm-title').value||'').trim(), date:date, location:(document.getElementById('fcm-loc').value||'').trim(), attendees:(document.getElementById('fcm-att').value||'').trim(), discussed:(document.getElementById('fcm-discussed').value||'').trim(), decisions:(document.getElementById('fcm-decisions').value||'').trim(), nextDate:(document.getElementById('fcm-next').value||'')};
+  if (_editFCMtgId){var i=items.findIndex(function(x){return x.id===id;});if(i>=0)items[i]=obj;else items.push(obj);}else items.push(obj);
+  fcSave('meetings',items); closeFCModal(); showToast('✅ Meeting saved'); switchFCSection('meetings');
+}
+
+function deleteFCMtg(id){if(!confirm('Delete this meeting?'))return;fcSave('meetings',fcGet('meetings').filter(function(m){return m.id!==id;}));switchFCSection('meetings');}
+
+function printFCMinutes(id) {
+  var items = fcGet('meetings'); var m = items.find(function(x){return x.id===id;}); if(!m)return;
+  var community=(typeof DATA!=='undefined'&&DATA.communityName)?DATA.communityName:'';
+  var win=window.open('','_blank','width=800,height=600');
+  win.document.write('<html><head><title>Food Committee Minutes</title><style>body{font-family:Georgia,serif;padding:36px;max-width:700px;margin:0 auto;}h1{color:#1A2A5C;font-size:20px;}h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#6B7280;border-bottom:1px solid #E5E7EB;padding-bottom:4px;}p{font-size:14px;line-height:1.6;white-space:pre-wrap;}</style></head><body>'
+    +'<div style="text-align:center;padding:20px 0;border-bottom:3px solid #1A2A5C;margin-bottom:24px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#6B7280;margin-bottom:4px;">Food & Dining Committee</div>'
+    +'<h1 style="margin:0 0 4px;">'+escapeHtml(m.title||'Food Committee Meeting')+'</h1>'
+    +'<div style="font-size:13px;color:#6B7280;">'+escapeHtml(m.date||'')+(m.location?' &nbsp;·&nbsp; '+escapeHtml(m.location):'')+(community?' &nbsp;·&nbsp; '+escapeHtml(community):'')+'</div></div>'
+    +(m.attendees?'<h3>Attendees</h3><p>'+escapeHtml(m.attendees)+'</p>':'')
+    +(m.discussed?'<h3>Items Discussed</h3><p>'+escapeHtml(m.discussed)+'</p>':'')
+    +(m.decisions?'<h3>Decisions &amp; Action Items</h3><p>'+escapeHtml(m.decisions)+'</p>':'')
+    +(m.nextDate?'<div style="margin-top:20px;padding:12px;background:#F0FDF4;border-radius:8px;font-weight:700;font-size:14px;color:#166534;">Next Meeting: '+escapeHtml(m.nextDate)+'</div>':'')
+    +'<div style="margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;"><div><div style="border-bottom:1px solid #374151;height:32px;margin-bottom:5px;"></div><div style="font-size:11px;color:#9CA3AF;">Dining Director / Chef</div></div>'
+    +'<div><div style="border-bottom:1px solid #374151;height:32px;margin-bottom:5px;"></div><div style="font-size:11px;color:#9CA3AF;">Food Committee Chairperson</div></div></div>'
+    +'</body></html>');
+  win.document.close(); setTimeout(function(){win.print();},400);
+}
+
+// ── MENU SUGGESTIONS ─────────────────────────────────────────────
+var _editFCSugId = null;
+function renderFCSuggestions(el, btn) {
+  btn.innerHTML = '<button class="btn btn-primary" onclick="openFCSugModal(null)">➕ Add Suggestion</button>';
+  var items = fcGet('suggestions').slice().sort(function(a,b){return (b.votes||0)-(a.votes||0);});
+  if (!items.length) { el.innerHTML = emptyFC('💡','No menu suggestions yet','openFCSugModal(null)','Add First Suggestion'); return; }
+  el.innerHTML = '<div style="display:grid;gap:10px;">'
+    +items.map(function(s){
+      var statusColor = s.status==='On Menu'?'#D1FAE5,#065F46':s.status==='Planned'?'#DBEAFE,#1E40AF':'#F3F4F6,#6B7280';
+      var sc = statusColor.split(',');
+      return '<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:14px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 4px rgba(0,0,0,.04);">'
+        +'<div style="text-align:center;flex-shrink:0;">'
+        +'<div style="font-size:22px;font-weight:900;color:#1A2A5C;">'+(s.votes||0)+'</div>'
+        +'<div style="font-size:10px;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;">votes</div>'
+        +'<button onclick="voteFCSug(\''+s.id+'\')" style="display:block;margin:4px auto 0;background:#EFF6FF;border:none;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;color:#1D4ED8;font-weight:700;">👍 Vote</button>'
+        +'</div>'
+        +'<div style="flex:1;">'
+        +'<div style="font-size:15px;font-weight:800;color:#1A2A5C;">'+escapeHtml(s.dish)+'</div>'
+        +(s.notes?'<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">'+escapeHtml(s.notes)+'</div>':'')
+        +(s.suggestedBy?'<div style="font-size:11px;color:#9CA3AF;margin-top:3px;">Suggested by: '+escapeHtml(s.suggestedBy)+'</div>':'')
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">'
+        +'<select onchange="quickFCSugStatus(\''+s.id+'\',this.value)" style="font-size:11px;padding:4px 6px;border:1px solid #E5E7EB;border-radius:6px;background:#fff;">'
+        +['Requested','Planned','On Menu','Declined'].map(function(v){return '<option'+(v===s.status?' selected':'')+'>'+v+'</option>';}).join('')
+        +'</select>'
+        +'<span style="font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;background:'+sc[0]+';color:'+sc[1]+';">'+escapeHtml(s.status||'Requested')+'</span>'
+        +'<button onclick="deleteFCSug(\''+s.id+'\')" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:2px 8px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div>';
+    }).join('')+'</div>';
+}
+
+function openFCSugModal(id) {
+  _editFCSugId = id;
+  var items = fcGet('suggestions'); var s = id?(items.find(function(x){return x.id===id;})||{}):{};
+  showFCModal('fc-sug-modal','Add Menu Suggestion',
+    '<div style="display:grid;gap:12px;">'
+    +fcField('DISH / MEAL *','<input id="fcs-dish" type="text" value="'+escapeHtml(s.dish||'')+'" placeholder="e.g. Chicken Pot Pie, Fish Tacos..." style="'+fcInput()+'">','full')
+    +fcField('NOTES / DETAILS','<input id="fcs-notes" type="text" value="'+escapeHtml(s.notes||'')+'" placeholder="Preparation preference, frequency request..." style="'+fcInput()+'">','full')
+    +fcField('SUGGESTED BY','<input id="fcs-by" type="text" value="'+escapeHtml(s.suggestedBy||'')+'" placeholder="Resident name or Anonymous" style="'+fcInput()+'">','full')
+    +'</div>','saveFCSug()');
+}
+
+function saveFCSug() {
+  var dish=(document.getElementById('fcs-dish').value||'').trim(); if(!dish){alert('Please enter a dish name.');return;}
+  var items=fcGet('suggestions'); var id=_editFCSugId||('fcs_'+Date.now());
+  var existing=id&&_editFCSugId?items.find(function(x){return x.id===id;}):null;
+  var obj={id:id,dish:dish,notes:(document.getElementById('fcs-notes').value||'').trim(),suggestedBy:(document.getElementById('fcs-by').value||'').trim(),status:(existing&&existing.status)||'Requested',votes:(existing&&existing.votes)||0};
+  if(_editFCSugId){var i=items.findIndex(function(x){return x.id===id;});if(i>=0)items[i]=obj;else items.push(obj);}else items.push(obj);
+  fcSave('suggestions',items);closeFCModal();showToast('✅ Suggestion saved');switchFCSection('suggestions');
+}
+
+function voteFCSug(id){var items=fcGet('suggestions');var s=items.find(function(x){return x.id===id;});if(s){s.votes=(s.votes||0)+1;fcSave('suggestions',items);switchFCSection('suggestions');}}
+function quickFCSugStatus(id,status){var items=fcGet('suggestions');var s=items.find(function(x){return x.id===id;});if(s){s.status=status;fcSave('suggestions',items);showToast('Updated to '+status);switchFCSection('suggestions');}}
+function deleteFCSug(id){if(!confirm('Remove this suggestion?'))return;fcSave('suggestions',fcGet('suggestions').filter(function(s){return s.id!==id;}));switchFCSection('suggestions');}
+
+// ── DINING RATINGS ────────────────────────────────────────────────
+function renderFCRatings(el, btn) {
+  btn.innerHTML = '<button class="btn btn-primary" onclick="openFCRatingModal()">⭐ Rate a Dish</button>';
+  var items = fcGet('ratings');
+  var agg = {};
+  items.forEach(function(r){
+    if(!agg[r.dish]) agg[r.dish]={dish:r.dish,total:0,count:0,entries:[]};
+    agg[r.dish].total+=r.stars; agg[r.dish].count++; agg[r.dish].entries.push(r);
+  });
+  var ranked = Object.values(agg).sort(function(a,b){return (b.total/b.count)-(a.total/a.count);});
+  if (!ranked.length) { el.innerHTML = emptyFC('⭐','No dining ratings yet','openFCRatingModal()','Rate First Dish'); return; }
+  el.innerHTML = '<div style="display:grid;gap:10px;">'
+    +ranked.map(function(a){
+      var avg=Math.round((a.total/a.count)*10)/10;
+      var pct=Math.round((avg/5)*100);
+      var lastNote=(a.entries.filter(function(e){return e.note;}).slice(-1)[0]||{}).note;
+      return '<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);">'
+        +'<div style="flex:1;">'
+        +'<div style="font-size:15px;font-weight:800;color:#1A2A5C;">'+escapeHtml(a.dish)+'</div>'
+        +'<div style="display:flex;align-items:center;gap:8px;margin-top:4px;">'
+        +'<div style="font-size:18px;">'+starsDisplay(avg)+'</div>'
+        +'<span style="font-weight:700;color:#92400E;font-size:13px;">'+avg+'/5</span>'
+        +'<span style="font-size:11px;color:var(--gray-500);">('+a.count+' rating'+(a.count===1?'':'s')+')</span>'
+        +'</div>'
+        +'<div style="margin-top:6px;height:5px;background:#F3F4F6;border-radius:99px;overflow:hidden;max-width:200px;">'
+        +'<div style="height:5px;background:linear-gradient(90deg,#F59E0B,#10B981);border-radius:99px;width:'+pct+'%;"></div></div>'
+        +(lastNote?'<div style="font-size:12px;color:#6B7280;font-style:italic;margin-top:5px;">"'+escapeHtml(lastNote)+'"</div>':'')
+        +'</div></div>';
+    }).join('')+'</div>';
+}
+
+var FC_DISHES = ['Breakfast Entrée','Lunch Entrée','Dinner Entrée','Soup','Salad','Dessert','Side Dish','Snack','Holiday Special','Other'];
+function openFCRatingModal() {
+  showFCModal('fc-rating-modal','Rate a Dish',
+    '<div style="display:grid;gap:12px;">'
+    +fcField('DISH / MEAL *','<input id="fcr-dish" type="text" placeholder="e.g. Roast Chicken, Tomato Soup..." style="'+fcInput()+'">','full')
+    +fcField('CATEGORY','<select id="fcr-cat" style="'+fcInput()+'">'+FC_DISHES.map(function(d){return '<option>'+d+'</option>';}).join('')+'</select>')
+    +fcField('STARS (1–5) *','<div style="display:flex;gap:8px;align-items:center;">'
+      +'<input id="fcr-stars" type="number" min="1" max="5" value="4" style="'+fcInput()+'width:70px;display:inline-block;">'
+      +'<span style="font-size:13px;color:var(--gray-500);">1 = Poor · 5 = Excellent</span></div>')
+    +fcField('DATE SERVED','<input id="fcr-date" type="date" value="'+new Date().toISOString().slice(0,10)+'" style="'+fcInput()+'">')
+    +fcField('COMMENTS','<input id="fcr-note" type="text" placeholder="Optional feedback..." style="'+fcInput()+'">','full')
+    +'</div>','saveFCRating()');
+}
+
+function saveFCRating() {
+  var dish=(document.getElementById('fcr-dish').value||'').trim(); if(!dish){alert('Please enter a dish name.');return;}
+  var stars=parseInt(document.getElementById('fcr-stars').value)||4;
+  var obj={id:'fcr_'+Date.now(),dish:dish,category:document.getElementById('fcr-cat').value,stars:Math.min(5,Math.max(1,stars)),date:document.getElementById('fcr-date').value,note:(document.getElementById('fcr-note').value||'').trim()};
+  var items=fcGet('ratings'); items.push(obj); fcSave('ratings',items);
+  closeFCModal(); showToast('⭐ Rating saved'); switchFCSection('ratings');
+}
+
+// ── MENU BUILDER ─────────────────────────────────────────────────
+var MB_DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var MB_MEALS = ['Breakfast','Lunch','Dinner','Snack'];
+
+function renderFCMenu(el, btn) {
+  btn.innerHTML = '<button class="btn btn-gold" onclick="printFCMenu()">🖨️ Print Menu</button>'
+    +'<button class="btn btn-primary" onclick="saveFCMenuBuilder()">💾 Save Menu</button>';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(FC_KEYS.menu)||'{}'); } catch(e){}
+  var week = saved.week || 'Week of ___________';
+  var grid = saved.grid || {};
+
+  el.innerHTML = '<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">'
+    +'<label style="font-size:12px;font-weight:700;color:#6B7280;">WEEK OF</label>'
+    +'<input id="mb-week" type="text" value="'+escapeHtml(week)+'" placeholder="e.g. May 5 – 11, 2026" style="padding:7px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;min-width:200px;">'
+    +'</div>'
+    +'<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;min-width:600px;">'
+    +'<thead><tr><th style="padding:10px;background:#1A2A5C;color:#fff;font-size:12px;text-align:left;">Meal</th>'
+    +MB_DAYS.map(function(d){return '<th style="padding:10px;background:#1A2A5C;color:#fff;font-size:12px;text-align:center;">'+d+'</th>';}).join('')
+    +'</tr></thead><tbody>'
+    +MB_MEALS.map(function(meal,mi){
+      var bg = mi%2===0?'#fff':'#F9FAFB';
+      return '<tr>'
+        +'<td style="padding:8px 10px;font-weight:700;font-size:13px;color:#1A2A5C;background:'+bg+';border:1px solid #E5E7EB;white-space:nowrap;">'+meal+'</td>'
+        +MB_DAYS.map(function(day){
+          var key = meal+'_'+day;
+          var val = grid[key]||'';
+          return '<td style="padding:4px;border:1px solid #E5E7EB;background:'+bg+';">'
+            +'<textarea data-key="'+key+'" rows="2" placeholder="Enter meal..." style="width:100%;border:none;background:transparent;resize:none;font-size:12px;padding:4px;font-family:inherit;outline:none;" onchange="updateMBCell(this)">'+escapeHtml(val)+'</textarea>'
+            +'</td>';
+        }).join('')
+        +'</tr>';
+    }).join('')
+    +'</tbody></table></div>';
+}
+
+var _mbGrid = {};
+function updateMBCell(el) { _mbGrid[el.dataset.key] = el.value; }
+
+function saveFCMenuBuilder() {
+  var week = (document.getElementById('mb-week')||{}).value || '';
+  var grid = {};
+  document.querySelectorAll('[data-key]').forEach(function(el){ grid[el.dataset.key]=el.value; });
+  localStorage.setItem(FC_KEYS.menu, JSON.stringify({week:week, grid:grid}));
+  showToast('✅ Menu saved');
+}
+
+function printFCMenu() {
+  saveFCMenuBuilder();
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(FC_KEYS.menu)||'{}'); } catch(e){}
+  var week = saved.week || ''; var grid = saved.grid || {};
+  var community=(typeof DATA!=='undefined'&&DATA.communityName)?DATA.communityName:'';
+  var win=window.open('','_blank','width=900,height=600');
+  win.document.write('<html><head><title>Weekly Menu</title><style>body{font-family:system-ui,sans-serif;padding:24px;max-width:900px;margin:0 auto;}table{width:100%;border-collapse:collapse;}td,th{border:1px solid #D1D5DB;padding:10px 12px;font-size:13px;}th{background:#1A2A5C;color:#fff;font-weight:700;}tr:nth-child(even) td{background:#F9FAFB;}@media print{body{padding:10px;}}</style></head><body>'
+    +'<div style="text-align:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #1A2A5C;">'
+    +'<div style="font-size:20px;font-weight:900;color:#1A2A5C;">'+escapeHtml(community)+' Dining Menu</div>'
+    +'<div style="font-size:14px;color:#6B7280;margin-top:4px;">'+escapeHtml(week)+'</div></div>'
+    +'<table><thead><tr><th>Meal</th>'+MB_DAYS.map(function(d){return '<th>'+d+'</th>';}).join('')+'</tr></thead><tbody>'
+    +MB_MEALS.map(function(meal){
+      return '<tr><td style="font-weight:700;">'+meal+'</td>'+MB_DAYS.map(function(day){return '<td>'+(grid[meal+'_'+day]||'').replace(/\n/g,'<br>')+'</td>';}).join('')+'</tr>';
+    }).join('')
+    +'</tbody></table><div style="margin-top:16px;text-align:center;font-size:11px;color:#9CA3AF;">Powered by Empower Life 365</div>'
+    +'</body></html>');
+  win.document.close(); setTimeout(function(){win.print();},400);
+}
+
+// ── HOLIDAY MENUS ─────────────────────────────────────────────────
+var HOLIDAYS = ['New Year\'s Day','Valentine\'s Day','St. Patrick\'s Day','Easter','Cinco de Mayo','Mother\'s Day','Father\'s Day','Fourth of July','Labor Day','Halloween','Thanksgiving','Christmas','Hanukkah','Kwanzaa','Resident Birthday Month','Other'];
+
+function renderFCHolidays(el, btn) {
+  btn.innerHTML = '<button class="btn btn-primary" onclick="openFCHolidayModal(null)">🎄 Add Holiday Menu</button>';
+  var items = fcGet('holidays').slice().sort(function(a,b){return (a.holiday||'').localeCompare(b.holiday||'');});
+  if (!items.length) { el.innerHTML = emptyFC('🎄','No holiday menus yet','openFCHolidayModal(null)','Add First Holiday Menu'); return; }
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">'
+    +items.map(function(h){
+      return '<div style="background:#fff;border-radius:14px;border:1px solid #E5E7EB;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.04);">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">'
+        +'<div style="font-size:16px;font-weight:800;color:#1A2A5C;">'+escapeHtml(h.holiday)+'</div>'
+        +'<div style="display:flex;gap:4px;">'
+        +'<button onclick="openFCHolidayModal(\''+h.id+'\')" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:3px 8px;font-size:11px;cursor:pointer;">✏️</button>'
+        +'<button onclick="deleteFCHoliday(\''+h.id+'\')" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:3px 8px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div>'
+        +(h.appetizer?'<div style="font-size:12px;margin-bottom:4px;"><span style="font-weight:700;color:#6B7280;">Appetizer:</span> '+escapeHtml(h.appetizer)+'</div>':'')
+        +(h.main?'<div style="font-size:12px;margin-bottom:4px;"><span style="font-weight:700;color:#6B7280;">Main:</span> '+escapeHtml(h.main)+'</div>':'')
+        +(h.sides?'<div style="font-size:12px;margin-bottom:4px;"><span style="font-weight:700;color:#6B7280;">Sides:</span> '+escapeHtml(h.sides)+'</div>':'')
+        +(h.dessert?'<div style="font-size:12px;margin-bottom:4px;"><span style="font-weight:700;color:#6B7280;">Dessert:</span> '+escapeHtml(h.dessert)+'</div>':'')
+        +(h.notes?'<div style="font-size:12px;color:#9CA3AF;margin-top:8px;font-style:italic;">'+escapeHtml(h.notes)+'</div>':'')
+        +'</div>';
+    }).join('')+'</div>';
+}
+
+var _editFCHolId = null;
+function openFCHolidayModal(id) {
+  _editFCHolId = id;
+  var items = fcGet('holidays'); var h = id?(items.find(function(x){return x.id===id;})||{}):{};
+  showFCModal('fc-holiday-modal','Holiday Menu Ideas',
+    '<div style="display:grid;gap:12px;">'
+    +fcField('HOLIDAY *','<select id="fch-holiday" style="'+fcInput()+'"><option value="">-- Select --</option>'+HOLIDAYS.map(function(v){return '<option value="'+v+'"'+(h.holiday===v?' selected':'')+'>'+v+'</option>';}).join('')+'</select><input id="fch-custom" type="text" placeholder="Or type a custom holiday..." value="'+(HOLIDAYS.indexOf(h.holiday)===-1&&h.holiday?escapeHtml(h.holiday):'')+'" style="'+fcInput()+'margin-top:6px;">','full')
+    +fcField('APPETIZER / STARTER','<input id="fch-app" type="text" value="'+escapeHtml(h.appetizer||'')+'" placeholder="e.g. Shrimp cocktail, stuffed mushrooms..." style="'+fcInput()+'">','full')
+    +fcField('MAIN COURSE','<input id="fch-main" type="text" value="'+escapeHtml(h.main||'')+'" placeholder="e.g. Roast turkey, glazed ham..." style="'+fcInput()+'">','full')
+    +fcField('SIDES','<input id="fch-sides" type="text" value="'+escapeHtml(h.sides||'')+'" placeholder="e.g. Mashed potatoes, green beans, stuffing..." style="'+fcInput()+'">','full')
+    +fcField('DESSERT','<input id="fch-des" type="text" value="'+escapeHtml(h.dessert||'')+'" placeholder="e.g. Pumpkin pie, Christmas cookies..." style="'+fcInput()+'">','full')
+    +fcField('NOTES / SUGGESTIONS','<textarea id="fch-notes" rows="2" style="'+fcInput()+'resize:vertical;" placeholder="Special dietary accommodations, decoration ideas...">'+escapeHtml(h.notes||'')+'</textarea>','full')
+    +'</div>','saveFCHoliday()');
+}
+
+function saveFCHoliday() {
+  var holiday=(document.getElementById('fch-custom').value||document.getElementById('fch-holiday').value||'').trim();
+  if(!holiday){alert('Please select or enter a holiday.');return;}
+  var items=fcGet('holidays'); var id=_editFCHolId||('fch_'+Date.now());
+  var obj={id:id,holiday:holiday,appetizer:(document.getElementById('fch-app').value||'').trim(),main:(document.getElementById('fch-main').value||'').trim(),sides:(document.getElementById('fch-sides').value||'').trim(),dessert:(document.getElementById('fch-des').value||'').trim(),notes:(document.getElementById('fch-notes').value||'').trim()};
+  if(_editFCHolId){var i=items.findIndex(function(x){return x.id===id;});if(i>=0)items[i]=obj;else items.push(obj);}else items.push(obj);
+  fcSave('holidays',items); closeFCModal(); showToast('🎄 Holiday menu saved'); switchFCSection('holidays');
+}
+function deleteFCHoliday(id){if(!confirm('Delete this holiday menu?'))return;fcSave('holidays',fcGet('holidays').filter(function(h){return h.id!==id;}));switchFCSection('holidays');}
+
+// ── COMPLAINTS ────────────────────────────────────────────────────
+var FC_COMPLAINT_STATUS = ['Open','Reviewed','Resolved'];
+function renderFCComplaints(el, btn) {
+  btn.innerHTML = '<button class="btn btn-primary" onclick="openFCComplaintModal(null)">📢 Log Complaint</button>';
+  var items = fcGet('complaints').slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  if (!items.length) { el.innerHTML = emptyFC('📢','No dining complaints on record','openFCComplaintModal(null)','Log First Complaint'); return; }
+  el.innerHTML = '<div style="display:grid;gap:10px;">'
+    +items.map(function(c){
+      var sc = (c.status==='Resolved'?'#D1FAE5,#065F46':c.status==='Reviewed'?'#DBEAFE,#1E40AF':'#FEF3C7,#92400E').split(',');
+      return '<div style="background:#fff;border-radius:12px;border:1px solid #E5E7EB;padding:14px 18px;box-shadow:0 1px 4px rgba(0,0,0,.04);">'
+        +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">'
+        +'<div style="flex:1;">'
+        +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">'
+        +'<span style="font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;background:'+sc[0]+';color:'+sc[1]+';">'+escapeHtml(c.status||'Open')+'</span>'
+        +(c.category?'<span style="font-size:11px;color:var(--gray-500);">'+escapeHtml(c.category)+'</span>':'')
+        +'<span style="font-size:11px;color:#9CA3AF;">'+escapeHtml(c.date||'')+'</span>'
+        +'</div>'
+        +'<div style="font-size:14px;font-weight:700;color:#1A2A5C;">'+escapeHtml(c.complaint)+'</div>'
+        +(c.by?'<div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Reported by: '+escapeHtml(c.by)+'</div>':'')
+        +(c.response?'<div style="margin-top:8px;padding:8px 12px;background:#F0FDF4;border-left:3px solid #10B981;border-radius:0 8px 8px 0;font-size:12px;color:#374151;">'+escapeHtml(c.response)+'</div>':'')
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;gap:4px;">'
+        +'<select onchange="quickFCComplaintStatus(\''+c.id+'\',this.value)" style="font-size:11px;padding:4px 6px;border:1px solid #E5E7EB;border-radius:6px;">'
+        +FC_COMPLAINT_STATUS.map(function(v){return '<option'+(v===c.status?' selected':'')+'>'+v+'</option>';}).join('')
+        +'</select>'
+        +'<button onclick="openFCComplaintModal(\''+c.id+'\')" style="background:none;border:1px solid #E5E7EB;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;">Edit</button>'
+        +'<button onclick="deleteFCComplaint(\''+c.id+'\')" style="background:none;border:1px solid #FECACA;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#DC2626;">✕</button>'
+        +'</div></div></div>';
+    }).join('')+'</div>'
+    +'<div style="margin-top:14px;padding:10px 14px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;font-size:12px;color:#92400E;">⚖️ Dining complaints require timely response. Document resolution to support state survey compliance.</div>';
+}
+
+var FC_COMPLAINT_CATS = ['Food Quality','Food Temperature','Portion Size','Menu Variety','Dietary Accommodation','Service / Wait Time','Cleanliness','Staff Attitude','Other'];
+var _editFCCmpId = null;
+function openFCComplaintModal(id) {
+  _editFCCmpId = id;
+  var items=fcGet('complaints'); var c=id?(items.find(function(x){return x.id===id;})||{}):{};
+  var today=new Date().toISOString().slice(0,10);
+  showFCModal('fc-complaint-modal',(id?'Edit':'Log')+' Dining Complaint',
+    '<div style="display:grid;gap:12px;">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +fcField('DATE *','<input id="fcc-date" type="date" value="'+(c.date||today)+'" style="'+fcInput()+'">')
+    +fcField('CATEGORY','<select id="fcc-cat" style="'+fcInput()+'"><option value="">-- Select --</option>'+FC_COMPLAINT_CATS.map(function(v){return '<option'+(v===c.category?' selected':'')+'>'+v+'</option>';}).join('')+'</select>')
+    +'</div>'
+    +fcField('COMPLAINT *','<textarea id="fcc-complaint" rows="3" placeholder="Describe the issue..." style="'+fcInput()+'resize:vertical;">'+escapeHtml(c.complaint||'')+'</textarea>','full')
+    +fcField('REPORTED BY','<input id="fcc-by" type="text" value="'+escapeHtml(c.by||'')+'" placeholder="Resident name or Anonymous" style="'+fcInput()+'">','full')
+    +fcField('MANAGEMENT RESPONSE','<textarea id="fcc-response" rows="3" placeholder="Steps taken to address the complaint..." style="'+fcInput()+'resize:vertical;">'+escapeHtml(c.response||'')+'</textarea>','full')
+    +fcField('STATUS','<select id="fcc-status" style="'+fcInput()+'">'+FC_COMPLAINT_STATUS.map(function(v){return '<option'+(v===c.status?' selected':'')+'>'+v+'</option>';}).join('')+'</select>')
+    +'</div>','saveFCComplaint()');
+}
+
+function saveFCComplaint() {
+  var complaint=(document.getElementById('fcc-complaint').value||'').trim(); var date=document.getElementById('fcc-date').value;
+  if(!complaint||!date){alert('Please enter a date and complaint.');return;}
+  var items=fcGet('complaints'); var id=_editFCCmpId||('fcc_'+Date.now());
+  var obj={id:id,date:date,category:(document.getElementById('fcc-cat').value||'').trim(),complaint:complaint,by:(document.getElementById('fcc-by').value||'').trim(),response:(document.getElementById('fcc-response').value||'').trim(),status:document.getElementById('fcc-status').value||'Open'};
+  if(_editFCCmpId){var i=items.findIndex(function(x){return x.id===id;});if(i>=0)items[i]=obj;else items.push(obj);}else items.push(obj);
+  fcSave('complaints',items); closeFCModal(); showToast('📢 Complaint logged'); switchFCSection('complaints');
+}
+function quickFCComplaintStatus(id,status){var items=fcGet('complaints');var c=items.find(function(x){return x.id===id;});if(c){c.status=status;fcSave('complaints',items);showToast('Updated to '+status);switchFCSection('complaints');}}
+function deleteFCComplaint(id){if(!confirm('Delete this complaint?'))return;fcSave('complaints',fcGet('complaints').filter(function(c){return c.id!==id;}));switchFCSection('complaints');}
+
+// ── SHARED HELPERS ────────────────────────────────────────────────
+function fcInput(){return 'width:100%;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;box-sizing:border-box;font-family:inherit;';}
+function fcField(label,input,width){
+  var style=width==='full'?'grid-column:1/-1':'';
+  return '<div style="'+style+'"><label style="font-size:11px;font-weight:700;color:#6B7280;display:block;margin-bottom:4px;">'+label+'</label>'+input+'</div>';
+}
+function emptyFC(icon,msg,fn,btnTxt){
+  return '<div style="text-align:center;padding:48px;color:var(--gray-500);">'
+    +'<div style="font-size:48px;margin-bottom:12px;">'+icon+'</div>'
+    +'<div style="font-size:17px;font-weight:700;margin-bottom:16px;">'+msg+'</div>'
+    +'<button class="btn btn-primary" onclick="'+fn+'">➕ '+btnTxt+'</button></div>';
+}
+
+var _fcModalEl = null;
+function showFCModal(id, title, body, saveFn) {
+  var modal = document.getElementById(id);
+  if (!modal) { modal=document.createElement('div'); modal.id=id; modal.style.cssText='display:none;position:fixed;inset:0;z-index:9300;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;overflow-y:auto;'; document.body.appendChild(modal); }
+  _fcModalEl = modal;
+  modal.innerHTML = '<div style="background:#fff;border-radius:18px;padding:28px;max-width:540px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">'
+    +'<div style="font-size:17px;font-weight:900;color:#1A2A5C;">'+title+'</div>'
+    +'<button onclick="closeFCModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#9CA3AF;">✕</button></div>'
+    +body
+    +'<div style="display:flex;gap:10px;margin-top:18px;">'
+    +'<button class="btn btn-primary" onclick="'+saveFn+'" style="flex:1;">💾 Save</button>'
+    +'<button class="btn btn-secondary" onclick="closeFCModal()">Cancel</button>'
+    +'</div></div>';
+  modal.style.display='flex';
+}
+function closeFCModal(){if(_fcModalEl)_fcModalEl.style.display='none';}
 </script>
 
 </body>
