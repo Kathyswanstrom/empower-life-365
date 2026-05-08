@@ -2708,6 +2708,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button id="fdtab-taste"    onclick="switchFoodTab('taste')"    class="tv-subtab">🧪 Taste Tests</button>
     <button id="fdtab-trivia"   onclick="switchFoodTab('trivia')"   class="tv-subtab">🧠 Food Trivia</button>
     <button id="fdtab-seasonal" onclick="switchFoodTab('seasonal')" class="tv-subtab">🗓️ Seasonal Ideas</button>
+    <button id="fdtab-happyhour" onclick="switchFoodTab('happyhour')" class="tv-subtab">🎉 Happy Hour Events</button>
   </div>
 
   <!-- RECIPES -->
@@ -2761,6 +2762,15 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <!-- SEASONAL IDEAS -->
   <div id="fdpanel-seasonal" style="display:none;">
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;" id="fd-seasonal-grid"></div>
+  </div>
+
+  <!-- HAPPY HOUR EVENTS -->
+  <div id="fdpanel-happyhour" style="display:none;">
+    <div style="background:linear-gradient(135deg,#7C3AED,#C026D3);border-radius:14px;padding:20px 24px;margin-bottom:20px;color:#fff;">
+      <div style="font-size:20px;font-weight:900;">🎉 Happy Hour &amp; Tasting Events</div>
+      <div style="opacity:.8;font-size:13px;margin-top:4px;">Full event guides for unforgettable social experiences. Always review alcohol policies with your Director of Nursing.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="fd-happyhour-grid"></div>
   </div>
 
   <!-- Recipe Detail Modal -->
@@ -14939,6 +14949,75 @@ const COCKTAILS = [
     ingredients:'Blue sports drink like Gatorade (4 oz)\nLemonade (2 oz)\nSprite or soda water (2 oz)\nIce\nMaraschino cherry to garnish',
     steps:'1. Fill a glass with ice.\n2. Combine lemonade and blue sports drink.\n3. Top with a splash of Sprite.\n4. Stir once.\n5. Garnish with a cherry on a toothpick.',
     tip:'The bright blue color creates great excitement! Simple ingredients most facilities have on hand.' },
+  { id:'classicmargarita', emoji:'🍹', name:'Classic Margarita',
+    mocktail:'Lime juice + orange juice + agave syrup + sparkling water + salted rim',
+    cocktail:'Add 1.5 oz tequila + 0.5 oz triple sec',
+    ingredients:'Fresh lime juice (1.5 oz)\nOrange juice (1 oz)\nAgave or simple syrup (0.5 oz)\nSparkling water (2 oz, mocktail)\nSalt for rim\nIce\nLime wedge',
+    steps:'1. Rub a lime wedge on the rim and dip in salt.\n2. Fill glass with ice.\n3. Mix lime juice, OJ, and syrup in a shaker with ice.\n4. Shake and strain into glass.\n5. Top with sparkling water (mocktail) or add tequila + triple sec (cocktail).\n6. Garnish with lime wedge.',
+    tip:'Have residents salt their own rims -- it\'s half the fun! Offer a frozen blender version for summer. Perfect for Cinco de Mayo or any warm-weather celebration.' },
+
+  { id:'whiskeysour', emoji:'🥃', name:'Whiskey Sour',
+    mocktail:'Lemon + honey syrup + aquafaba foam + cherry',
+    cocktail:'Add 1.5 oz bourbon or rye whiskey',
+    ingredients:'Fresh lemon juice (1 oz)\nHoney syrup (0.75 oz)\nAquafaba or egg white (1 oz, for foam)\nMaraschino cherry\nOrange slice\nIce',
+    steps:'1. Shake lemon juice, honey syrup, and aquafaba WITHOUT ice for 15 seconds (dry shake for foam).\n2. Add ice and shake again until cold.\n3. Strain into a rocks glass over ice -- foam rises to the top naturally.\n4. Add bourbon for cocktail version.\n5. Garnish with cherry and orange.',
+    tip:'The dry-shake foam technique impresses every time. Aquafaba (canned chickpea liquid) works as a perfect vegan egg-white sub. Great story-starter about classic cocktail culture.' },
+
+  { id:'oldfashioned', emoji:'🥃', name:'Old Fashioned',
+    mocktail:'Ginger beer + cherry syrup + orange bitters + orange peel',
+    cocktail:'2 oz bourbon + sugar cube + Angostura bitters',
+    ingredients:'Bourbon (2 oz, cocktail) OR ginger beer (4 oz, mocktail)\nCherry syrup (1 tsp)\nOrange bitters (2 dashes)\nOrange peel\nMaraschino cherry\nIce (one large cube is ideal)',
+    steps:'1. Add cherry syrup and bitters to a rocks glass and stir.\n2. Add one large ice cube.\n3. Pour bourbon (cocktail) or ginger beer (mocktail) over ice.\n4. Squeeze an orange peel over the glass to release oils, then drop it in.\n5. Garnish with a cherry.',
+    tip:'Dates to the 1800s -- many residents remember this one well! A large single ice cube melts slowly and keeps the drink properly chilled. Wonderful conversation about classic American cocktail history.' },
+
+  { id:'mojito', emoji:'🌿', name:'Classic Mojito',
+    mocktail:'Lime + fresh mint + simple syrup + sparkling water',
+    cocktail:'Add 1.5 oz white rum',
+    ingredients:'Fresh lime juice (1 oz)\nFresh mint leaves (8-10)\nSimple syrup (0.75 oz)\nSparkling water (3 oz)\nIce\nLime wheel and mint sprig',
+    steps:'1. Put mint leaves and syrup in the glass and gently muddle (bruise, don\'t shred).\n2. Add lime juice and fill with ice.\n3. Top with sparkling water and stir gently from the bottom.\n4. Add rum for cocktail version.\n5. Garnish with lime and fresh mint.',
+    tip:'The smell of muddled mint is an instant mood-lifter! Let residents smell the mint before and after -- a great sensory moment. Perfect summer patio activity.' },
+
+  { id:'sangria', emoji:'🍷', name:'Red Sangria Punch',
+    mocktail:'Grape juice + OJ + ginger ale + fresh fruit',
+    cocktail:'1 bottle red wine + brandy + fruit + juice',
+    ingredients:'Red grape juice (2 cups, mocktail) OR red wine (1 bottle, cocktail)\nOrange juice (0.5 cup)\nGinger ale (1 cup)\nOrange + apple + lemon slices\nSimple syrup to taste\nIce',
+    steps:'1. Combine juice (or wine) and orange juice in a pitcher.\n2. Add sliced fruit and simple syrup.\n3. Refrigerate at least 1 hour (overnight is better).\n4. Top with ginger ale just before serving.\n5. Serve over ice -- make sure everyone gets some fruit!',
+    tip:'A beautiful group batch drink! Let residents help slice and add the fruit. Make it the day before so the fruit soaks up all the flavor. Great for parties and large groups.' },
+
+  { id:'winespritzer', emoji:'🥂', name:'Wine Spritzer Bar',
+    mocktail:'Sparkling grape juice + flavored sparkling water + fresh garnish',
+    cocktail:'White wine or rosé + sparkling water (half and half)',
+    ingredients:'White wine or rosé (cocktail) OR sparkling white grape juice (mocktail)\nFlavored sparkling water (lemon, peach, raspberry)\nFresh fruit garnishes: strawberries, raspberries, cucumber, mint\nIce',
+    steps:'1. Set up a self-serve spritzer bar with several juice and sparkling water options.\n2. Fill glass halfway with wine or grape juice.\n3. Top with flavored sparkling water -- residents choose their own!\n4. Add a fresh garnish of their choice.\n5. Mix, taste, and toast!',
+    tip:'This works beautifully as a self-serve bar activity. Provide tasting cards to rate each combination. Rosé + raspberry sparkling water + fresh strawberry is always a crowd favorite.' },
+
+  { id:'cosmopolitan', emoji:'🍸', name:'Cosmopolitan',
+    mocktail:'Cranberry juice + lime + OJ + sparkling water',
+    cocktail:'Add 1.5 oz citrus vodka + 0.5 oz triple sec',
+    ingredients:'Cranberry juice (1.5 oz)\nFresh lime juice (0.5 oz)\nOrange juice (0.5 oz)\nSparkling water (1 oz, mocktail)\nIce\nLime wheel or orange twist',
+    steps:'1. Chill glasses in the freezer for 10 minutes.\n2. Shake cranberry, lime, and OJ with ice for 15 seconds.\n3. Strain into a chilled martini glass.\n4. Add sparkling water for mocktail version.\n5. Garnish with lime wheel or orange twist.',
+    tip:'The gorgeous pink color makes this a showstopper! Great for ladies\' night, Valentine\'s Day, or any celebration. Residents who watched Sex and the City will get a real kick out of this.' },
+
+  { id:'frenchseventy5', emoji:'🥂', name:'French 75 Sparkler',
+    mocktail:'Lemon + simple syrup + sparkling grape juice',
+    cocktail:'Add 1 oz gin + champagne/prosecco',
+    ingredients:'Fresh lemon juice (0.75 oz)\nSimple syrup (0.5 oz)\nChampagne or prosecco (2 oz, cocktail) OR sparkling grape juice (mocktail)\nLemon twist\nIce (for shaker)',
+    steps:'1. Shake lemon juice and syrup with ice briefly.\n2. Strain into a champagne flute.\n3. Top gently with champagne (cocktail) or sparkling grape juice (mocktail).\n4. Garnish with a long lemon twist.',
+    tip:'This elegant classic dates to WWI -- named after the French 75mm field gun for its kick! A wonderful piece of history to share while sipping. Perfect for New Year\'s and anniversaries.' },
+
+  { id:'frozenstrawd', emoji:'🍓', name:'Frozen Strawberry Daiquiri',
+    mocktail:'Frozen strawberries + lime + honey + coconut water',
+    cocktail:'Add 1.5 oz white rum',
+    ingredients:'Frozen strawberries (1 cup)\nFresh lime juice (1 oz)\nHoney or simple syrup (1 oz)\nCoconut water (0.25 cup)\nIce (0.5 cup)\nFresh strawberry for garnish',
+    steps:'1. Blend all ingredients until completely smooth.\n2. Taste and adjust sweetness.\n3. Pour into a glass and garnish with a fresh strawberry.\n4. Serve immediately -- frozen drinks melt fast!',
+    tip:'Residents LOVE frozen drinks in summer! Set up a blender station and let residents watch the process. Great for a patio happy hour. Can be made in large batches.' },
+
+  { id:'paloma', emoji:'🍊', name:'Paloma Sunset',
+    mocktail:'Grapefruit juice + lime + honey syrup + sparkling water',
+    cocktail:'Add 1.5 oz tequila',
+    ingredients:'Fresh grapefruit juice (2 oz)\nFresh lime juice (0.5 oz)\nHoney syrup (0.5 oz)\nSalt for rim\nSparkling water (2 oz)\nGrapefruit wedge\nIce',
+    steps:'1. Salt the rim using a grapefruit wedge dipped in salt.\n2. Fill glass with ice.\n3. Mix grapefruit juice, lime juice, and honey syrup.\n4. Pour over ice and top with sparkling water.\n5. Garnish with a grapefruit wedge.',
+    tip:'Mexico\'s most beloved cocktail -- even more popular than the margarita! The gorgeous pink-orange color is naturally eye-catching. Great for a Mexican-themed happy hour alongside chips and guacamole.' },
 ];
 
 const TASTE_TESTS = [
@@ -14977,7 +15056,160 @@ const TASTE_TESTS = [
     prompts:'Which is just right? Too hot? Did you grow up eating spicy food? Where are you on the heat scale?',
     scoring:'Staff draws a heat thermometer on a whiteboard. Residents place their name at their preferred heat level.',
     tip:'Always have water and plain crackers as relief. The "extra hot" reaction is usually the highlight of the activity!' },
+  { id:'winetasting', emoji:'🍷', name:'Wine Tasting Evening', tagline:'Sip, swirl, sniff, and score — no sommelier needed.',
+    setup:'Get 4-5 wines: dry white (Sauvignon Blanc), sweet white (Riesling), dry red (Cabernet), lighter red (Pinot Noir), and a rosé. Pour small 1-2 oz samples in labeled cups. Include sparkling grape juice as a non-alcoholic option. Add water crackers and palate-cleansing water. Dim the lights, play soft jazz.',
+    prompts:'Is this wine dry or sweet? What do you smell -- fruit, oak, or flowers? Which would you serve at dinner? Which would be good with dessert? Does it remind you of a special occasion?',
+    scoring:'Score each wine on sweetness (1-5), body (light/full), and enjoyment (1-5). Tally group votes. Award a "Best of Show" ribbon to the community favorite.',
+    tip:'Serve reds at room temp, whites slightly chilled. Add a cheese board for a full Wine & Cheese Night. Check alcohol policy first -- sparkling grape juice in a stemmed glass feels just as festive.' },
+
+  { id:'whiskeytasting', emoji:'🥃', name:'Whiskey Tasting Night', tagline:'Bourbon, Scotch, Irish, and rye — a spirited history lesson.',
+    setup:'Get 3-4 whiskeys: smooth bourbon (Buffalo Trace or Maker\'s Mark), Irish whiskey (Jameson), Scotch (Dewar\'s), rye (Bulleit). Pour 0.5 oz each in small cups. Provide water crackers, dark chocolate, and a simple flavor wheel printout. Include ginger beer + bitters as a mocktail option that looks the part.',
+    prompts:'Is it sweet or smoky? Do you taste caramel, vanilla, or pepper? Have you been to a distillery? What did you drink on special occasions growing up? What do you know about Prohibition?',
+    scoring:'Rate each on smoothness and overall enjoyment. Discuss the difference between bourbon, Scotch, and Irish whiskey. Share Prohibition history -- many residents have family stories from that era.',
+    tip:'Small 0.5 oz pours keep it social and responsible. The Prohibition era stories are gold! Always have a non-alcoholic option that looks and feels the part (ginger beer + bitters in a whiskey glass).' },
+
+  { id:'beertasting', emoji:'🍺', name:'Craft Beer & Root Beer Tasting', tagline:'From hoppy IPAs to root beer floats -- find your favorite.',
+    setup:'Get 4-5 beers: light lager, wheat beer, amber ale, IPA, dark stout. Also include 2-3 craft root beers or ginger beers for non-drinkers. Pour 2-3 oz samples in clear cups. Provide pretzels and sharp cheddar to cleanse the palate.',
+    prompts:'Is this bitter or mild? Dark or light? Do you taste coffee or caramel? Did you ever make homemade root beer? What beer did your family keep in the fridge on summer days?',
+    scoring:'Residents vote for favorite beer style. Create a community "Beer Preference" chart. Root beer fans vote for their favorite brand. Finish with root beer floats!',
+    tip:'Root beer floats at the end are a crowd-pleaser for drinkers and non-drinkers alike. Many residents have rich summer memories tied to cold beer and barbecues. Great conversation starter.' },
+
+  { id:'sparklingtasting', emoji:'🥂', name:'Sparkling & Cider Tasting', tagline:'Pop the corks! A reason to toast to every moment.',
+    setup:'Get 4-5 sparklers: dry prosecco, sweet moscato, sparkling rosé, hard apple cider, and sparkling grape juice. Use champagne flutes or plastic flutes for ambiance. Decorate with balloons and streamers. Float a strawberry in each glass.',
+    prompts:'Are these bubbles gentle or aggressive? What flavors do you taste? When have you had champagne in your life? What were you celebrating? What would you like to toast to today?',
+    scoring:'Vote on the favorite sparkler. End with a group toast -- invite one resident to lead it! Prepare toast prompts: "To good friends," "To health," "To today."',
+    tip:'The toasting moment is often the most emotionally powerful part of the event. A floating strawberry in a flute feels incredibly special. Pairs beautifully with a birthday or anniversary celebration.' },
+
+  { id:'hotsauce', emoji:'🌶️', name:'Hot Sauce Heat Challenge', tagline:'From mild to wild -- how brave are your taste buds?',
+    setup:'Get 5 salsas/sauces from mild to hot: mild salsa, medium pico, Frank\'s RedHot, Cholula, habanero option. Provide tortilla chips, sour cream, and milk for cooling. Label clearly: Level 1 through Level 5.',
+    prompts:'How much heat is too much? Do you cook with hot sauce? What\'s the hottest thing you\'ve ever eaten? Does spicy food remind you of a culture or place?',
+    scoring:'Residents rate heat AND flavor separately -- they\'re different! Award a "Spice Champion" ribbon to whoever tries all five. Keep the milk and sour cream close by!',
+    tip:'Never pressure anyone beyond their comfort level. Start mild and work up slowly. This activity sparks great stories about cooking traditions, cultural foods, and adventurous meals.' },
+
+  { id:'teatasting', emoji:'🍵', name:'Around the World Tea Tasting', tagline:'From Earl Grey to chai -- tea has a whole world to explore.',
+    setup:'Brew 5-6 varieties: English Breakfast, Earl Grey, green tea, chamomile, chai (with warm milk), and a fruity herbal (hibiscus or peach). Serve in small cups with honey, sugar cubes, and lemon. Print a simple tea-origins world map.',
+    prompts:'Which country is this tea from? Does it remind you of afternoon tea as a child? What do you add to your tea? Have you ever had a proper high tea at a hotel?',
+    scoring:'Rate each on aroma, flavor, and comfort (1-5). Pick a "Community Favorite" and serve it at the next morning activity as a callback.',
+    tip:'A "High Tea" setup with finger sandwiches and scones turns this into a full social event. Residents who lived through WWII often have rich memories tied to tea rationing -- powerful stories.' },
 ];
+const HAPPY_HOUR_EVENTS = [
+  { id:'winenite', emoji:'🍷', title:'Wine & Cheese Night',
+    theme:'Elegant evening social', duration:'90 min', group:'8–20 residents', color:'#7C3AED',
+    tagline:'Swirl, sniff, sip, and score — no sommelier required.',
+    setup:'Set up 4–5 wine stations (dry white, sweet white, rosé, light red, full red) plus a matching cheese + cracker board at each. Print tasting scorecards. Dim the lights, play soft jazz. Include sparkling grape juice at every station.',
+    supplies:'4–5 wine varieties · Sparkling grape juice · 3–4 cheese types · Crackers + grapes + apple slices · Tasting scorecards · Champagne flutes or plastic stemware · Soft jazz playlist',
+    agenda:'1. Welcome & brief wine region history (5 min)\n2. Swirl & sniff demo — how to taste wine (10 min)\n3. Tasting stations — guided or self-paced (40 min)\n4. Tally scores + group vote for favorite (10 min)\n5. "Best of Show" award + cheese board social (25 min)',
+    tips:'Check nursing for alcohol restrictions first. A "Sommelier of the Night" name tag for a willing resident adds fun. End with a group toast. Sparkling grape juice in a stemmed glass feels just as festive.' },
+
+  { id:'whiskeynite', emoji:'🥃', title:'Whiskey Tasting Experience',
+    theme:'Spirited history evening', duration:'75 min', group:'6–15 residents', color:'#92400E',
+    tagline:'Bourbon, Scotch, Irish & rye — a sip of history in every glass.',
+    setup:'Set out 3–4 whiskey varieties in small labeled cups (0.5 oz pours). Add water crackers, dark chocolate, and a printed flavor wheel. Ginger beer + Angostura bitters makes a perfect mocktail that looks exactly like a cocktail.',
+    supplies:'Bourbon + Irish whiskey + Scotch + rye (small bottles) · Ginger beer + Angostura bitters (mocktail) · Dark chocolate · Crackers · Whiskey flavor wheels · Small cups · Prohibition timeline printout',
+    agenda:'1. What makes each style different — bourbon vs. Scotch vs. Irish (10 min)\n2. Taste whiskey #1: smooth bourbon (15 min)\n3. Taste whiskey #2: Irish — compare notes (15 min)\n4. Taste whiskey #3: Scotch or spicy rye (15 min)\n5. Group vote + Prohibition history & stories (20 min)',
+    tips:'0.5 oz pours keep it responsible and social. The Prohibition era is GOLD for conversation -- many residents have family bootlegging stories. Print a Prohibition timeline. Mocktail option: ginger beer + bitters in a rocks glass looks exactly right.' },
+
+  { id:'margaritamonday', emoji:'🍹', title:'Margarita Monday',
+    theme:'Fiesta happy hour', duration:'60 min', group:'Any size', color:'#059669',
+    tagline:'Salt the rim, squeeze the lime, and let the fiesta begin!',
+    setup:'Set up a margarita-making station with fresh limes, a hand juicer, salt rim plates, and ingredients for classic, frozen, and flavored versions. Play Mexican music. Add chips, guacamole, and salsa. Award a sombrero to the best-looking drink!',
+    supplies:'Fresh limes · Agave syrup · Orange juice · Tequila (optional) · Triple sec (optional) · Blender for frozen version · Salt (regular + chili-lime) · Chips + guacamole + salsa · Sombrero prop',
+    agenda:'1. Margarita history + origin of the salted rim (10 min)\n2. Demo: classic on the rocks (10 min)\n3. Residents make their own — salt the rim, squeeze the lime (20 min)\n4. Frozen blender round (10 min)\n5. Sip, snack, and socialize (10 min)',
+    tips:'The "salt the rim" step is very hands-on and accessible for all ability levels. Offer mango or strawberry puree as flavored mocktail options. "Name your margarita" is a great add-on activity!' },
+
+  { id:'champagnetoast', emoji:'🥂', title:'Champagne Toast Celebration',
+    theme:'Special occasion sparkle', duration:'45 min', group:'Any size', color:'#B45309',
+    tagline:'Bubbles, toasts, and reasons to celebrate — big and small.',
+    setup:'Chill prosecco, sparkling cider, and sparkling grape juice. Set champagne flutes on a tray for a dramatic reveal. Prepare personalized toast prompts using residents\' names. Float a fresh strawberry in each glass.',
+    supplies:'Prosecco or champagne · Sparkling apple cider · Sparkling grape juice · Champagne flutes · Toast prompt cards · Fresh strawberries · Celebratory music',
+    agenda:'1. Set scene: dim lights, play celebratory music (5 min)\n2. Pour drinks with dramatic tray presentation (10 min)\n3. Activity director leads the first toast (3 min)\n4. Resident-led toasts — invite volunteers (15 min)\n5. Share what each person is celebrating today (12 min)',
+    tips:'Have prepared toasts ready for shy residents: "To good friends," "To another beautiful day," "To all of us." The moment residents lead their own toasts is often deeply moving. Pair with a birthday or holiday for maximum magic.' },
+
+  { id:'tropicalmocktailbar', emoji:'🌺', title:'Tropical Mocktail Bar',
+    theme:'Beachside happy hour', duration:'60 min', group:'Any size', color:'#0891B2',
+    tagline:'No passport needed — just close your eyes and taste the tropics.',
+    setup:'Set up a self-serve tropical bar with 4–5 juices: pineapple, mango, coconut cream, passion fruit, lime. Add sparkling water, paper umbrellas, and fruit skewers. Play Hawaiian or steel drum music.',
+    supplies:'Pineapple juice · Mango juice · Coconut cream (Coco Lopez) · Passion fruit juice · Lime juice · Sparkling water · Paper umbrellas · Fruit skewers + maraschino cherries · Clear cups',
+    agenda:'1. Tropical music + residents decorate cups with stickers (10 min)\n2. Demo: signature Aloha Punch recipe (5 min)\n3. Residents create their own tropical blend at the bar (20 min)\n4. Name your creation! Write on a card (10 min)\n5. Community vote for favorite — serve it next time! (15 min)',
+    tips:'Paper umbrellas add zero cost but huge visual impact. "Name your creation" gets everyone invested. Collect the best names and feature them on next month\'s happy hour menu. This becomes a beloved recurring event.' },
+
+  { id:'wineandpaint', emoji:'🎨', title:'Wine & Paint Night',
+    theme:'Creative social evening', duration:'2 hours', group:'6–15 residents', color:'#DB2777',
+    tagline:'Sip, laugh, and paint — no talent required, only joy.',
+    setup:'Set up individual paint stations (canvas, 3 brush sizes, acrylic paint set, water cup, paper towels). Staff or a volunteer leads painting a simple guided subject. Serve wine, sparkling cider, or mocktails throughout. Play soft music.',
+    supplies:'8x10 canvases · Acrylic paint sets · 3 brush sizes per person · Water cups · Paper towels · Aprons/smocks · Wine or sparkling cider · Easels or stack of books as table stands',
+    agenda:'1. Setup + pour first drinks (10 min)\n2. Reveal the sample painting + walkthrough (5 min)\n3. Paint background layer together (20 min)\n4. Add main elements — sip and paint at own pace (25 min)\n5. Final personal details (20 min)\n6. Gallery reveal: everyone holds up their painting (10 min)\n7. Social time + second pour (10 min)',
+    tips:'NO ONE fails at Wine & Paint. Every piece is unique and wonderful. Take a photo of each resident with their finished painting and send to families. This becomes the most-requested monthly event on the calendar.' },
+
+  { id:'irishpubnite', emoji:'☘️', title:'Irish Pub Night',
+    theme:'Heritage celebration', duration:'90 min', group:'8–25 residents', color:'#15803D',
+    tagline:'Top o\' the evening to ya — Sláinte!',
+    setup:'Decorate with green tablecloths and shamrocks. Serve: Guinness or stout, Jameson Irish Whiskey, hard cider, and sparkling apple juice + ginger beer for mocktail guests. Prepare Irish history trivia and a sing-along songsheet.',
+    supplies:'Guinness or dark stout · Jameson Irish Whiskey · Hard cider · Sparkling apple juice + ginger beer · Soft pretzels or soda bread · Shamrock decorations · Irish trivia + sing-along sheets',
+    agenda:'1. Costumes + décor welcome — hand out shamrock headbands (10 min)\n2. History of Pub culture + Sláinte pronunciation (10 min)\n3. Beer styles tasting (20 min)\n4. Irish music sing-along: Danny Boy, Molly Malone (15 min)\n5. Irish heritage trivia game (20 min)\n6. Group Sláinte toast (5 min)\n7. Storytelling: who has Irish roots? (10 min)',
+    tips:'"Sláinte" is pronounced SLAWN-cha and means "health." Many residents have Irish heritage and will love sharing family stories. A Danny Boy sing-along often moves people to tears -- in the best way.' },
+
+  { id:'oktoberfest', emoji:'🍺', title:'Oktoberfest Happy Hour',
+    theme:'Bavarian celebration', duration:'90 min', group:'8–20 residents', color:'#B45309',
+    tagline:'Prost! The best of Bavarian tradition right at your table.',
+    setup:'Serve German beer styles (lager, hefeweizen) plus craft root beer and ginger beer for mocktail guests. Pair with soft pretzels, mustard, and sausage bites. Hand out Bavarian hats. Play polka and German folk music.',
+    supplies:'German lager + hefeweizen · Root beer + ginger beer · Soft pretzels + mustard · Sausage slices · Bavarian hats · German trivia printout · Checkered tablecloths',
+    agenda:'1. Costumes + décor: hand out Bavarian hats (10 min)\n2. History of Oktoberfest in Munich (10 min)\n3. Beer styles comparison tasting (20 min)\n4. Polka music + chair dancing (15 min)\n5. German heritage trivia (20 min)\n6. Group "Prost!" toast + pretzel social (15 min)',
+    tips:'Even residents without German heritage love the festive polka atmosphere. Chair dancing to polka music creates instant laughter. "Who has German ancestry?" often surfaces wonderful family immigration stories.' },
+];
+
+function renderHappyHour() {
+  const grid = document.getElementById('fd-happyhour-grid');
+  if (!grid) return;
+  grid.innerHTML = HAPPY_HOUR_EVENTS.map(e => `
+    <div style="background:#fff;border:2px solid ${e.color}30;border-radius:14px;padding:20px;cursor:pointer;transition:box-shadow .2s;" onmouseenter="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseleave="this.style.boxShadow=''" onclick="openHappyHourDetail('${e.id}')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="font-size:2rem;">${e.emoji}</div>
+        <div>
+          <div style="font-weight:800;font-size:.95rem;color:#1E293B;">${e.title}</div>
+          <div style="font-size:.75rem;color:#6B7280;">${e.theme}</div>
+        </div>
+      </div>
+      <div style="font-size:.82rem;color:#374151;font-style:italic;margin-bottom:12px;">${e.tagline}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+        <span style="background:${e.color}15;color:${e.color};padding:2px 10px;border-radius:999px;font-size:.72rem;font-weight:700;">⏱ ${e.duration}</span>
+        <span style="background:#F1F5F9;color:#475569;padding:2px 10px;border-radius:999px;font-size:.72rem;font-weight:600;">👥 ${e.group}</span>
+      </div>
+      <button style="width:100%;background:${e.color};color:#fff;border:none;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;cursor:pointer;">View Full Event Guide →</button>
+    </div>`).join('');
+}
+
+function openHappyHourDetail(id) {
+  const e = HAPPY_HOUR_EVENTS.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('fd-modal-badges').innerHTML =
+    `<span style="background:${e.color}15;color:${e.color};padding:3px 12px;border-radius:999px;font-size:.8rem;font-weight:700;">${e.emoji} ${e.theme}</span>
+     <span style="background:#F1F5F9;color:#475569;padding:3px 12px;border-radius:999px;font-size:.8rem;">⏱ ${e.duration}</span>
+     <span style="background:#F1F5F9;color:#475569;padding:3px 12px;border-radius:999px;font-size:.8rem;">👥 ${e.group}</span>`;
+  document.getElementById('fd-modal-title').textContent = e.title;
+  document.getElementById('fd-modal-tagline').textContent = e.tagline;
+  document.getElementById('fd-modal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div style="background:#F8FAFF;border-radius:10px;padding:14px;">
+        <div style="font-weight:700;font-size:.85rem;color:#1E293B;margin-bottom:8px;">🛒 What You'll Need</div>
+        <div style="font-size:.82rem;color:#374151;white-space:pre-line;">${e.supplies}</div>
+      </div>
+      <div style="background:#F0FDF4;border-radius:10px;padding:14px;">
+        <div style="font-weight:700;font-size:.85rem;color:#1E293B;margin-bottom:8px;">⚙️ Setup Notes</div>
+        <div style="font-size:.82rem;color:#374151;">${e.setup}</div>
+      </div>
+    </div>
+    <div style="background:#FFFBEB;border-radius:10px;padding:14px;margin-bottom:12px;">
+      <div style="font-weight:700;font-size:.85rem;color:#92400E;margin-bottom:8px;">📋 Event Agenda</div>
+      <div style="font-size:.82rem;color:#374151;white-space:pre-line;">${e.agenda}</div>
+    </div>
+    <div style="background:#FDF4FF;border-radius:10px;padding:14px;">
+      <div style="font-weight:700;font-size:.85rem;color:#7E22CE;margin-bottom:6px;">💡 Pro Tips</div>
+      <div style="font-size:.82rem;color:#374151;">${e.tips}</div>
+    </div>`;
+  document.getElementById('fd-modal').style.display = 'flex';
+}
+
 
 const FOOD_TRIVIA = {
   general:[
@@ -15053,11 +15285,12 @@ function initFood() {
   renderTasteTests();
   loadFoodTrivia('general');
   renderSeasonalFood();
+  renderHappyHour();
 }
 
 function switchFoodTab(tab) {
   fdState.tab = tab;
-  ['recipes','cocktails','taste','trivia','seasonal'].forEach(t => {
+  ['recipes','cocktails','taste','trivia','seasonal','happyhour'].forEach(t => {
     document.getElementById('fdtab-'+t)?.classList.toggle('tv-subtab-active', t===tab);
     const p = document.getElementById('fdpanel-'+t);
     if (p) p.style.display = t===tab ? '' : 'none';
