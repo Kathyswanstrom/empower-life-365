@@ -2608,6 +2608,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
       <button onclick="nttReveal()" class="btn" style="background:#F59E0B;color:#fff;font-size:15px;padding:10px 24px;" id="ntt-reveal-btn">&#128065; Reveal Answer</button>
       <button onclick="nttNext()" class="btn" style="background:#6366F1;color:#fff;font-size:15px;padding:10px 24px;">&#9654; Next Song</button>
+      <button onclick="nttPlayClip()" class="btn" id="ntt-play-clip-btn" style="background:#E5E7EB;color:#6B7280;font-size:15px;padding:10px 24px;" title="Add a YouTube or Spotify clip">&#127925; Add Clip</button>
       <select id="ntt-decade-filter" onchange="nttSetDecade(this.value)" style="padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;">
         <option value="all">All Decades</option>
         <option value="40s">1940s</option>
@@ -2620,6 +2621,40 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       </select>
     </div>
     <div style="margin-top:14px;text-align:center;font-size:13px;color:#9CA3AF;" id="ntt-progress"></div>
+
+    <!-- Clip Add/Edit Form -->
+    <div id="ntt-clip-form" style="display:none;background:#F8FAFC;border:1px solid #C7D2FE;border-radius:14px;padding:18px;margin-top:12px;">
+      <div style="font-size:14px;font-weight:700;color:#1E1B4B;margin-bottom:6px;">&#127925; Clip for: <span id="ntt-clip-form-song" style="color:#6366F1;"></span></div>
+      <div style="font-size:12px;color:#6B7280;margin-bottom:10px;">Paste a YouTube or Spotify URL, then save. Next time you see this song the Play Clip button will be green!</div>
+      <input type="text" id="ntt-clip-url-input" placeholder="https://www.youtube.com/watch?v=... or https://open.spotify.com/track/..." style="width:100%;padding:9px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:13px;box-sizing:border-box;margin-bottom:10px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <button onclick="nttSaveClipFromForm()" class="btn" style="background:#059669;color:#fff;font-size:13px;">&#128190; Save Clip</button>
+        <button onclick="nttSearchYoutube()" class="btn" style="background:#FF0000;color:#fff;font-size:13px;">&#128269; Search YouTube</button>
+        <button onclick="document.getElementById('ntt-clip-form').style.display='none'" class="btn btn-secondary" style="font-size:13px;">Cancel</button>
+        <button onclick="nttRemoveClip()" class="btn" style="background:#EF4444;color:#fff;font-size:13px;margin-left:auto;display:none;" id="ntt-remove-clip-btn">&#128465; Remove</button>
+      </div>
+    </div>
+
+    <!-- Clip Manage All: shown when staff expands -->
+    <div style="margin-top:10px;text-align:center;">
+      <button onclick="nttToggleClipManager()" class="btn btn-secondary" style="font-size:12px;padding:5px 14px;" id="ntt-clip-mgr-btn">&#127925; Manage All Song Clips</button>
+    </div>
+    <div id="ntt-clip-manager" style="display:none;margin-top:12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:16px;">
+      <div style="font-size:14px;font-weight:700;color:#1E1B4B;margin-bottom:10px;">All Song Clips</div>
+      <div id="ntt-clip-manager-list" style="font-size:13px;"></div>
+    </div>
+  </div>
+
+  <!-- Floating Clip Player -->
+  <div id="ntt-clip-player" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:#1E1B4B;border-radius:16px;padding:16px;box-shadow:0 8px 40px rgba(0,0,0,0.55);width:340px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="color:#A5B4FC;font-size:13px;font-weight:700;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" id="ntt-clip-player-title">Now Playing</div>
+      <div style="display:flex;gap:6px;align-items:center;margin-left:8px;">
+        <button onclick="nttEditClip()" title="Edit clip URL" style="background:#4338CA;border:none;color:#C7D2FE;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:12px;">&#9998; Edit</button>
+        <button onclick="nttClosePlayer()" style="background:none;border:none;color:#9CA3AF;font-size:20px;cursor:pointer;line-height:1;padding:0 4px;">&#10005;</button>
+      </div>
+    </div>
+    <iframe id="ntt-clip-iframe" width="308" height="174" frameborder="0" style="border-radius:10px;" allowfullscreen allow="autoplay; encrypted-media; clipboard-write"></iframe>
   </div>
 
   <!-- RESIDENT MUSIC PROFILES -->
@@ -6900,6 +6935,8 @@ function nttShowCard() {
   nttState.revealed = false;
   var aEl = document.getElementById('ntt-answer-area');
   if (aEl) aEl.style.display = 'none';
+  nttClosePlayer();
+  nttUpdateClipBtn();
   nttSyncTV(s, false);
 }
 
@@ -7062,6 +7099,236 @@ function nttSyncTV(song, revealed) {
       scoreB:   nttState.scoreB,
     }));
   } catch(e) {}
+}
+
+
+
+// ── Name That Tune — Clip Support ────────────────────────────────────────────
+var NTT_CLIPS_KEY = 'el365_ntt_clips';
+
+function getNttClips() {
+  try { return JSON.parse(localStorage.getItem(NTT_CLIPS_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveNttClips(obj) { localStorage.setItem(NTT_CLIPS_KEY, JSON.stringify(obj)); }
+
+function nttClipKey(song) {
+  return (song.title + '|' + song.artist).toLowerCase();
+}
+
+function nttGetCurrentClip() {
+  var deck = nttState.deck;
+  if (!deck || !deck.length) return null;
+  var song = deck[nttState.idx % deck.length];
+  if (!song) return null;
+  return getNttClips()[nttClipKey(song)] || null;
+}
+
+function nttParseClipUrl(url) {
+  url = (url || '').trim();
+  var ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (ytMatch) return {type:'yt', id:ytMatch[1]};
+  if (/^[A-Za-z0-9_-]{11}$/.test(url)) return {type:'yt', id:url};
+  var spMatch = url.match(/spotify\.com\/track\/([A-Za-z0-9]+)/);
+  if (spMatch) return {type:'sp', id:spMatch[1]};
+  return null;
+}
+
+function nttUpdateClipBtn() {
+  var btn = document.getElementById('ntt-play-clip-btn');
+  if (!btn) return;
+  var clip = nttGetCurrentClip();
+  if (clip) {
+    btn.style.background = '#059669';
+    btn.style.color = '#fff';
+    btn.innerHTML = '&#9654;&#65039; Play Clip';
+    btn.title = clip.type === 'yt' ? 'Play YouTube clip' : 'Play Spotify clip';
+  } else {
+    btn.style.background = '#E5E7EB';
+    btn.style.color = '#6B7280';
+    btn.innerHTML = '&#127925; Add Clip';
+    btn.title = 'Add a YouTube or Spotify clip for this song';
+  }
+}
+
+function nttPlayClip() {
+  var clip = nttGetCurrentClip();
+  if (!clip) { nttShowClipForm(); return; }
+  var player = document.getElementById('ntt-clip-player');
+  var iframe  = document.getElementById('ntt-clip-iframe');
+  var titleEl = document.getElementById('ntt-clip-player-title');
+  if (!player || !iframe) return;
+  var deck = nttState.deck;
+  var song = deck && deck.length ? deck[nttState.idx % deck.length] : null;
+  var src = clip.type === 'yt'
+    ? 'https://www.youtube.com/embed/' + clip.id + '?autoplay=1'
+    : 'https://open.spotify.com/embed/track/' + clip.id + '?theme=0';
+  iframe.src = src;
+  if (titleEl && song) titleEl.textContent = '♫ ' + song.title + ' — ' + song.artist;
+  player.style.display = 'block';
+}
+
+function nttClosePlayer() {
+  var player = document.getElementById('ntt-clip-player');
+  var iframe  = document.getElementById('ntt-clip-iframe');
+  if (iframe) iframe.src = '';
+  if (player) player.style.display = 'none';
+}
+
+function nttEditClip() {
+  nttClosePlayer();
+  nttShowClipForm();
+}
+
+function nttShowClipForm() {
+  var deck = nttState.deck;
+  var song = deck && deck.length ? deck[nttState.idx % deck.length] : null;
+  var form      = document.getElementById('ntt-clip-form');
+  var songLabel = document.getElementById('ntt-clip-form-song');
+  var input     = document.getElementById('ntt-clip-url-input');
+  var removeBtn = document.getElementById('ntt-remove-clip-btn');
+  if (!form) return;
+  if (songLabel) songLabel.textContent = song ? song.title + ' — ' + song.artist : '';
+  var clip = nttGetCurrentClip();
+  if (input) {
+    input.value = clip
+      ? (clip.type === 'yt' ? 'https://www.youtube.com/watch?v=' + clip.id : 'https://open.spotify.com/track/' + clip.id)
+      : '';
+  }
+  if (removeBtn) removeBtn.style.display = clip ? 'inline-block' : 'none';
+  form.style.display = 'block';
+  form.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function nttSaveClipFromForm() {
+  var deck = nttState.deck;
+  var song = deck && deck.length ? deck[nttState.idx % deck.length] : null;
+  var input = document.getElementById('ntt-clip-url-input');
+  if (!song || !input) return;
+  var url = input.value.trim();
+  if (!url) { showToast('Please paste a YouTube or Spotify URL'); return; }
+  var parsed = nttParseClipUrl(url);
+  if (!parsed) { showToast('URL not recognized. Paste a YouTube or Spotify link.'); return; }
+  var clips = getNttClips();
+  clips[nttClipKey(song)] = parsed;
+  saveNttClips(clips);
+  document.getElementById('ntt-clip-form').style.display = 'none';
+  nttUpdateClipBtn();
+  showToast('▶️ Clip saved for “' + song.title + '”!');
+}
+
+function nttRemoveClip() {
+  var deck = nttState.deck;
+  var song = deck && deck.length ? deck[nttState.idx % deck.length] : null;
+  if (!song) return;
+  var clips = getNttClips();
+  delete clips[nttClipKey(song)];
+  saveNttClips(clips);
+  document.getElementById('ntt-clip-form').style.display = 'none';
+  nttUpdateClipBtn();
+  showToast('Clip removed');
+}
+
+function nttSearchYoutube() {
+  var deck = nttState.deck;
+  var song = deck && deck.length ? deck[nttState.idx % deck.length] : null;
+  if (!song) return;
+  var q = encodeURIComponent(song.title + ' ' + song.artist + ' official audio');
+  window.open('https://www.youtube.com/results?search_query=' + q, '_blank');
+}
+
+function nttToggleClipManager() {
+  var mgr = document.getElementById('ntt-clip-manager');
+  if (!mgr) return;
+  var visible = mgr.style.display !== 'none';
+  mgr.style.display = visible ? 'none' : 'block';
+  if (!visible) nttRenderClipManager();
+}
+
+function nttRenderClipManager() {
+  var list = document.getElementById('ntt-clip-manager-list');
+  if (!list) return;
+  var clips = getNttClips();
+  var songs = NTT_DATA;
+  var rows = songs.map(function(s) {
+    var key = nttClipKey(s);
+    var clip = clips[key];
+    var clipBadge = clip
+      ? '<span style="background:#D1FAE5;color:#065F46;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;">' + (clip.type === 'yt' ? '&#9654; YouTube' : '&#9654; Spotify') + '</span>'
+      : '<span style="background:#F3F4F6;color:#9CA3AF;border-radius:20px;padding:2px 10px;font-size:11px;">No clip</span>';
+    var icon = clip
+      ? '<button onclick="nttManagerPlay('' + key.replace(/'/g,"\'"  ) + '')" style="background:#059669;color:#fff;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:12px;">&#9654;</button>'
+      : '';
+    return '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #E5E7EB;">'
+      + '<div style="flex:1;"><div style="font-weight:600;">' + s.title + '</div><div style="color:#6B7280;font-size:12px;">' + s.artist + ' &middot; ' + s.decade + '</div></div>'
+      + clipBadge + icon
+      + '<button onclick="nttManagerEdit('' + key.replace(/'/g,"\'") + '')" style="background:#6366F1;color:#fff;border:none;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11px;">Edit</button>'
+      + '</div>';
+  });
+  list.innerHTML = rows.join('') || '<p style="color:#9CA3AF;">No songs found.</p>';
+}
+
+function nttManagerPlay(key) {
+  var clips = getNttClips();
+  var clip = clips[key];
+  if (!clip) return;
+  var player = document.getElementById('ntt-clip-player');
+  var iframe  = document.getElementById('ntt-clip-iframe');
+  var titleEl = document.getElementById('ntt-clip-player-title');
+  if (!player || !iframe) return;
+  // Find song name
+  var song = NTT_DATA.filter(function(s){ return nttClipKey(s) === key; })[0];
+  var src = clip.type === 'yt'
+    ? 'https://www.youtube.com/embed/' + clip.id + '?autoplay=1'
+    : 'https://open.spotify.com/embed/track/' + clip.id + '?theme=0';
+  iframe.src = src;
+  if (titleEl && song) titleEl.textContent = '♫ ' + song.title + ' — ' + song.artist;
+  player.style.display = 'block';
+}
+
+function nttManagerEdit(key) {
+  // Find song and set as current form target, but use key directly
+  var song = NTT_DATA.filter(function(s){ return nttClipKey(s) === key; })[0];
+  var form      = document.getElementById('ntt-clip-form');
+  var songLabel = document.getElementById('ntt-clip-form-song');
+  var input     = document.getElementById('ntt-clip-url-input');
+  var removeBtn = document.getElementById('ntt-remove-clip-btn');
+  if (!form) return;
+  if (songLabel) songLabel.textContent = song ? song.title + ' — ' + song.artist : key;
+  var clip = getNttClips()[key];
+  if (input) {
+    input.value = clip
+      ? (clip.type === 'yt' ? 'https://www.youtube.com/watch?v=' + clip.id : 'https://open.spotify.com/track/' + clip.id)
+      : '';
+  }
+  if (removeBtn) removeBtn.style.display = clip ? 'inline-block' : 'none';
+  // Override save to use key directly
+  var saveBtn = form.querySelector('button[onclick="nttSaveClipFromForm()"]');
+  if (saveBtn) {
+    saveBtn.onclick = function() {
+      var url = input ? input.value.trim() : '';
+      if (!url) { showToast('Please paste a URL'); return; }
+      var parsed = nttParseClipUrl(url);
+      if (!parsed) { showToast('URL not recognized'); return; }
+      var clips = getNttClips();
+      clips[key] = parsed;
+      saveNttClips(clips);
+      form.style.display = 'none';
+      nttUpdateClipBtn();
+      nttRenderClipManager();
+      showToast('Clip saved!');
+    };
+    removeBtn.onclick = function() {
+      var clips = getNttClips();
+      delete clips[key];
+      saveNttClips(clips);
+      form.style.display = 'none';
+      nttUpdateClipBtn();
+      nttRenderClipManager();
+      showToast('Clip removed');
+    };
+  }
+  form.style.display = 'block';
+  form.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function openNttDisplay() {
