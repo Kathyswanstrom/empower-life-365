@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Song Requests — TV Display</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0D1117;
+    color: #fff;
+    font-family: 'Georgia', serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .dot {
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.06;
+    animation: floatDot linear infinite;
+    pointer-events: none;
+  }
+  @keyframes floatDot {
+    0%   { transform: translateY(110vh); opacity: 0; }
+    10%  { opacity: 0.06; }
+    90%  { opacity: 0.06; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+  }
+
+  header {
+    padding: 3vh 4vw 2vh;
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+  .header-icon { font-size: 6vh; }
+  .header-text h1 { font-size: 4.5vh; font-weight: 900; color: #F9A8D4; }
+  .header-text p  { font-size: 2vh; color: #64748B; font-family: sans-serif; margin-top: 0.3vh; }
+  .header-count {
+    margin-left: auto;
+    background: rgba(219,39,119,0.2);
+    border: 1px solid #DB2777;
+    color: #F9A8D4;
+    padding: 1vh 2vw;
+    border-radius: 100px;
+    font-size: 2.5vh;
+    font-family: sans-serif;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .content {
+    flex: 1;
+    overflow: hidden;
+    padding: 3vh 4vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+  }
+
+  /* Spotlight — current / up next */
+  .spotlight {
+    background: linear-gradient(135deg, #1E1035, #2D1A5E);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 2vh;
+    padding: 3vh 3vw;
+    display: flex;
+    align-items: center;
+    gap: 3vw;
+    flex-shrink: 0;
+  }
+  .spotlight-icon { font-size: 7vh; }
+  .spotlight-body { flex: 1; }
+  .spotlight-label {
+    font-size: 1.8vh;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #A78BFA;
+    font-family: sans-serif;
+    font-weight: 700;
+    margin-bottom: 0.5vh;
+  }
+  .spotlight-title  { font-size: clamp(22px, 5vh, 60px); font-weight: 900; color: #F5F3FF; line-height: 1.1; }
+  .spotlight-artist { font-size: clamp(14px, 2.8vh, 34px); color: #C4B5FD; font-family: sans-serif; margin-top: 0.5vh; }
+  .spotlight-who    { font-size: 2vh; color: #7C3AED; font-family: sans-serif; margin-top: 0.8vh; font-style: italic; }
+
+  /* Queue list */
+  .queue-header {
+    font-size: 2vh;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #475569;
+    font-family: sans-serif;
+    font-weight: 700;
+    margin-bottom: 0.5vh;
+  }
+  .queue {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+    overflow: hidden;
+    flex: 1;
+  }
+  .queue-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.2vh;
+    padding: 1.5vh 2vw;
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+  }
+  .q-num {
+    font-size: 3vh;
+    font-weight: 900;
+    color: #334155;
+    font-family: sans-serif;
+    min-width: 3vw;
+    text-align: center;
+  }
+  .q-title  { font-size: 2.6vh; font-weight: 700; color: #E2E8F0; }
+  .q-artist { font-size: 1.8vh; color: #64748B; font-family: sans-serif; }
+  .q-who    { margin-left: auto; font-size: 1.6vh; color: #4B5563; font-family: sans-serif; font-style: italic; white-space: nowrap; }
+
+  .empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #334155;
+    font-size: 3vh;
+    font-family: sans-serif;
+    gap: 2vh;
+  }
+  .empty-icon { font-size: 8vh; }
+
+  footer {
+    padding: 1.5vh 4vw;
+    font-size: 1.5vh;
+    color: #1E293B;
+    font-family: sans-serif;
+    letter-spacing: 0.08em;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">🎵</div>
+  <div class="header-text">
+    <h1>Song Requests</h1>
+    <p id="subtitle">Loading…</p>
+  </div>
+  <div class="header-count" id="count-badge">—</div>
+</header>
+
+<div class="content" id="content">
+  <div class="empty"><div class="empty-icon">🎶</div><div>Loading requests…</div></div>
+</div>
+
+<footer>empowerlife365.app — refreshes automatically</footer>
+
+<script>
+var MR_KEY = 'el365_music_requests';
+var lastSig = null;
+var highlightIdx = 0;
+var cycleTimer = null;
+
+function mkDots() {
+  for (var i = 0; i < 14; i++) {
+    var d = document.createElement('div');
+    d.className = 'dot';
+    var sz = 30 + Math.random() * 100;
+    d.style.cssText = [
+      'width:'+sz+'px','height:'+sz+'px',
+      'left:'+(Math.random()*100)+'vw',
+      'background:hsl('+(270+Math.random()*60)+',50%,55%)',
+      'animation-duration:'+(12+Math.random()*18)+'s',
+      'animation-delay:'+(-Math.random()*25)+'s'
+    ].join(';');
+    document.body.appendChild(d);
+  }
+}
+mkDots();
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function render(pending) {
+  var content   = document.getElementById('content');
+  var badge     = document.getElementById('count-badge');
+  var subtitle  = document.getElementById('subtitle');
+
+  badge.textContent   = pending.length + ' pending';
+  subtitle.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+
+  if (!pending.length) {
+    content.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><div>All caught up — no pending requests!</div></div>';
+    return;
+  }
+
+  var spotlight = pending[highlightIdx % pending.length];
+  var queue     = pending.filter(function(_,i){ return i !== (highlightIdx % pending.length); }).slice(0, 6);
+
+  content.innerHTML =
+    '<div class="spotlight">' +
+      '<div class="spotlight-icon">🎤</div>' +
+      '<div class="spotlight-body">' +
+        '<div class="spotlight-label">⬆ Up Next</div>' +
+        '<div class="spotlight-title">' + esc(spotlight.title) + '</div>' +
+        (spotlight.artist ? '<div class="spotlight-artist">by ' + esc(spotlight.artist) + '</div>' : '') +
+        '<div class="spotlight-who">Requested by ' + esc(spotlight.who) + ' · ' + esc(spotlight.date) + '</div>' +
+      '</div>' +
+    '</div>' +
+    (queue.length ? (
+      '<div class="queue-header">Also Requested</div>' +
+      '<div class="queue">' +
+        queue.map(function(r, i) {
+          return '<div class="queue-item">' +
+            '<div class="q-num">' + (i+2) + '</div>' +
+            '<div style="flex:1;">' +
+              '<div class="q-title">' + esc(r.title) + '</div>' +
+              (r.artist ? '<div class="q-artist">by ' + esc(r.artist) + '</div>' : '') +
+            '</div>' +
+            '<div class="q-who">— ' + esc(r.who) + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>'
+    ) : '');
+}
+
+function poll() {
+  try {
+    var raw = localStorage.getItem(MR_KEY);
+    var all = raw ? JSON.parse(raw) : [];
+    var pending = all.filter(function(r){ return !r.played; });
+    var sig = JSON.stringify(pending);
+    if (sig !== lastSig) {
+      lastSig = sig;
+      highlightIdx = 0;
+      render(pending);
+      resetCycle(pending);
+    }
+  } catch(e) {}
+}
+
+function resetCycle(pending) {
+  if (cycleTimer) clearInterval(cycleTimer);
+  if (pending.length <= 1) return;
+  cycleTimer = setInterval(function() {
+    try {
+      var raw = localStorage.getItem(MR_KEY);
+      var all = raw ? JSON.parse(raw) : [];
+      var p   = all.filter(function(r){ return !r.played; });
+      highlightIdx = (highlightIdx + 1) % p.length;
+      render(p);
+    } catch(e) {}
+  }, 6000);
+}
+
+setInterval(poll, 800);
+poll();
+</script>
+</body>
+</html>

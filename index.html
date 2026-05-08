@@ -2469,6 +2469,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button id="mustab-games"       onclick="switchMusicTab('games')"       class="tv-subtab">&#127918; Music Games</button>
     <button id="mustab-performance" onclick="switchMusicTab('performance')" class="tv-subtab">&#127908; Performance Night</button>
     <button id="mustab-themed"      onclick="switchMusicTab('themed')"      class="tv-subtab">&#128251; Themed Sessions</button>
+    <button id="mustab-requests"    onclick="switchMusicTab('requests')"    class="tv-subtab">&#127908; Song Requests</button>
+    <button id="mustab-nametune"    onclick="switchMusicTab('nametune')"    class="tv-subtab">&#127919; Name That Tune</button>
+    <button id="mustab-profiles"    onclick="switchMusicTab('profiles')"    class="tv-subtab">&#11088; Music Profiles</button>
   </div>
   <!-- SONG LIBRARY -->
   <div id="muspanel-songs">
@@ -2538,6 +2541,137 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       </div>
     </div>
   </div>
+  <!-- SONG REQUESTS BOARD -->
+  <div id="muspanel-requests" style="display:none;">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px;">
+      <h3 style="margin:0;color:#1F2937;">&#127908; Song Requests Board</h3>
+      <button onclick="printMusicRequests()" class="btn" style="background:#7C3AED;color:#fff;margin-left:auto;">&#128424; Print List</button>
+      <button onclick="openMusicRequestsDisplay()" class="btn" style="background:#1E1B4B;color:#A5B4FC;border:1px solid #4338CA;">&#128250; TV Display</button>
+    </div>
+    <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:14px;padding:18px;margin-bottom:20px;">
+      <div style="font-weight:700;font-size:14px;color:#5B21B6;margin-bottom:12px;">&#43; Add a Song Request</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;">
+        <div><label style="font-size:12px;color:#6B7280;display:block;margin-bottom:4px;">Song Title *</label>
+          <input id="mr-title" placeholder="e.g. Blue Suede Shoes" style="width:100%;padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+        <div><label style="font-size:12px;color:#6B7280;display:block;margin-bottom:4px;">Artist</label>
+          <input id="mr-artist" placeholder="e.g. Elvis Presley" style="width:100%;padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+        <div><label style="font-size:12px;color:#6B7280;display:block;margin-bottom:4px;">Requested By</label>
+          <input id="mr-who" placeholder="Resident name" style="width:100%;padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+        <button onclick="addMusicRequest()" class="btn" style="background:#7C3AED;color:#fff;white-space:nowrap;">Add Request</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button id="mrfilter-all"     onclick="setMrFilter('all')"     class="gm-cat gm-cat-active">All</button>
+      <button id="mrfilter-pending" onclick="setMrFilter('pending')" class="gm-cat">&#9203; Pending</button>
+      <button id="mrfilter-played"  onclick="setMrFilter('played')"  class="gm-cat">&#9989; Played</button>
+    </div>
+    <div id="mr-list"></div>
+  </div>
+
+  <!-- NAME THAT TUNE GAME -->
+  <div id="muspanel-nametune" style="display:none;">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px;">
+      <h3 style="margin:0;color:#1F2937;">&#127919; Name That Tune</h3>
+      <span id="ntt-score-display" style="background:#FEF3C7;border:1px solid #FDE68A;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700;color:#92400E;">Team A: 0 &nbsp;|&nbsp; Team B: 0</span>
+      <button onclick="nttNewGame()" class="btn" style="background:#059669;color:#fff;margin-left:auto;">&#128256; New Game</button>
+      <button onclick="openNttDisplay()" class="btn" style="background:#1E1B4B;color:#A5B4FC;border:1px solid #4338CA;">&#128250; TV Mode</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="background:#FFF;border:2px solid #6366F1;border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:13px;font-weight:600;color:#6366F1;margin-bottom:6px;">TEAM A</div>
+        <div style="font-size:28px;font-weight:800;color:#1F2937;" id="ntt-score-a">0</div>
+        <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;">
+          <button onclick="nttScore('a',1)" class="btn" style="background:#6366F1;color:#fff;padding:4px 12px;font-size:13px;">+1</button>
+          <button onclick="nttScore('a',-1)" class="btn" style="background:#E5E7EB;color:#374151;padding:4px 12px;font-size:13px;">-1</button>
+        </div>
+      </div>
+      <div style="background:#FFF;border:2px solid #EC4899;border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:13px;font-weight:600;color:#EC4899;margin-bottom:6px;">TEAM B</div>
+        <div style="font-size:28px;font-weight:800;color:#1F2937;" id="ntt-score-b">0</div>
+        <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;">
+          <button onclick="nttScore('b',1)" class="btn" style="background:#EC4899;color:#fff;padding:4px 12px;font-size:13px;">+1</button>
+          <button onclick="nttScore('b',-1)" class="btn" style="background:#E5E7EB;color:#374151;padding:4px 12px;font-size:13px;">-1</button>
+        </div>
+      </div>
+    </div>
+    <div id="ntt-card" style="background:linear-gradient(135deg,#1E1B4B,#312E81);border-radius:20px;padding:32px;text-align:center;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+      <div style="font-size:48px;" id="ntt-emoji">&#127925;</div>
+      <div style="font-size:13px;text-transform:uppercase;letter-spacing:2px;color:#A5B4FC;">Clue</div>
+      <div style="font-size:22px;font-weight:700;color:#fff;max-width:500px;line-height:1.4;" id="ntt-clue">Press New Game to start!</div>
+      <div style="font-size:14px;color:#C7D2FE;" id="ntt-decade"></div>
+      <div id="ntt-answer-area" style="display:none;margin-top:8px;background:rgba(255,255,255,0.12);border-radius:12px;padding:16px 24px;text-align:center;">
+        <div style="font-size:13px;color:#A5B4FC;margin-bottom:4px;">ANSWER</div>
+        <div style="font-size:24px;font-weight:800;color:#FDE68A;" id="ntt-answer-title"></div>
+        <div style="font-size:15px;color:#C7D2FE;" id="ntt-answer-artist"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+      <button onclick="nttReveal()" class="btn" style="background:#F59E0B;color:#fff;font-size:15px;padding:10px 24px;" id="ntt-reveal-btn">&#128065; Reveal Answer</button>
+      <button onclick="nttNext()" class="btn" style="background:#6366F1;color:#fff;font-size:15px;padding:10px 24px;">&#9654; Next Song</button>
+      <select id="ntt-decade-filter" onchange="nttSetDecade(this.value)" style="padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;">
+        <option value="all">All Decades</option>
+        <option value="40s">1940s</option>
+        <option value="50s">1950s</option>
+        <option value="60s">1960s</option>
+        <option value="70s">1970s</option>
+        <option value="80s">1980s</option>
+        <option value="country">Country</option>
+        <option value="gospel">Gospel</option>
+      </select>
+    </div>
+    <div style="margin-top:14px;text-align:center;font-size:13px;color:#9CA3AF;" id="ntt-progress"></div>
+  </div>
+
+  <!-- RESIDENT MUSIC PROFILES -->
+  <div id="muspanel-profiles" style="display:none;">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px;">
+      <h3 style="margin:0;color:#1F2937;">&#11088; Resident Music Profiles</h3>
+      <button onclick="mpNewProfile()" class="btn" style="background:#DB2777;color:#fff;margin-left:auto;">&#43; Add Profile</button>
+    </div>
+    <div id="mp-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;"></div>
+    <!-- Edit form -->
+    <div id="mp-form-wrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;overflow-y:auto;padding:24px;">
+      <div style="background:#fff;border-radius:20px;max-width:560px;margin:0 auto;padding:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h3 style="margin:0;" id="mp-form-title">Music Profile</h3>
+          <button onclick="mpCloseForm()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#6B7280;">&times;</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Resident Name *</label>
+            <input id="mp-name" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Favorite Era / Decade</label>
+            <select id="mp-era" style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;">
+              <option value="">-- Choose --</option>
+              <option>1930s Big Band & Swing</option>
+              <option>1940s WWII Era & Ballads</option>
+              <option>1950s Rock & Roll</option>
+              <option>1960s British Invasion & Motown</option>
+              <option>1970s Classic Rock & Disco</option>
+              <option>1980s Pop & New Wave</option>
+              <option>Country Classics</option>
+              <option>Gospel & Hymns</option>
+              <option>Broadway & Show Tunes</option>
+              <option>Jazz & Blues</option>
+            </select></div>
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Favorite Artists / Bands</label>
+            <input id="mp-artists" placeholder="e.g. Frank Sinatra, Elvis, Patsy Cline" style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">All-Time Favorite Song</label>
+            <input id="mp-fave-song" placeholder="Song title" style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">A Memory Connected to Music</label>
+            <textarea id="mp-memory" rows="3" placeholder="e.g. Danced to this song at my wedding in 1958..." style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;resize:vertical;box-sizing:border-box;"></textarea></div>
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Sing-Along Songs They Love</label>
+            <input id="mp-singalong" placeholder="e.g. You Are My Sunshine, Amazing Grace" style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+          <div><label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:4px;">Music They Dislike / Avoid</label>
+            <input id="mp-avoid" placeholder="e.g. Heavy metal, rap" style="width:100%;padding:10px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;box-sizing:border-box;"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+          <button onclick="mpCloseForm()" class="btn" style="background:#F3F4F6;color:#374151;">Cancel</button>
+          <button onclick="mpSaveProfile()" class="btn" style="background:#DB2777;color:#fff;">Save Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <section class="tab-panel" id="panel-wellness">
@@ -6566,6 +6700,409 @@ function printWordSearch() {
       <div class="footer">empowerlife365.app · Answer key — for staff use</div>
     </div>
   </script>
+
+<script>
+// ══════════════════════════════════════════════════
+//  MUSIC & MEMORIES — Song Requests, Name That Tune, Music Profiles
+// ══════════════════════════════════════════════════
+
+// ── Song Requests ──────────────────────────────────
+var MR_KEY = 'el365_music_requests';
+var mr_filter = 'all';
+
+function getMusicRequests() {
+  try { return JSON.parse(localStorage.getItem(MR_KEY)) || []; } catch(e) { return []; }
+}
+function saveMusicRequests(arr) { localStorage.setItem(MR_KEY, JSON.stringify(arr)); }
+
+function addMusicRequest() {
+  var title  = (document.getElementById('mr-title')  || {}).value || '';
+  var artist = (document.getElementById('mr-artist') || {}).value || '';
+  var who    = (document.getElementById('mr-who')    || {}).value || '';
+  if (!title.trim()) { alert('Please enter a song title.'); return; }
+  var arr = getMusicRequests();
+  arr.unshift({ id: Date.now(), title: title.trim(), artist: artist.trim(),
+                who: who.trim() || 'Anonymous', date: new Date().toLocaleDateString(), played: false });
+  saveMusicRequests(arr);
+  document.getElementById('mr-title').value  = '';
+  document.getElementById('mr-artist').value = '';
+  document.getElementById('mr-who').value    = '';
+  renderMusicRequests();
+}
+
+function setMrFilter(f) {
+  mr_filter = f;
+  ['all','pending','played'].forEach(function(x) {
+    var b = document.getElementById('mrfilter-'+x);
+    if (b) b.classList.toggle('gm-cat-active', x === f);
+  });
+  renderMusicRequests();
+}
+
+function markMusicPlayed(id) {
+  var arr = getMusicRequests().map(function(r) {
+    return r.id === id ? Object.assign({}, r, {played: true}) : r;
+  });
+  saveMusicRequests(arr);
+  renderMusicRequests();
+}
+
+function deleteMusicRequest(id) {
+  saveMusicRequests(getMusicRequests().filter(function(r){ return r.id !== id; }));
+  renderMusicRequests();
+}
+
+function renderMusicRequests() {
+  var el = document.getElementById('mr-list');
+  if (!el) return;
+  var all = getMusicRequests();
+  var list = all.filter(function(r) {
+    if (mr_filter === 'pending') return !r.played;
+    if (mr_filter === 'played')  return r.played;
+    return true;
+  });
+  if (!list.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#9CA3AF;">No requests yet. Add one above!</div>';
+    return;
+  }
+  el.innerHTML = list.map(function(r) {
+    return `<div style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;${r.played ? 'opacity:0.6;' : ''}">
+      <div style="font-size:28px;">${r.played ? '✅' : '🎵'}</div>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:15px;color:#1F2937;">${r.title}</div>
+        <div style="font-size:13px;color:#6B7280;">${r.artist ? r.artist + ' · ' : ''}Requested by <strong>${r.who}</strong> · ${r.date}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+        ${!r.played ? `<button onclick="markMusicPlayed(${r.id})" class="btn" style="background:#10B981;color:#fff;padding:6px 14px;font-size:13px;">✓ Played</button>` : '<span style="font-size:12px;color:#10B981;font-weight:600;">PLAYED</span>'}
+        <button onclick="deleteMusicRequest(${r.id})" class="btn" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;font-size:13px;">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function printMusicRequests() {
+  var all = getMusicRequests();
+  var pending = all.filter(function(r){ return !r.played; });
+  var w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Song Requests</title>
+  <style>body{font-family:Georgia,serif;padding:30px;max-width:700px;margin:0 auto;}
+  h1{color:#7C3AED;border-bottom:2px solid #7C3AED;padding-bottom:8px;}
+  table{width:100%;border-collapse:collapse;margin-top:16px;}
+  th{background:#7C3AED;color:#fff;padding:10px 14px;text-align:left;font-size:13px;}
+  td{padding:10px 14px;border-bottom:1px solid #E5E7EB;font-size:13px;}
+  tr:nth-child(even){background:#F9FAFB;}
+  .date{font-size:11px;color:#999;}</style></head><body>
+  <h1>🎵 Song Requests</h1>
+  <p style="color:#6B7280;font-size:13px;">Printed ${new Date().toLocaleDateString()} · ${pending.length} pending / ${all.length} total</p>
+  <table><thead><tr><th>Song</th><th>Artist</th><th>Requested By</th><th>Date</th><th>Status</th></tr></thead>
+  <tbody>${all.map(function(r){
+    return `<tr><td><strong>${r.title}</strong></td><td>${r.artist||'—'}</td><td>${r.who}</td><td class="date">${r.date}</td><td>${r.played?'✅ Played':'⏳ Pending'}</td></tr>`;
+  }).join('')}</tbody></table>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+// ── Name That Tune ─────────────────────────────────
+var NTT_DATA = [
+  // 1940s
+  {decade:'40s',emoji:'🎷',title:'In the Mood',artist:'Glenn Miller',clue:'This big band classic makes everyone want to get up and swing dance!'},
+  {decade:'40s',emoji:'🎤',title:'White Christmas',artist:'Bing Crosby',clue:'The best-selling single of all time — you hear it every December'},
+  {decade:'40s',emoji:'🎶',title:"Don't Fence Me In",artist:'Bing Crosby & Andrews Sisters',clue:'A Western anthem about wide open spaces and roaming free'},
+  {decade:'40s',emoji:'🎵',title:'Boogie Woogie Bugle Boy',artist:'Andrews Sisters',clue:'Three sisters sang this energetic WWII favorite about a trumpet player'},
+  // 1950s
+  {decade:'50s',emoji:'🎸',title:'Johnny B. Goode',artist:'Chuck Berry',clue:'A country boy plays guitar just like ringing a bell — deep down in Louisiana'},
+  {decade:'50s',emoji:'👑',title:"Hound Dog",artist:'Elvis Presley',clue:'The King sang this to a cryin\' animal who ain\'t never caught a rabbit'},
+  {decade:'50s',emoji:'🌹',title:'La Bamba',artist:'Ritchie Valens',clue:'A Mexican folk song turned into one of rock\'s first bilingual hits'},
+  {decade:'50s',emoji:'🎵',title:'Rock Around the Clock',artist:'Bill Haley & His Comets',clue:'The anthem that launched the rock and roll era — one, two, three o\'clock!'},
+  {decade:'50s',emoji:'💙',title:'Blue Suede Shoes',artist:'Elvis Presley',clue:'Don\'t step on his footwear — a 1956 rockabilly classic'},
+  {decade:'50s',emoji:'🎶',title:'Singing the Blues',artist:'Guy Mitchell',clue:'He never felt more like singing the blues — a 1956 country-pop crossover'},
+  // 1960s
+  {decade:'60s',emoji:'☀️',title:'Good Vibrations',artist:'The Beach Boys',clue:'California sunshine, surf, and this psychedelic 1966 masterpiece'},
+  {decade:'60s',emoji:'🍎',title:'Hey Jude',artist:'The Beatles',clue:'Four minutes of \"na na na\" at the end — Paul wrote it for John\'s son'},
+  {decade:'60s',emoji:'🌟',title:'My Girl',artist:'The Temptations',clue:'She can make the sunshine on a cloudy day — 1964 Motown gold'},
+  {decade:'60s',emoji:'🎸',title:'Proud Mary',artist:'Creedence Clearwater Revival',clue:'Rolling on the river — big wheel keeps on turning'},
+  {decade:'60s',emoji:'💃',title:"I Can't Help Myself",artist:'Four Tops',clue:'Sugar pie, honey bunch — you know that he loves you'},
+  {decade:'60s',emoji:'🌈',title:'What a Wonderful World',artist:'Louis Armstrong',clue:'Satchmo sees trees of green and red roses too'},
+  // 1970s
+  {decade:'70s',emoji:'🕺',title:'Dancing Queen',artist:'ABBA',clue:'Young and sweet, only seventeen — a disco classic from Sweden'},
+  {decade:'70s',emoji:'🎵',title:'Hotel California',artist:'Eagles',clue:'You can check out any time you like but you can never leave'},
+  {decade:'70s',emoji:'🌙',title:'Moon River',artist:'Andy Williams',clue:'Two drifters, off to see the world — from the film Breakfast at Tiffany\'s'},
+  {decade:'70s',emoji:'💛',title:"You Are the Sunshine of My Life",artist:'Stevie Wonder',clue:'He\'ll always be around — that very first day he saw her face'},
+  {decade:'70s',emoji:'🎶',title:"Don't Stop Me Now",artist:'Queen',clue:'Freddie Mercury is having a ball and tonight he\'s gonna have a good time'},
+  // 1980s
+  {decade:'80s',emoji:'🕺',title:"Wake Me Up Before You Go-Go",artist:'Wham!',clue:'Jitterbug! George Michael wanted to hit that high — a 1984 pop smash'},
+  {decade:'80s',emoji:'🎤',title:'Sweet Child O Mine',artist:"Guns N' Roses",clue:'That iconic guitar riff and a smile that reminds you of a childhood memory'},
+  {decade:'80s',emoji:'💜',title:'Purple Rain',artist:'Prince',clue:'The Purple One\'s epic ballad — never meant to cause sorrow or pain'},
+  {decade:'80s',emoji:'🌅',title:'Don\'t You (Forget About Me)',artist:'Simple Minds',clue:'The Breakfast Club anthem — will you stand up and walk out on me?'},
+  // Country
+  {decade:'country',emoji:'🤠',title:'Ring of Fire',artist:'Johnny Cash',clue:'A burning love — went down, down, down into a ring of fire'},
+  {decade:'country',emoji:'🦋',title:'Jolene',artist:'Dolly Parton',clue:'Please don\'t take my man — begging a flame-haired beauty'},
+  {decade:'country',emoji:'🌿',title:'Take Me Home, Country Roads',artist:'John Denver',clue:'Almost heaven, West Virginia — Blue Ridge Mountains, Shenandoah River'},
+  {decade:'country',emoji:'🎸',title:"Friends in Low Places",artist:'Garth Brooks',clue:'Blame it all on his roots — he showed up in boots and ruined a black tie affair'},
+  {decade:'country',emoji:'🌹',title:'Crazy',artist:'Patsy Cline',clue:'Crazy for feeling so lonely — a 1961 country heartbreaker'},
+  {decade:'country',emoji:'🤠',title:'Stand By Your Man',artist:'Tammy Wynette',clue:'Give him two arms to cling to and something warm to come to'},
+  // Gospel
+  {decade:'gospel',emoji:'🙏',title:'Amazing Grace',artist:'Traditional',clue:'A wretch like me — once was lost but now is found'},
+  {decade:'gospel',emoji:'✝️',title:'How Great Thou Art',artist:'Traditional',clue:'When through the woods and forest glades I wander — O my soul!'},
+  {decade:'gospel',emoji:'🌅',title:'This Little Light of Mine',artist:'Traditional',clue:'Let it shine, let it shine, let it shine — a beloved Sunday school favorite'},
+  {decade:'gospel',emoji:'🕊️',title:'Oh Happy Day',artist:'Edwin Hawkins Singers',clue:'He washed my sins away — a 1967 gospel hit that crossed into pop'},
+  {decade:'gospel',emoji:'🙌',title:'Blessed Assurance',artist:'Traditional',clue:'This is my story, this is my song — praising my Savior all the day long'},
+];
+
+var nttState = { idx: 0, deck: [], revealed: false, scoreA: 0, scoreB: 0, decade: 'all' };
+
+function nttInit() {
+  nttNewGame();
+}
+
+function nttNewGame() {
+  nttState.scoreA = 0;
+  nttState.scoreB = 0;
+  nttUpdateScores();
+  nttShuffle();
+  nttState.revealed = false;
+  var aEl = document.getElementById('ntt-answer-area');
+  if (aEl) aEl.style.display = 'none';
+  nttShowCard();
+}
+
+function nttShuffle() {
+  var pool = nttState.decade === 'all' ? NTT_DATA : NTT_DATA.filter(function(s){ return s.decade === nttState.decade; });
+  nttState.deck = pool.slice().sort(function(){ return Math.random()-0.5; });
+  nttState.idx = 0;
+}
+
+function nttSetDecade(val) {
+  nttState.decade = val;
+  nttShuffle();
+  nttState.revealed = false;
+  var aEl = document.getElementById('ntt-answer-area');
+  if (aEl) aEl.style.display = 'none';
+  nttShowCard();
+}
+
+function nttShowCard() {
+  var deck = nttState.deck;
+  if (!deck.length) return;
+  var i = nttState.idx % deck.length;
+  var s = deck[i];
+  var emojiEl  = document.getElementById('ntt-emoji');
+  var clueEl   = document.getElementById('ntt-clue');
+  var decadeEl = document.getElementById('ntt-decade');
+  var prog     = document.getElementById('ntt-progress');
+  if (emojiEl)  emojiEl.textContent  = s.emoji;
+  if (clueEl)   clueEl.textContent   = s.clue;
+  if (decadeEl) decadeEl.textContent = '📅 ' + s.decade.replace('50s','1950s').replace('60s','1960s').replace('40s','1940s').replace('70s','1970s').replace('80s','1980s').replace('country','Country').replace('gospel','Gospel');
+  if (prog)     prog.textContent     = `Song ${i+1} of ${deck.length}`;
+  nttState.revealed = false;
+  var aEl = document.getElementById('ntt-answer-area');
+  if (aEl) aEl.style.display = 'none';
+  nttSyncTV(s, false);
+}
+
+function nttReveal() {
+  var deck = nttState.deck;
+  if (!deck.length) return;
+  var s = deck[nttState.idx % deck.length];
+  var titleEl  = document.getElementById('ntt-answer-title');
+  var artistEl = document.getElementById('ntt-answer-artist');
+  var aEl      = document.getElementById('ntt-answer-area');
+  if (titleEl)  titleEl.textContent  = '🎵 ' + s.title;
+  if (artistEl) artistEl.textContent = s.artist;
+  if (aEl)      aEl.style.display    = '';
+  nttState.revealed = true;
+  nttSyncTV(s, true);
+}
+
+function nttNext() {
+  nttState.idx++;
+  nttState.revealed = false;
+  var aEl = document.getElementById('ntt-answer-area');
+  if (aEl) aEl.style.display = 'none';
+  nttShowCard();
+}
+
+function nttScore(team, delta) {
+  if (team === 'a') nttState.scoreA = Math.max(0, nttState.scoreA + delta);
+  else              nttState.scoreB = Math.max(0, nttState.scoreB + delta);
+  nttUpdateScores();
+}
+
+function nttUpdateScores() {
+  var a = document.getElementById('ntt-score-a');
+  var b = document.getElementById('ntt-score-b');
+  var d = document.getElementById('ntt-score-display');
+  if (a) a.textContent = nttState.scoreA;
+  if (b) b.textContent = nttState.scoreB;
+  if (d) d.innerHTML = 'Team A: ' + nttState.scoreA + ' &nbsp;|&nbsp; Team B: ' + nttState.scoreB;
+  // push score to TV without changing card
+  try {
+    var raw = localStorage.getItem('el365_ntt_tv_state');
+    if (raw) {
+      var tv = JSON.parse(raw);
+      tv.scoreA = nttState.scoreA;
+      tv.scoreB = nttState.scoreB;
+      localStorage.setItem('el365_ntt_tv_state', JSON.stringify(tv));
+    }
+  } catch(e) {}
+}
+
+// ── Resident Music Profiles ────────────────────────
+var MP_KEY = 'el365_music_profiles';
+var mp_editing_id = null;
+
+function getMusicProfiles() {
+  try { return JSON.parse(localStorage.getItem(MP_KEY)) || []; } catch(e) { return []; }
+}
+function saveMusicProfiles(arr) { localStorage.setItem(MP_KEY, JSON.stringify(arr)); }
+
+function renderMusicProfiles() {
+  var el = document.getElementById('mp-grid');
+  if (!el) return;
+  var profiles = getMusicProfiles();
+  if (!profiles.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#9CA3AF;grid-column:1/-1;">No profiles yet — add one to get started!</div>';
+    return;
+  }
+  el.innerHTML = profiles.map(function(p) {
+    return `<div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div style="font-size:32px;margin-bottom:4px;">🎵</div>
+          <div style="font-weight:800;font-size:17px;color:#1F2937;">${p.name}</div>
+          ${p.era ? `<div style="font-size:12px;background:#FDF2F8;color:#BE185D;padding:2px 10px;border-radius:20px;display:inline-block;margin-top:4px;">${p.era}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="mpEdit(${p.id})" class="btn" style="background:#F3F4F6;color:#374151;padding:5px 10px;font-size:12px;">✏️</button>
+          <button onclick="mpPrint(${p.id})" class="btn" style="background:#EDE9FE;color:#6D28D9;padding:5px 10px;font-size:12px;">🖨️</button>
+          <button onclick="mpDelete(${p.id})" class="btn" style="background:#FEE2E2;color:#991B1B;padding:5px 10px;font-size:12px;">✕</button>
+        </div>
+      </div>
+      ${p.artists ? `<div style="font-size:13px;color:#374151;"><span style="font-weight:600;">Loves:</span> ${p.artists}</div>` : ''}
+      ${p.faveSong ? `<div style="font-size:13px;color:#374151;"><span style="font-weight:600;">All-time fave:</span> 🎵 ${p.faveSong}</div>` : ''}
+      ${p.singalong ? `<div style="font-size:13px;color:#374151;"><span style="font-weight:600;">Sing-alongs:</span> ${p.singalong}</div>` : ''}
+      ${p.avoid ? `<div style="font-size:12px;color:#9CA3AF;"><span style="font-weight:600;">Avoid:</span> ${p.avoid}</div>` : ''}
+      ${p.memory ? `<div style="background:#FFFBEB;border-left:3px solid #F59E0B;padding:10px 12px;border-radius:0 8px 8px 0;font-size:13px;color:#92400E;font-style:italic;">"${p.memory}"</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function mpNewProfile() {
+  mp_editing_id = null;
+  ['mp-name','mp-artists','mp-fave-song','mp-memory','mp-singalong','mp-avoid'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  var era = document.getElementById('mp-era'); if (era) era.value = '';
+  var t = document.getElementById('mp-form-title'); if (t) t.textContent = 'New Music Profile';
+  var w = document.getElementById('mp-form-wrap'); if (w) w.style.display = '';
+}
+
+function mpEdit(id) {
+  var p = getMusicProfiles().find(function(x){ return x.id === id; });
+  if (!p) return;
+  mp_editing_id = id;
+  var fields = {
+    'mp-name': p.name, 'mp-era': p.era, 'mp-artists': p.artists,
+    'mp-fave-song': p.faveSong, 'mp-memory': p.memory,
+    'mp-singalong': p.singalong, 'mp-avoid': p.avoid
+  };
+  Object.keys(fields).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=fields[k]||''; });
+  var t = document.getElementById('mp-form-title'); if (t) t.textContent = 'Edit Profile — ' + p.name;
+  var w = document.getElementById('mp-form-wrap'); if (w) w.style.display = '';
+}
+
+function mpCloseForm() {
+  var w = document.getElementById('mp-form-wrap'); if (w) w.style.display = 'none';
+}
+
+function mpSaveProfile() {
+  var name = (document.getElementById('mp-name')||{}).value||'';
+  if (!name.trim()) { alert('Please enter a resident name.'); return; }
+  var p = {
+    id: mp_editing_id || Date.now(),
+    name:     name.trim(),
+    era:      (document.getElementById('mp-era')||{}).value||'',
+    artists:  (document.getElementById('mp-artists')||{}).value||'',
+    faveSong: (document.getElementById('mp-fave-song')||{}).value||'',
+    memory:   (document.getElementById('mp-memory')||{}).value||'',
+    singalong:(document.getElementById('mp-singalong')||{}).value||'',
+    avoid:    (document.getElementById('mp-avoid')||{}).value||'',
+  };
+  var arr = getMusicProfiles();
+  if (mp_editing_id) {
+    arr = arr.map(function(x){ return x.id === mp_editing_id ? p : x; });
+  } else {
+    arr.push(p);
+  }
+  saveMusicProfiles(arr);
+  mpCloseForm();
+  renderMusicProfiles();
+}
+
+function mpDelete(id) {
+  if (!confirm('Remove this music profile?')) return;
+  saveMusicProfiles(getMusicProfiles().filter(function(x){ return x.id !== id; }));
+  renderMusicProfiles();
+}
+
+// ── TV Display helpers ─────────────────────────
+function nttSyncTV(song, revealed) {
+  try {
+    localStorage.setItem('el365_ntt_tv_state', JSON.stringify({
+      clue:     song ? song.clue   : '',
+      decade:   song ? song.decade : '',
+      emoji:    song ? song.emoji  : '🎵',
+      title:    song ? song.title  : '',
+      artist:   song ? song.artist : '',
+      revealed: revealed,
+      scoreA:   nttState.scoreA,
+      scoreB:   nttState.scoreB,
+    }));
+  } catch(e) {}
+}
+
+function openNttDisplay() {
+  // Sync current card to TV state first
+  var deck = nttState.deck;
+  if (deck && deck.length) {
+    nttSyncTV(deck[nttState.idx % deck.length], nttState.revealed);
+  }
+  window.open('nametune-display.html', 'ntt_tv',
+    'width=1280,height=720,toolbar=0,menubar=0,scrollbars=0');
+}
+
+function openMusicRequestsDisplay() {
+  window.open('music-requests-display.html', 'music_requests_tv',
+    'width=1280,height=720,toolbar=0,menubar=0,scrollbars=0');
+}
+
+function mpPrint(id) {
+  var p = getMusicProfiles().find(function(x){ return x.id === id; });
+  if (!p) return;
+  var w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Music Profile — ${p.name}</title>
+  <style>
+    body{font-family:Georgia,serif;padding:40px;max-width:600px;margin:0 auto;color:#1F2937;}
+    h1{color:#DB2777;font-size:28px;margin-bottom:4px;}
+    .era{background:#FDF2F8;color:#BE185D;padding:4px 14px;border-radius:20px;display:inline-block;font-size:13px;font-weight:700;margin-bottom:16px;}
+    .row{margin-bottom:14px;}
+    .label{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#9CA3AF;font-weight:700;margin-bottom:3px;}
+    .value{font-size:16px;color:#1F2937;}
+    .memory{background:#FFFBEB;border-left:4px solid #F59E0B;padding:12px 16px;border-radius:0 8px 8px 0;font-style:italic;color:#92400E;margin-top:8px;}
+    hr{border:none;border-top:1px solid #E5E7EB;margin:20px 0;}
+  </style></head><body>
+  <div style="font-size:40px;">🎵</div>
+  <h1>${p.name}</h1>
+  ${p.era ? `<div class="era">${p.era}</div>` : ''}
+  ${p.artists ? `<div class="row"><div class="label">Favorite Artists</div><div class="value">${p.artists}</div></div>` : ''}
+  ${p.faveSong ? `<div class="row"><div class="label">All-Time Favorite Song</div><div class="value">🎵 ${p.faveSong}</div></div>` : ''}
+  ${p.singalong ? `<div class="row"><div class="label">Sing-Along Songs</div><div class="value">${p.singalong}</div></div>` : ''}
+  ${p.avoid ? `<div class="row"><div class="label">Music to Avoid</div><div class="value">${p.avoid}</div></div>` : ''}
+  ${p.memory ? `<hr><div class="label">A Musical Memory</div><div class="memory">"${p.memory}"</div>` : ''}
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+</script>
 </body></html>`;
 
   const w = window.open('','_blank','width=900,height=700');
@@ -16441,11 +16978,14 @@ function initMusic() {
   renderPerformanceIdeas();
   renderKaraokeGrid();
   renderThemedSessions();
+  renderMusicRequests();
+  renderMusicProfiles();
+  nttInit();
 }
 
 function switchMusicTab(tab) {
   musState.tab = tab;
-  ['songs','movies','games','performance','themed'].forEach(function(t) {
+  ['songs','movies','games','performance','themed','requests','nametune','profiles'].forEach(function(t) {
     var btn = document.getElementById('mustab-'+t);
     if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
     var p = document.getElementById('muspanel-'+t);
