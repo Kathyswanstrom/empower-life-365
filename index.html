@@ -3224,6 +3224,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button id="tvtab-trivia"  onclick="switchTravelTab('trivia')"  class="tv-subtab">🧠 Travel Trivia</button>
     <button id="tvtab-daytrip" onclick="switchTravelTab('daytrip')" class="tv-subtab">🗓️ Day Trip Planner</button>
     <button id="tvtab-memory"  onclick="switchTravelTab('memory')"  class="tv-subtab">💭 Memory Lane</button>
+    <button id="tvtab-passport" onclick="switchTravelTab('passport')" class="tv-subtab">🎫 Passport Book</button>
+    <button id="tvtab-postcard" onclick="switchTravelTab('postcard')" class="tv-subtab">📬 Postcard Creator</button>
   </div>
 
   <!-- ═══ VIRTUAL VISIT ═══ -->
@@ -3250,6 +3252,11 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div style="font-weight:800;font-size:15px;color:#6B21A8;margin-bottom:12px;">🎬 Watch & Listen</div>
         <div id="tv-media" style="color:#374151;font-size:14px;line-height:1.8;"></div>
       </div>
+    </div>
+    <!-- Conversation Starters -->
+    <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:12px;padding:20px;margin-bottom:18px;">
+      <div style="font-weight:800;font-size:15px;color:#0369A1;margin-bottom:12px;">💬 Conversation Starters</div>
+      <div id="tv-convos" style="display:flex;flex-direction:column;gap:8px;"></div>
     </div>
     <!-- Print button -->
     <div style="text-align:right;">
@@ -3377,6 +3384,59 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div style="font-weight:800;font-size:15px;color:#92400E;margin-bottom:14px;">💭 Memory Collection</div>
         <div id="mem-list" style="display:flex;flex-direction:column;gap:12px;max-height:480px;overflow-y:auto;"></div>
         <div id="mem-empty" style="text-align:center;padding:40px;color:#aaa;font-size:14px;">No memories yet. Ask residents about their favorite trips!</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ PASSPORT BOOK ═══ -->
+  <div id="tvpanel-passport" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+      <div>
+        <div style="font-weight:800;font-size:17px;color:var(--primary);">🎫 Virtual Passport Book</div>
+        <div style="font-size:13px;color:#6B7280;margin-top:3px;">Mark each destination as visited — collect stamps and print your passport!</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="passportStampAll()" class="btn btn-secondary" style="font-size:13px;">✅ Stamp All Visited</button>
+        <button onclick="passportClearAll()" class="btn" style="background:#FEE2E2;color:#B91C1C;border:1px solid #FCA5A5;font-size:13px;">🗑️ Clear Stamps</button>
+        <button onclick="printPassportBook()" class="btn btn-primary" style="font-size:13px;">🖨️ Print Passport</button>
+      </div>
+    </div>
+    <div id="passport-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;"></div>
+  </div>
+
+  <!-- ═══ POSTCARD CREATOR ═══ -->
+  <div id="tvpanel-postcard" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+      <!-- Form -->
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:14px;padding:22px;">
+        <div style="font-weight:800;font-size:16px;color:#92400E;margin-bottom:16px;">📬 Create a Postcard</div>
+        <label style="font-size:13px;font-weight:600;color:#374151;">Destination Theme</label>
+        <div style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;" id="pc-dest-label"></div>
+        <label style="font-size:13px;font-weight:600;">To (Recipient)</label>
+        <input type="text" id="pc-to" placeholder="e.g. Dear Family, or John & Mary" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">From (Resident Name)</label>
+        <input type="text" id="pc-from" placeholder="e.g. Margaret" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;" />
+        <label style="font-size:13px;font-weight:600;">Message</label>
+        <textarea id="pc-message" rows="4" placeholder="Wish you were here! Today we virtually visited... The most amazing fact I learned was..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px;box-sizing:border-box;resize:vertical;"></textarea>
+        <label style="font-size:13px;font-weight:600;">Postcard Style</label>
+        <select id="pc-style" onchange="renderPostcardPreview()" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:16px;font-size:14px;box-sizing:border-box;">
+          <option value="classic">🌅 Classic Scenic</option>
+          <option value="vintage">📮 Vintage Style</option>
+          <option value="bright">🎨 Bright & Colorful</option>
+        </select>
+        <div style="display:flex;gap:8px;">
+          <button onclick="renderPostcardPreview()" class="btn btn-secondary">👁️ Preview</button>
+          <button onclick="printPostcard()" class="btn btn-primary">🖨️ Print Postcard</button>
+        </div>
+      </div>
+      <!-- Preview -->
+      <div>
+        <div style="font-weight:700;font-size:14px;color:#374151;margin-bottom:10px;">Preview:</div>
+        <div id="pc-preview" style="border:2px solid #E5E7EB;border-radius:12px;overflow:hidden;min-height:280px;background:#F9FAFB;display:flex;align-items:center;justify-content:center;">
+          <div style="color:#9CA3AF;font-size:14px;text-align:center;">Fill in the form and click Preview</div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:#9CA3AF;text-align:center;">Postcard prints at 6×4 inches — standard mailing size</div>
       </div>
     </div>
   </div>
@@ -14073,7 +14133,8 @@ const TV_DESTINATIONS = [
     facts:['Hawaii is the only US state made entirely of islands.','The Hawaiian alphabet has only 13 letters.','Hawaii has the world\'s most active volcano — Kīlauea.','Hula dance tells stories of nature, history, and legends.','Hawaii grows 1/3 of the world\'s commercial supply of pineapples.'],
     activities:['Lei-making with paper flowers','Hawaiian luau themed lunch','Learn to hula — YouTube video party','Paint a tropical sunset','Hawaiian music listening hour'],
     food:'Try: Pineapple upside-down cake, coconut rice, or a tropical fruit salad with mango and papaya.',
-    media:'Watch: Blue Hawaii (1961), Lilo & Stitch (2002). Listen: Somewhere Over the Rainbow by Israel Kamakawiwoʻole.' },
+    media:'Watch: Blue Hawaii (1961), Lilo & Stitch (2002). Listen: Somewhere Over the Rainbow by Israel Kamakawiwoʻole.',
+    convos:['Have you ever been to Hawaii or dreamed of going?','What tropical fruit is your favorite — pineapple, mango, or coconut?','If you learned the hula, who would you teach it to?','The Hawaiian alphabet only has 13 letters — can you guess any?','What song makes you think of a warm, sunny day?'] },
   { id:'paris',    label:'🗼 Paris, France',       emoji:'🗼',
     tagline:'The City of Light — art, fashion, and the finest cuisine.',
     tags:['🎨 Art','🥐 Cuisine','🗼 Landmarks','💃 Romance'],
@@ -14081,7 +14142,8 @@ const TV_DESTINATIONS = [
     facts:['The Eiffel Tower was built in 1889 and was meant to be temporary.','The Louvre is the world\'s largest art museum.','Paris has over 40,000 restaurants and cafés.','The city is called "La Ville Lumière" — The City of Light.','Baguettes: Parisians eat about 30 million per day.'],
     activities:['Beret decorating craft','French café breakfast — croissants & café au lait','Watch an Impressionist art slideshow','Write a postcard "from Paris"','Learn a few French phrases together'],
     food:'Try: Quiche Lorraine, French onion soup, or simple crepes with jam and powdered sugar.',
-    media:'Watch: An American in Paris (1951), Midnight in Paris (2011). Listen: La Vie en Rose by Édith Piaf.' },
+    media:'Watch: An American in Paris (1951), Midnight in Paris (2011). Listen: La Vie en Rose by Édith Piaf.',
+    convos:['If you could have lunch at a Paris café, what would you order?','La Vie en Rose is a famous French song — does it bring back any memories?','The Eiffel Tower was almost torn down — does that surprise you?','Have you ever tried French food like a croissant or French onion soup?','If you could visit one Paris museum, which would it be?'] },
   { id:'italy',    label:'🍕 Italy',               emoji:'🏛️',
     tagline:'Where ancient history meets the world\'s greatest food.',
     tags:['🍝 Pasta','🏛️ History','🎭 Opera','🌅 Scenery'],
@@ -14089,7 +14151,8 @@ const TV_DESTINATIONS = [
     facts:['Italy has more UNESCO World Heritage Sites than any other country.','The Colosseum could hold 50,000–80,000 spectators.','Pizza was invented in Naples in the 18th century.','Italy produces more wine than any other country in the world.','The Italian flag colors stand for hope, faith, and charity.'],
     activities:['Make paper Roman columns craft','Italian opera listening hour','Pizza-topping voting & pizza party','Draw or paint the Leaning Tower of Pisa','Learn to say numbers & greetings in Italian'],
     food:'Try: Pasta with marinara sauce, bruschetta, or an Italian herb focaccia bread.',
-    media:'Watch: Roman Holiday (1953), Three Coins in the Fountain (1954). Listen: Nessun Dorma by Puccini.' },
+    media:'Watch: Roman Holiday (1953), Three Coins in the Fountain (1954). Listen: Nessun Dorma by Puccini.',
+    convos:['If you tossed a coin into the Trevi Fountain, what would you wish for?','Have you ever tried making homemade pasta or pizza?','Italy has more UNESCO World Heritage Sites than any other country — what place deserves to be preserved forever?','Italian opera — do you love it or find it a bit much?','If you could live in any Italian city, where would it be?'] },
   { id:'japan',    label:'🌸 Japan',               emoji:'⛩️',
     tagline:'Ancient temples, cherry blossoms, and bullet trains.',
     tags:['🌸 Cherry Blossoms','🍣 Sushi','⛩️ Temples','🤖 Technology'],
@@ -14097,7 +14160,8 @@ const TV_DESTINATIONS = [
     facts:['Japan has the world\'s oldest company, Kongo Gumi, founded in 578 AD.','Cherry blossom season (hanami) is a national celebration.','Japan has over 6,800 islands.','The bullet train (Shinkansen) travels up to 200 mph.','Japan is home to 5 of the world\'s 10 most visited amusement parks.'],
     activities:['Paper origami crane folding','Japanese tea ceremony discussion','Try chopsticks with candy or marshmallows','Draw cherry blossoms on paper','Watch a Sumo wrestling video clip'],
     food:'Try: Rice bowls with teriyaki sauce, miso soup, or green tea ice cream.',
-    media:'Watch: Spirited Away (2001), Lost in Translation (2003). Listen: Traditional koto music.' },
+    media:'Watch: Spirited Away (2001), Lost in Translation (2003). Listen: Traditional koto music.',
+    convos:['Have you ever tried using chopsticks? How did it go?','Cherry blossom season is a huge celebration — what season do you love most?','Japan\'s bullet trains go 200 mph — what\'s the fastest you\'ve ever traveled?','Have you ever tried Japanese food like sushi or tempura?','Japan has many people who live past 100 — what\'s your secret to a long life?'] },
   { id:'caribbean',label:'🌊 Caribbean Islands',  emoji:'🌴',
     tagline:'Turquoise water, reggae rhythms, and white-sand beaches.',
     tags:['🌊 Ocean','🎵 Reggae','🦜 Wildlife','🏖️ Beaches'],
@@ -14105,7 +14169,8 @@ const TV_DESTINATIONS = [
     facts:['The Caribbean Sea has over 7,000 islands, islets, and cays.','Bob Marley was born in Jamaica and popularized reggae worldwide.','The Caribbean is home to the hawksbill sea turtle.','Christopher Columbus first landed in the Bahamas in 1492.','Carnival celebrations in Trinidad are among the world\'s largest.'],
     activities:['Limbo contest with pool noodle or broomstick','Steel drum music listening party','Tropical flower arrangement craft','Caribbean cooking demo — jerk seasoning discussion','Beach-themed photo backdrop fun'],
     food:'Try: Coconut rice and beans, plantain chips, or a tropical fruit punch (non-alcoholic).',
-    media:'Watch: The Mighty Quinn (1989), Cool Runnings (1993). Listen: Three Little Birds by Bob Marley.' },
+    media:'Watch: The Mighty Quinn (1989), Cool Runnings (1993). Listen: Three Little Birds by Bob Marley.',
+    convos:['What\'s your favorite tropical drink or flavor?','Bob Marley said \'every little thing gonna be alright\' — when has that been true for you?','If you could live on a Caribbean island, what would your typical day look like?','Have you ever done a limbo? What\'s the most fun party game you remember?','What\'s the most beautiful beach you\'ve ever visited?'] },
   { id:'africa',   label:'🦁 African Safari',     emoji:'🦁',
     tagline:'Majestic wildlife, vast savannahs, and stunning sunsets.',
     tags:['🦁 Wildlife','🌅 Savannah','🥁 Culture','🌍 Nature'],
@@ -14113,7 +14178,8 @@ const TV_DESTINATIONS = [
     facts:['Africa is the world\'s second-largest continent.','The Serengeti hosts the largest land animal migration on Earth.','Mount Kilimanjaro is Africa\'s highest peak at 19,341 feet.','Africa has over 2,000 recognized languages.','Victoria Falls is the world\'s largest sheet of falling water.'],
     activities:['African animal trivia & bingo','Safari photo guessing game — which animal?','African drum beat rhythm circle','Paint or draw your favorite safari animal','Watch a National Geographic wildlife clip'],
     food:'Try: Peanut soup, plantains, or a simple injera flatbread with hummus.',
-    media:'Watch: The Lion King (1994), Born Free (1966). Listen: The Circle of Life, traditional African drumming.' },
+    media:'Watch: The Lion King (1994), Born Free (1966). Listen: The Circle of Life, traditional African drumming.',
+    convos:['If you went on safari, which animal would you most want to see?','Africa has over 2,000 languages — what languages have you spoken or learned?','The Lion King\'s Circle of Life — what does that phrase mean to you?','Have you ever climbed or hiked somewhere with a big view?','If you could hear African drums live, how would that make you feel?'] },
   { id:'australia',label:'🦘 Australia',          emoji:'🦘',
     tagline:'Stunning outback, the Great Barrier Reef, and unique wildlife.',
     tags:['🦘 Kangaroos','🐠 Reef','🌊 Surfing','🎨 Aboriginal Art'],
@@ -14121,7 +14187,8 @@ const TV_DESTINATIONS = [
     facts:['Australia is both a country and a continent.','The Great Barrier Reef is the world\'s largest living structure.','Kangaroos and koalas are found only in Australia.','The Sydney Opera House took 14 years to build.','Australia has the world\'s longest fence — the Dingo Fence at 3,488 miles.'],
     activities:['Australian animal matching game','Boomerang craft (cardboard)','Watch a short clip on the Great Barrier Reef','Australian "G\'day!" phrase learning','Try Vegemite discussion — would you eat it?'],
     food:'Try: Lamington cakes (sponge with coconut), Anzac biscuits (oat cookies), or a simple pavlova.',
-    media:'Watch: Crocodile Dundee (1986), Finding Nemo (2003). Listen: Waltzing Matilda, traditional Australian folk songs.' },
+    media:'Watch: Crocodile Dundee (1986), Finding Nemo (2003). Listen: Waltzing Matilda, traditional Australian folk songs.',
+    convos:['Would you try Vegemite? What\'s the strangest food you\'ve ever tasted?','If you could swim along the Great Barrier Reef, what would you hope to see?','Australia is a continent AND a country — what fun geography facts do you know?','What\'s the most exotic animal you\'ve ever seen up close?','Have you ever seen a really amazing sunset or sunrise?'] },
   { id:'newengland',label:'🍂 New England, USA',  emoji:'🍁',
     tagline:'Fall foliage, charming lighthouses, and seafood on the coast.',
     tags:['🍂 Fall Colors','🦞 Lobster','⛵ Sailing','🏘️ History'],
@@ -14129,7 +14196,8 @@ const TV_DESTINATIONS = [
     facts:['New England includes 6 US states: MA, CT, RI, VT, NH, and ME.','Plymouth, MA was settled by Pilgrims in 1620.','Vermont is the largest maple syrup producer in the US.','Fenway Park in Boston is the oldest MLB stadium (1912).','Maine has the most lighthouses of any US state — over 60!'],
     activities:['Leaf rubbings with crayons and real or paper leaves','New England clam chowder tasting or recipe reading','Lighthouse watercolor painting','Boston Tea Party history discussion','State capitals quiz — can you name them all?'],
     food:'Try: Clam chowder, apple cider donuts, or cranberry muffins.',
-    media:'Watch: On Golden Pond (1981), The Cider House Rules (1999). Listen: Classic patriotic songs.' },
+    media:'Watch: On Golden Pond (1981), The Cider House Rules (1999). Listen: Classic patriotic songs.',
+    convos:['Have you ever seen fall foliage? Where was it?','Maine has 60+ lighthouses — have you ever visited a lighthouse?','Vermont makes more maple syrup than anywhere — pancakes or waffles?','The Pilgrims landed in 1620 — what\'s the oldest place in America you\'ve visited?','If you had a cabin in New England for a week, what would you do?'] },
   { id:'greece',   label:'🏛️ Greece',             emoji:'🏛️',
     tagline:'Birthplace of democracy, mythology, and the Olympic Games.',
     tags:['🏛️ Ancient History','🌊 Islands','🍋 Cuisine','🧿 Mythology'],
@@ -14137,7 +14205,8 @@ const TV_DESTINATIONS = [
     facts:['Greece is the birthplace of the Olympic Games (776 BC).','The Greek alphabet is the origin of Latin and other alphabets.','Greece has over 6,000 islands, with about 227 inhabited.','The Parthenon has stood for over 2,400 years.','Greece produces about 20% of the world\'s olive oil.'],
     activities:['Greek mythology trivia — Zeus, Athena, Poseidon','Olive oil tasting with bread','Make paper columns & architecture craft','Discussion: Would you rather visit Athens or Santorini?','Learn to say "Opa!" and why Greeks say it'],
     food:'Try: Hummus and pita, Greek salad, or honey-drizzled yogurt with walnuts.',
-    media:'Watch: Mamma Mia! (2008), My Big Fat Greek Wedding (2002). Listen: Traditional Greek bouzouki music.' },
+    media:'Watch: Mamma Mia! (2008), My Big Fat Greek Wedding (2002). Listen: Traditional Greek bouzouki music.',
+    convos:['Santorini has beautiful white and blue buildings — what color is your dream home?','Greece gave us the Olympics — what sport would you have competed in when you were young?','Have you ever tried Greek food like gyros, hummus, or baklava?','The ancient Greeks told amazing myths — what\'s your favorite legend or story?','If you shouted \'Opa!\' right now, what would you be celebrating?'] },
   { id:'amazon',   label:'🌿 Amazon Rainforest',  emoji:'🦜',
     tagline:'Earth\'s lungs — a world of color, life, and mystery.',
     tags:['🌿 Nature','🦜 Birds','🐍 Wildlife','💧 Rivers'],
@@ -14145,7 +14214,8 @@ const TV_DESTINATIONS = [
     facts:['The Amazon produces 20% of Earth\'s oxygen.','The Amazon River discharges more water than any other river.','Over 3,000 species of fish live in the Amazon.','The rainforest is home to 10% of all species on Earth.','Some Amazon trees are over 1,000 years old.'],
     activities:['Tropical bird coloring sheets','Rain stick craft with paper towel tube & rice','Amazon ecosystem discussion — food chain game','Identify the animal by sound (YouTube clips)','Paint a rainforest scene'],
     food:'Try: Mango salsa, black bean and rice bowls, or passion fruit juice.',
-    media:'Watch: Rio (2011), The Mission (1986). Listen: Brazilian samba or bossa nova music.' },
+    media:'Watch: Rio (2011), The Mission (1986). Listen: Brazilian samba or bossa nova music.',
+    convos:['If you heard samba music, would you want to get up and dance?','The Amazon produces 20% of Earth\'s oxygen — what do you do to care for nature?','Over 3,000 fish species live in the Amazon — what\'s the most unusual animal you\'ve seen?','If you could make a rain stick, what sounds of nature would you recreate?','What do you think we should protect most for future generations?'] },
   { id:'chicago',  label:'🌆 Chicago, USA',       emoji:'🌆',
     tagline:'The Windy City — jazz, deep dish pizza, and lakefront beauty.',
     tags:['🎷 Jazz','🍕 Deep Dish','🏙️ Skyline','⚾ Baseball'],
@@ -14153,7 +14223,8 @@ const TV_DESTINATIONS = [
     facts:['Chicago is nicknamed "The Windy City" — originally about politics, not weather!','The Chicago deep dish pizza was invented at Pizzeria Uno in 1943.','The Chicago River is dyed green every St. Patrick\'s Day.','Wrigley Field (opened 1914) is one of the oldest MLB stadiums.','Chicago has the world\'s first skyscraper — the Home Insurance Building (1885).'],
     activities:['Chicago-style deep dish pizza party','Jazz music hour — Louis Armstrong, Ella Fitzgerald','Name that Chicago landmark — photo quiz','Blues Brothers dance clip viewing','Chicago flag & history trivia'],
     food:'Try: Deep dish pizza (store-bought or homemade), Chicago-style hot dogs, or popcorn mix.',
-    media:'Watch: Ferris Bueller\'s Day Off (1986), Chicago (2002). Listen: Chicago blues and jazz classics.' },
+    media:'Watch: Ferris Bueller\'s Day Off (1986), Chicago (2002). Listen: Chicago blues and jazz classics.',
+    convos:['Chicago deep dish vs New York thin crust — which side are you on?','If you had one day in Chicago like Ferris Bueller, where would you go?','Chicago is known for blues and jazz — who is your favorite musician from that era?','The Chicago River turns green on St. Patrick\'s Day — what is a fun holiday tradition you remember?','Have you ever visited Chicago or seen its famous skyline?'] },
   { id:'natlparks',label:'🏔️ US National Parks',  emoji:'🏕️',
     tagline:'Yellowstone, Grand Canyon, Yosemite — America\'s best idea.',
     tags:['🏔️ Mountains','🌋 Geysers','🦅 Wildlife','🌲 Forests'],
@@ -14161,7 +14232,62 @@ const TV_DESTINATIONS = [
     facts:['The US has 63 designated National Parks covering 52 million acres.','Old Faithful geyser erupts roughly every 90 minutes.','The Grand Canyon is over 270 miles long and 1 mile deep.','Yosemite\'s Half Dome took about 87 million years to form.','Theodore Roosevelt established the National Park Service tradition.'],
     activities:['National Park passport stamp craft','Grand Canyon vs Yosemite — which would you visit?','Wildlife identification card game','Campfire story circle','Pine cone bird feeder craft'],
     food:'Try: S\'mores, trail mix, or campfire baked apples with cinnamon.',
-    media:'Watch: Ken Burns National Parks documentary clips. Listen: America the Beautiful, folk songs.' }
+    media:'Watch: Ken Burns National Parks documentary clips. Listen: America the Beautiful, folk songs.',
+    convos:['Have you ever visited a National Park? Which one?','If you could camp anywhere in America, where would it be?','What sounds do you imagine you\'d hear in Yellowstone at night?','Theodore Roosevelt called parks \"America\'s best idea\" — do you agree?','If you could rename any National Park, what would you call it?'] },
+  { id:'ireland',  label:'☘️ Ireland',             emoji:'☘️',
+    tagline:'Emerald Isle — rolling green hills, ancient castles, and warm pub songs.',
+    tags:['🏰 Castles','☘️ Shamrocks','🎵 Folk Music','🌊 Cliffs'],
+    walkMiles:3400, walkLabel:'Walk to Dublin (NY to Dublin)',
+    facts:['Ireland is called the Emerald Isle because of its lush green landscape.','Halloween originated from the ancient Celtic festival of Samhain in Ireland.','St. Patrick\'s Day is celebrated in more countries than any other national holiday.','The Cliffs of Moher rise 700 feet above the Atlantic Ocean.','Ireland has more Nobel Prize winners per capita than almost any other country.'],
+    activities:['Shamrock and Celtic knot art craft','Irish folk song sing-along — Danny Boy, Molly Malone','Storytelling circle: share a family legend or tall tale','Four-leaf clover hunt (paper craft)','Irish step dancing video watching and discussion'],
+    food:'Try: Irish soda bread, potato soup, or a warm oatmeal with brown sugar and cream.',
+    media:'Watch: The Quiet Man (1952), Waking Ned Devine (1998). Listen: Danny Boy, The Irish Rover.',
+    convos:['Do you have any Irish heritage or ancestors?','What\'s the most beautiful green landscape you\'ve ever seen?','Have you ever heard a story passed down through your family?','If you could visit one Irish castle, which would it be?','What folk song brings back a happy memory for you?'] },
+  { id:'mexico',   label:'🌮 Mexico',              emoji:'🦅',
+    tagline:'Ancient pyramids, vibrant fiestas, and the world\'s greatest flavors.',
+    tags:['🏛️ Pyramids','🌮 Food','💃 Dance','🎨 Art'],
+    walkMiles:2100, walkLabel:'Walk to Mexico City (Houston to Mexico City)',
+    facts:['Mexico City was built on the ruins of the Aztec capital Tenochtitlán.','Mexico is home to the world\'s smallest volcano — Cuexcomate, just 43 feet tall.','Chocolate was invented by the ancient Mexicans thousands of years ago.','The monarch butterfly migration passes through Mexico every winter.','Mexico has 35 UNESCO World Heritage Sites.'],
+    activities:['Paper marigold (Day of the Dead) flower craft','Mexican hat dance video and music time','Chocolate tasting — dark vs milk: thank Mexico!','Aztec calendar coloring page','Learn to count to 10 in Spanish together'],
+    food:'Try: Guacamole with chips, simple rice and beans, or cinnamon churro bites.',
+    media:'Watch: Coco (2017), The Three Amigos (1986). Listen: Cielito Lindo, La Bamba.',
+    convos:['Have you ever tried Mexican food? What\'s your favorite dish?','Chocolate came from Mexico — what\'s your favorite chocolate memory?','If you could attend a Mexican fiesta, what would you do first?','The monarch butterfly migrates through Mexico — have you ever seen one?','What\'s a holiday tradition in your family that feels like a big celebration?'] },
+  { id:'india',    label:'🕌 India',               emoji:'🕌',
+    tagline:'Land of spices, spirituality, the Taj Mahal, and dazzling color.',
+    tags:['🕌 Monuments','🌶️ Spices','🐘 Wildlife','🎶 Bollywood'],
+    walkMiles:7700, walkLabel:'Walk to New Delhi (NY to New Delhi)',
+    facts:['India is the world\'s largest democracy with over 1.4 billion people.','The Taj Mahal was built by Emperor Shah Jahan as a tribute to his wife.','Chess was invented in India around 600 AD.','India produces 70% of the world\'s spices.','The number zero was invented by Indian mathematician Brahmagupta in 628 AD.'],
+    activities:['Rangoli-inspired dot art coloring activity','Bollywood dance clip viewing and gentle arm movements','Spice sniffing tray — cinnamon, cardamom, turmeric, ginger','Elephant drawing and decoration craft','Taj Mahal story discussion — a monument to love'],
+    food:'Try: Chai tea with milk and spices, naan with hummus, or mango lassi.',
+    media:'Watch: Gandhi (1982), The Jungle Book (1967). Listen: Classical sitar music, Jai Ho.',
+    convos:['India invented the number zero — what invention do you think changed the world most?','If you could smell one spice all day, which would it be?','The Taj Mahal was built as a symbol of love — what\'s the most romantic gesture you\'ve ever seen?','Have you ever tried Indian food? What did you think?','If you could ride an elephant, where would you go?'] },
+  { id:'london',   label:'🎡 London, England',     emoji:'👑',
+    tagline:'Royal palaces, red double-deckers, and Big Ben chiming on the Thames.',
+    tags:['👑 Royalty','🎭 Theatre','🏰 History','☕ Tea'],
+    walkMiles:3460, walkLabel:'Walk to London (NY to London)',
+    facts:['London has been continuously inhabited for over 2,000 years.','The London Underground, opened in 1863, is the world\'s oldest metro system.','Buckingham Palace has 775 rooms.','The Tower of London has been a palace, prison, and treasury in its history.','London cab drivers must memorize 25,000 streets — called The Knowledge.'],
+    activities:['Royal Family quiz — who\'s who?','Afternoon tea party with crumpets, biscuits, and tea','London landmark bingo card game','Design your own royal coat of arms','Watch the Changing of the Guard on YouTube'],
+    food:'Try: Cucumber sandwiches, scones with jam and cream, or classic English crumpets with butter.',
+    media:'Watch: Mary Poppins (1964), Downton Abbey (series). Listen: Rule Britannia, My Fair Lady songs.',
+    convos:['If you were invited to Buckingham Palace for tea, what would you wear?','Have you ever had a formal afternoon tea? What was it like?','London cab drivers must memorize 25,000 streets — what\'s the most impressive skill you\'ve ever learned?','If you could attend one West End show, what would you choose?','What do you think it would feel like to see the Crown Jewels in person?'] },
+  { id:'scandinavia', label:'🌄 Scandinavia',      emoji:'🛶',
+    tagline:'Northern Lights, Viking history, fjords, and hygge — the art of cozy.',
+    tags:['🌌 Northern Lights','🛶 Vikings','🏔️ Fjords','☕ Hygge'],
+    walkMiles:3700, walkLabel:'Walk to Oslo (NY to Oslo)',
+    facts:['Hygge (HOO-ga) is a Danish/Norwegian concept of cozy contentment.','Norway has the world\'s longest road tunnel at 15.2 miles.','Vikings first settled Iceland over 1,100 years ago.','Sweden gave the world IKEA, Spotify, Volvo, and ABBA.','The Northern Lights are caused by solar particles hitting Earth\'s atmosphere.'],
+    activities:['Northern Lights watercolor painting activity','Viking ship origami craft','ABBA sing-along — Dancing Queen, Mamma Mia','Hygge discussion: what makes your most cozy moment?','Design a simple Viking shield with symbols'],
+    food:'Try: Swedish meatballs with lingonberry jam, rye crispbread with cream cheese, or cinnamon rolls.',
+    media:'Watch: The Vikings (1958), Mamma Mia! (2008). Listen: ABBA Greatest Hits.',
+    convos:['Hygge means cozy contentment — what\'s your ideal cozy afternoon?','If you saw the Northern Lights, what would you wish for?','ABBA came from Sweden — what song of theirs is your favorite?','Have you ever experienced a truly cold, snowy winter? What was it like?','Viking explorers reached America before Columbus — does that surprise you?'] },
+  { id:'neworleans', label:'🎷 New Orleans, USA',  emoji:'🎷',
+    tagline:'Jazz, Mardi Gras, beignets, and the most musical city in America.',
+    tags:['🎷 Jazz','🎭 Mardi Gras','🍛 Creole Food','🌊 Mississippi'],
+    walkMiles:1200, walkLabel:'Walk to New Orleans (NY to New Orleans)',
+    facts:['New Orleans is the birthplace of jazz music in the early 1900s.','Mardi Gras means Fat Tuesday in French — the biggest party before Lent.','The city sits below sea level and is protected by a levee system.','New Orleans\' French Quarter is one of the oldest neighborhoods in the US (1718).','Beignets are square donuts buried in powdered sugar — a New Orleans tradition.'],
+    activities:['Jazz music listening hour — Louis Armstrong, Ella Fitzgerald','Mardi Gras mask decorating craft','Second Line parade march around the room with music','Beignet taste test or recipe sharing','Louisiana trivia game'],
+    food:'Try: Beignets (powdered sugar donuts), red beans and rice, or bread pudding with vanilla sauce.',
+    media:'Watch: The Princess and the Frog (2009), A Streetcar Named Desire (1951). Listen: What a Wonderful World — Louis Armstrong.',
+    convos:['Have you ever been to Mardi Gras or heard about it? What do you imagine it\'s like?','Louis Armstrong was born in New Orleans — what\'s your favorite jazz or big band song?','Beignets are covered in powdered sugar — what\'s your favorite kind of donut?','If you could march in a parade, what would your float look like?','New Orleans has French, Spanish, African and Caribbean influences — have you ever lived somewhere very culturally diverse?'] }
 ];
 
 const TV_TRIVIA = {
@@ -14280,17 +14406,36 @@ function renderVirtualVisit() {
   document.getElementById('tv-activities').innerHTML = d.activities.map(a => `<li>${a}</li>`).join('');
   document.getElementById('tv-food').innerHTML = d.food;
   document.getElementById('tv-media').innerHTML = d.media;
+  // Conversation starters
+  var convosEl = document.getElementById('tv-convos');
+  if (convosEl) {
+    var convos = d.convos || [
+      'What do you already know about this place?',
+      'Would you ever want to visit? Why or why not?',
+      'What food from this place would you most like to try?',
+      'If you brought one person with you, who would it be?',
+      'What surprised you most about what we learned today?'
+    ];
+    convosEl.innerHTML = convos.map(function(q,i) {
+      return '<div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:8px;padding:10px 14px;border:1px solid #BAE6FD;margin-bottom:4px;">'
+        + '<span style="background:#0369A1;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">' + (i+1) + '</span>'
+        + '<span style="font-size:14px;color:#1E3A5F;line-height:1.5;">' + q + '</span>'
+        + '</div>';
+    }).join('');
+  }
 }
 
 function switchTravelTab(tab) {
   tvState.activeSubTab = tab;
-  ['virtual','walk','trivia','daytrip','memory'].forEach(t => {
+  ['virtual','walk','trivia','daytrip','memory','passport','postcard'].forEach(t => {
     const btn = document.getElementById('tvtab-' + t);
     const panel = document.getElementById('tvpanel-' + t);
     if (btn) btn.classList.toggle('tv-subtab-active', t === tab);
     if (panel) panel.style.display = t === tab ? '' : 'none';
   });
   if (tab === 'walk') renderWalkTheWorld();
+  if (tab === 'passport') renderPassportBook();
+  if (tab === 'postcard') initPostcard();
 }
 
 // -- WALK THE WORLD ------------------------------------------------
@@ -14552,6 +14697,192 @@ function printVirtualVisit() {
   const d = getDestination();
   const w = window.open('','_blank');
   w.document.write(`<html><head><title>Virtual Visit: ${d.label}</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#1A2A5C}h2{color:#2E75B6;font-size:18px;border-bottom:2px solid #2E75B6;padding-bottom:6px}ul{line-height:2}p{line-height:1.7}</style></head><body><h1>✈️ Virtual Visit: ${d.label}</h1><p><i>${d.tagline}</i></p><h2>📌 Fun Facts</h2><ul>${d.facts.map(f=>`<li>${f}</li>`).join('')}</ul><h2>🎨 Themed Activities</h2><ul>${d.activities.map(a=>`<li>${a}</li>`).join('')}</ul><h2>🍽️ Try a Taste</h2><p>${d.food}</p><h2>🎬 Watch &amp; Listen</h2><p>${d.media}</p><script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+
+/* ═══════════════════════ PASSPORT BOOK ═════════════════════════ */
+var PASSPORT_KEY = 'el365_travel_passport';
+function getPassportData() { try { return JSON.parse(localStorage.getItem(PASSPORT_KEY)) || {}; } catch(e) { return {}; } }
+function savePassportData(d) { localStorage.setItem(PASSPORT_KEY, JSON.stringify(d)); }
+
+function renderPassportBook() {
+  var grid = document.getElementById('passport-grid');
+  if (!grid) return;
+  var stamps = getPassportData();
+  grid.innerHTML = TV_DESTINATIONS.map(function(dest) {
+    var stamped = stamps[dest.id];
+    var dateStr = stamped ? ('<div style="font-size:10px;color:#6B7280;margin-top:2px;">' + (stamped.date || '') + '</div>') : '';
+    return '<div style="background:#fff;border:2px solid ' + (stamped ? '#22C55E' : '#E5E7EB') + ';border-radius:14px;padding:16px;text-align:center;position:relative;cursor:pointer;transition:box-shadow .2s;" '
+      + 'onclick="togglePassportStamp(\'' + dest.id + '\')" '
+      + 'onmouseover="this.style.boxShadow=\'0 4px 16px rgba(0,0,0,0.1)\'" '
+      + 'onmouseout="this.style.boxShadow=\'\'">'
+      + (stamped ? '<div style="position:absolute;top:8px;right:8px;font-size:18px;">✅</div>' : '<div style="position:absolute;top:8px;right:8px;font-size:18px;opacity:0.25;">⭕</div>')
+      + '<div style="font-size:36px;margin-bottom:6px;">' + dest.emoji + '</div>'
+      + '<div style="font-weight:700;font-size:13px;color:#1F2937;line-height:1.3;">' + dest.label.replace(/^[^\s]+ /,'') + '</div>'
+      + dateStr
+      + '<div style="margin-top:10px;font-size:11px;color:' + (stamped ? '#16A34A' : '#9CA3AF') + ';font-weight:600;">'
+      + (stamped ? '🎫 VISITED' : 'Tap to stamp')
+      + '</div>'
+      + '</div>';
+  }).join('');
+  // summary bar
+  var total = Object.keys(stamps).length;
+  var summaryEl = document.getElementById('passport-summary');
+  if (!summaryEl) {
+    var bar = document.createElement('div');
+    bar.id = 'passport-summary';
+    bar.style.cssText = 'background:linear-gradient(135deg,#1A2A5C,#2E75B6);color:#fff;border-radius:14px;padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;';
+    grid.parentNode.insertBefore(bar, grid);
+    summaryEl = bar;
+  }
+  summaryEl.innerHTML = '<div><div style="font-size:22px;font-weight:900;">' + total + ' / ' + TV_DESTINATIONS.length + ' Destinations Visited</div>'
+    + '<div style="opacity:0.75;font-size:13px;margin-top:2px;">' + (total === TV_DESTINATIONS.length ? '🌍 World Explorer — All destinations visited!' : 'Click a destination to stamp it as visited') + '</div></div>'
+    + '<div style="font-size:40px;">' + (total >= TV_DESTINATIONS.length ? '🏆' : total >= 10 ? '🌎' : total >= 5 ? '✈️' : '🗺️') + '</div>';
+}
+
+function togglePassportStamp(id) {
+  var stamps = getPassportData();
+  if (stamps[id]) {
+    delete stamps[id];
+  } else {
+    stamps[id] = { date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) };
+  }
+  savePassportData(stamps);
+  renderPassportBook();
+}
+
+function passportStampAll() {
+  var stamps = getPassportData();
+  var today = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  TV_DESTINATIONS.forEach(function(d) { if (!stamps[d.id]) stamps[d.id] = { date: today }; });
+  savePassportData(stamps);
+  renderPassportBook();
+}
+
+function passportClearAll() {
+  if (!confirm('Clear all passport stamps?')) return;
+  savePassportData({});
+  renderPassportBook();
+}
+
+function printPassportBook() {
+  var stamps = getPassportData();
+  var rows = TV_DESTINATIONS.filter(function(d){ return stamps[d.id]; }).map(function(d) {
+    return '<tr><td style="font-size:22px;padding:8px 12px;">' + d.emoji + '</td>'
+      + '<td style="font-weight:700;padding:8px 4px;">' + d.label.replace(/^[^\s]+ /,'') + '</td>'
+      + '<td style="padding:8px 12px;color:#16A34A;font-weight:600;">🎫 ' + (stamps[d.id].date||'') + '</td></tr>';
+  }).join('');
+  var unvisited = TV_DESTINATIONS.filter(function(d){ return !stamps[d.id]; }).map(function(d) {
+    return '<tr style="opacity:0.4;"><td style="font-size:22px;padding:8px 12px;">' + d.emoji + '</td>'
+      + '<td style="padding:8px 4px;">' + d.label.replace(/^[^\s]+ /,'') + '</td>'
+      + '<td style="padding:8px 12px;color:#9CA3AF;">Not yet visited</td></tr>';
+  }).join('');
+  var w = window.open('','_blank','width=700,height=900');
+  w.document.write('<!DOCTYPE html><html><head><title>Virtual Passport</title>'
+    + '<style>body{font-family:Arial,sans-serif;padding:30px;max-width:600px;margin:0 auto;}'
+    + '.cover{background:linear-gradient(135deg,#1A2A5C,#2E75B6);color:#fff;border-radius:16px;padding:30px;text-align:center;margin-bottom:24px;}'
+    + 'table{width:100%;border-collapse:collapse;}tr{border-bottom:1px solid #E5E7EB;}'
+    + '@media print{body{padding:0;}.cover{margin:0 0 20px;}}</style></head><body>'
+    + '<div class="cover"><div style="font-size:48px;margin-bottom:8px;">🌍</div>'
+    + '<div style="font-size:28px;font-weight:900;margin-bottom:4px;">Virtual Passport</div>'
+    + '<div style="opacity:0.7;">Empower Life 365 — empowerlife365.app</div>'
+    + '<div style="margin-top:12px;font-size:18px;font-weight:700;">' + Object.keys(stamps).length + ' / ' + TV_DESTINATIONS.length + ' Destinations Visited</div></div>'
+    + '<table>' + rows + unvisited + '</table>'
+    + '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+/* ══════════════════════ POSTCARD CREATOR ═══════════════════════ */
+function initPostcard() {
+  var dest = getDestination();
+  var lbl = document.getElementById('pc-dest-label');
+  if (lbl) lbl.textContent = dest.label;
+  renderPostcardPreview();
+}
+
+function renderPostcardPreview() {
+  var dest = getDestination();
+  var toVal = (document.getElementById('pc-to') || {}).value || 'Dear Family';
+  var fromVal = (document.getElementById('pc-from') || {}).value || 'Your Loved One';
+  var msg = (document.getElementById('pc-message') || {}).value || 'Wish you were here!';
+  var styleVal = ((document.getElementById('pc-style') || {}).value) || 'classic';
+  var preview = document.getElementById('pc-preview');
+  if (!preview) return;
+
+  var bgStyle = styleVal === 'vintage'
+    ? 'background:linear-gradient(135deg,#FFF8E1,#FFECB3);border:3px solid #D4A017;'
+    : styleVal === 'bright'
+    ? 'background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:3px solid #6366F1;'
+    : 'background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:3px solid #2563EB;';
+
+  preview.innerHTML = '<div style="' + bgStyle + 'border-radius:10px;overflow:hidden;width:100%;aspect-ratio:3/2;display:grid;grid-template-columns:1fr 1fr;font-family:Georgia,serif;">'
+    // Left: image side
+    + '<div style="padding:18px;display:flex;flex-direction:column;justify-content:space-between;border-right:2px dashed #ccc;">'
+    + '<div style="text-align:center;">'
+    + '<div style="font-size:52px;">' + dest.emoji + '</div>'
+    + '<div style="font-weight:900;font-size:16px;color:#1E3A5F;margin-top:6px;">' + dest.label + '</div>'
+    + '<div style="font-size:11px;color:#6B7280;margin-top:4px;font-style:italic;">' + dest.tagline + '</div>'
+    + '</div>'
+    + '<div style="font-size:10px;color:#9CA3AF;text-align:center;">empowerlife365.app</div>'
+    + '</div>'
+    // Right: message side
+    + '<div style="padding:16px;display:flex;flex-direction:column;gap:8px;">'
+    + '<div style="font-size:12px;color:#374151;line-height:1.6;flex:1;">'
+    + '<span style="font-style:italic;">' + toVal + ',</span><br>'
+    + msg
+    + '</div>'
+    + '<div style="border-top:1px solid #ccc;padding-top:8px;">'
+    + '<div style="font-size:11px;color:#6B7280;">With love,</div>'
+    + '<div style="font-size:13px;font-weight:700;color:#1E3A5F;">' + fromVal + '</div>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:flex-end;">'
+    + '<div style="border:1px solid #ccc;width:40px;height:50px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;">📮</div>'
+    + '</div>'
+    + '</div>'
+    + '</div>';
+}
+
+function printPostcard() {
+  var dest = getDestination();
+  var toVal = (document.getElementById('pc-to') || {}).value || 'Dear Family';
+  var fromVal = (document.getElementById('pc-from') || {}).value || 'Your Loved One';
+  var msg = (document.getElementById('pc-message') || {}).value || 'Wish you were here!';
+  var styleVal = ((document.getElementById('pc-style') || {}).value) || 'classic';
+  var bgColor = styleVal === 'vintage' ? '#FFF8E1' : styleVal === 'bright' ? '#EEF2FF' : '#EFF6FF';
+  var accentColor = styleVal === 'vintage' ? '#D4A017' : styleVal === 'bright' ? '#6366F1' : '#2563EB';
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Postcard from ' + dest.label + '</title>'
+    + '<style>'
+    + 'body{margin:0;padding:40px;background:#f3f4f6;font-family:Georgia,serif;display:flex;justify-content:center;align-items:center;min-height:100vh;}'
+    + '.card{width:6in;height:4in;background:' + bgColor + ';border:3px solid ' + accentColor + ';border-radius:12px;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.15);}'
+    + '.left{padding:24px;display:flex;flex-direction:column;justify-content:space-between;border-right:2px dashed #ccc;}'
+    + '.right{padding:20px;display:flex;flex-direction:column;gap:10px;}'
+    + '.stamp{border:1px solid #ccc;width:50px;height:60px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-left:auto;}'
+    + '@media print{body{padding:0;background:#fff;}.card{box-shadow:none;}}'
+    + '</style></head><body>'
+    + '<div class="card">'
+    + '<div class="left">'
+    + '<div style="text-align:center;">'
+    + '<div style="font-size:64px;">' + dest.emoji + '</div>'
+    + '<div style="font-weight:900;font-size:20px;color:#1E3A5F;margin-top:8px;">' + dest.label + '</div>'
+    + '<div style="font-size:13px;color:#6B7280;margin-top:6px;font-style:italic;">' + dest.tagline + '</div>'
+    + '</div>'
+    + '<div style="font-size:11px;color:#9CA3AF;text-align:center;">empowerlife365.app</div>'
+    + '</div>'
+    + '<div class="right">'
+    + '<div style="font-size:14px;color:#374151;line-height:1.7;flex:1;padding-top:8px;">'
+    + '<span style="font-style:italic;font-size:15px;">' + toVal + ',</span><br><br>'
+    + msg
+    + '</div>'
+    + '<div style="border-top:1px solid #ccc;padding-top:10px;">'
+    + '<div style="font-size:12px;color:#6B7280;">With love,</div>'
+    + '<div style="font-size:15px;font-weight:700;color:#1E3A5F;">' + fromVal + '</div>'
+    + '</div>'
+    + '<div class="stamp">📮</div>'
+    + '</div>'
+    + '</div>'
+    + '<script>window.onload=function(){window.print();};<\/script></body></html>');
   w.document.close();
 }
 
