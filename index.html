@@ -1108,6 +1108,25 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .gm-player:hover { border-color:var(--primary);color:var(--primary); }
 .gm-player-active { border-color:var(--primary)!important;background:var(--primary)!important;color:#fff!important; }
 
+
+/* ── Life Story CSS ── */
+.ls-card { background:#fff; border:1px solid #E0E7FF; border-radius:14px; padding:18px; cursor:pointer; transition:box-shadow .2s; }
+.ls-card:hover { box-shadow:0 4px 20px rgba(99,102,241,.12); }
+.ls-card-name { font-size:1rem; font-weight:800; color:#1E1B4B; margin-bottom:2px; }
+.ls-card-sub { font-size:.78rem; color:#6B7280; margin-bottom:12px; }
+.ls-progress-bar { height:6px; background:#E0E7FF; border-radius:3px; overflow:hidden; margin-bottom:8px; }
+.ls-progress-fill { height:100%; background:linear-gradient(90deg,#6366F1,#8B5CF6); border-radius:3px; transition:width .4s; }
+.ls-progress-label { font-size:.72rem; color:#6B7280; }
+.ls-chapter-pill { padding:6px 14px; border-radius:999px; font-size:.82rem; font-weight:600; border:2px solid #E0E7FF; background:#fff; color:#374151; cursor:pointer; transition:all .2s; }
+.ls-chapter-pill.active { background:#6366F1; color:#fff; border-color:#6366F1; }
+.ls-field-group { margin-bottom:18px; }
+.ls-field-group label { font-size:.82rem; font-weight:700; display:block; margin-bottom:5px; color:#374151; }
+.ls-field-group .ls-hint { font-size:.75rem; color:#9CA3AF; margin-bottom:5px; font-style:italic; }
+.ls-field-group textarea { width:100%; padding:10px 12px; border:1px solid #C7D2FE; border-radius:8px; font-size:.88rem; resize:vertical; box-sizing:border-box; font-family:inherit; }
+.ls-field-group input[type=text], .ls-field-group input[type=date] { width:100%; padding:9px 12px; border:1px solid #C7D2FE; border-radius:8px; font-size:.88rem; box-sizing:border-box; }
+.ls-milestone-row { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+.ls-milestone-row input { padding:7px 10px; border:1px solid #C7D2FE; border-radius:7px; font-size:.85rem; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1185,6 +1204,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="attlog"   id="attlog-tab" onclick="switchTab('attlog')">📋 Log</button>
       <button class="tab-btn" data-tab="ratings"  id="ratings-tab" onclick="switchTab('ratings')">⭐ Ratings</button>
       <button class="tab-btn" data-tab="newresident" id="newresident-tab" onclick="switchTab('newresident')">🏠 New Resident</button>
+      <button class="tab-btn" data-tab="lifestory" id="lifestory-tab" onclick="switchTab('lifestory')">📖 Life Stories</button>
     </div>
   </div>
 
@@ -4888,6 +4908,75 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 </div>
 </section>
 
+
+
+<section class="tab-panel" id="panel-lifestory">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">📖 Life Story Builder</h2>
+      <div class="subtitle">Capture residents' memories, milestones, and wisdom — then turn them into beautiful keepsakes.</div>
+    </div>
+    <button class="btn" onclick="lsNewStory()">+ Add Life Story</button>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:12px;">
+    <button id="lstab-stories"  onclick="switchLSTab('stories')"  class="tv-subtab tv-subtab-active">📚 All Stories</button>
+    <button id="lstab-edit"     onclick="switchLSTab('edit')"     class="tv-subtab" style="display:none;">✏️ Edit Story</button>
+    <button id="lstab-print"    onclick="switchLSTab('print')"    class="tv-subtab">🖨️ Print & Share</button>
+  </div>
+
+  <!-- ALL STORIES GRID -->
+  <div id="lspanel-stories">
+    <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;flex-wrap:wrap;">
+      <input type="text" id="ls-search" placeholder="🔍 Search residents..." oninput="lsRenderGrid()"
+        style="flex:1;min-width:200px;padding:8px 12px;border:1px solid #C7D2FE;border-radius:8px;font-size:.9rem;">
+      <button class="btn btn-secondary" onclick="lsRenderGrid()" style="font-size:.85rem;">🔄 Refresh</button>
+    </div>
+    <div id="ls-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;"></div>
+    <div id="ls-empty" style="display:none;text-align:center;padding:60px;color:#9CA3AF;">
+      <div style="font-size:3rem;margin-bottom:12px;">📖</div>
+      <div style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">No life stories yet</div>
+      <div style="font-size:.9rem;margin-bottom:20px;">Every resident has an amazing story to tell.</div>
+      <button class="btn" onclick="lsNewStory()">+ Add the First Story</button>
+    </div>
+  </div>
+
+  <!-- EDIT STORY FORM -->
+  <div id="lspanel-edit" style="display:none;">
+    <div id="ls-edit-header" style="margin-bottom:20px;"></div>
+
+    <!-- Chapter nav pills -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;" id="ls-chapter-nav"></div>
+
+    <!-- Chapter panels -->
+    <div id="ls-chapter-content"></div>
+
+    <!-- Save bar -->
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:24px;padding-top:16px;border-top:1px solid #E5E7EB;">
+      <button class="btn btn-secondary" onclick="switchLSTab('stories')">← Back to All Stories</button>
+      <button class="btn" onclick="lsSaveStory()" style="background:#10B981;border-color:#10B981;">💾 Save Story</button>
+    </div>
+  </div>
+
+  <!-- PRINT & SHARE -->
+  <div id="lspanel-print" style="display:none;">
+    <div style="background:linear-gradient(135deg,#1E3A5F,#2D5F8A);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;">
+      <div style="font-size:1.2rem;font-weight:800;">🖨️ Print & Share Options</div>
+      <div style="opacity:.8;font-size:13px;margin-top:4px;">Select a resident, then choose what to print.</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="font-size:.85rem;font-weight:700;display:block;margin-bottom:6px;">Select Resident</label>
+      <select id="ls-print-select" style="width:100%;max-width:400px;padding:8px 12px;border:1px solid #C7D2FE;border-radius:8px;font-size:.9rem;" onchange="lsUpdatePrintPreview()">
+        <option value="">-- Choose a resident --</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px;" id="ls-print-options"></div>
+  </div>
+
+</section>
 
 </main>
 
@@ -23288,6 +23377,503 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   LIFE STORY BUILDER
+   ════════════════════════════════════════════════════════════ */
+
+var LS_KEY = 'el365_life_stories';
+var ls_editing_id = null;
+var ls_current_chapter = 0;
+
+var LS_CHAPTERS = [
+  { id:'basics',   label:'🏠 Basics',       icon:'🏠',
+    fields:[
+      { key:'fullName',   label:'Full Name',          hint:'Include maiden name if applicable', type:'text' },
+      { key:'nickname',   label:'Nickname or Preferred Name', hint:'What do they like to be called?', type:'text' },
+      { key:'born',       label:'Date of Birth',       hint:'', type:'date' },
+      { key:'hometown',   label:'Hometown',            hint:'City and state where they grew up', type:'text' },
+      { key:'photoUrl',   label:'Photo URL (optional)',hint:'Paste a photo link if available', type:'text' },
+    ]
+  },
+  { id:'earlylife', label:'🌱 Early Life',    icon:'🌱',
+    fields:[
+      { key:'el_memories',  label:'What are your earliest memories?', hint:'Places, sights, smells, feelings from childhood', type:'area' },
+      { key:'el_siblings',  label:'Tell us about your brothers and sisters',  hint:'Names, birth order, favorite memories together', type:'area' },
+      { key:'el_school',    label:'What was school like for you?',    hint:'Favorite subjects, teachers, activities, best friends', type:'area' },
+      { key:'el_childhood', label:'What did you love to do as a child?', hint:'Games, hobbies, adventures, neighborhood memories', type:'area' },
+      { key:'el_family',    label:'Describe your family growing up',  hint:'What was home like? Family traditions? Dinner table memories?', type:'area' },
+    ]
+  },
+  { id:'familylove', label:'❤️ Family & Love', icon:'❤️',
+    fields:[
+      { key:'fl_partner',   label:'Tell us about your spouse or partner', hint:'How did you meet? First date? Wedding day?', type:'area' },
+      { key:'fl_children',  label:'Children & grandchildren',        hint:'Names, funny stories, proudest moments as a parent', type:'area' },
+      { key:'fl_traditions',label:'Family traditions you cherished', hint:'Holidays, vacations, Sunday dinners, rituals', type:'area' },
+      { key:'fl_pets',      label:'Special animals in your life',    hint:'Beloved pets and what made them memorable', type:'area' },
+      { key:'fl_home',      label:'Your most beloved home',          hint:'Where did you feel most at home in your life?', type:'area' },
+    ]
+  },
+  { id:'career', label:'💼 Career & Service', icon:'💼',
+    fields:[
+      { key:'cr_jobs',      label:'Your career journey',            hint:'Jobs, industries, how you got started, what you loved', type:'area' },
+      { key:'cr_military',  label:'Military service',               hint:'Branch, years served, where stationed, stories', type:'area' },
+      { key:'cr_proud',     label:'Professional achievement you\'re most proud of', hint:'Big win, challenge overcome, or lasting impact', type:'area' },
+      { key:'cr_colworker', label:'A colleague or mentor who shaped you', hint:'Someone at work who made a difference in your life', type:'area' },
+      { key:'cr_retire',    label:'What did retirement feel like?', hint:'First day, what you missed, what you loved about it', type:'area' },
+    ]
+  },
+  { id:'hobbies', label:'🎨 Passions & Hobbies', icon:'🎨',
+    fields:[
+      { key:'hb_loves',     label:'What have you always loved doing?', hint:'Hobbies, crafts, sports, interests over a lifetime', type:'area' },
+      { key:'hb_travel',    label:'Favorite places you\'ve traveled', hint:'Best trips, dream destinations, places that changed you', type:'area' },
+      { key:'hb_talent',    label:'A hidden talent or skill',       hint:'Something people might not know you\'re good at', type:'area' },
+      { key:'hb_collect',   label:'Collections or treasured objects', hint:'Things you collected, heirlooms, objects with stories', type:'area' },
+      { key:'hb_today',     label:'What do you enjoy doing today?', hint:'Current hobbies, activities, daily pleasures', type:'area' },
+    ]
+  },
+  { id:'favorites', label:'⭐ All-Time Favorites', icon:'⭐',
+    fields:[
+      { key:'fv_food',      label:'Favorite food of all time',      hint:'A dish, a restaurant, grandma\'s recipe, a guilty pleasure', type:'text' },
+      { key:'fv_music',     label:'Music that moves you',           hint:'Favorite artists, songs, or the music of your era', type:'text' },
+      { key:'fv_movie',     label:'Favorite movie or TV show',      hint:'All-time favorite or something you\'ve watched a hundred times', type:'text' },
+      { key:'fv_book',      label:'A book that stayed with you',    hint:'Most meaningful read, or a favorite you return to', type:'text' },
+      { key:'fv_season',    label:'Favorite season and why',        hint:'', type:'text' },
+      { key:'fv_place',     label:'A place that holds your heart',  hint:'Somewhere you could return to again and again', type:'text' },
+      { key:'fv_saying',    label:'Your favorite saying or quote',  hint:'Words you live by or love to share', type:'text' },
+    ]
+  },
+  { id:'wisdom', label:'🌟 Wisdom & Legacy', icon:'🌟',
+    fields:[
+      { key:'ws_advice',    label:'Best advice you\'ve ever received', hint:'Words that changed how you see things', type:'area' },
+      { key:'ws_give',      label:'Best advice you\'d give your younger self', hint:'What do you wish you\'d known at 30?', type:'area' },
+      { key:'ws_secret',    label:'Your secret to a long, happy life', hint:'What keeps you going?', type:'area' },
+      { key:'ws_proud',     label:'Your proudest moment',           hint:'The time you felt most proud of yourself', type:'area' },
+      { key:'ws_funny',     label:'Your funniest memory',           hint:'Something that still makes you laugh', type:'area' },
+      { key:'ws_remember',  label:'What do you want people to remember about you?', hint:'Your legacy, your heart, your mark on the world', type:'area' },
+    ]
+  },
+];
+
+function _getLSStories() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch(e) { return []; }
+}
+function _saveLSStories(a) { localStorage.setItem(LS_KEY, JSON.stringify(a)); }
+
+function _lsCompletion(s) {
+  var total = 0, filled = 0;
+  LS_CHAPTERS.forEach(function(ch) {
+    ch.fields.forEach(function(f) {
+      total++;
+      if ((s[f.key]||'').trim()) filled++;
+    });
+  });
+  if (s.milestones && s.milestones.length) filled = Math.min(total, filled + 1);
+  return Math.round((filled/total)*100);
+}
+
+function switchLSTab(tab) {
+  ['stories','edit','print'].forEach(function(t) {
+    var btn = document.getElementById('lstab-'+t);
+    var panel = document.getElementById('lspanel-'+t);
+    if (btn) btn.classList.toggle('tv-subtab-active', t===tab);
+    if (panel) panel.style.display = t===tab ? '' : 'none';
+  });
+  var editBtn = document.getElementById('lstab-edit');
+  if (editBtn) editBtn.style.display = tab==='edit' ? '' : 'none';
+  if (tab==='print') lsRenderPrintSelect();
+  if (tab==='stories') lsRenderGrid();
+}
+
+function lsRenderGrid() {
+  var stories = _getLSStories();
+  var q = (document.getElementById('ls-search')||{}).value||'';
+  if (q) stories = stories.filter(function(s){ return (s.fullName||s.name||'').toLowerCase().includes(q.toLowerCase()); });
+  var grid  = document.getElementById('ls-grid');
+  var empty = document.getElementById('ls-empty');
+  if (!stories.length) { grid.style.display='none'; empty.style.display=''; return; }
+  grid.style.display=''; empty.style.display='none';
+  grid.innerHTML = stories.map(function(s) {
+    var pct = _lsCompletion(s);
+    var name = s.fullName || s.name || 'Unnamed Resident';
+    var sub  = [s.hometown, s.born ? new Date(s.born+'T12:00:00').getFullYear() : ''].filter(Boolean).join(' · ');
+    var col  = pct===100?'#10B981':pct>=50?'#6366F1':'#F59E0B';
+    return '<div class="ls-card" onclick="lsOpenEdit(\''+s.id+'\')">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'+
+      '<div style="font-size:2rem;background:#EEF2FF;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;">'+(s.photoUrl?'<img src="'+s.photoUrl+'" style="width:48px;height:48px;border-radius:50%;object-fit:cover;">':'👤')+'</div>'+
+      '<span style="font-size:.72rem;font-weight:700;color:'+col+';background:'+col+'18;padding:2px 8px;border-radius:999px;">'+pct+'% complete</span>'+
+      '</div>'+
+      '<div class="ls-card-name">'+name+'</div>'+
+      '<div class="ls-card-sub">'+sub+'</div>'+
+      '<div class="ls-progress-bar"><div class="ls-progress-fill" style="width:'+pct+'%;"></div></div>'+
+      '<div style="display:flex;gap:6px;margin-top:10px;">'+
+      '<button onclick="event.stopPropagation();lsOpenEdit(\''+s.id+'\')" style="flex:1;background:#EEF2FF;color:#4338CA;border:none;border-radius:7px;padding:5px;font-size:.75rem;cursor:pointer;font-weight:600;">✏️ Edit</button>'+
+      '<button onclick="event.stopPropagation();lsPrintMemoryBook(\''+s.id+'\')" style="flex:1;background:#F0FDF4;color:#15803D;border:none;border-radius:7px;padding:5px;font-size:.75rem;cursor:pointer;font-weight:600;">📖 Memory Book</button>'+
+      '<button onclick="event.stopPropagation();lsDeleteStory(\''+s.id+'\')" style="background:#FEF2F2;color:#B91C1C;border:none;border-radius:7px;padding:5px 8px;font-size:.75rem;cursor:pointer;">✕</button>'+
+      '</div>'+
+      '</div>';
+  }).join('');
+}
+
+function lsNewStory() {
+  ls_editing_id = null;
+  ls_current_chapter = 0;
+  lsRenderEditForm({});
+  switchLSTab('edit');
+  document.getElementById('lstab-edit').style.display = '';
+}
+
+function lsOpenEdit(id) {
+  var s = _getLSStories().find(function(x){ return x.id===id; });
+  if (!s) return;
+  ls_editing_id = id;
+  ls_current_chapter = 0;
+  lsRenderEditForm(s);
+  switchLSTab('edit');
+  document.getElementById('lstab-edit').style.display = '';
+}
+
+function lsRenderEditForm(s) {
+  var name = s.fullName || s.name || 'New Resident';
+  var pct  = s.id ? _lsCompletion(s) : 0;
+  document.getElementById('ls-edit-header').innerHTML =
+    '<div style="background:#F8FAFF;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">' +
+    '<div style="font-size:2.5rem;">📖</div>' +
+    '<div><div style="font-size:1.1rem;font-weight:800;color:#1E1B4B;">'+name+'</div>' +
+    '<div style="font-size:.82rem;color:#6B7280;">'+(s.id?pct+'% complete · Click any chapter to jump there':'New story — fill in as much or as little as you like')+'</div></div></div>';
+
+  // Chapter nav
+  var nav = document.getElementById('ls-chapter-nav');
+  nav.innerHTML = LS_CHAPTERS.map(function(ch, i) {
+    return '<button class="ls-chapter-pill'+(i===ls_current_chapter?' active':'')+'" onclick="lsGoChapter('+i+')">'+ch.label+'</button>';
+  }).join('');
+
+  lsRenderChapter(s, ls_current_chapter);
+}
+
+function lsGoChapter(i) {
+  lsAutoSaveCurrent();
+  ls_current_chapter = i;
+  document.querySelectorAll('.ls-chapter-pill').forEach(function(b,j){ b.classList.toggle('active', j===i); });
+  var s = _getLSStories().find(function(x){ return x.id===ls_editing_id; }) || {};
+  lsRenderChapter(s, i);
+}
+
+function lsRenderChapter(s, i) {
+  var ch = LS_CHAPTERS[i];
+  var html = '<div style="background:#fff;border:1px solid #E0E7FF;border-radius:14px;padding:24px;">' +
+    '<div style="font-size:1rem;font-weight:800;color:#1E1B4B;margin-bottom:18px;">'+ch.icon+' '+ch.label.replace(/[^a-zA-Z &]/g,'').trim()+'</div>';
+
+  ch.fields.forEach(function(f) {
+    html += '<div class="ls-field-group">' +
+      '<label>'+f.label+'</label>' +
+      (f.hint ? '<div class="ls-hint">'+f.hint+'</div>' : '');
+    var val = (s[f.key]||'').replace(/"/g,'&quot;');
+    if (f.type==='area') {
+      html += '<textarea id="lsf-'+f.key+'" rows="3" placeholder="Share their story here...">'+val+'</textarea>';
+    } else if (f.type==='date') {
+      html += '<input type="date" id="lsf-'+f.key+'" value="'+val+'">';
+    } else {
+      html += '<input type="text" id="lsf-'+f.key+'" value="'+val+'" placeholder="...">';
+    }
+    html += '</div>';
+  });
+
+  // Milestones chapter (appended to last chapter)
+  if (i === LS_CHAPTERS.length - 1) {
+    html += '<div style="margin-top:20px;border-top:1px solid #E5E7EB;padding-top:16px;">';
+    html += '<div style="font-weight:700;font-size:.9rem;color:#374151;margin-bottom:10px;">🏆 Life Milestones</div>';
+    html += '<div id="ls-milestones-list">';
+    var ms = s.milestones || [];
+    if (!ms.length) ms = [{ year:'', event:'' }];
+    ms.forEach(function(m, mi) {
+      html += '<div class="ls-milestone-row" id="lsms-'+mi+'">' +
+        '<input type="text" placeholder="Year" value="'+(m.year||'')+'" id="lsmsy-'+mi+'" style="width:80px;">' +
+        '<input type="text" placeholder="Milestone (e.g. Got married, Moved to Chicago...)" value="'+(m.event||'')+'" id="lsmse-'+mi+'" style="flex:1;">' +
+        '<button onclick="lsRemoveMilestone('+mi+')" style="background:#FEF2F2;color:#B91C1C;border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:.8rem;">✕</button>' +
+        '</div>';
+    });
+    html += '</div>';
+    html += '<button onclick="lsAddMilestone()" style="background:#EEF2FF;color:#4338CA;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;cursor:pointer;font-weight:600;margin-top:6px;">+ Add Milestone</button>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  // Chapter navigation buttons
+  html += '<div style="display:flex;justify-content:space-between;margin-top:14px;">';
+  if (i > 0) html += '<button class="btn btn-secondary" onclick="lsGoChapter('+(i-1)+')">← Previous</button>';
+  else html += '<div></div>';
+  if (i < LS_CHAPTERS.length-1) html += '<button class="btn" onclick="lsGoChapter('+(i+1)+')">Next →</button>';
+  else html += '<button class="btn" style="background:#10B981;border-color:#10B981;" onclick="lsSaveStory()">💾 Save Story</button>';
+  html += '</div>';
+
+  document.getElementById('ls-chapter-content').innerHTML = html;
+}
+
+function lsAddMilestone() {
+  lsAutoSaveCurrent();
+  var s = _getLSStories().find(function(x){ return x.id===ls_editing_id; }) || {};
+  var ms = s.milestones || [];
+  ms.push({ year:'', event:'' });
+  if (s.id) {
+    var all = _getLSStories();
+    var idx = all.findIndex(function(x){ return x.id===ls_editing_id; });
+    if (idx !== -1) { all[idx].milestones = ms; _saveLSStories(all); }
+  }
+  lsRenderChapter(s, ls_current_chapter);
+}
+
+function lsRemoveMilestone(mi) {
+  lsAutoSaveCurrent();
+  var all = _getLSStories();
+  var idx = all.findIndex(function(x){ return x.id===ls_editing_id; });
+  if (idx !== -1) {
+    all[idx].milestones = (all[idx].milestones||[]).filter(function(_,i){ return i!==mi; });
+    _saveLSStories(all);
+    lsRenderChapter(all[idx], ls_current_chapter);
+  }
+}
+
+function lsAutoSaveCurrent() {
+  var ch = LS_CHAPTERS[ls_current_chapter];
+  if (!ch) return;
+  var data = {};
+  ch.fields.forEach(function(f) {
+    var el = document.getElementById('lsf-'+f.key);
+    if (el) data[f.key] = el.value;
+  });
+  // collect milestones
+  var ms = [];
+  var i = 0;
+  while (document.getElementById('lsmsy-'+i)) {
+    ms.push({ year: document.getElementById('lsmsy-'+i).value, event: document.getElementById('lsmse-'+i).value });
+    i++;
+  }
+  var all = _getLSStories();
+  if (ls_editing_id) {
+    var idx = all.findIndex(function(x){ return x.id===ls_editing_id; });
+    if (idx !== -1) {
+      Object.assign(all[idx], data);
+      if (ms.length) all[idx].milestones = ms;
+      all[idx].lastUpdated = new Date().toISOString().substring(0,10);
+      _saveLSStories(all);
+    }
+  } else {
+    // new story
+    var s = Object.assign({ id: Date.now().toString(), dateAdded: new Date().toISOString().substring(0,10), milestones: ms }, data);
+    ls_editing_id = s.id;
+    all.push(s);
+    _saveLSStories(all);
+  }
+}
+
+function lsSaveStory() {
+  lsAutoSaveCurrent();
+  var name = '';
+  var el = document.getElementById('lsf-fullName');
+  if (el) name = el.value;
+  if (!name && !ls_editing_id) { alert('Please enter at least a name before saving.'); return; }
+  switchLSTab('stories');
+  document.getElementById('lstab-edit').style.display = 'none';
+}
+
+function lsDeleteStory(id) {
+  if (!confirm('Remove this life story? This cannot be undone.')) return;
+  _saveLSStories(_getLSStories().filter(function(x){ return x.id!==id; }));
+  lsRenderGrid();
+}
+
+function lsRenderPrintSelect() {
+  var stories = _getLSStories();
+  var sel = document.getElementById('ls-print-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">-- Choose a resident --</option>' +
+    stories.map(function(s){ return '<option value="'+s.id+'">'+(s.fullName||s.name||'Unnamed')+'</option>'; }).join('');
+  lsUpdatePrintOptions();
+}
+
+function lsUpdatePrintPreview() { lsUpdatePrintOptions(); }
+
+function lsUpdatePrintOptions() {
+  var sel = document.getElementById('ls-print-select');
+  var id  = sel ? sel.value : '';
+  var div = document.getElementById('ls-print-options');
+  if (!id) { div.innerHTML = '<div style="color:#9CA3AF;font-size:.9rem;padding:20px;">Select a resident above to see print options.</div>'; return; }
+  div.innerHTML = [
+    { icon:'📖', title:'Memory Book', desc:'A beautiful multi-page booklet of their full life story — perfect for their room or to share with family.', color:'#6366F1', fn:'lsPrintMemoryBook' },
+    { icon:'💬', title:'Conversation Starter Cards', desc:'Printable cards with questions and highlights for staff, volunteers, and family visits.', color:'#10B981', fn:'lsPrintConvoCards' },
+    { icon:'🏆', title:'Milestone Timeline', desc:'A visual timeline of their most important life events — great for a room display.', color:'#F59E0B', fn:'lsPrintTimeline' },
+    { icon:'⭐', title:'Favorites Card', desc:'A quick-reference card of all their favorites — food, music, places, sayings — great for caregivers.', color:'#EC4899', fn:'lsPrintFavCard' },
+  ].map(function(opt) {
+    return '<div style="background:#fff;border:2px solid '+opt.color+'30;border-radius:14px;padding:20px;text-align:center;">' +
+      '<div style="font-size:2.5rem;margin-bottom:8px;">'+opt.icon+'</div>' +
+      '<div style="font-weight:800;font-size:.95rem;color:#1E1B4B;margin-bottom:6px;">'+opt.title+'</div>' +
+      '<div style="font-size:.8rem;color:#6B7280;margin-bottom:14px;">'+opt.desc+'</div>' +
+      '<button onclick="'+opt.fn+'(\''+id+'\')" style="background:'+opt.color+';color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:.85rem;font-weight:700;cursor:pointer;width:100%;">🖨️ Print</button>' +
+      '</div>';
+  }).join('');
+}
+
+function lsPrintMemoryBook(id) {
+  var s = _getLSStories().find(function(x){ return x.id===id; });
+  if (!s) return;
+  var name = s.fullName || s.name || 'Resident';
+  var born = s.born ? new Date(s.born+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+  var pct  = _lsCompletion(s);
+
+  function section(title, icon, fields) {
+    var rows = fields.filter(function(f){ return (s[f.key]||'').trim(); }).map(function(f){
+      return '<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">'+f.label+'</div><div style="font-size:14px;color:#1E293B;line-height:1.6;">'+s[f.key]+'</div></div>';
+    });
+    if (!rows.length) return '';
+    return '<div style="break-inside:avoid;margin-bottom:24px;border-left:4px solid #6366F1;padding-left:16px;">' +
+      '<div style="font-size:15px;font-weight:800;color:#1E1B4B;margin-bottom:12px;">'+icon+' '+title+'</div>' + rows.join('') + '</div>';
+  }
+
+  var chapSections = LS_CHAPTERS.slice(1).map(function(ch){
+    return section(ch.label.replace(/[^a-zA-Z &]/g,'').trim(), ch.icon, ch.fields);
+  }).join('');
+
+  var milestones = '';
+  if (s.milestones && s.milestones.filter(function(m){ return m.year||m.event; }).length) {
+    milestones = '<div style="break-inside:avoid;margin-bottom:24px;border-left:4px solid #F59E0B;padding-left:16px;">' +
+      '<div style="font-size:15px;font-weight:800;color:#1E1B4B;margin-bottom:12px;">🏆 Life Milestones</div>' +
+      s.milestones.filter(function(m){ return m.year||m.event; }).map(function(m){
+        return '<div style="display:flex;gap:12px;margin-bottom:8px;"><span style="font-weight:700;color:#6366F1;min-width:50px;">'+m.year+'</span><span style="color:#374151;">'+m.event+'</span></div>';
+      }).join('') + '</div>';
+  }
+
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Life Story — '+name+'</title>' +
+    '<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Georgia,serif;background:#f8f7f4;padding:24px;}' +
+    '@media print{body{background:white;padding:0;}@page{margin:.6in;}}' +
+    '.cover{background:linear-gradient(135deg,#1E3A5F,#4F46E5);color:white;border-radius:16px;padding:40px 48px;margin-bottom:28px;text-align:center;}' +
+    '.cover h1{font-size:2.4rem;margin-bottom:6px;}.cover p{opacity:.8;font-size:1rem;}' +
+    '.body{background:white;border-radius:12px;padding:32px;column-count:2;column-gap:28px;}' +
+    '@media print{.body{column-count:2;}}' +
+    '.footer{text-align:center;margin-top:20px;font-size:11px;color:#9CA3AF;}' +
+    '</style></head><body>' +
+    '<div class="cover">' +
+    (s.photoUrl ? '<img src="'+s.photoUrl+'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.4);margin-bottom:16px;">' : '<div style="font-size:5rem;margin-bottom:12px;">📖</div>') +
+    '<h1>'+name+'</h1>' +
+    (born ? '<p>Born '+born+(s.hometown?' · '+s.hometown:'')+'</p>' : (s.hometown?'<p>'+s.hometown+'</p>':'')) +
+    '<p style="margin-top:12px;font-size:.85rem;opacity:.6;">Life Story · Empower Life 365</p>' +
+    '</div>' +
+    '<div class="body">'+chapSections+milestones+'</div>' +
+    '<div class="footer">This memory book was created with love by the activity team at Empower Life 365 · empowerlife365.app</div>' +
+    '<script>window.onload=function(){window.print();}<\/script>' +
+    '</body></html>';
+
+  var w = window.open('','_blank','width=1000,height=750');
+  w.document.write(html); w.document.close();
+}
+
+function lsPrintConvoCards(id) {
+  var s = _getLSStories().find(function(x){ return x.id===id; });
+  if (!s) return;
+  var name = s.fullName || s.name || 'Resident';
+  var starters = [
+    s.el_memories  ? { q:'Ask them about...', a:'Their earliest memory: "'+s.el_memories.substring(0,120)+'"' } : null,
+    s.fl_partner   ? { q:'Ask them about...', a:'The love of their life: "'+s.fl_partner.substring(0,120)+'"' } : null,
+    s.cr_jobs      ? { q:'Ask them about...', a:'Their career: "'+s.cr_jobs.substring(0,120)+'"' } : null,
+    s.hb_travel    ? { q:'Ask them about...', a:'Their travels: "'+s.hb_travel.substring(0,120)+'"' } : null,
+    s.ws_funny     ? { q:'Ask them about...', a:'A funny memory: "'+s.ws_funny.substring(0,120)+'"' } : null,
+    s.ws_proud     ? { q:'Ask them about...', a:'Their proudest moment: "'+s.ws_proud.substring(0,120)+'"' } : null,
+    s.fv_food      ? { q:'Their favorite food:', a:s.fv_food } : null,
+    s.fv_music     ? { q:'Music they love:', a:s.fv_music } : null,
+    s.fv_saying    ? { q:'Their favorite saying:', a:'"'+s.fv_saying+'"' } : null,
+    s.ws_advice    ? { q:'Best advice they\'d share:', a:'"'+s.ws_advice.substring(0,150)+'"' } : null,
+  ].filter(Boolean);
+
+  var cards = starters.map(function(c){
+    return '<div style="border:2px solid #E0E7FF;border-radius:12px;padding:16px;break-inside:avoid;">' +
+      '<div style="font-size:10px;font-weight:700;color:#6366F1;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">'+c.q+'</div>' +
+      '<div style="font-size:13px;color:#1E293B;line-height:1.5;">'+c.a+'</div></div>';
+  }).join('');
+
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Conversation Cards — '+name+'</title>' +
+    '<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;padding:20px;}' +
+    '@media print{@page{margin:.5in;}}' +
+    '.hdr{background:#1E3A5F;color:white;border-radius:10px;padding:16px 20px;margin-bottom:16px;}' +
+    '.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}' +
+    '</style></head><body>' +
+    '<div class="hdr"><strong style="font-size:1rem;">💬 Conversation Starters — '+name+'</strong><br>' +
+    '<span style="font-size:.8rem;opacity:.8;">Use these to spark meaningful conversations during visits, activities, and care.</span></div>' +
+    '<div class="grid">'+cards+'</div>' +
+    '<script>window.onload=function(){window.print();}<\/script></body></html>';
+  var w=window.open('','_blank','width=900,height=700'); w.document.write(html); w.document.close();
+}
+
+function lsPrintTimeline(id) {
+  var s = _getLSStories().find(function(x){ return x.id===id; });
+  if (!s) return;
+  var name = s.fullName || s.name || 'Resident';
+  var ms = (s.milestones||[]).filter(function(m){ return m.year||m.event; });
+  if (!ms.length) { alert('No milestones recorded yet for '+name+'. Add some in the Edit Story tab!'); return; }
+  ms.sort(function(a,b){ return (a.year||'').localeCompare(b.year||''); });
+  var items = ms.map(function(m,i){
+    return '<div style="display:flex;gap:0;align-items:stretch;margin-bottom:0;">' +
+      '<div style="display:flex;flex-direction:column;align-items:center;width:60px;">' +
+      '<div style="width:14px;height:14px;border-radius:50%;background:#6366F1;border:2px solid white;box-shadow:0 0 0 2px #6366F1;flex-shrink:0;margin-top:8px;"></div>' +
+      '<div style="width:2px;background:#E0E7FF;flex:1;'+(i===ms.length-1?'display:none':'')+'"></div></div>' +
+      '<div style="background:#F8FAFF;border-radius:10px;padding:12px 16px;margin-bottom:12px;flex:1;">' +
+      '<div style="font-weight:800;font-size:13px;color:#6366F1;">'+m.year+'</div>' +
+      '<div style="font-size:14px;color:#1E293B;line-height:1.4;">'+m.event+'</div></div></div>';
+  }).join('');
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Timeline — '+name+'</title>' +
+    '<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;}@media print{@page{margin:.5in;}}</style></head><body>' +
+    '<div style="background:linear-gradient(135deg,#1E3A5F,#4F46E5);color:white;border-radius:12px;padding:24px 28px;margin-bottom:24px;">' +
+    '<div style="font-size:1.4rem;font-weight:800;">🏆 '+name+'\'s Life Timeline</div>' +
+    '<div style="opacity:.8;font-size:.85rem;margin-top:4px;">A life beautifully lived</div></div>' +
+    items +
+    '<script>window.onload=function(){window.print();}<\/script></body></html>';
+  var w=window.open('','_blank','width=700,height=700'); w.document.write(html); w.document.close();
+}
+
+function lsPrintFavCard(id) {
+  var s = _getLSStories().find(function(x){ return x.id===id; });
+  if (!s) return;
+  var name = s.fullName || s.name || 'Resident';
+  var favs = [
+    { icon:'🍽️', label:'Favorite Food',   val: s.fv_food },
+    { icon:'🎵', label:'Music They Love', val: s.fv_music },
+    { icon:'🎬', label:'Favorite Movie',  val: s.fv_movie },
+    { icon:'📚', label:'Favorite Book',   val: s.fv_book },
+    { icon:'🌸', label:'Favorite Season', val: s.fv_season },
+    { icon:'📍', label:'Special Place',   val: s.fv_place },
+    { icon:'💬', label:'Favorite Saying', val: s.fv_saying },
+    { icon:'🏠', label:'Hometown',        val: s.hometown },
+  ].filter(function(f){ return (f.val||'').trim(); });
+
+  var rows = favs.map(function(f){
+    return '<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #F1F5F9;">' +
+      '<span style="font-size:1.2rem;">' + f.icon + '</span>' +
+      '<div><div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;">' + f.label + '</div>' +
+      '<div style="font-size:13px;color:#1E293B;">' + f.val + '</div></div></div>';
+  }).join('');
+
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Favorites — '+name+'</title>' +
+    '<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;max-width:400px;margin:0 auto;padding:20px;}@media print{@page{size:A5;margin:.4in;}}</style></head><body>' +
+    '<div style="background:#6366F1;color:white;border-radius:12px;padding:20px;margin-bottom:16px;text-align:center;">' +
+    '<div style="font-size:2.5rem;margin-bottom:6px;">⭐</div><div style="font-size:1.2rem;font-weight:800;">'+name+'</div>' +
+    '<div style="opacity:.8;font-size:.8rem;">All-Time Favorites</div></div>' +
+    rows +
+    '<script>window.onload=function(){window.print();}<\/script></body></html>';
+  var w=window.open('','_blank','width=600,height=700'); w.document.write(html); w.document.close();
+}
+
+// Init when tab is first opened
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof switchTab === 'function') {
+    var _lsOrig = switchTab;
+    switchTab = function(name) {
+      _lsOrig(name);
+      if (name === 'lifestory') { lsRenderGrid(); }
+    };
+  }
+});
+</script>
+
 
 
 </body>
