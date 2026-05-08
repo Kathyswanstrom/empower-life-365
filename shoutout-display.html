@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shoutout Display – Empower Life 365</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #0F172A;
+    color: white;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2vh 3vw;
+    background: rgba(255,255,255,.05);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    flex-shrink: 0;
+    z-index: 10;
+  }
+  .topbar-logo  { font-size: 2vh; font-weight: 800; letter-spacing: -0.5px; }
+  .topbar-logo span { color: #60A5FA; }
+  .topbar-title { font-size: 1.8vh; font-weight: 600; color: #CBD5E1; letter-spacing: 3px; text-transform: uppercase; }
+  .topbar-clock { font-size: 2.2vh; font-weight: 700; color: #94A3B8; font-variant-numeric: tabular-nums; }
+
+  /* ── Main stage ── */
+  .stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3vh 4vw;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: white;
+    color: #1E293B;
+    border-radius: 2.5vh;
+    padding: 5vh 5vw;
+    width: min(90vw, 1300px);
+    text-align: center;
+    position: absolute;
+    box-shadow: 0 4vh 10vh rgba(0,0,0,.5);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .card.entering { opacity: 0; transform: translateY(4vh) scale(.97); }
+  .card.visible  { opacity: 1; transform: translateY(0) scale(1); }
+  .card.exiting  { opacity: 0; transform: translateY(-4vh) scale(.97); }
+
+  .card-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1vh;
+    border-radius: 2.5vh 2.5vh 0 0;
+  }
+
+  .card-cat {
+    display: inline-block;
+    padding: .6vh 2.5vw;
+    border-radius: 999px;
+    font-size: 1.6vh;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 2vh;
+  }
+
+  .card-avatar {
+    width: 9vh; height: 9vh;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4.5vh;
+    margin: 0 auto 2vh;
+  }
+
+  .card-name {
+    font-size: 7vh;
+    font-weight: 800;
+    color: #0F172A;
+    margin-bottom: .5vh;
+    line-height: 1.05;
+  }
+
+  .card-type {
+    font-size: 2vh;
+    color: #64748B;
+    margin-bottom: 3.5vh;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .card-msg {
+    font-size: 3vh;
+    color: #334155;
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 80%;
+    margin: 0 auto 3vh;
+    position: relative;
+  }
+  .card-msg::before {
+    content: '\201C';
+    font-size: 12vh;
+    color: currentColor;
+    opacity: .1;
+    position: absolute;
+    left: -3vw;
+    top: -2vh;
+    line-height: 1;
+    font-style: normal;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: center;
+    gap: 4vw;
+    font-size: 1.8vh;
+    color: #94A3B8;
+    margin-top: .5vh;
+  }
+  .card-footer strong { color: #475569; }
+
+  /* ── Animated background dots ── */
+  .bg-dots {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    opacity: .1;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    from { transform: translateY(110vh) rotate(0deg); }
+    to   { transform: translateY(-10vh) rotate(360deg); }
+  }
+
+  /* ── Bottom bar ── */
+  .bottombar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2vh 3vw;
+    background: rgba(255,255,255,.05);
+    border-top: 1px solid rgba(255,255,255,.1);
+    flex-shrink: 0;
+    gap: 2vw;
+    z-index: 10;
+  }
+  .progress-track {
+    flex: 1;
+    height: .5vh;
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #60A5FA;
+    border-radius: 999px;
+    transition: width .3s linear;
+  }
+  .counter { font-size: 1.8vh; color: #475569; white-space: nowrap; }
+  .controls { display: flex; gap: 1vw; }
+  .ctrl-btn {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.15);
+    color: white;
+    border-radius: 1vh;
+    padding: .8vh 1.8vw;
+    font-size: 1.8vh;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .ctrl-btn:hover { background: rgba(255,255,255,.22); }
+  .ctrl-btn.active { background: #2563EB; border-color: #2563EB; }
+
+  /* ── Empty state ── */
+  .empty { text-align: center; color: #475569; }
+  .empty h2 { font-size: 4vh; margin-bottom: 1.5vh; }
+  .empty p  { font-size: 2.2vh; }
+</style>
+</head>
+<body>
+
+<div class="bg-dots" id="bgDots"></div>
+
+<div class="topbar">
+  <div class="topbar-logo">Empower <span>Life 365</span></div>
+  <div class="topbar-title">🏅 Community Shoutouts</div>
+  <div class="topbar-clock" id="clock">--:-- --</div>
+</div>
+
+<div class="stage" id="stage">
+  <div class="empty" id="emptyMsg" style="display:none;">
+    <h2>🏅 No Shoutouts Yet</h2>
+    <p>Open Empower Life 365 and give the first shoutout!</p>
+  </div>
+</div>
+
+<div class="bottombar">
+  <div class="counter" id="counter">— / —</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="controls">
+    <button class="ctrl-btn" onclick="prevCard()">◀ Prev</button>
+    <button class="ctrl-btn active" id="btnPlay" onclick="togglePlay()">⏸ Pause</button>
+    <button class="ctrl-btn" onclick="nextCard()">Next ▶</button>
+  </div>
+</div>
+
+<script>
+var CAT_COLORS = {
+  'Participation':'#6366F1','Attitude & Spirit':'#EC4899','Achievement':'#F59E0B',
+  'Kindness':'#10B981','Leadership':'#3B82F6','Above & Beyond':'#8B5CF6',
+  'Milestone':'#EF4444','Other':'#6B7280'
+};
+
+var shoutouts = [], idx = 0, playing = true;
+var tickMs = 7000, elapsed = 0;
+var ticker = null, progressTicker = null, currentCard = null;
+
+function loadShoutouts() {
+  try { shoutouts = JSON.parse(localStorage.getItem('el365_recognition_shoutouts')||'[]'); }
+  catch(e) { shoutouts = []; }
+  shoutouts.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+}
+
+function buildDots() {
+  var c = document.getElementById('bgDots');
+  var cols = ['#6366F1','#EC4899','#F59E0B','#10B981','#3B82F6','#8B5CF6','#EF4444'];
+  for(var i=0;i<22;i++){
+    var d=document.createElement('div'); d.className='dot';
+    var sz=8+Math.random()*22;
+    d.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(Math.random()*100)+'%;'
+      +'background:'+cols[Math.floor(Math.random()*cols.length)]+';'
+      +'animation-duration:'+(14+Math.random()*18)+'s;'
+      +'animation-delay:'+(-Math.random()*20)+'s';
+    c.appendChild(d);
+  }
+}
+
+function fmtDate(d) {
+  if(!d) return '';
+  try{ return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }
+  catch(e){ return d; }
+}
+
+function makeCard(s) {
+  var col  = CAT_COLORS[s.cat]||'#6B7280';
+  var isRes = s.type==='resident';
+
+  var div = document.createElement('div');
+  div.className = 'card entering';
+
+  var accent = document.createElement('div');
+  accent.className = 'card-accent';
+  accent.style.background = col;
+  div.appendChild(accent);
+
+  var cat = document.createElement('div');
+  cat.className = 'card-cat';
+  cat.style.background = col+'18';
+  cat.style.color = col;
+  cat.textContent = s.cat;
+  div.appendChild(cat);
+
+  var avatar = document.createElement('div');
+  avatar.className = 'card-avatar';
+  avatar.style.background = isRes ? '#FEF3C7' : '#CFFAFE';
+  avatar.textContent = isRes ? '👴' : '👩‍⚕️';
+  div.appendChild(avatar);
+
+  var name = document.createElement('div');
+  name.className = 'card-name';
+  name.textContent = s.name;
+  div.appendChild(name);
+
+  var type = document.createElement('div');
+  type.className = 'card-type';
+  type.textContent = isRes ? 'Resident' : 'Team Member';
+  div.appendChild(type);
+
+  var msg = document.createElement('div');
+  msg.className = 'card-msg';
+  msg.textContent = s.msg;
+  div.appendChild(msg);
+
+  var footer = document.createElement('div');
+  footer.className = 'card-footer';
+  if(s.givenBy){
+    var fb=document.createElement('span');
+    fb.innerHTML='<strong>From:</strong> '+s.givenBy;
+    footer.appendChild(fb);
+  }
+  var fd=document.createElement('span');
+  fd.innerHTML='<strong>Date:</strong> '+(fmtDate(s.date)||'—');
+  footer.appendChild(fd);
+  div.appendChild(footer);
+
+  return div;
+}
+
+function showCard(n) {
+  if(!shoutouts.length) return;
+  idx = ((n % shoutouts.length) + shoutouts.length) % shoutouts.length;
+  var stage = document.getElementById('stage');
+
+  if(currentCard){
+    var old=currentCard;
+    old.className='card exiting';
+    setTimeout(function(){ if(old.parentNode) old.parentNode.removeChild(old); },850);
+  }
+
+  var card = makeCard(shoutouts[idx]);
+  stage.appendChild(card);
+  currentCard = card;
+  setTimeout(function(){ card.className='card visible'; },40);
+
+  document.getElementById('counter').textContent = (idx+1)+' / '+shoutouts.length;
+  elapsed = 0;
+  updateProgress();
+}
+
+function updateProgress() {
+  document.getElementById('progressFill').style.width = Math.min(100,(elapsed/tickMs)*100)+'%';
+}
+
+function nextCard(){ showCard(idx+1); }
+function prevCard(){ showCard(idx-1); }
+
+function startTicker(){
+  if(ticker) clearInterval(ticker);
+  if(progressTicker) clearInterval(progressTicker);
+  elapsed = 0;
+  ticker = setInterval(function(){ if(playing) nextCard(); }, tickMs);
+  progressTicker = setInterval(function(){ if(playing){ elapsed+=100; updateProgress(); } }, 100);
+}
+
+function togglePlay(){
+  playing=!playing;
+  var btn=document.getElementById('btnPlay');
+  if(playing){ btn.textContent='⏸ Pause'; btn.className='ctrl-btn active'; elapsed=0; }
+  else        { btn.textContent='▶ Play';  btn.className='ctrl-btn'; }
+}
+
+function updateClock(){
+  var n=new Date(), h=n.getHours(), m=n.getMinutes(), ap=h>=12?'PM':'AM';
+  h=h%12||12;
+  document.getElementById('clock').textContent=h+':'+(m<10?'0':'')+m+' '+ap;
+}
+
+/* ── Init ── */
+loadShoutouts();
+buildDots();
+
+if(!shoutouts.length){
+  document.getElementById('emptyMsg').style.display='block';
+  document.getElementById('counter').textContent='0 shoutouts';
+} else {
+  showCard(0);
+  startTicker();
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextCard();
+  if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   prevCard();
+  if(e.key===' '){ e.preventDefault(); togglePlay(); }
+});
+</script>
+</body>
+</html>
