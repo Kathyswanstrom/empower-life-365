@@ -6,7 +6,7 @@
 <title>Name That Tune — TV Display</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { height: 100%; }
+  html { height: 100vh; }
   body {
     background: #0F0A2A;
     color: #fff;
@@ -305,16 +305,14 @@ poll();
     var btn = document.getElementById('fs-btn');
     if (btn) btn.style.display = 'none';
   }
-  // Try on first user interaction (required by browsers)
+  // Show overlay immediately (DOM is already ready — script is at bottom of body)
+  var btn = document.getElementById('fs-btn');
+  if (btn) btn.style.display = 'flex';
+  // Go fullscreen on first click anywhere
   document.addEventListener('click', function onFirst() {
     goFS();
     document.removeEventListener('click', onFirst);
   }, { once: true });
-  // Show the button immediately so user knows to click
-  window.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('fs-btn');
-    if (btn) btn.style.display = 'flex';
-  });
 })();
 </script>
 </body>

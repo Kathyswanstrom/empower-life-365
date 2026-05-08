@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html, body {
-    width: 100%; height: 100%;
+    width: 100%; height: 100vh;
     background: #0F172A;
     color: white;
     font-family: 'Segoe UI', Arial, sans-serif;
@@ -408,16 +408,14 @@ document.addEventListener('keydown',function(e){
     var btn = document.getElementById('fs-btn');
     if (btn) btn.style.display = 'none';
   }
-  // Try on first user interaction (required by browsers)
+  // Show overlay immediately (DOM is already ready — script is at bottom of body)
+  var btn = document.getElementById('fs-btn');
+  if (btn) btn.style.display = 'flex';
+  // Go fullscreen on first click anywhere
   document.addEventListener('click', function onFirst() {
     goFS();
     document.removeEventListener('click', onFirst);
   }, { once: true });
-  // Show the button immediately so user knows to click
-  window.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('fs-btn');
-    if (btn) btn.style.display = 'flex';
-  });
 })();
 </script>
 </body>
