@@ -6699,9 +6699,12 @@ function printWordSearch() {
       <div class="ws-words">${ansWordListHtml}</div>
       <div class="footer">empowerlife365.app · Answer key — for staff use</div>
     </div>
-  </script>
+  </body></html>`;
 
-<script>
+  const w = window.open('','_blank','width=900,height=700');
+  w.document.write(docHtml); w.document.close(); w.focus();
+  setTimeout(() => w.print(), 500);
+}
 // ══════════════════════════════════════════════════
 //  MUSIC & MEMORIES — Song Requests, Name That Tune, Music Profiles
 // ══════════════════════════════════════════════════
@@ -7100,14 +7103,6 @@ function mpPrint(id) {
   <script>window.onload=()=>window.print();<\/script></body></html>`);
   w.document.close();
 }
-</script>
-</body></html>`;
-
-  const w = window.open('','_blank','width=900,height=700');
-  w.document.write(docHtml); w.document.close(); w.focus();
-  setTimeout(() => w.print(), 500);
-}
-
 function printCrossword() {
   if (!cwState || !cwState.config) { showToast('Load a Crossword first'); return; }
   const cw = cwState.config;
