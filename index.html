@@ -7068,12 +7068,12 @@ function openNttDisplay() {
     nttSyncTV(deck[nttState.idx % deck.length], nttState.revealed);
   }
   window.open('nametune-display.html', 'ntt_tv',
-    'width=1280,height=720,toolbar=0,menubar=0,scrollbars=0');
+    'width='+screen.width+',height='+screen.height+',top=0,left=0,toolbar=0,menubar=0,scrollbars=0');
 }
 
 function openMusicRequestsDisplay() {
   window.open('music-requests-display.html', 'music_requests_tv',
-    'width=1280,height=720,toolbar=0,menubar=0,scrollbars=0');
+    'width='+screen.width+',height='+screen.height+',top=0,left=0,toolbar=0,menubar=0,scrollbars=0');
 }
 
 function mpPrint(id) {

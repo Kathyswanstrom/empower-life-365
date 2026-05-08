@@ -200,6 +200,15 @@
 </style>
 </head>
 <body>
+<!-- Fullscreen prompt -->
+<div id="fs-btn" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;
+  flex-direction:column;align-items:center;justify-content:center;gap:24px;cursor:pointer;"
+  onclick="(function(){var el=document.documentElement;var r=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen;if(r)r.call(el);document.getElementById('fs-btn').style.display='none';})()">
+  <div style="font-size:72px;">📺</div>
+  <div style="font-size:28px;font-weight:700;color:#fff;">Click anywhere to go fullscreen</div>
+  <div style="font-size:16px;color:#94A3B8;">Press Esc to exit fullscreen at any time</div>
+  <div style="background:#6366F1;color:#fff;padding:14px 40px;border-radius:12px;font-size:18px;font-weight:700;margin-top:8px;">Go Fullscreen</div>
+</div>
 
 <div class="bg-dots" id="bgDots"></div>
 
@@ -387,6 +396,29 @@ document.addEventListener('keydown',function(e){
   if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   prevCard();
   if(e.key===' '){ e.preventDefault(); togglePlay(); }
 });
+</script>
+
+<script>
+// ── Auto-fullscreen on load ──────────────────────
+(function() {
+  function goFS() {
+    var el = document.documentElement;
+    var req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+    if (req) req.call(el);
+    var btn = document.getElementById('fs-btn');
+    if (btn) btn.style.display = 'none';
+  }
+  // Try on first user interaction (required by browsers)
+  document.addEventListener('click', function onFirst() {
+    goFS();
+    document.removeEventListener('click', onFirst);
+  }, { once: true });
+  // Show the button immediately so user knows to click
+  window.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('fs-btn');
+    if (btn) btn.style.display = 'flex';
+  });
+})();
 </script>
 </body>
 </html>
