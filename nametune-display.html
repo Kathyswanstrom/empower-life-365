@@ -6,6 +6,7 @@
 <title>Name That Tune — TV Display</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow: hidden; }
   html { height: 100vh; }
   body {
     background: #0F0A2A;
@@ -186,7 +187,7 @@
   }
 </style>
 </head>
-<body>
+<body style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:#0F0A2A;color:#fff;font-family:Georgia,serif;">
 <!-- TV launch overlay -->
 <div id="fs-btn" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;
   flex-direction:column;align-items:center;justify-content:center;gap:20px;cursor:pointer;"
@@ -215,6 +216,7 @@
 </div>
 
 <div class="footer">empowerlife365.app — Name That Tune</div>
+
 
 <script>
 var NTT_TV_KEY = 'el365_ntt_tv_state';

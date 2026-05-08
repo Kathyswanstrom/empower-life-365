@@ -6,6 +6,7 @@
 <title>Song Requests — TV Display</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow: hidden; }
   html { height: 100vh; }
   body {
     background: #0D1117;
@@ -151,7 +152,7 @@
   }
 </style>
 </head>
-<body>
+<body style="position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden;background:#0D1117;color:#fff;font-family:Georgia,serif;">
 <!-- TV launch overlay -->
 <div id="fs-btn" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;
   flex-direction:column;align-items:center;justify-content:center;gap:20px;cursor:pointer;"
@@ -296,5 +297,6 @@ poll();
   if (btn) btn.style.display = 'flex';
 })();
 </script>
+
 </body>
 </html>
