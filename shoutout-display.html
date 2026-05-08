@@ -5,220 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shoutout Display – Empower Life 365</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; overflow: hidden; }
-
-  html, body {
-    width: 100%; height: 100vh; min-height: 100vh;
-    min-height: 100vh;
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { width:100%; height:100%; }
+  body {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background: #0F172A;
     color: white;
     font-family: 'Segoe UI', Arial, sans-serif;
-    overflow: hidden;
   }
-
-  body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── Top bar ── */
   .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2vh 3vw;
-    background: rgba(255,255,255,.05);
-    border-bottom: 1px solid rgba(255,255,255,.1);
-    flex-shrink: 0;
-    z-index: 10;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.2vh 3vw;
+    background:rgba(255,255,255,.05);
+    border-bottom:1px solid rgba(255,255,255,.1);
+    flex-shrink:0; z-index:10;
   }
-  .topbar-logo  { font-size: 2vh; font-weight: 800; letter-spacing: -0.5px; }
-  .topbar-logo span { color: #60A5FA; }
-  .topbar-title { font-size: 1.8vh; font-weight: 600; color: #CBD5E1; letter-spacing: 3px; text-transform: uppercase; }
-  .topbar-clock { font-size: 2.2vh; font-weight: 700; color: #94A3B8; font-variant-numeric: tabular-nums; }
-
-  /* ── Main stage ── */
+  .topbar-logo  { font-size:2vh; font-weight:800; letter-spacing:-0.5px; }
+  .topbar-logo span { color:#60A5FA; }
+  .topbar-title { font-size:1.8vh; font-weight:600; color:#CBD5E1; letter-spacing:3px; text-transform:uppercase; }
+  .topbar-clock { font-size:2.2vh; font-weight:700; color:#94A3B8; font-variant-numeric:tabular-nums; }
   .stage {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3vh 4vw;
-    position: relative;
-    z-index: 5;
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:3vh 4vw; position:relative; z-index:5;
   }
-
-  /* ── Card ── */
   .card {
-    background: white;
-    color: #1E293B;
-    border-radius: 2.5vh;
-    padding: 5vh 5vw;
-    width: min(90vw, 1300px);
-    text-align: center;
-    position: absolute;
-    box-shadow: 0 4vh 10vh rgba(0,0,0,.5);
-    transition: opacity .8s ease, transform .8s ease;
+    background:white; color:#1E293B; border-radius:2.5vh;
+    padding:5vh 5vw; width:min(90vw,1300px); text-align:center;
+    position:absolute; box-shadow:0 4vh 10vh rgba(0,0,0,.5);
+    transition:opacity .8s ease, transform .8s ease;
   }
-  .card.entering { opacity: 0; transform: translateY(4vh) scale(.97); }
-  .card.visible  { opacity: 1; transform: translateY(0) scale(1); }
-  .card.exiting  { opacity: 0; transform: translateY(-4vh) scale(.97); }
-
-  .card-accent {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1vh;
-    border-radius: 2.5vh 2.5vh 0 0;
-  }
-
-  .card-cat {
-    display: inline-block;
-    padding: .6vh 2.5vw;
-    border-radius: 999px;
-    font-size: 1.6vh;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 2vh;
-  }
-
-  .card-avatar {
-    width: 9vh; height: 9vh;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 4.5vh;
-    margin: 0 auto 2vh;
-  }
-
-  .card-name {
-    font-size: 7vh;
-    font-weight: 800;
-    color: #0F172A;
-    margin-bottom: .5vh;
-    line-height: 1.05;
-  }
-
-  .card-type {
-    font-size: 2vh;
-    color: #64748B;
-    margin-bottom: 3.5vh;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .card-msg {
-    font-size: 3vh;
-    color: #334155;
-    line-height: 1.7;
-    font-style: italic;
-    max-width: 80%;
-    margin: 0 auto 3vh;
-    position: relative;
-  }
-  .card-msg::before {
-    content: '\201C';
-    font-size: 12vh;
-    color: currentColor;
-    opacity: .1;
-    position: absolute;
-    left: -3vw;
-    top: -2vh;
-    line-height: 1;
-    font-style: normal;
-  }
-
-  .card-footer {
-    display: flex;
-    justify-content: center;
-    gap: 4vw;
-    font-size: 1.8vh;
-    color: #94A3B8;
-    margin-top: .5vh;
-  }
-  .card-footer strong { color: #475569; }
-
-  /* ── Animated background dots ── */
-  .bg-dots {
-    position: fixed; inset: 0;
-    pointer-events: none; z-index: 0;
-    overflow: hidden;
-  }
-  .dot {
-    position: absolute;
-    border-radius: 50%;
-    opacity: .1;
-    animation: floatUp linear infinite;
-  }
-  @keyframes floatUp {
-    from { transform: translateY(110vh) rotate(0deg); }
-    to   { transform: translateY(-10vh) rotate(360deg); }
-  }
-
-  /* ── Bottom bar ── */
+  .card.entering { opacity:0; transform:translateY(4vh) scale(.97); }
+  .card.visible  { opacity:1; transform:translateY(0) scale(1); }
+  .card.exiting  { opacity:0; transform:translateY(-4vh) scale(.97); }
+  .card-accent { position:absolute; top:0; left:0; right:0; height:1vh; border-radius:2.5vh 2.5vh 0 0; }
+  .card-cat { display:inline-block; padding:.6vh 2.5vw; border-radius:999px; font-size:1.6vh; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:2vh; }
+  .card-avatar { width:9vh; height:9vh; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:4.5vh; margin:0 auto 2vh; }
+  .card-name { font-size:7vh; font-weight:800; color:#0F172A; margin-bottom:.5vh; line-height:1.05; }
+  .card-type { font-size:2vh; color:#64748B; margin-bottom:3.5vh; letter-spacing:1px; text-transform:uppercase; }
+  .card-msg { font-size:3vh; color:#334155; line-height:1.7; font-style:italic; max-width:80%; margin:0 auto 3vh; position:relative; }
+  .card-msg::before { content:'C'; font-size:12vh; color:currentColor; opacity:.1; position:absolute; left:-3vw; top:-2vh; line-height:1; font-style:normal; }
+  .card-footer { display:flex; justify-content:center; gap:4vw; font-size:1.8vh; color:#94A3B8; margin-top:.5vh; }
+  .card-footer strong { color:#475569; }
+  .bg-dots { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .dot { position:absolute; border-radius:50%; opacity:.1; animation:floatUp linear infinite; }
+  @keyframes floatUp { from{transform:translateY(110vh) rotate(0deg);} to{transform:translateY(-10vh) rotate(360deg);} }
   .bottombar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2vh 3vw;
-    background: rgba(255,255,255,.05);
-    border-top: 1px solid rgba(255,255,255,.1);
-    flex-shrink: 0;
-    gap: 2vw;
-    z-index: 10;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.2vh 3vw; background:rgba(255,255,255,.05);
+    border-top:1px solid rgba(255,255,255,.1);
+    flex-shrink:0; gap:2vw; z-index:10;
   }
-  .progress-track {
-    flex: 1;
-    height: .5vh;
-    background: rgba(255,255,255,.12);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: #60A5FA;
-    border-radius: 999px;
-    transition: width .3s linear;
-  }
-  .counter { font-size: 1.8vh; color: #475569; white-space: nowrap; }
-  .controls { display: flex; gap: 1vw; }
-  .ctrl-btn {
-    background: rgba(255,255,255,.1);
-    border: 1px solid rgba(255,255,255,.15);
-    color: white;
-    border-radius: 1vh;
-    padding: .8vh 1.8vw;
-    font-size: 1.8vh;
-    cursor: pointer;
-    transition: background .2s;
-  }
-  .ctrl-btn:hover { background: rgba(255,255,255,.22); }
-  .ctrl-btn.active { background: #2563EB; border-color: #2563EB; }
-
-  /* ── Empty state ── */
-  .empty { text-align: center; color: #475569; }
-  .empty h2 { font-size: 4vh; margin-bottom: 1.5vh; }
-  .empty p  { font-size: 2.2vh; }
+  .progress-track { flex:1; height:.5vh; background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden; }
+  .progress-fill  { height:100%; background:#60A5FA; border-radius:999px; transition:width .3s linear; }
+  .counter { font-size:1.8vh; color:#475569; white-space:nowrap; }
+  .controls { display:flex; gap:1vw; }
+  .ctrl-btn { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); color:white; border-radius:1vh; padding:.8vh 1.8vw; font-size:1.8vh; cursor:pointer; transition:background .2s; }
+  .ctrl-btn:hover { background:rgba(255,255,255,.22); }
+  .ctrl-btn.active { background:#2563EB; border-color:#2563EB; }
+  .empty { text-align:center; color:#475569; }
+  .empty h2 { font-size:4vh; margin-bottom:1.5vh; }
+  .empty p  { font-size:2.2vh; }
 </style>
 </head>
-<body style="position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden;background:#0F172A;color:#fff;font-family:'Segoe UI',Arial,sans-serif;">
+<body>
 <!-- TV launch overlay -->
-<div id="fs-btn" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;
-  flex-direction:column;align-items:center;justify-content:center;gap:20px;cursor:pointer;"
+<div id="fs-btn" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;cursor:pointer;"
   onclick="document.getElementById('fs-btn').style.display='none'">
   <div style="font-size:72px;">📺</div>
   <div style="font-size:30px;font-weight:700;color:#fff;">Ready for TV Display</div>
-  <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.1);padding:16px 32px;border-radius:14px;">
-    <span style="font-size:36px;">⌨️</span>
-    <div>
-      <div style="font-size:20px;font-weight:700;color:#fff;">Press F11 to go fullscreen</div>
-      <div style="font-size:14px;color:#94A3B8;margin-top:4px;">Then move this window to your TV screen</div>
-    </div>
+  <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:20px 36px;text-align:center;max-width:500px;">
+    <div style="font-size:18px;color:#A5B4FC;font-weight:600;margin-bottom:12px;">Step 1</div>
+    <div style="font-size:20px;font-weight:700;color:#fff;">Move this window to your TV</div>
+    <div style="font-size:14px;color:#94A3B8;margin-top:6px;">Drag the browser window to your TV screen</div>
   </div>
-  <div style="background:#6366F1;color:#fff;padding:14px 48px;border-radius:12px;font-size:18px;font-weight:700;margin-top:4px;">
-    Click anywhere to start
+  <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:20px 36px;text-align:center;max-width:500px;">
+    <div style="font-size:18px;color:#A5B4FC;font-weight:600;margin-bottom:12px;">Step 2</div>
+    <div style="font-size:20px;font-weight:700;color:#fff;">Press <kbd style="background:#6366F1;color:#fff;padding:4px 14px;border-radius:6px;font-size:22px;">F11</kbd> on your keyboard</div>
+    <div style="font-size:14px;color:#94A3B8;margin-top:6px;">This makes it truly fullscreen on the TV</div>
   </div>
-  <div style="font-size:13px;color:#475569;">Press F11 again or Esc to exit fullscreen</div>
+  <div style="background:#6366F1;color:#fff;padding:14px 48px;border-radius:12px;font-size:18px;font-weight:700;margin-top:8px;">
+    Click here to start the display
+  </div>
 </div>
 
 
@@ -414,8 +287,7 @@ document.addEventListener('keydown',function(e){
 <script>
 // ── Show TV launch overlay immediately ──────────
 (function() {
-  var btn = document.getElementById('fs-btn');
-  if (btn) btn.style.display = 'flex';
+  // overlay already visible via inline style
 })();
 </script>
 </body>

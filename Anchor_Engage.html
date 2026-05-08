@@ -7067,13 +7067,11 @@ function openNttDisplay() {
   if (deck && deck.length) {
     nttSyncTV(deck[nttState.idx % deck.length], nttState.revealed);
   }
-  window.open('nametune-display.html', 'ntt_tv',
-    'width='+screen.width+',height='+screen.height+',top=0,left=0,toolbar=0,menubar=0,scrollbars=0');
+  window.open('nametune-display.html','el_nametune','left=0,top=0,width='+screen.availWidth+',height='+screen.availHeight);
 }
 
 function openMusicRequestsDisplay() {
-  window.open('music-requests-display.html', 'music_requests_tv',
-    'width='+screen.width+',height='+screen.height+',top=0,left=0,toolbar=0,menubar=0,scrollbars=0');
+  window.open('music-requests-display.html','el_musicreq','left=0,top=0,width='+screen.availWidth+',height='+screen.availHeight);
 }
 
 function mpPrint(id) {
@@ -23478,7 +23476,7 @@ function emailShoutout(id) {
 }
 
 function openShoutoutDisplay() {
-  window.open('shoutout-display.html', '_blank', 'width=1280,height=800');
+  window.open('shoutout-display.html','el_shoutout','left=0,top=0,width='+screen.availWidth+',height='+screen.availHeight);
 }
 
 
