@@ -1173,6 +1173,92 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .rem-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;cursor:pointer;transition:box-shadow .15s;}
 .rem-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);}
 .rem-level-badge{display:inline-block;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:4px;}
+
+/* ===== STORIES & WRITING ===== */
+#panel-stories { padding:0; }
+.sw-header { background:linear-gradient(135deg,#7c3aed,#a855f7); color:#fff; padding:20px 24px 16px; }
+.sw-header h2 { margin:0 0 4px; font-size:1.4rem; }
+.sw-header p { margin:0; opacity:.85; font-size:.9rem; }
+.sw-mode-tabs { display:flex; gap:8px; margin-top:12px; }
+.sw-mode-btn { padding:6px 16px; border-radius:20px; border:2px solid rgba(255,255,255,.5);
+  background:transparent; color:#fff; cursor:pointer; font-size:.85rem; font-weight:600; transition:all .2s; }
+.sw-mode-btn.active { background:#fff; color:#7c3aed; border-color:#fff; }
+.sw-body { padding:16px; }
+
+/* Read Aloud Library */
+.sw-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.sw-filter-btn { padding:5px 14px; border-radius:16px; border:1px solid #e5e7eb;
+  background:#f9fafb; color:#374151; cursor:pointer; font-size:.8rem; transition:all .2s; }
+.sw-filter-btn.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+.sw-story-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+.sw-story-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  overflow:hidden; cursor:pointer; transition:all .2s; }
+.sw-story-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
+.sw-story-banner { height:6px; }
+.sw-story-body { padding:14px; }
+.sw-story-meta { display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 10px; }
+.sw-story-tag { font-size:.72rem; padding:2px 8px; border-radius:10px; font-weight:600; }
+.sw-story-title { font-size:1rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
+.sw-story-desc { font-size:.82rem; color:#6b7280; margin:0; line-height:1.4; }
+.sw-read-time { font-size:.75rem; color:#9ca3af; margin-top:6px; }
+
+/* Story Modal */
+.sw-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
+  display:none; align-items:center; justify-content:center; padding:16px; }
+.sw-modal-overlay.open { display:flex; }
+.sw-modal { background:#fff; border-radius:16px; max-width:680px; width:100%;
+  max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.sw-modal-header { background:linear-gradient(135deg,#7c3aed,#a855f7);
+  color:#fff; padding:20px 24px 16px; border-radius:16px 16px 0 0; position:sticky; top:0; z-index:1; }
+.sw-modal-title { font-size:1.2rem; font-weight:700; margin:0 0 4px; }
+.sw-modal-sub { font-size:.85rem; opacity:.85; margin:0; }
+.sw-modal-close { position:absolute; top:14px; right:16px; background:rgba(255,255,255,.25);
+  border:none; color:#fff; width:30px; height:30px; border-radius:50%; cursor:pointer;
+  font-size:1.1rem; display:flex; align-items:center; justify-content:center; }
+.sw-modal-body { padding:20px 24px; }
+.sw-story-text { font-size:.95rem; line-height:1.75; color:#374151; white-space:pre-wrap; }
+.sw-section-label { font-size:.8rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.05em; color:#7c3aed; margin:18px 0 8px; }
+.sw-discussion-list { list-style:none; padding:0; margin:0; }
+.sw-discussion-list li { background:#f5f3ff; border-left:3px solid #7c3aed;
+  border-radius:0 8px 8px 0; padding:8px 12px; margin-bottom:6px; font-size:.88rem; color:#374151; }
+.sw-facilitator-box { background:#fef9c3; border:1px solid #fde047;
+  border-radius:8px; padding:12px 14px; font-size:.85rem; color:#713f12; line-height:1.5; }
+.sw-modal-actions { display:flex; gap:10px; flex-wrap:wrap; padding:0 24px 20px; }
+.sw-modal-btn { padding:8px 20px; border-radius:8px; border:none; cursor:pointer;
+  font-size:.85rem; font-weight:600; transition:all .2s; }
+.sw-btn-purple { background:#7c3aed; color:#fff; }
+.sw-btn-outline { background:#fff; color:#7c3aed; border:2px solid #7c3aed; }
+
+/* Writing Group */
+.sw-writing-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+.sw-writing-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  padding:16px; cursor:pointer; transition:all .2s; }
+.sw-writing-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
+.sw-writing-emoji { font-size:2rem; margin-bottom:8px; }
+.sw-writing-title { font-size:.95rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
+.sw-writing-desc { font-size:.82rem; color:#6b7280; margin:0; line-height:1.4; }
+
+/* Writing Modal */
+.sw-wmodal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
+  display:none; align-items:center; justify-content:center; padding:16px; }
+.sw-wmodal-overlay.open { display:flex; }
+.sw-wmodal { background:#fff; border-radius:16px; max-width:700px; width:100%;
+  max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.sw-wmodal-header { background:linear-gradient(135deg,#059669,#10b981);
+  color:#fff; padding:20px 24px 16px; border-radius:16px 16px 0 0; position:sticky; top:0; z-index:1; }
+.sw-wmodal-body { padding:20px 24px; }
+.sw-prompt-chip { display:inline-block; background:#ecfdf5; color:#065f46;
+  border:1px solid #6ee7b7; border-radius:8px; padding:6px 12px; margin:4px; font-size:.85rem; cursor:pointer; }
+.sw-prompt-chip:hover { background:#d1fae5; }
+.sw-curriculum-week { background:#f9fafb; border:1px solid #e5e7eb;
+  border-radius:8px; padding:12px 14px; margin-bottom:8px; }
+.sw-curriculum-week h4 { margin:0 0 4px; font-size:.9rem; color:#7c3aed; font-weight:700; }
+.sw-curriculum-week p { margin:0; font-size:.83rem; color:#374151; line-height:1.5; }
+.sw-tip-item { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+.sw-tip-icon { font-size:1.2rem; flex-shrink:0; margin-top:1px; }
+.sw-tip-text { font-size:.85rem; color:#374151; line-height:1.5; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1244,6 +1330,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="roomservice" id="roomservice-tab" onclick="switchTab('roomservice')">🚪 Room Service</button>
       <button class="tab-btn" data-tab="aromatherapy" id="aromatherapy-tab" onclick="switchTab('aromatherapy')">🌸 Aromatherapy</button>
       <button class="tab-btn" data-tab="reminiscing" id="reminiscing-tab" onclick="switchTab('reminiscing')">💭 Reminiscing</button>
+      <button class="tab-btn" data-tab="stories" id="stories-tab" onclick="switchTab('stories')">📖 Stories & Writing</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3733,6 +3820,52 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <div style="background:#fff;max-width:700px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="rem-modal-body"></div>
   </div>
 </section>
+
+
+  <!-- ===== STORIES & WRITING PANEL ===== -->
+  <section class="tab-panel" id="panel-stories">
+    <div class="sw-header">
+      <h2>📖 Stories & Creative Writing</h2>
+      <p>Read-aloud short stories and a complete creative writing group program</p>
+      <div class="sw-mode-tabs">
+        <button class="sw-mode-btn active" id="sw-mode-read" onclick="swSetMode('read')">📚 Read Aloud Library</button>
+        <button class="sw-mode-btn" id="sw-mode-write" onclick="swSetMode('write')">✍️ Writing Group</button>
+      </div>
+    </div>
+    <div class="sw-body" id="sw-body">
+      <!-- filled by JS -->
+    </div>
+    <!-- Story modal -->
+    <div class="sw-modal-overlay" id="sw-modal">
+      <div class="sw-modal">
+        <div class="sw-modal-header" id="sw-modal-header">
+          <button class="sw-modal-close" onclick="swCloseModal()">✕</button>
+          <div class="sw-modal-title" id="sw-modal-title"></div>
+          <div class="sw-modal-sub" id="sw-modal-sub"></div>
+        </div>
+        <div class="sw-modal-body" id="sw-modal-body"></div>
+        <div class="sw-modal-actions">
+          <button class="sw-modal-btn sw-btn-purple" onclick="swPrintStory()">🖨️ Print Story</button>
+          <button class="sw-modal-btn sw-btn-outline" onclick="swCloseModal()">Close</button>
+        </div>
+      </div>
+    </div>
+    <!-- Writing modal -->
+    <div class="sw-wmodal-overlay" id="sw-wmodal">
+      <div class="sw-wmodal">
+        <div class="sw-wmodal-header" id="sw-wmodal-header">
+          <button class="sw-modal-close" onclick="swCloseWModal()">✕</button>
+          <div class="sw-modal-title" id="sw-wmodal-title"></div>
+          <div class="sw-modal-sub" id="sw-wmodal-sub"></div>
+        </div>
+        <div class="sw-wmodal-body" id="sw-wmodal-body"></div>
+        <div class="sw-modal-actions">
+          <button class="sw-modal-btn sw-btn-purple" onclick="swPrintWriting()">🖨️ Print Guide</button>
+          <button class="sw-modal-btn sw-btn-outline" onclick="swCloseWModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
 <section class="tab-panel" id="panel-family">
   <style>
@@ -29907,4 +30040,1043 @@ function remPrintConvoStarters() {
   };
 })();
 </script>
+
+<script>
+/* ===== SHORT STORIES & CREATIVE WRITING ===== */
+
+var SW_STORIES = [
+  {
+    id:'sunday-drive',
+    title:'The Sunday Drive',
+    emoji:'🚗',
+    theme:'nostalgia',
+    themeLabel:'Nostalgia',
+    color:'#7c3aed',
+    readTime:'5–7 min',
+    desc:'A grandfather relives the magic of Sunday afternoon drives with his family in 1962.',
+    text:`Harold had a system.
+
+Every Sunday morning, before his wife Margaret even finished her first cup of coffee, he would go out to the driveway and shine the Buick. Not because it was dirty — he kept it spotless all week — but because the act of polishing it somehow made the day feel official.
+
+"Harold, you're going to wear the paint right off that car," Margaret would call from the kitchen window.
+
+He would grin and keep polishing.
+
+By eleven o'clock, all four children would pile into the back seat, sorted by age and held in place by a firm look from their mother. The destination didn't matter much. Sometimes it was the lake. Sometimes it was the long road that wound through the apple orchards east of town. Sometimes Harold simply drove, turning wherever the road suggested.
+
+His youngest, Teddy, always fell asleep within twenty minutes. His oldest, Diane, would press her nose against the glass and invent stories about the farmhouses they passed — a princess lived in the one with the red door; the old man on the porch was a retired sea captain.
+
+"Daddy, pull over," his middle daughter Carol would announce, having spotted something on the side of the road — a hand-painted sign for strawberries, a horse grazing near a fence, a cluster of wildflowers in a color she had never seen before.
+
+And Harold would pull over.
+
+He would stand beside the car with his hands in his pockets while the children investigated whatever Carol had found, and Margaret would come to stand beside him, close enough that their arms touched.
+
+"You know," he said one afternoon, watching Teddy try to make friends with a suspicious goat, "I don't think I've ever been lost on these roads."
+
+"You've been lost plenty of times," Margaret said.
+
+"No." He shook his head slowly. "Lost means you don't know where you are. I always know exactly where I am."
+
+She looked at him sidelong, waiting.
+
+"Right here," he said. "That's where I am."
+
+The goat eventually accepted a handful of grass from Teddy's small, outstretched hand. Diane added the goat to her imaginary kingdom. Carol pressed a wildflower into her pocket for her scrapbook.
+
+And Harold stood in the afternoon sun, unhurried, unworried, in possession of the Sunday drive — which was, as far as he was concerned, the best invention of the twentieth century.`,
+    questions:[
+      'Do you remember Sunday drives or special family outings from your childhood or as a parent?',
+      'Did your family have any rituals or routines that made weekends feel special?',
+      'What was your favorite car you ever owned or rode in?',
+      'What is a place you would pull over to see if you were on a drive today?',
+      'Harold says he was never lost — he was always "right here." What does that mean to you?'
+    ],
+    facilitator:'This story is rich with sensory detail — the polished car, the smell of apple orchards, the goat. Encourage residents to share their own road trip memories. The theme of being present ("right here") can open a meaningful conversation about what it means to be fully in a moment.'
+  },
+  {
+    id:'the-blue-ribbon',
+    title:'The Blue Ribbon',
+    emoji:'🎀',
+    theme:'triumph',
+    themeLabel:'Triumph',
+    color:'#2563eb',
+    readTime:'5–7 min',
+    desc:'At 78, Edna enters her apple pie in the county fair for the first time — and discovers winning isn\'t what she expected.',
+    text:`Edna Kowalski had made her apple pie every autumn for fifty-three years without ever entering it in a competition.
+
+Her daughter-in-law Linda, who had opinions about most things, finally asked why.
+
+"Because I like making it," Edna said, as though this were obvious.
+
+"But it's the best pie in the county."
+
+"I don't need a ribbon to know that."
+
+But Linda signed her up anyway — filled out the form herself and paid the two-dollar entry fee and told Edna about it at breakfast on a Tuesday, when it was too late to back out.
+
+The county fair smelled exactly the way it always had: fry oil, hay, and the particular sweetness of too many baked goods in a hot tent. Edna set her pie on the table between a lemon meringue and a suspicious-looking cherry tart, then went to look at the chickens.
+
+She didn't go back to the tent until the judging was over.
+
+The blue ribbon was not on her pie.
+
+It was on the cherry tart.
+
+Edna stood there for a moment, reading the little card beside the tart: Dorothy Fenn, age 81, first entry. There was a photograph clipped to the card — a small, bright-eyed woman in a yellow cardigan grinning like she'd won the Olympics.
+
+"She brings that tart every year," said the woman beside Edna, arms crossed, clearly unhappy. "I don't know how the judges keep falling for it."
+
+"Have you tried it?" Edna asked.
+
+The woman looked appalled.
+
+Edna picked up a toothpick from the sample tray and tried a piece.
+
+It was, she had to admit, an extraordinary cherry tart.
+
+She found Dorothy Fenn by the quilts, still wearing her ribbon, showing it to a great-grandchild who was more interested in a passing dog.
+
+"Congratulations," Edna said. "Your tart is wonderful."
+
+Dorothy looked surprised, then pleased. "Yours was second. I tried it. The cinnamon is just right."
+
+"Family recipe."
+
+"Mine too."
+
+They ended up sitting on a bench together for an hour, trading the histories of their recipes the way other people traded photographs — with pride and tenderness and the understanding that a dish can carry an entire life inside it.
+
+Edna came home without a blue ribbon. She came home with Dorothy Fenn's phone number and an invitation to swap recipes at Christmas.
+
+"Well?" said Linda.
+
+"Second place," Edna said. "It was enough."`,
+    questions:[
+      'Have you ever entered a competition or been recognized for something you were proud of?',
+      'Is there a recipe in your family that has been passed down through generations?',
+      'Have you ever been surprised by someone you initially felt competitive with?',
+      'What does "winning" mean to you — has your definition changed over the years?',
+      'What food or dish best represents your family or your heritage?'
+    ],
+    facilitator:'This story pairs well with a recipe-sharing activity afterward. Residents often have strong feelings about family recipes and can become surprisingly animated discussing the "right" way to make a dish. The friendship theme at the end can open a conversation about unexpected connections.'
+  },
+  {
+    id:'the-lighthouse-keeper',
+    title:'The Last Letter',
+    emoji:'💌',
+    theme:'love',
+    themeLabel:'Love & Connection',
+    color:'#dc2626',
+    readTime:'5–6 min',
+    desc:'While sorting through her late husband\'s belongings, Ruth discovers a letter he never sent — and finally understands why.',
+    text:`Ruth found the letter on a Thursday in October, tucked inside a book about migratory birds that George had never mentioned owning.
+
+It was sealed. Her name was on the front in his handwriting — the careful, slightly slanted print he used when he was being deliberate. Not his everyday scrawl. His Sunday handwriting.
+
+She sat down at the kitchen table with her reading glasses and a cup of tea she didn't drink.
+
+The letter was dated March 14th — two years before he died.
+
+*Ruth,*
+
+*I have been trying to say this out loud for about forty years and I keep getting distracted by practical things. The dog needs walking. The gutters need cleaning. You're in the middle of something. I am not a man who says things easily, as you know better than anyone.*
+
+*So I am writing it down instead.*
+
+*I want you to know that the Tuesday mornings are my favorite. Not for any particular reason except that you make coffee and we sit in the kitchen and neither of us says much, and I look at you and think: this. This is the whole thing.*
+
+*I want you to know that I am proud of you in ways I probably haven't said. The way you remembered everyone's birthday. The way you talked to the children when they were frightened. The way you could walk into a room where two people were arguing and come out ten minutes later with everyone laughing.*
+
+*I want you to know that whatever I have managed to do right in my life, I did it because you made me feel like the kind of person who could.*
+
+*I was going to give you this on our anniversary. Then I thought Valentine's Day. Then I thought: any day would do. Then I kept not doing it.*
+
+*So in case I run out of Tuesdays before I manage to say it out loud — here it is.*
+
+*George*
+
+Ruth read it twice.
+
+Then she folded it carefully, put it back in the envelope, and set it on the table in front of her. Outside, a neighbor was raking leaves. The refrigerator hummed.
+
+She picked up the envelope again and held it against her chest the way she used to hold the children when they were small.
+
+"George," she said out loud, to the kitchen, to the refrigerator, to the quiet October afternoon, "you never could do anything the simple way."
+
+But she was smiling.`,
+    questions:[
+      'Have you ever found a letter, note, or keepsake that meant a great deal to you?',
+      'Is there something you have always meant to say to someone but never found the right moment?',
+      'George says Tuesday mornings were his favorite — do you have a small ordinary moment that you treasured?',
+      'How do you prefer to express affection — through words, actions, or something else?',
+      'What is something someone could do or say that would mean the world to you?'
+    ],
+    facilitator:'Have tissues available — this story often evokes strong emotions, particularly among residents who have lost a spouse. Let silence sit for a moment after reading before opening discussion. The question about small ordinary moments often produces wonderful, unexpected answers.'
+  },
+  {
+    id:'the-new-hat',
+    title:'The New Hat',
+    emoji:'🎩',
+    theme:'humor',
+    themeLabel:'Humor & Joy',
+    color:'#d97706',
+    readTime:'4–5 min',
+    desc:'When Vernon buys a hat that\'s a little too bold for a man of 82, the whole retirement community has an opinion.',
+    text:`Vernon bought the hat on impulse, which at eighty-two was still how he made his best decisions.
+
+It was in the window of the little shop on Main Street — a wide-brimmed panama hat with a pale blue band, the sort of hat worn by men in old photographs standing next to convertibles. Vernon had never owned a convertible, but he'd always thought about it.
+
+He wore it home.
+
+His neighbor Frank, who was sitting on his porch, looked at the hat for a long moment.
+
+"That's some hat," Frank said.
+
+"Thank you," said Vernon.
+
+"That wasn't a compliment."
+
+Vernon wore it to dinner. The dining room fell into a brief, telling silence when he walked in, the kind of silence that precedes a verdict.
+
+His friend Miriam said: "Oh Vernon, you look like a movie star."
+
+His friend Gerald said: "What movie? The one about the man who gets lost at sea?"
+
+The aide, a young woman named Destiny who was not easily flustered, said: "Sir, I love it. Very distinguished."
+
+Vernon decided Destiny had excellent taste.
+
+By Thursday, the hat had become a topic of general community interest. There was apparently a poll. Vernon heard about it secondhand from Miriam, who had the grace to look slightly guilty.
+
+"What were the choices?" Vernon asked.
+
+Miriam counted on her fingers. "Keep it, lose it, or — and this was Gerald's contribution — donate it to the costume department."
+
+"What won?"
+
+"Keep it. By a wide margin."
+
+Vernon considered this. He adjusted the hat in the hallway mirror and turned to look at his profile.
+
+"Tell Gerald," he said, "that I wore sensible hats for eighty-one years. I'm making up for lost time."
+
+Miriam laughed — a real laugh, the kind that required her to set down her coffee. It was, Vernon thought, a very good sound.
+
+He wore the hat to the Fourth of July picnic. He wore it to the weekly movie night. He wore it to his granddaughter's birthday lunch, where she declared it the best thing she had ever seen.
+
+He wore it, in the end, because it made people react — and reacting, at eighty-two, was proof that you were still paying attention.
+
+Frank, from the porch, watched him leave for his morning walk one day.
+
+"You're still wearing that hat," Frank said.
+
+"I am," said Vernon.
+
+A pause.
+
+"It's growing on me," Frank admitted.
+
+Vernon smiled and kept walking.`,
+    questions:[
+      'Have you ever worn or bought something that got a strong reaction from people around you?',
+      'What is something you\'ve done "on impulse" that turned out to be a great decision?',
+      'Vernon says he wore sensible hats for 81 years and was "making up for lost time." Is there anything you\'d like to do more of?',
+      'What is something that makes you laugh every time you think about it?',
+      'Do you have a signature item — a piece of clothing, jewelry, or accessory — that is very "you"?'
+    ],
+    facilitator:'This is a purely joyful story. Let the laughter happen naturally. The question about a "signature item" often leads to wonderful self-expression — some residents may be wearing or carrying that item right now. Consider asking the group to share what object they would bring to represent themselves.'
+  },
+  {
+    id:'first-snow',
+    title:'First Snow',
+    emoji:'❄️',
+    theme:'nature',
+    themeLabel:'Nature & Wonder',
+    color:'#0284c7',
+    readTime:'4–5 min',
+    desc:'A woman with dementia experiences her first snow of the season as if for the first time — and changes everyone in the room.',
+    text:`The snow began on a Wednesday morning in December, which is the best kind of morning for snow.
+
+Eleanor had been sitting in the common room for an hour, as she did most mornings, hands folded in her lap, looking at something only she could see. She didn't speak much anymore. She hadn't for a while. The staff moved gently around her.
+
+The young aide, Marcus, was setting up tables for the holiday craft when he noticed Eleanor's attention shift.
+
+She was looking at the window.
+
+He followed her gaze. Outside, the first fat flakes were beginning to fall, unhurried, drifting straight down in the windless air.
+
+"First snow of the year," Marcus said, mostly to himself.
+
+Eleanor stood up.
+
+It wasn't something she did easily anymore, and Marcus moved toward her, but she waved him off — a small, precise gesture, completely herself. She walked to the window and pressed both palms flat against the glass.
+
+"Oh," she said.
+
+It was the clearest word Marcus had heard from her in weeks.
+
+Two other residents looked over. Then three. By some wordless agreement, people began to move toward the windows.
+
+Eleanor traced a single snowflake with one finger as it drifted past the glass, then another. Her face — which had been still and far away — was absolutely present.
+
+"I used to catch them on my tongue," she said.
+
+Marcus stood very still.
+
+"My father would take us out before breakfast," she continued, her voice careful, like someone reading something precious. "Just in our nightgowns and boots. Mother was furious." A small smile. "It was worth it every time."
+
+The room was quiet.
+
+Outside, the snow fell without any hurry.
+
+"Should we go out?" Marcus asked.
+
+Eleanor turned to look at him. Her eyes were clear.
+
+"Could we?" she said.
+
+He got her coat and her hat and her good boots. He got coats for the three others who wanted to come. They stood in the courtyard for eight minutes — Marcus had timed it, for the incident report — while the snow fell on their upturned faces.
+
+No one said much.
+
+When they came inside, cheeks pink, Eleanor sat back down in her chair. Her hands were folded in her lap again. But something had shifted, settled, like snow finding its shape on a branch.
+
+"First snow," she said softly, to no one in particular.
+
+Marcus wrote it in his notes that night.
+
+*She was completely here today.*`,
+    questions:[
+      'What is your earliest or most vivid memory of snow — or any extreme weather?',
+      'Is there a season or type of weather that makes you feel most alive?',
+      'Have you ever been surprised to find joy in something simple — like a snowflake or a sunny morning?',
+      'Marcus takes the residents outside on impulse. When have you been grateful someone made an unexpected decision?',
+      'Eleanor says catching snowflakes "was worth it every time." What is something that has always been worth it for you?'
+    ],
+    facilitator:'This story is particularly suitable for memory care groups or mixed groups. It centers a person with dementia with dignity and joy. The sensory elements (cold glass, snow on tongues, pink cheeks) can be reinforced by allowing residents to handle ice cubes or discuss sensory memories. Remind facilitators: let silence breathe after the story ends before moving to questions.'
+  },
+  {
+    id:'the-garden-bet',
+    title:'The Garden Bet',
+    emoji:'🌻',
+    theme:'community',
+    themeLabel:'Community & Friendship',
+    color:'#16a34a',
+    readTime:'5–6 min',
+    desc:'Two stubborn neighbors make a bet about whose garden will grow tallest — and discover they\'ve accidentally become friends.',
+    text:`The bet was fifty cents and a jar of jam.
+
+It started, as most things between Arthur and Florence started, with a dispute.
+
+They had lived beside each other for twenty-three years in matching houses on Elm Street before both ending up at Pinewood Gardens within six months of each other, which Arthur regarded as a conspiracy and Florence regarded as fate. They shared a wall in the east wing.
+
+Arthur was growing tomatoes in the community garden plot. Florence was growing sunflowers.
+
+"Sunflowers are decorative," Arthur said. "They don't do anything."
+
+Florence looked at him. "They're six feet tall and the color of the sun itself and the birds eat the seeds. What do your tomatoes do?"
+
+"I eat the tomatoes."
+
+"I can buy tomatoes at the grocery store. Can you buy a six-foot tower of pure happiness?"
+
+Arthur pointed out that this was not a logical argument.
+
+Florence pointed out that she did not care.
+
+The bet was Florence's idea. Whoever had the taller plant by August fifteenth would win fifty cents and the other person's best jar of jam. Arthur, who had never backed down from anything in eighty years, agreed.
+
+All summer they tended their plots side by side. This required cooperation even when they would have preferred to be uncooperative — sharing the watering can, comparing notes on the aphid situation, discussing the questionable pH of the soil in the third row.
+
+By mid-July they were having coffee in the garden on Tuesday mornings.
+
+By early August they were saving each other seats in the dining room.
+
+August fifteenth arrived on a Tuesday.
+
+Arthur's tomato plant stood at sixty-three inches.
+
+Florence's sunflower stood at seventy-one.
+
+She held out her hand. He put two quarters in it with great ceremony.
+
+Two weeks later, a jar of tomato jam appeared on Florence's windowsill. It was very good — she would admit that privately though not out loud.
+
+On the jar, in Arthur's careful block letters, was a label.
+
+*Tomatoes: useful AND delicious.*
+
+Florence laughed for five minutes. Then she went to find Arthur and tell him his jam was the best thing she'd eaten all year.
+
+He pretended not to be pleased.
+
+He was, unmistakably, pleased.`,
+    questions:[
+      'Have you ever made a friendly bet with someone? How did it turn out?',
+      'Do you have a neighbor or friend you\'ve had a long "rivalry" with that is really a friendship?',
+      'Arthur and Florence end up having Tuesday morning coffee together. How have your own friendships formed by accident?',
+      'Do you prefer flowers or vegetables? Why?',
+      'What is the best jar of homemade jam, preserves, or sauce you\'ve ever tasted?'
+    ],
+    facilitator:'This story works beautifully as a springboard for residents who love gardening or cooking. The competitive-friendship dynamic resonates across many cultures and backgrounds. The jam label punchline usually gets a strong reaction — pause after reading it and let the room respond before moving on.'
+  },
+  {
+    id:'night-shift',
+    title:'The Night Shift',
+    emoji:'🌙',
+    theme:'gratitude',
+    themeLabel:'Gratitude & Meaning',
+    color:'#4f46e5',
+    readTime:'5–6 min',
+    desc:'A night-shift nurse in 1971 delivers a baby during a power outage — and meets that child again fifty years later.',
+    text:`The power went out at 11:47 pm, which was, as far as Nurse Agnes Petrov was concerned, completely typical of that particular autumn.
+
+She was on the third floor of St. Catherine's Hospital, which was not a large hospital and did not, in 1971, have a great deal of backup power. What it did have was Agnes, who had been a nurse for fourteen years and had never, not once, lost a patient to poor lighting.
+
+The flashlights came out. The backup generator coughed and sputtered and managed a dim, yellowish thing that was technically light.
+
+Room 312 contained a young woman named Patricia who was not having a typical labor and who was not, at the moment, particularly interested in the philosophical implications of a power outage.
+
+"Are you scared?" Agnes asked her.
+
+"Yes," Patricia said.
+
+"Good," Agnes said. "Scared means you're paying attention."
+
+This was not standard reassurance. It was, however, the truth.
+
+The baby arrived at 1:06 am, in the yellowish light, with Agnes's calm hands and Patricia's considerable determination and the peculiar, ordinary miracle that Agnes had witnessed hundreds of times and never once gotten used to.
+
+The power came back on at 1:22 am.
+
+Patricia named the baby Thomas.
+
+Agnes thought about Thomas occasionally over the years — not because she had any reason to, but because the power-outage babies tended to stick with her. She retired in 1989. She moved to a warmer city. She had three cats, in sequence.
+
+Fifty years later, in the dining room of her assisted living community, a man sat down across from her at breakfast and introduced himself.
+
+"Thomas Warren," he said. "I just moved in. My mother was Patricia Warren."
+
+Agnes put down her coffee cup.
+
+"She always talked about the nurse who said scared means you're paying attention," he said. "She said it got her through everything. I've said it myself a few times." He paused. "I just wanted you to know."
+
+Agnes was quiet for a long moment.
+
+"How is your mother?" she finally asked.
+
+"She passed last spring." He smiled, a bit carefully. "But she was eighty-one. She had a wonderful life."
+
+Agnes nodded slowly.
+
+"I'm glad," she said. And then: "Scared means you're paying attention. She remembered that after fifty years?"
+
+"Word for word," Thomas said.
+
+Agnes looked out the window for a moment. The morning was very blue.
+
+"Well," she said. "Sit down and have breakfast."`,
+    questions:[
+      'Have you ever had a moment where you realized the impact you\'d had on someone else — years later?',
+      'Is there something someone said to you that you still carry with you today?',
+      'Agnes says she never got used to the miracle of birth. What is something you have never taken for granted?',
+      'If you could tell your younger self one thing about the work you did or the life you lived, what would it be?',
+      'Thomas sought out Agnes to tell her this. Have you ever gone out of your way to thank someone?'
+    ],
+    facilitator:'This story resonates strongly with residents who worked in caregiving, healthcare, education, or any field where they shaped others\' lives. The theme of long-delayed gratitude often unlocks stories about careers and legacies. The line "scared means you\'re paying attention" tends to stay with people — ask if anyone has a phrase they\'ve carried for years.'
+  },
+  {
+    id:'the-potluck',
+    title:'The Great Potluck',
+    emoji:'🍲',
+    theme:'community',
+    themeLabel:'Community & Friendship',
+    color:'#ea580c',
+    readTime:'4–5 min',
+    desc:'A simple community potluck dinner in 1978 becomes the unlikely origin story of a neighborhood that still meets today.',
+    text:`Nobody can agree on whose idea the first potluck was.
+
+Grace says it was her. Ed says it was his wife Donna, God rest her soul. The Nguyen family is quite certain it was Bà, who was already famous in two countries for her spring rolls and saw no reason not to share them with a third.
+
+What everyone agrees on is how it started: it was 1978, the summer was unbearable, the air conditioning at the Hendersons' was broken, and someone said, let's just eat outside.
+
+Fourteen people came to the first one. They set up card tables in the Henderson driveway, end to end, and spread them with more food than they could possibly eat. Grace brought potato salad. Ed brought whatever Donna told him to bring. Bà brought spring rolls and a pot of something fragrant and serious that required explanation.
+
+The children ate too much and ran in circles until dark. The adults sat in lawn chairs and talked about things that had been accumulating all year — the proposed development on the empty lot, the noise from the new highway, the funny thing their kid had said last Tuesday.
+
+Nobody wanted to go home.
+
+They met again the following month.
+
+By 1985 they needed two driveways' worth of tables.
+
+By 1990 they had moved to the park.
+
+When the Nguyens' daughter Lan got married, she had her rehearsal dinner at the potluck. When Ed finally moved away to be near his grandchildren, the neighborhood threw him a going-away potluck that lasted until midnight. When Bà passed at the age of ninety-four, there was a potluck in her memory, and every person who came brought a dish they had learned from her.
+
+Grace, who is now eighty-three, still brings potato salad.
+
+She makes it the exact same way she did in 1978, because some things, she says, should not be improved.
+
+"The potluck," she will tell you, if you ask, "is just a reason to show up."
+
+She is not wrong. But if you press her, she will add:
+
+"The reason doesn't matter so much as the showing up."`,
+    questions:[
+      'Do you have a family recipe or dish you are known for? What\'s the story behind it?',
+      'What is the best community gathering or neighborhood event you have ever attended?',
+      'Bà is "already famous in two countries" for her spring rolls. What is something you are known for among the people who love you?',
+      'Grace says the potluck is "just a reason to show up." What are the things in your life that have been worth showing up for?',
+      'If you could bring one dish to a potluck tomorrow, what would it be and why?'
+    ],
+    facilitator:'This is a wonderful story to read before or after a shared meal. It pairs naturally with a potluck-themed activity or a recipe-sharing project. The multicultural dimension of the story can open a conversation about the foods residents grew up with and what those foods mean to them. Allow plenty of time for the last discussion question — it often gets lively.'
+  },
+  {
+    id:'the-dancing-lesson',
+    title:'The Dancing Lesson',
+    emoji:'💃',
+    theme:'triumph',
+    themeLabel:'Triumph',
+    color:'#be185d',
+    readTime:'5 min',
+    desc:'A widower who has never danced in his life signs up for his granddaughter\'s wedding dance lesson — and finds something unexpected.',
+    text:`Walt had never danced in his life.
+
+This was not strictly accurate — he had swayed back and forth at two proms and one wedding, which his wife Carol had charitably called dancing while privately knowing better. But in sixty years of marriage, Walt had successfully avoided every dance floor by a combination of subject changes, sudden thirst, and a willingness to go find parking no matter how close they had already parked.
+
+Carol had danced without him. She had been good at it.
+
+After she died, Walt found, to his confusion, that the dancing was one of the things he missed most. Not doing it — he had never done it — but watching her do it. The way she moved when music found her.
+
+His granddaughter Sophie was getting married in the spring. She had requested, in the gentle but unmovable way she had inherited from Carol, that Walt participate in the family dance at the reception.
+
+"Papa," she said, "I know you don't dance."
+
+"I've been known to sway," Walt said.
+
+"I know. I've seen the evidence." She kissed his cheek. "Come to one lesson. For me."
+
+The studio was run by a woman named Irina, who was about sixty and had the posture of someone who had decided long ago that gravity was a suggestion.
+
+"You've never danced," Irina said. It was not a question.
+
+"I sway," Walt said.
+
+"You'll do more than sway," Irina said.
+
+The first lesson was humbling. The second lesson was less so. The third lesson, something shifted — some small mechanical unlocking, like a door he had been leaning against and stopped leaning against.
+
+By the fifth lesson, Walt was not dancing well. But he was dancing.
+
+At the wedding, during the family song, Sophie took his hands and looked up at him, and he moved — actually moved — with the music, in a way that was unmistakably a waltz.
+
+Sophie was crying a little.
+
+"Grandma would have loved this," she said.
+
+"She would have laughed at me," Walt said.
+
+"That's the same thing," Sophie said.
+
+He kept dancing.`,
+    questions:[
+      'Is there something you always said you couldn\'t do — and then surprised yourself by doing it?',
+      'Did you enjoy dancing in your younger years? Do you have a favorite style of music to dance to?',
+      'Walt misses watching Carol dance. What is a small, specific thing you miss most about someone you loved?',
+      'Sophie says her grandmother would have laughed and loved it at the same time. Do you have a person in your life who could laugh at you and love you simultaneously?',
+      'What is something you learned to do later in life that surprised you?'
+    ],
+    facilitator:'This story pairs naturally with a movement or chair dance activity that can follow. The line "that\'s the same thing" (laughing and loving) is worth pausing on. Residents who have lost spouses may find this story moving — have tissues available. The story validates trying something new at any age, which is a powerful message for this audience.'
+  },
+  {
+    id:'the-porch-light',
+    title:'The Porch Light',
+    emoji:'💡',
+    theme:'gratitude',
+    themeLabel:'Gratitude & Meaning',
+    color:'#b45309',
+    readTime:'4–5 min',
+    desc:'An old woman\'s habit of leaving her porch light on all night reveals itself to have meant something to everyone in her neighborhood.',
+    text:`Vivian left her porch light on every night.
+
+She had been doing it since 1962 and she had never explained why, though various people had asked. Her answer was always the same: she liked knowing the light was on.
+
+Her neighbors on Chestnut Street had theories. Some thought it was a safety habit left over from raising three children. Some thought she was waiting for something. The youngest family on the block, who had moved in four years ago and were still learning the neighborhood, simply thought it was nice — a warm amber glow when they came home late.
+
+The block party that summer was the first time anyone asked Vivian directly.
+
+She was ninety-one and sharp as a thumb tack, as she would tell you.
+
+"My husband was a night-shift mechanic," she said. "Came home every night at two in the morning for thirty years. I always left the light on." She paused. "He's been gone twenty years. I suppose I could turn it off." Another pause. "I don't want to."
+
+The table was quiet.
+
+"Besides," Vivian added, "Kathleen next door gets home from the hospital at midnight and she told me once she looks for my light. And the Reed boy — he's twenty-three, he walks the dog at eleven, sometimes he waves at the window. I might as well be useful."
+
+The young family — the Okafor-Whites — had three children. Their oldest, a boy named Daniel who was seven and had recently decided he was afraid of the dark, asked if he could come see the porch light up close.
+
+Vivian said yes.
+
+Daniel examined the fixture with professional seriousness. It was an ordinary light.
+
+"Why does it help?" he asked.
+
+Vivian considered the question.
+
+"Because it says someone is home," she said. "Even at night. Even when things get dark. Someone is home."
+
+Daniel thought about this.
+
+That night, he slept with his window cracked so he could see the amber glow at the end of the street.
+
+He slept fine.
+
+Years later, when Daniel Okafor-White bought his own house, the first thing he did was get a porch light.
+
+He left it on.`,
+    questions:[
+      'Did your home or someone you loved have a small ritual like this — something that signaled "welcome" or "you\'re safe"?',
+      'Is there a small habit you have that has affected other people without you realizing it?',
+      'Vivian says the light says "someone is home." What makes a place feel like home to you?',
+      'What is a kindness you have received — perhaps from a neighbor or stranger — that stayed with you?',
+      'What small gesture of yours might someone remember for a long time?'
+    ],
+    facilitator:'This is a gentle, quietly moving story that works well near the end of a session. The image of the porch light is simple and powerful — many residents will have their own version of this story. The question about small habits that affect others often surprises residents with their answers; it\'s a genuine opportunity for reflection on legacy and community.'
+  }
+];
+
+var SW_WRITING = [
+  {
+    id:'weekly-prompts',
+    emoji:'✍️',
+    title:'Weekly Writing Prompts',
+    color:'#059669',
+    desc:'Fresh prompts organized by theme — from memories to humor to poetry',
+    type:'prompts',
+    sub:'Pick any prompt and write freely for 5–10 minutes. There are no wrong answers.',
+    categories:[
+      { label:'📸 Memories & Childhood', prompts:[
+        'Describe a smell that takes you right back to your childhood home.',
+        'Write about a teacher or adult outside your family who changed your life.',
+        'What was the best summer of your life? What made it that way?',
+        'Describe a meal you remember with your whole body — not just your taste buds.',
+        'Write about a moment when you felt completely free.',
+        'What toy, game, or object from your childhood would you give anything to have back?',
+        'Tell the story of your first job or first day of work.',
+        'Describe the street or neighborhood where you grew up as if for someone who has never seen it.'
+      ]},
+      { label:'💛 People & Relationships', prompts:[
+        'Write a letter to someone who made you feel seen when you needed it most.',
+        'Describe a person using only the objects they surrounded themselves with.',
+        'Tell the story of a friendship that surprised you.',
+        'Write about someone who was different from you in every way — and what you learned.',
+        'Describe the kindest thing anyone has ever done for you.',
+        'Write a letter to someone you have not spoken to in years.',
+        'Tell the story of an argument that, in the end, brought two people closer.',
+        'Describe a person who always knew exactly what to say.'
+      ]},
+      { label:'🌍 Places & Adventures', prompts:[
+        'Write about a place that no longer exists — a house, shop, or neighborhood that is gone.',
+        'Describe the most beautiful place you have ever stood.',
+        'Write about a trip that didn\'t go as planned — and why you\'re glad it didn\'t.',
+        'Tell the story of a place where you always felt calm.',
+        'Describe a place through the eyes of someone visiting it for the first time.',
+        'Write about a city you visited only once but have never forgotten.',
+        'Tell the story of a journey — by car, by bus, by foot — that you remember perfectly.',
+        'Describe a place you could navigate in the dark from memory alone.'
+      ]},
+      { label:'😄 Humor & Surprises', prompts:[
+        'Write about the most embarrassing thing that happened to you — that you can now laugh at.',
+        'Describe a time when something went completely wrong and turned out to be the best thing.',
+        'Write the story of a misunderstanding that took way too long to clear up.',
+        'Tell the story of a prank or joke that got out of hand.',
+        'Describe a time you tried something new and were terrible at it.',
+        'Write about a pet or animal that got you into (or out of) trouble.',
+        'Tell the story of a family tradition that was absolutely ridiculous — and beloved.',
+        'Describe a moment when you laughed so hard you could not stop.'
+      ]},
+      { label:'🌟 Wisdom & Reflection', prompts:[
+        'What is the best piece of advice you were ever given — and by whom?',
+        'What is the best piece of advice you ever gave that you should have followed yourself?',
+        'Write about something you used to believe that you no longer believe.',
+        'What is something you understand now that you wish you\'d understood at 30?',
+        'Write the rules you actually live by — not the ones you say you live by.',
+        'Describe a decision you made that changed everything.',
+        'What would you do differently? What would you refuse to change?',
+        'Write a message to your 20-year-old self. Be honest.'
+      ]}
+    ]
+  },
+  {
+    id:'poetry-corner',
+    emoji:'🎭',
+    title:'Poetry Corner',
+    color:'#7c3aed',
+    desc:'Simple poetry forms anyone can try — no experience needed',
+    type:'poetry',
+    sub:'Poetry doesn\'t have to rhyme or be complicated. These forms are gentle starting points.',
+    forms:[
+      {
+        name:'Haiku',
+        icon:'🌸',
+        desc:'Three lines: 5 syllables, 7 syllables, 5 syllables. A snapshot of a single moment.',
+        example:'"Morning coffee cup / Steam rises in the cold air / Winter stays outside"',
+        prompt:'Write a haiku about something you can see right now, or something from this morning.'
+      },
+      {
+        name:'Acrostic',
+        icon:'🔤',
+        desc:'Write a word vertically. Each letter starts a line that connects to the theme.',
+        example:'H — Home is the smell of bread on Sundays\nO — Old songs my mother hummed\nM — Mornings with nowhere to be\nE — Everyone I loved, gathered at one table',
+        prompt:'Try an acrostic with your first name, or with a word that matters to you: HOME, LOVE, GARDEN, MUSIC.'
+      },
+      {
+        name:'Limerick',
+        icon:'😄',
+        desc:'Five lines with a bouncy AABBA rhythm. Perfect for humor.',
+        example:'"A fellow named George bought a hat / The neighbors all stared just like that / He said \'I don\'t care\' / With a flair in the air / And that, my friends, settled that."',
+        prompt:'Write a limerick about something funny that happened to you or someone you know.'
+      },
+      {
+        name:'List Poem',
+        icon:'📝',
+        desc:'A poem made entirely of a list. Each line adds to the picture.',
+        example:'"Things I\'ve Kept: / A ticket stub from 1964 / My grandmother\'s handwriting / The sound of the screen door / Summers that lasted forever / Everything I meant to say"',
+        prompt:'Write a list poem titled "Things I\'ve Kept," "What I Know for Certain," or "Things That Happened on a Tuesday."'
+      },
+      {
+        name:'Letter Poem',
+        icon:'💌',
+        desc:'A poem in the form of a letter to a person, a place, a season, or even an object.',
+        example:'"Dear Front Porch, / You held us all summer long / without a single complaint / about the rocking chairs or the stories / or the way we dragged out every goodbye. / We are grateful."',
+        prompt:'Write a letter poem to your childhood home, your hands, the month of June, or someone you\'d like to thank.'
+      }
+    ]
+  },
+  {
+    id:'eight-week',
+    emoji:'📅',
+    title:'8-Week Writing Group Curriculum',
+    color:'#1d4ed8',
+    desc:'A complete session-by-session program for a senior creative writing group',
+    type:'curriculum',
+    sub:'Each session runs 45–60 minutes. Includes warm-up, writing time, and sharing.',
+    weeks:[
+      { week:1, theme:'Introductions & First Memories', warmup:'Say your name and one word that describes where you grew up.', prompt:'Describe the house you grew up in — one room in as much detail as you can.', share:'Read one sentence that surprised you when you wrote it.', note:'Keep the atmosphere low-stakes. Emphasize that there is no right way to do this.' },
+      { week:2, theme:'The People Who Shaped Us', warmup:'Describe a person in your life using only a physical detail — a pair of hands, a voice, a way of walking.', prompt:'Write about someone who taught you something important without intending to.', share:'Read a line you like from what you wrote.', note:'Some writers may become emotional. This is welcome and normal. Keep tissues available.' },
+      { week:3, theme:'Food & Memory', warmup:'Name a food that takes you immediately to a memory. Describe the memory in one sentence.', prompt:'Write the recipe for something you\'ve made many times — but include the history, not just the ingredients.', share:'Read the most interesting non-cooking line in your piece.', note:'This session pairs beautifully with a cooking or tasting activity afterward.' },
+      { week:4, theme:'The Funniest Thing That Ever Happened', warmup:'Share one thing about yourself that always gets a laugh.', prompt:'Tell a funny story from your life — something you\'ve dined out on for years.', share:'Read a sentence that makes the group laugh.', note:'Laughter is therapeutic. Let the room get loud. This is often the most energized session.' },
+      { week:5, theme:'A Place I Still Visit in My Mind', warmup:'Close your eyes. Think of a place. What do you smell?', prompt:'Describe a place you have not been in years — in present tense, as if you are standing there now.', share:'Read the most sensory detail in your piece.', note:'Present tense creates a vivid, immediate quality. Encourage writers to try it even if it feels strange.' },
+      { week:6, theme:'Letters Never Sent', warmup:'Who is someone you\'ve wanted to say something to — but never quite said it?', prompt:'Write a letter you never sent. It can be to anyone, living or not.', share:'Read only as much as feels comfortable. No one is required to share.', note:'This session can be deeply emotional. Ensure the environment is private and gentle. Have a grounding activity ready afterward (tea, music, quiet conversation).' },
+      { week:7, theme:'What I Know Now', warmup:'Finish this sentence: "I used to believe ___. Now I know ___."', prompt:'Write a piece of advice — to your younger self, to a future generation, or to anyone who needs it.', share:'Read your best line of advice.', note:'This session often produces powerful, quotable writing. Consider compiling a "Wisdom Wall" from participants\' lines.' },
+      { week:8, theme:'Celebration & Anthology', warmup:'Share one thing you discovered about yourself through this writing group.', prompt:'Free choice — write anything you want: a new piece, a revision, a poem, a letter.', share:'Everyone reads one thing they are proud of.', note:'Celebrate! Print an anthology of selections (with permission). This closing session builds community pride and provides a tangible keepsake.' }
+    ]
+  },
+  {
+    id:'facilitation',
+    emoji:'🌟',
+    title:'Facilitation Guide',
+    color:'#0891b2',
+    desc:'Tips for running a successful senior creative writing group',
+    type:'tips',
+    sub:'Everything you need to lead a warm, productive, and memorable writing session.',
+    tips:[
+      { icon:'🪑', title:'Set the physical space intentionally', body:'Arrange seating in a circle or around a table — everyone should be able to see everyone else. Have extra pens, paper, and reading glasses available. Dim bright overhead lights if possible. Soft background music during writing time (without lyrics) helps people settle in.' },
+      { icon:'📣', title:'Read the prompt aloud — twice', body:'Read every prompt slowly, twice, before writing begins. Some residents will need time to process the words. After the second reading, give a 30-second pause before the timer starts. Do not rush the transition into writing.' },
+      { icon:'⏱️', title:'Use a visible timer — and honor it', body:'Write the time (e.g., "8 minutes") on a whiteboard or sheet of paper so everyone can see it. When time is called, say: "Finish your thought and put your pen down." This creates structure and reduces anxiety about performance.' },
+      { icon:'🤐', title:'Create a culture of permission, not obligation', body:'Make clear at the first session: you may always pass during sharing time. You may write bullet points instead of sentences. You may read from notes rather than polished prose. The goal is expression, not excellence. Say this every session for the first three weeks.' },
+      { icon:'💬', title:'Respond to the writing, not the writer', body:'After someone shares, respond to specific words or images: "I love the detail about the blue coat" rather than "That was great." This validates the craft and keeps the conversation focused on the work, which is often safer emotionally.' },
+      { icon:'📖', title:'Use read-aloud stories as warm-ups', body:'Reading a short story or excerpt before writing time serves multiple purposes: it models good writing, activates memory and emotion, and gives the group a shared experience to draw from. Choose pieces with strong sensory details and clear emotional anchors.' },
+      { icon:'✂️', title:'Adapt for all ability levels', body:'Offer verbal participation for residents who struggle to write. Pair writers who want to dictate with scribes. Accept any length — a single sentence is a complete contribution. Consider recording sessions (with permission) so oral stories are preserved.' },
+      { icon:'🎉', title:'Celebrate the anthology', body:'At the end of a session series, compile selected pieces into a printed anthology with resident permission. Include a photo of the group if possible. Give each participant a copy. Donate a copy to the community library. This tangible output is often cited as the most meaningful part of the experience.' }
+    ]
+  },
+  {
+    id:'anthology',
+    emoji:'📚',
+    title:'Anthology Builder Guide',
+    color:'#be185d',
+    desc:'How to compile, design, and share a resident writing anthology',
+    type:'anthology',
+    sub:'A printed anthology is a keepsake that honors residents\' voices and builds community pride.',
+    steps:[
+      { step:'1. Collect with permission', detail:'At the final session, ask each participant if they\'d like to include a piece in the anthology. Have a simple one-page permission form. Emphasize that participation is completely optional and that they may approve the final version before printing.' },
+      { step:'2. Choose a title together', detail:'Let the group vote on the anthology title. This creates ownership. Options: "Our Stories, Our Lives," "What We Know," "Voices from [Community Name]," or let someone propose a title from a line in their writing — a beautiful tradition.' },
+      { step:'3. Organize the pieces', detail:'Group pieces thematically (childhood, family, love, humor) or arrange them in the order participants joined. Include each writer\'s preferred name and, optionally, a short "about the author" line they write themselves.' },
+      { step:'4. Design simply', detail:'Use a word processor or basic design tool. Choose one readable serif font for the body (Georgia, Times New Roman). Aim for 12–14pt font size. Generous margins. Page numbers. A simple cover with the title and the community name is enough.' },
+      { step:'5. Print and bind', detail:'Print at a local print shop or office supply store. Coil binding or staple-bound booklets work well. For a special keepsake: a soft cardstock cover with a laminated finish. Budget about $3–8 per copy for a simple but beautiful result.' },
+      { step:'6. Celebrate the launch', detail:'Plan a "publication party" — a reading event where writers share one piece aloud. Invite family members. Have light refreshments. This celebration honors the writers and creates a community moment that residents talk about for months.' },
+      { step:'7. Archive and share', detail:'Donate copies to the community library or lounge. Share (with permission) with local news outlets, especially during events like National Senior Month. Digital versions can be sent to families. Some communities create annual anthologies — a tradition that grows in meaning each year.' }
+    ]
+  }
+];
+
+var swCurrentMode = 'read';
+var swCurrentStory = null;
+var swCurrentWriting = null;
+var swCurrentFilter = 'all';
+
+function swInit() {
+  swRender();
+}
+
+function swSetMode(mode) {
+  swCurrentMode = mode;
+  document.getElementById('sw-mode-read').classList.toggle('active', mode === 'read');
+  document.getElementById('sw-mode-write').classList.toggle('active', mode === 'write');
+  swRender();
+}
+
+function swRender() {
+  var body = document.getElementById('sw-body');
+  if (!body) return;
+  if (swCurrentMode === 'read') {
+    swRenderLibrary(body);
+  } else {
+    swRenderWriting(body);
+  }
+}
+
+function swRenderLibrary(body) {
+  var themes = ['all','nostalgia','triumph','love','humor','nature','community','gratitude'];
+  var themeLabels = { all:'All Stories', nostalgia:'Nostalgia', triumph:'Triumph',
+    love:'Love & Connection', humor:'Humor & Joy', nature:'Nature & Wonder',
+    community:'Community', gratitude:'Gratitude' };
+
+  var html = '<div class="sw-filters">';
+  themes.forEach(function(t) {
+    html += '<button class="sw-filter-btn' + (swCurrentFilter === t ? ' active' : '') +
+      '" onclick="swSetFilter(\'' + t + '\')">' + themeLabels[t] + '</button>';
+  });
+  html += '</div><div class="sw-story-grid">';
+
+  var filtered = swCurrentFilter === 'all' ? SW_STORIES :
+    SW_STORIES.filter(function(s) { return s.theme === swCurrentFilter; });
+
+  filtered.forEach(function(s) {
+    html += '<div class="sw-story-card" onclick="swOpenStory(\'' + s.id + '\')">' +
+      '<div class="sw-story-banner" style="background:' + s.color + '"></div>' +
+      '<div class="sw-story-body">' +
+      '<div style="font-size:2rem;margin-bottom:6px;">' + s.emoji + '</div>' +
+      '<div class="sw-story-title">' + s.title + '</div>' +
+      '<div class="sw-story-meta">' +
+      '<span class="sw-story-tag" style="background:' + s.color + '20;color:' + s.color + '">' + s.themeLabel + '</span>' +
+      '<span class="sw-story-tag" style="background:#f3f4f6;color:#6b7280">⏱ ' + s.readTime + '</span>' +
+      '</div>' +
+      '<p class="sw-story-desc">' + s.desc + '</p>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function swSetFilter(f) {
+  swCurrentFilter = f;
+  swRenderLibrary(document.getElementById('sw-body'));
+}
+
+function swOpenStory(id) {
+  var s = SW_STORIES.find(function(x) { return x.id === id; });
+  if (!s) return;
+  swCurrentStory = s;
+  document.getElementById('sw-modal-header').style.background =
+    'linear-gradient(135deg,' + s.color + ',' + s.color + 'cc)';
+  document.getElementById('sw-modal-title').textContent = s.emoji + ' ' + s.title;
+  document.getElementById('sw-modal-sub').textContent = s.themeLabel + ' · ' + s.readTime + ' read aloud';
+  var body = document.getElementById('sw-modal-body');
+  var qHtml = '<ul class="sw-discussion-list">' +
+    s.questions.map(function(q) { return '<li>' + q + '</li>'; }).join('') +
+    '</ul>';
+  body.innerHTML =
+    '<div class="sw-story-text">' + s.text + '</div>' +
+    '<div class="sw-section-label">💬 Discussion Questions</div>' + qHtml +
+    '<div class="sw-section-label">📋 Facilitator Notes</div>' +
+    '<div class="sw-facilitator-box">' + s.facilitator + '</div>';
+  document.getElementById('sw-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function swCloseModal() {
+  document.getElementById('sw-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function swPrintStory() {
+  if (!swCurrentStory) return;
+  var s = swCurrentStory;
+  var qRows = s.questions.map(function(q, i) {
+    return '<div style="margin-bottom:10px;padding:8px 10px;background:#f5f3ff;border-left:3px solid ' + s.color + ';border-radius:0 6px 6px 0;font-size:13px;">' + (i+1) + '. ' + q + '</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>' + s.title + '</title>' +
+    '<style>body{font-family:Georgia,serif;max-width:680px;margin:0 auto;padding:30px;color:#1f2937;}' +
+    'h1{font-size:22px;color:' + s.color + ';margin-bottom:4px;}' +
+    '.meta{font-size:12px;color:#9ca3af;margin-bottom:18px;}' +
+    '.story{font-size:15px;line-height:1.85;white-space:pre-wrap;margin-bottom:24px;}' +
+    '.section{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:' + s.color + ';margin:18px 0 8px;}' +
+    '.fac{background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:10px 14px;font-size:13px;line-height:1.6;}' +
+    '.footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;padding-top:12px;border-top:1px solid #e5e7eb;}' +
+    '@media print{body{padding:16px;}}' +
+    '</style></head><body>' +
+    '<h1>' + s.emoji + ' ' + s.title + '</h1>' +
+    '<div class="meta">' + s.themeLabel + ' &nbsp;·&nbsp; ' + s.readTime + ' read aloud &nbsp;·&nbsp; Empower Life 365</div>' +
+    '<div class="story">' + s.text + '</div>' +
+    '<div class="section">💬 Discussion Questions</div>' + qRows +
+    '<div class="section">📋 Facilitator Notes</div>' +
+    '<div class="fac">' + s.facilitator + '</div>' +
+    '<div class="footer">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</div>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function() { w.print(); }, 400);
+}
+
+function swRenderWriting(body) {
+  var html = '<div class="sw-writing-grid">';
+  SW_WRITING.forEach(function(w) {
+    html += '<div class="sw-writing-card" onclick="swOpenWriting(\'' + w.id + '\')">' +
+      '<div style="width:40px;height:4px;background:' + w.color + ';border-radius:2px;margin-bottom:10px;"></div>' +
+      '<div class="sw-writing-emoji">' + w.emoji + '</div>' +
+      '<div class="sw-writing-title">' + w.title + '</div>' +
+      '<p class="sw-writing-desc">' + w.desc + '</p>' +
+      '</div>';
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function swOpenWriting(id) {
+  var w = SW_WRITING.find(function(x) { return x.id === id; });
+  if (!w) return;
+  swCurrentWriting = w;
+  document.getElementById('sw-wmodal-header').style.background =
+    'linear-gradient(135deg,' + w.color + ',' + w.color + 'cc)';
+  document.getElementById('sw-wmodal-title').textContent = w.emoji + ' ' + w.title;
+  document.getElementById('sw-wmodal-sub').textContent = w.sub;
+  var body = document.getElementById('sw-wmodal-body');
+  var html = '';
+
+  if (w.type === 'prompts') {
+    w.categories.forEach(function(cat) {
+      html += '<div class="sw-section-label">' + cat.label + '</div><div>';
+      cat.prompts.forEach(function(p) {
+        html += '<span class="sw-prompt-chip">' + p + '</span>';
+      });
+      html += '</div>';
+    });
+  } else if (w.type === 'poetry') {
+    w.forms.forEach(function(f) {
+      html += '<div class="sw-curriculum-week">' +
+        '<h4>' + f.icon + ' ' + f.name + '</h4>' +
+        '<p><strong>How it works:</strong> ' + f.desc + '</p>' +
+        '<p style="margin-top:8px;"><em>' + f.example + '</em></p>' +
+        '<p style="margin-top:8px;background:#ecfdf5;padding:6px 10px;border-radius:6px;color:#065f46;"><strong>Try it:</strong> ' + f.prompt + '</p>' +
+        '</div>';
+    });
+  } else if (w.type === 'curriculum') {
+    w.weeks.forEach(function(wk) {
+      html += '<div class="sw-curriculum-week">' +
+        '<h4>Week ' + wk.week + ': ' + wk.theme + '</h4>' +
+        '<p><strong>Warm-up:</strong> ' + wk.warmup + '</p>' +
+        '<p><strong>Prompt:</strong> ' + wk.prompt + '</p>' +
+        '<p><strong>Share:</strong> ' + wk.share + '</p>' +
+        '<p style="color:#7c3aed;font-style:italic;"><strong>Facilitator note:</strong> ' + wk.note + '</p>' +
+        '</div>';
+    });
+  } else if (w.type === 'tips') {
+    w.tips.forEach(function(t) {
+      html += '<div class="sw-tip-item">' +
+        '<div class="sw-tip-icon">' + t.icon + '</div>' +
+        '<div class="sw-tip-text"><strong>' + t.title + '</strong><br>' + t.body + '</div>' +
+        '</div>';
+    });
+  } else if (w.type === 'anthology') {
+    w.steps.forEach(function(s) {
+      html += '<div class="sw-curriculum-week">' +
+        '<h4>' + s.step + '</h4>' +
+        '<p>' + s.detail + '</p>' +
+        '</div>';
+    });
+  }
+
+  body.innerHTML = html;
+  document.getElementById('sw-wmodal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function swCloseWModal() {
+  document.getElementById('sw-wmodal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function swPrintWriting() {
+  if (!swCurrentWriting) return;
+  var w = swCurrentWriting;
+  var bodyEl = document.getElementById('sw-wmodal-body');
+  var html = '<!DOCTYPE html><html><head><title>' + w.title + '</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:28px;color:#1f2937;}' +
+    'h1{font-size:20px;color:' + w.color + ';margin-bottom:4px;}' +
+    '.sub{font-size:12px;color:#9ca3af;margin-bottom:16px;}' +
+    'h4{color:' + w.color + ';margin:0 0 4px;font-size:14px;}' +
+    '.block{background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;margin-bottom:8px;}' +
+    '.chip{display:inline-block;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;padding:4px 10px;margin:3px;font-size:12px;}' +
+    '.footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:10px;}' +
+    '@media print{body{padding:14px;}}' +
+    '</style></head><body>' +
+    '<h1>' + w.emoji + ' ' + w.title + '</h1>' +
+    '<div class="sub">' + w.sub + '</div>';
+
+  if (w.type === 'prompts') {
+    w.categories.forEach(function(cat) {
+      html += '<div class="block"><h4>' + cat.label + '</h4>';
+      cat.prompts.forEach(function(p) { html += '<span class="chip">' + p + '</span>'; });
+      html += '</div>';
+    });
+  } else if (w.type === 'poetry') {
+    w.forms.forEach(function(f) {
+      html += '<div class="block"><h4>' + f.icon + ' ' + f.name + '</h4>' +
+        '<p style="font-size:13px;">' + f.desc + '</p>' +
+        '<p style="font-size:12px;font-style:italic;">' + f.example + '</p>' +
+        '<p style="font-size:12px;color:#065f46;background:#ecfdf5;padding:5px 8px;border-radius:4px;"><strong>Try it:</strong> ' + f.prompt + '</p>' +
+        '</div>';
+    });
+  } else if (w.type === 'curriculum') {
+    w.weeks.forEach(function(wk) {
+      html += '<div class="block"><h4>Week ' + wk.week + ': ' + wk.theme + '</h4>' +
+        '<p style="font-size:13px;"><strong>Warm-up:</strong> ' + wk.warmup + '</p>' +
+        '<p style="font-size:13px;"><strong>Prompt:</strong> ' + wk.prompt + '</p>' +
+        '<p style="font-size:13px;"><strong>Share:</strong> ' + wk.share + '</p>' +
+        '<p style="font-size:12px;color:#7c3aed;font-style:italic;">' + wk.note + '</p>' +
+        '</div>';
+    });
+  } else if (w.type === 'tips') {
+    w.tips.forEach(function(t) {
+      html += '<div class="block"><h4>' + t.icon + ' ' + t.title + '</h4>' +
+        '<p style="font-size:13px;">' + t.body + '</p></div>';
+    });
+  } else if (w.type === 'anthology') {
+    w.steps.forEach(function(s) {
+      html += '<div class="block"><h4>' + s.step + '</h4>' +
+        '<p style="font-size:13px;">' + s.detail + '</p></div>';
+    });
+  }
+
+  html += '<div class="footer">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</div></body></html>';
+  var pw = window.open('','_blank');
+  pw.document.write(html);
+  pw.document.close();
+  setTimeout(function() { pw.print(); }, 400);
+}
+
+/* hook switchTab */
+(function(){
+  var _swOrig = window.switchTab;
+  window.switchTab = function(name) {
+    _swOrig && _swOrig(name);
+    if (name === 'stories') swInit();
+  };
+})();
+</script>
+
 </body>
