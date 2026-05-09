@@ -1518,6 +1518,77 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .ac-cal-card { background:#fff; border:2px solid #FBCFE8; border-radius:10px; padding:12px 14px; }
 .ac-cal-month { font-weight:900; font-size:13px; color:#EC4899; margin-bottom:6px; }
 
+
+/* ═══════════════ GARDENING CLUB ═══════════════ */
+.gd-header { background:linear-gradient(135deg,#4ADE80,#16A34A); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.gd-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#F0FDF4; border-bottom:1px solid #BBF7D0; flex-wrap:wrap; }
+.gd-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #16A34A; background:#fff; color:#15803D; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.gd-mode-btn.active, .gd-mode-btn:hover { background:#16A34A; color:#fff; }
+.gd-body { padding:20px; }
+.gd-filter-btn { padding:5px 14px; border-radius:16px; border:2px solid #BBF7D0; background:#fff; color:#15803D; font-size:12px; font-weight:700; cursor:pointer; transition:all .2s; }
+.gd-filter-btn.active, .gd-filter-btn:hover { background:#16A34A; color:#fff; border-color:#16A34A; }
+.gd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.gd-card { background:#fff; border:2px solid #BBF7D0; border-radius:14px; overflow:hidden; cursor:pointer; transition:box-shadow .2s; }
+.gd-card:hover { box-shadow:0 6px 20px rgba(22,163,74,.18); border-color:#16A34A; }
+.gd-card-top { padding:14px 16px 10px; }
+.gd-card-emoji { font-size:34px; margin-bottom:6px; }
+.gd-card-name { font-weight:800; font-size:15px; color:#14532D; margin-bottom:4px; }
+.gd-card-meta { font-size:12px; color:#166534; display:flex; gap:10px; flex-wrap:wrap; }
+.gd-card-bottom { background:#F0FDF4; padding:9px 14px; font-size:12px; color:#15803D; }
+.gd-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+.gd-modal-overlay.open { display:flex; }
+.gd-modal { background:#fff; border-radius:18px; max-width:620px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.gd-modal-header { background:linear-gradient(135deg,#4ADE80,#16A34A); color:#fff; padding:20px 24px; border-radius:18px 18px 0 0; display:flex; justify-content:space-between; align-items:start; }
+.gd-modal-body { padding:22px 24px; }
+.gd-care-row { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid #F0FDF4; font-size:14px; }
+.gd-care-label { font-weight:700; color:#166534; width:110px; flex-shrink:0; }
+.gd-journal-form { background:#F0FDF4; border:2px solid #BBF7D0; border-radius:14px; padding:18px 20px; margin-bottom:20px; }
+.gd-journal-form input, .gd-journal-form select, .gd-journal-form textarea { width:100%; padding:8px 12px; border:1px solid #BBF7D0; border-radius:8px; font-size:14px; margin-bottom:10px; box-sizing:border-box; }
+.gd-journal-entry { background:#fff; border:2px solid #BBF7D0; border-radius:10px; padding:14px 16px; margin-bottom:10px; }
+.gd-cal-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.gd-cal-card { background:#fff; border:2px solid #BBF7D0; border-radius:10px; padding:12px 14px; }
+.gd-cal-month { font-weight:900; font-size:13px; color:#16A34A; margin-bottom:6px; }
+.gd-badge { display:inline-block; border-radius:10px; padding:2px 9px; font-size:11px; font-weight:700; }
+.gd-badge-indoor { background:#DBEAFE; color:#1D4ED8; }
+.gd-badge-herb { background:#FEF9C3; color:#854D0E; }
+.gd-badge-flower { background:#FDF2F8; color:#9D174D; }
+.gd-badge-vegetable { background:#DCFCE7; color:#15803D; }
+.gd-badge-sensory { background:#EDE9FE; color:#6D28D9; }
+
+
+/* ═══════════════ BRAIN GAMES ═══════════════ */
+.bg-header { background:linear-gradient(135deg,#818CF8,#4F46E5); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.bg-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#EEF2FF; border-bottom:1px solid #C7D2FE; flex-wrap:wrap; }
+.bg-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #4F46E5; background:#fff; color:#3730A3; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.bg-mode-btn.active, .bg-mode-btn:hover { background:#4F46E5; color:#fff; }
+.bg-body { padding:20px; max-width:860px; }
+.bg-game-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; margin-bottom:20px; }
+.bg-game-card { background:#fff; border:2px solid #C7D2FE; border-radius:14px; padding:18px 16px; text-align:center; cursor:pointer; transition:all .2s; }
+.bg-game-card:hover { box-shadow:0 6px 20px rgba(79,70,229,.18); border-color:#4F46E5; transform:translateY(-2px); }
+.bg-game-card .icon { font-size:38px; margin-bottom:8px; }
+.bg-game-card .name { font-weight:800; font-size:14px; color:#312E81; margin-bottom:4px; }
+.bg-game-card .desc { font-size:12px; color:#6B7280; }
+.bg-play-area { background:#fff; border:2px solid #C7D2FE; border-radius:16px; padding:24px; }
+.bg-play-area h3 { color:#3730A3; margin:0 0 16px; font-size:18px; }
+.bg-word-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.bg-word-tile { background:#EEF2FF; border:2px solid #C7D2FE; border-radius:8px; padding:8px 14px; font-size:15px; font-weight:700; color:#3730A3; cursor:pointer; transition:all .2s; user-select:none; }
+.bg-word-tile.selected { background:#4F46E5; color:#fff; border-color:#4F46E5; }
+.bg-word-tile.correct { background:#16A34A; color:#fff; border-color:#16A34A; cursor:default; }
+.bg-word-tile.wrong { background:#EF4444; color:#fff; border-color:#EF4444; animation: bg-shake .3s; }
+@keyframes bg-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+.bg-score-bar { display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
+.bg-score-pill { background:#EEF2FF; border-radius:20px; padding:6px 16px; font-weight:700; font-size:13px; color:#3730A3; }
+.bg-answer-box { width:100%; padding:10px 14px; border:2px solid #C7D2FE; border-radius:10px; font-size:16px; font-weight:700; box-sizing:border-box; outline:none; }
+.bg-answer-box:focus { border-color:#4F46E5; }
+.bg-memory-grid { display:grid; gap:8px; margin:0 auto; }
+.bg-mem-card { background:linear-gradient(135deg,#4F46E5,#818CF8); border-radius:10px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:28px; cursor:pointer; transition:all .3s; user-select:none; border:3px solid transparent; }
+.bg-mem-card.face-down { background:linear-gradient(135deg,#4F46E5,#818CF8); font-size:0; }
+.bg-mem-card.matched { background:linear-gradient(135deg,#16A34A,#4ADE80); border-color:#16A34A; cursor:default; }
+.bg-mem-card.flipped { background:#fff; border-color:#4F46E5; }
+.bg-result-banner { text-align:center; padding:20px; border-radius:12px; margin-top:16px; }
+.bg-result-banner.win { background:#DCFCE7; border:2px solid #16A34A; color:#14532D; }
+.bg-result-banner.lose { background:#FEF2F2; border:2px solid #EF4444; color:#991B1B; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1592,6 +1663,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="stories" id="stories-tab" onclick="switchTab('stories')">📖 Stories & Writing</button>
       <button class="tab-btn" data-tab="clubs" id="clubs-tab" onclick="switchTab('clubs')">🎯 Hobby Clubs</button>
       <button class="tab-btn" data-tab="arts" id="arts-tab" onclick="switchTab('arts')">🎨 Arts & Crafts</button>
+      <button class="tab-btn" data-tab="garden" id="garden-tab" onclick="switchTab('garden')">🌱 Gardening</button>
+      <button class="tab-btn" data-tab="brain" id="brain-tab" onclick="switchTab('brain')">🧩 Brain Games</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -4375,6 +4448,250 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
           <button onclick="acPrintProject(acActiveProject)" class="btn" style="background:#EC4899;color:#fff;">🖨️ Print Instructions</button>
           <button onclick="acCloseModal()" class="btn btn-secondary">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-garden">
+  <div class="gd-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">🌱 Gardening Club</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">25 plants · planting calendar · garden journal · club meetings</div>
+    </div>
+    <button onclick="gdPrint()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+  </div>
+  <div class="gd-mode-bar">
+    <button class="gd-mode-btn active" id="gdmode-plants" onclick="gdSetMode('plants')">🌿 Plant Library</button>
+    <button class="gd-mode-btn" id="gdmode-calendar" onclick="gdSetMode('calendar')">📅 Planting Calendar</button>
+    <button class="gd-mode-btn" id="gdmode-journal" onclick="gdSetMode('journal')">📓 Garden Journal</button>
+    <button class="gd-mode-btn" id="gdmode-club" onclick="gdSetMode('club')">🤝 Club Meetings</button>
+  </div>
+
+  <!-- PLANT LIBRARY -->
+  <div id="gd-view-plants" class="gd-body">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+      <span style="font-weight:700;font-size:13px;color:#14532D;margin-right:4px;">Filter:</span>
+      <button class="gd-filter-btn active" id="gdf-all" onclick="gdFilter('all')">All</button>
+      <button class="gd-filter-btn" id="gdf-indoor" onclick="gdFilter('indoor')">🪴 Indoor</button>
+      <button class="gd-filter-btn" id="gdf-herb" onclick="gdFilter('herb')">🌿 Herbs</button>
+      <button class="gd-filter-btn" id="gdf-flower" onclick="gdFilter('flower')">🌸 Flowers</button>
+      <button class="gd-filter-btn" id="gdf-vegetable" onclick="gdFilter('vegetable')">🥦 Vegetables</button>
+      <button class="gd-filter-btn" id="gdf-sensory" onclick="gdFilter('sensory')">🤲 Sensory</button>
+      <select id="gd-diff-filter" onchange="gdFilter(document.querySelector('.gd-filter-btn.active')?.id.replace('gdf-',''))" style="padding:5px 12px;border-radius:16px;border:2px solid #BBF7D0;font-size:12px;font-weight:700;color:#15803D;background:#fff;margin-left:auto;">
+        <option value="">All Levels</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+      </select>
+    </div>
+    <div class="gd-grid" id="gd-plant-grid"></div>
+  </div>
+
+  <!-- PLANTING CALENDAR -->
+  <div id="gd-view-calendar" class="gd-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#14532D;margin-bottom:14px;">📅 Month-by-Month Planting Guide</div>
+    <div class="gd-cal-grid" id="gd-cal-grid"></div>
+    <button onclick="gdPrintCalendar()" class="btn" style="background:#16A34A;color:#fff;margin-top:20px;">🖨️ Print Calendar</button>
+  </div>
+
+  <!-- GARDEN JOURNAL -->
+  <div id="gd-view-journal" class="gd-body" style="display:none;">
+    <div class="gd-journal-form">
+      <div style="font-weight:800;font-size:15px;color:#14532D;margin-bottom:12px;">📝 Add Journal Entry</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#166534;">Date</label>
+          <input type="date" id="gd-j-date" />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#166534;">Activity Type</label>
+          <select id="gd-j-type">
+            <option value="🌱 Planting">🌱 Planting</option>
+            <option value="💧 Watering">💧 Watering</option>
+            <option value="✂️ Pruning">✂️ Pruning</option>
+            <option value="🌾 Harvesting">🌾 Harvesting</option>
+            <option value="🌡️ Weather Note">🌡️ Weather Note</option>
+            <option value="🐛 Pest/Problem">🐛 Pest/Problem</option>
+            <option value="📸 Observation">📸 Observation</option>
+            <option value="🎉 Club Meeting">🎉 Club Meeting</option>
+          </select>
+        </div>
+      </div>
+      <label style="font-size:12px;font-weight:700;color:#166534;">Plant/Area</label>
+      <input type="text" id="gd-j-plant" placeholder="e.g. Tomatoes in raised bed, Marigolds by entrance..." />
+      <label style="font-size:12px;font-weight:700;color:#166634;">Notes</label>
+      <textarea id="gd-j-notes" rows="3" placeholder="What did you do? What did you observe? How did residents respond?"></textarea>
+      <button onclick="gdSaveJournal()" class="btn" style="background:#16A34A;color:#fff;">✅ Save Entry</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:15px;color:#14532D;" id="gd-j-count">Journal</div>
+      <button onclick="gdPrintJournal()" class="btn" style="background:#F0FDF4;color:#15803D;border:2px solid #BBF7D0;font-size:13px;">🖨️ Print Journal</button>
+    </div>
+    <div id="gd-j-empty" style="text-align:center;padding:40px;color:#15803D;font-size:15px;">No entries yet. Start logging your garden activities above!</div>
+    <div id="gd-j-list"></div>
+  </div>
+
+  <!-- CLUB MEETINGS -->
+  <div id="gd-view-club" class="gd-body" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap;" id="gd-club-layout">
+      <div>
+        <div class="gd-journal-form">
+          <div style="font-weight:800;font-size:15px;color:#14532D;margin-bottom:12px;">📋 Log a Meeting</div>
+          <label style="font-size:12px;font-weight:700;color:#166534;">Date</label>
+          <input type="date" id="gd-m-date" />
+          <label style="font-size:12px;font-weight:700;color:#166534;">Topic / Theme</label>
+          <input type="text" id="gd-m-topic" placeholder="e.g. Spring planting prep, Herb identification..." />
+          <label style="font-size:12px;font-weight:700;color:#166534;">Attendees (names or count)</label>
+          <input type="text" id="gd-m-attendees" placeholder="e.g. 8 residents, or list names..." />
+          <label style="font-size:12px;font-weight:700;color:#166534;">Notes</label>
+          <textarea id="gd-m-notes" rows="3" placeholder="What was discussed? Activities done? Plans made?"></textarea>
+          <button onclick="gdSaveMeeting()" class="btn" style="background:#16A34A;color:#fff;">✅ Save Meeting</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:15px;color:#14532D;margin-bottom:12px;">💡 Meeting Ideas</div>
+        <div id="gd-meeting-ideas"></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:15px;color:#14532D;" id="gd-m-count">Meeting Log</div>
+      <button onclick="gdPrintMeetings()" class="btn" style="background:#F0FDF4;color:#15803D;border:2px solid #BBF7D0;font-size:13px;">🖨️ Print Log</button>
+    </div>
+    <div id="gd-m-empty" style="text-align:center;padding:30px;color:#15803D;font-size:14px;">No meetings logged yet.</div>
+    <div id="gd-m-list"></div>
+  </div>
+
+  <!-- PLANT MODAL -->
+  <div class="gd-modal-overlay" id="gd-modal" onclick="if(event.target===this)gdCloseModal()">
+    <div class="gd-modal">
+      <div class="gd-modal-header">
+        <div>
+          <div id="gd-modal-emoji" style="font-size:34px;"></div>
+          <div id="gd-modal-name" style="font-size:20px;font-weight:900;margin-top:4px;"></div>
+          <div id="gd-modal-badges" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;"></div>
+        </div>
+        <button onclick="gdCloseModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:22px;cursor:pointer;border-radius:50%;width:36px;height:36px;">✕</button>
+      </div>
+      <div class="gd-modal-body">
+        <div id="gd-modal-care"></div>
+        <div style="background:#F0FDF4;border-radius:10px;padding:14px 16px;margin-top:14px;">
+          <div style="font-weight:800;font-size:13px;color:#166534;margin-bottom:6px;">🌟 FUN FACT</div>
+          <div id="gd-modal-fact" style="font-size:14px;color:#374151;line-height:1.6;"></div>
+        </div>
+        <div style="background:#FFFBEB;border-radius:10px;padding:14px 16px;margin-top:10px;">
+          <div style="font-weight:800;font-size:13px;color:#854D0E;margin-bottom:6px;">💚 WHY SENIORS LOVE IT</div>
+          <div id="gd-modal-benefit" style="font-size:14px;color:#374151;line-height:1.6;"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+          <button onclick="gdPrintPlantCard(gdActivePlant)" class="btn" style="background:#16A34A;color:#fff;">🖨️ Print Care Card</button>
+          <button onclick="gdCloseModal()" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-brain">
+  <div class="bg-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">🧩 Brain Games</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">Word games · Memory match · Trivia · Number puzzles · Print sheets</div>
+    </div>
+    <button onclick="bgPrintCurrentGame()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+  </div>
+  <div class="bg-mode-bar">
+    <button class="bg-mode-btn active" id="bgmode-menu" onclick="bgSetMode('menu')">🎮 Game Menu</button>
+    <button class="bg-mode-btn" id="bgmode-word" onclick="bgSetMode('word')">📝 Word Games</button>
+    <button class="bg-mode-btn" id="bgmode-memory" onclick="bgSetMode('memory')">🃏 Memory Match</button>
+    <button class="bg-mode-btn" id="bgmode-trivia" onclick="bgSetMode('trivia')">🧠 Trivia</button>
+    <button class="bg-mode-btn" id="bgmode-number" onclick="bgSetMode('number')">🔢 Number Fun</button>
+    <button class="bg-mode-btn" id="bgmode-print" onclick="bgSetMode('print')">🖨️ Print Sheets</button>
+  </div>
+
+  <!-- GAME MENU -->
+  <div id="bg-view-menu" class="bg-body">
+    <div style="font-weight:800;font-size:16px;color:#312E81;margin-bottom:14px;">Choose a Game</div>
+    <div class="bg-game-grid">
+      <div class="bg-game-card" onclick="bgLaunch('anagram')"><div class="icon">🔀</div><div class="name">Anagrams</div><div class="desc">Unscramble the letters</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('wordfill')"><div class="icon">📝</div><div class="name">Word Fill-In</div><div class="desc">Complete the phrase</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('categories')"><div class="icon">📋</div><div class="name">Categories</div><div class="desc">Name things in a category</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('memory')"><div class="icon">🃏</div><div class="name">Memory Match</div><div class="desc">Find the matching pairs</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('trivia_easy')"><div class="icon">⭐</div><div class="name">Easy Trivia</div><div class="desc">Fun everyday questions</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('trivia_medium')"><div class="icon">🌟</div><div class="name">Medium Trivia</div><div class="desc">A little more challenge</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('trivia_hard')"><div class="icon">💫</div><div class="name">Hard Trivia</div><div class="desc">Test your knowledge</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('countdown')"><div class="icon">🔢</div><div class="name">Number Countdown</div><div class="desc">How high can you count by pattern?</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('oddoneout')"><div class="icon">🔍</div><div class="name">Odd One Out</div><div class="desc">Which word doesn't belong?</div></div>
+      <div class="bg-game-card" onclick="bgLaunch('rhyme')"><div class="icon">🎵</div><div class="name">Rhyme Time</div><div class="desc">Find words that rhyme</div></div>
+    </div>
+    <div style="background:#EEF2FF;border-radius:12px;padding:16px 18px;border-left:4px solid #4F46E5;">
+      <div style="font-weight:800;font-size:13px;color:#3730A3;margin-bottom:6px;">💡 Benefits of Brain Games for Seniors</div>
+      <div style="font-size:13px;color:#374151;line-height:1.7;">Regular cognitive activities can help maintain memory, processing speed, and verbal fluency. Games that involve words and recall are especially beneficial. Even 15 minutes a day makes a difference!</div>
+    </div>
+  </div>
+
+  <!-- WORD GAMES -->
+  <div id="bg-view-word" class="bg-body" style="display:none;">
+    <div id="bg-word-container"></div>
+  </div>
+
+  <!-- MEMORY MATCH -->
+  <div id="bg-view-memory" class="bg-body" style="display:none;">
+    <div id="bg-memory-container"></div>
+  </div>
+
+  <!-- TRIVIA -->
+  <div id="bg-view-trivia" class="bg-body" style="display:none;">
+    <div id="bg-trivia-container"></div>
+  </div>
+
+  <!-- NUMBER FUN -->
+  <div id="bg-view-number" class="bg-body" style="display:none;">
+    <div id="bg-number-container"></div>
+  </div>
+
+  <!-- PRINT SHEETS -->
+  <div id="bg-view-print" class="bg-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#312E81;margin-bottom:14px;">🖨️ Printable Game Sheets</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;" id="bg-print-grid">
+      <div style="background:#fff;border:2px solid #C7D2FE;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🔀</div>
+        <div style="font-weight:800;color:#312E81;margin-bottom:6px;">Anagram Worksheet</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">10 words to unscramble</div>
+        <button onclick="bgPrintAnagramSheet()" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #C7D2FE;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📋</div>
+        <div style="font-weight:800;color:#312E81;margin-bottom:6px;">Categories Sheet</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Name 5 things in each category</div>
+        <button onclick="bgPrintCategoriesSheet()" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #C7D2FE;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🧠</div>
+        <div style="font-weight:800;color:#312E81;margin-bottom:6px;">Trivia Quiz Sheet</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">10 questions with answer key</div>
+        <button onclick="bgPrintTriviaSheet('easy')" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;margin-bottom:6px;">🖨️ Easy</button>
+        <button onclick="bgPrintTriviaSheet('medium')" class="btn btn-secondary" style="font-size:13px;width:100%;margin-bottom:6px;">🖨️ Medium</button>
+        <button onclick="bgPrintTriviaSheet('hard')" class="btn btn-secondary" style="font-size:13px;width:100%;">🖨️ Hard</button>
+      </div>
+      <div style="background:#fff;border:2px solid #C7D2FE;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🔍</div>
+        <div style="font-weight:800;color:#312E81;margin-bottom:6px;">Odd One Out Sheet</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">10 groups — find the oddball</div>
+        <button onclick="bgPrintOddOneOutSheet()" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #C7D2FE;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🎵</div>
+        <div style="font-weight:800;color:#312E81;margin-bottom:6px;">Rhyme Time Sheet</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Find 3 rhyming words for each</div>
+        <button onclick="bgPrintRhymeSheet()" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #C7D2FE;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📝</div>
+        <div style="font-weight:800;color:#312E81;margin-bottom:6px;">Word Fill-In Sheet</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Complete 10 famous phrases</div>
+        <button onclick="bgPrintWordFillSheet()" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;">🖨️ Print</button>
       </div>
     </div>
   </div>
@@ -34453,6 +34770,1063 @@ function acPrintCalendar() {
   }).join('');
   var w = window.open('','_blank');
   w.document.write('<html><head><title>Arts & Crafts Calendar</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#831843;text-align:center}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>🎨 Arts & Crafts Year Planner</h1><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 · ' + new Date().getFullYear() + '</p><table><tr><th>Month</th><th>Theme</th><th>Suggested Projects</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   GARDENING CLUB  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var GD_JOURNAL_KEY = 'el365_garden_journal';
+var GD_MEETING_KEY = 'el365_garden_meetings';
+var gdActivePlant = null;
+var gdCurrentFilter = 'all';
+
+var GD_PLANTS = [
+  /* INDOOR */
+  { id:'gi1', emoji:'🌸', name:'African Violet', type:'indoor', diff:'easy',
+    sun:'Low to medium indirect light', water:'Water from bottom; keep soil moist',
+    soil:'Well-draining potting mix', bloom:'Year-round in good light',
+    fact:'African Violets are one of the most popular houseplants in the world — they\'ve been a favorite in American homes since the 1920s.',
+    tip:'Water only when the top inch of soil is dry. Use room-temperature water and avoid getting leaves wet.',
+    benefit:'Compact size — perfect for windowsills in resident rooms. Blooms almost year-round, bringing color in winter.' },
+  { id:'gi2', emoji:'☮️', name:'Peace Lily', type:'indoor', diff:'easy',
+    sun:'Low to medium indirect light', water:'Water when top inch is dry; tolerates neglect',
+    soil:'Rich, moist potting mix', bloom:'Spring, often again in fall',
+    fact:'NASA listed the Peace Lily as one of the top air-purifying plants, removing toxins like benzene and formaldehyde.',
+    tip:'Drooping leaves are a watering reminder — it recovers quickly after a drink. Keep away from cold drafts.',
+    benefit:'Very forgiving for beginner gardeners. Its elegant white blooms lift spirits. Great for low-light hallways or common rooms.' },
+  { id:'gi3', emoji:'🍃', name:'Pothos', type:'indoor', diff:'easy',
+    sun:'Low to bright indirect light', water:'Water every 1–2 weeks; very drought-tolerant',
+    soil:'Any standard potting mix', bloom:'Rarely blooms indoors',
+    fact:'Pothos is sometimes called "Devil\'s Ivy" because it stays green even in the dark and is nearly impossible to kill.',
+    tip:'Trim long vines to encourage bushy growth. Cuttings root easily in a glass of water.',
+    benefit:'Virtually indestructible — builds gardening confidence. Trailing vines look beautiful on shelves or in hanging baskets.' },
+  { id:'gi4', emoji:'🕷️', name:'Spider Plant', type:'indoor', diff:'easy',
+    sun:'Medium to bright indirect light', water:'Water moderately; allow to dry between waterings',
+    soil:'Well-draining potting mix', bloom:'Small white flowers on long arching stems',
+    fact:'Spider plants produce "babies" — tiny plantlets that dangle on long runners, which can be repotted as new plants.',
+    tip:'Mist occasionally if air is dry. Brown leaf tips usually mean fluoride in tap water — use filtered water.',
+    benefit:'Propagating the "babies" is a wonderful activity. Residents can grow new plants to give as gifts to family.' },
+  { id:'gi5', emoji:'🌵', name:'Aloe Vera', type:'indoor', diff:'easy',
+    sun:'Bright indirect to direct light', water:'Water deeply every 3 weeks; drought-tolerant',
+    soil:'Cactus or succulent mix', bloom:'Tall yellow-orange flower spikes (rare indoors)',
+    fact:'Aloe vera has been used medicinally for over 6,000 years. Ancient Egyptians called it "the plant of immortality."',
+    tip:'Always use well-draining soil and a pot with drainage holes. Root rot from overwatering is the #1 problem.',
+    benefit:'The gel inside leaves soothes minor burns and skin irritation — residents find it fascinating and useful.' },
+  /* HERBS */
+  { id:'gh1', emoji:'🌿', name:'Basil', type:'herb', diff:'easy',
+    sun:'Full sun (6+ hours)', water:'Water regularly; keep soil moist but not soggy',
+    soil:'Rich, well-draining potting mix', bloom:'Small white flowers (pinch to keep producing leaves)',
+    fact:'There are over 60 varieties of basil worldwide. Sweet basil is the most common, but there\'s also lemon, Thai, and purple basil.',
+    tip:'Pinch off flower buds as soon as they appear to keep leaves flavorful. Harvest from the top down.',
+    benefit:'Strong pleasant scent provides wonderful sensory stimulation. Residents can use it in cooking or simply smell the leaves.' },
+  { id:'gh2', emoji:'🌱', name:'Mint', type:'herb', diff:'easy',
+    sun:'Partial to full sun', water:'Keep soil consistently moist',
+    soil:'Rich, moist soil', bloom:'Small purple or white flower spikes',
+    fact:'Mint spreads aggressively underground — it\'s best grown in containers to prevent it from taking over a garden.',
+    tip:'Grow in its own pot to contain spreading. Harvest frequently to encourage bushy growth.',
+    benefit:'Intensely refreshing scent that is excellent for memory and sensory programs. Leaves can be used for tea, which residents love.' },
+  { id:'gh3', emoji:'💜', name:'Lavender', type:'herb', diff:'medium',
+    sun:'Full sun (6–8 hours)', water:'Water deeply but infrequently; drought-tolerant once established',
+    soil:'Sandy, well-draining, slightly alkaline soil', bloom:'Summer — purple spikes',
+    fact:'Lavender has been used for over 2,500 years for its calming properties. Romans added it to their baths.',
+    tip:'Do not overwater or use heavy clay soil. Prune after flowering to keep compact. Great in containers.',
+    benefit:'Calming scent scientifically linked to reduced anxiety. Sachets made from dried lavender are a wonderful craft activity.' },
+  { id:'gh4', emoji:'🌲', name:'Rosemary', type:'herb', diff:'medium',
+    sun:'Full sun', water:'Water when soil is dry; very drought-tolerant',
+    soil:'Sandy, well-draining, slightly alkaline', bloom:'Small blue flowers in spring/summer',
+    fact:'Ancient Greek scholars wore rosemary garlands while studying, believing it improved memory — modern research supports this!',
+    tip:'Grow in a warm, sunny spot. Avoid overwatering. Can be trained into topiaries — a fun pruning project.',
+    benefit:'Piney, invigorating scent is linked to improved memory and alertness. Wonderful in reminiscing programs about cooking.' },
+  { id:'gh5', emoji:'🌾', name:'Chives', type:'herb', diff:'easy',
+    sun:'Full to partial sun', water:'Keep moderately moist',
+    soil:'Any well-draining potting mix', bloom:'Pretty purple pompom flowers in late spring',
+    fact:'Chives are the only herb native to both the Old World and New World. Their flowers are completely edible and taste mildly of onion.',
+    tip:'Snip leaves from the top with scissors — regrows quickly. Divide clumps every 2–3 years to keep vigorous.',
+    benefit:'Very easy to grow and harvest. Cutting chives with scissors is a satisfying, low-effort activity for residents.' },
+  { id:'gh6', emoji:'🍋', name:'Lemon Thyme', type:'herb', diff:'easy',
+    sun:'Full sun', water:'Water when soil is dry; drought-tolerant',
+    soil:'Well-draining, sandy soil', bloom:'Tiny pink flowers in summer',
+    fact:'Lemon thyme is a natural hybrid that smells exactly like lemon with a hint of thyme. It has been used in cooking for over 2,000 years.',
+    tip:'Pinch flower buds to maintain leaf production. Excellent in pots. Incredibly fragrant when leaves are rubbed.',
+    benefit:'The bright citrus scent is uplifting and energizing — perfect for sensory programs. Easy enough for any resident to tend.' },
+  /* FLOWERS */
+  { id:'gf1', emoji:'🌻', name:'Sunflower', type:'flower', diff:'easy',
+    sun:'Full sun (8+ hours)', water:'Water deeply once a week',
+    soil:'Well-draining, slightly acidic to neutral', bloom:'Mid-summer to fall',
+    fact:'Sunflowers follow the sun across the sky each day — a behavior called heliotropism. Young flowers track east in the morning and west by evening.',
+    tip:'Dwarf varieties (Teddy Bear, Little Becka) are perfect for raised beds or large containers. Plant seeds directly in soil.',
+    benefit:'Watching sunflowers grow from seed to towering bloom is enormously satisfying. The large seeds are easy to handle and plant.' },
+  { id:'gf2', emoji:'🌼', name:'Marigold', type:'flower', diff:'easy',
+    sun:'Full sun', water:'Water at base when top inch of soil is dry',
+    soil:'Average, well-draining soil', bloom:'Summer through first frost',
+    fact:'Marigolds are natural pest repellents — they produce a substance called thiophene that repels nematodes and many insects.',
+    tip:'Deadhead (remove spent blooms) to encourage continuous flowering. One of the easiest flowers to grow from seed.',
+    benefit:'Long blooming season provides color from summer through fall. Easy to deadhead — a gentle, satisfying activity. Pest protection for vegetable beds.' },
+  { id:'gf3', emoji:'🌸', name:'Pansy', type:'flower', diff:'easy',
+    sun:'Full to partial sun', water:'Keep soil evenly moist',
+    soil:'Rich, well-draining soil', bloom:'Spring and fall (cool weather)',
+    fact:'Pansies are edible! Their colorful "faces" can be used to decorate salads, cakes, and drinks. They taste mildly sweet.',
+    tip:'Plant in spring and fall — they prefer cool weather. Pinch back leggy plants to encourage bushy growth.',
+    benefit:'Cheerful "faces" are immediately recognizable and uplifting. Cool-season blooms provide color when other flowers are absent.' },
+  { id:'gf4', emoji:'🌺', name:'Geranium', type:'flower', diff:'easy',
+    sun:'Full to partial sun', water:'Water when top inch of soil is dry; drought-tolerant',
+    soil:'Well-draining potting mix', bloom:'Spring through fall',
+    fact:'Geraniums have been grown in gardens for over 300 years. They were so popular in Victorian England that entire greenhouses were devoted to them.',
+    tip:'Deadhead regularly for continuous blooms. Can be brought indoors before frost and kept through winter.',
+    benefit:'Classic, familiar flower that many residents will have grown before. Wonderful for reminiscing about past gardens.' },
+  { id:'gf5', emoji:'🌸', name:'Zinnia', type:'flower', diff:'easy',
+    sun:'Full sun', water:'Water at the base; avoid wet leaves',
+    soil:'Average, well-draining soil', bloom:'Summer through frost',
+    fact:'Zinnias are named after German botanist Johann Gottfried Zinn, who first described them in the 1700s. They were among the first flowers grown in space on the International Space Station.',
+    tip:'Direct sow seeds in warm soil. Deadhead to extend blooming. Extremely heat tolerant.',
+    benefit:'Bright, cheerful colors and fast growth from seed. Excellent for cutting and bringing indoors to rooms.' },
+  { id:'gf6', emoji:'💐', name:'Impatiens', type:'flower', diff:'easy',
+    sun:'Shade to partial shade', water:'Keep consistently moist',
+    soil:'Rich, moist, well-draining soil', bloom:'Spring through frost',
+    fact:'Impatiens get their name from the way their seed pods burst open when touched — "impatient" to release their seeds.',
+    tip:'Perfect for shaded garden beds or planters. Deadheading not required — they self-clean.',
+    benefit:'One of the few colorful flowers that thrive in shade. Low maintenance — no deadheading needed. Excellent for shaded patios or entrances.' },
+  /* VEGETABLES */
+  { id:'gv1', emoji:'🍅', name:'Cherry Tomatoes', type:'vegetable', diff:'medium',
+    sun:'Full sun (8+ hours)', water:'Water deeply and consistently; 1–2 inches per week',
+    soil:'Rich, fertile, well-draining', bloom:'Yellow flowers → fruit in 55–65 days',
+    fact:'Cherry tomatoes are technically a fruit, not a vegetable! A single cherry tomato plant can produce over 1,000 tomatoes in a season.',
+    tip:'Use a cage or stake for support. Pinch suckers for larger (not more) tomatoes. Water consistently to prevent blossom end rot.',
+    benefit:'Nothing beats the excitement of harvesting your own tomatoes. Residents can eat them fresh — immediate reward for their hard work.' },
+  { id:'gv2', emoji:'🥬', name:'Lettuce', type:'vegetable', diff:'easy',
+    sun:'Partial to full sun', water:'Keep soil consistently moist',
+    soil:'Rich, loose, well-draining soil', bloom:'Bolts in heat (harvest before flowers)',
+    fact:'Lettuce is one of the oldest known vegetables — it was cultivated by ancient Egyptians over 6,000 years ago. Ancient Egyptians considered it sacred to their fertility god Min.',
+    tip:'Sow seeds directly or transplant. "Cut and come again" varieties regrow after harvest. Perfect for containers.',
+    benefit:'One of the fastest crops from seed to harvest (30–45 days for leaf lettuce). Perfect for residents who want quick gratification.' },
+  { id:'gv3', emoji:'🥕', name:'Radish', type:'vegetable', diff:'easy',
+    sun:'Full to partial sun', water:'Keep soil evenly moist',
+    soil:'Loose, sandy, well-draining soil', bloom:'Harvest at 3–4 weeks; bolt quickly',
+    fact:'Radishes are the fastest-maturing vegetable — some varieties are ready to harvest in just 3 weeks from seed!',
+    tip:'Sow seeds directly into the soil. Thin to 2 inches apart. Harvest before they become woody.',
+    benefit:'The fastest vegetable from seed to table. Seeing results in 3–4 weeks is enormously rewarding for residents.' },
+  { id:'gv4', emoji:'🫛', name:'Snap Peas', type:'vegetable', diff:'easy',
+    sun:'Full to partial sun', water:'Keep moist, especially during flowering',
+    soil:'Well-draining, rich soil', bloom:'Harvest 60–70 days from planting',
+    fact:'Snap peas were developed in the 1970s by crossing snow peas with shelling peas. The entire pod is edible, including the sweet seeds inside.',
+    tip:'Plant in early spring or fall (cool weather). Provide a trellis. Pick frequently to encourage more production.',
+    benefit:'Sweet, crunchy pods can be eaten directly from the vine — a delightful sensory experience. Easy to harvest.' },
+  /* SENSORY */
+  { id:'gs1', emoji:'🐑', name:"Lamb's Ear", type:'sensory', diff:'easy',
+    sun:'Full to partial sun', water:'Water sparingly; very drought-tolerant',
+    soil:'Poor to average, well-draining soil', bloom:'Purple flower spikes in summer (often removed)',
+    fact:"Lamb's Ear leaves have tiny silver hairs that were historically used as wound dressings and bandages — they are naturally antibacterial.",
+    tip:'Excellent in rock gardens or border edges. Remove flower spikes to maintain the soft leaf appearance.',
+    benefit:"Irresistibly soft, velvety silver leaves provide wonderful tactile stimulation. Excellent for residents with dementia — touching it sparks joy and conversation." },
+  { id:'gs2', emoji:'🍋', name:'Lemon Balm', type:'sensory', diff:'easy',
+    sun:'Full to partial sun', water:'Moderate; drought-tolerant once established',
+    soil:'Average, well-draining soil', bloom:'Small white flowers in summer',
+    fact:"Lemon balm has been used as a calming herb for over 2,000 years. Medieval Europeans planted it near beehives, believing it attracted bees and promoted happiness.",
+    tip:'Grow in containers to control spreading. Rub leaves to release the strong lemon scent. Leaves make a lovely calming tea.',
+    benefit:'Strong, uplifting lemon scent when leaves are touched — excellent for sensory stimulation. Dried leaves can be used in sachets.' },
+  { id:'gs3', emoji:'🍫', name:'Chocolate Mint', type:'sensory', diff:'easy',
+    sun:'Partial to full sun', water:'Keep consistently moist',
+    soil:'Rich, moist soil', bloom:'Purple flower spikes',
+    fact:'Chocolate mint is a natural variety of peppermint that really does smell like chocolate mixed with mint — it contains additional compounds that create the chocolate scent.',
+    tip:'Grow in its own pot to contain spreading. Harvest leaves regularly. Lovely in hot chocolate or hot water as a tea.',
+    benefit:'The surprising chocolate-mint scent delights residents and prompts wonderful conversations about favorite foods and treats.' },
+  { id:'gs4', emoji:'🌸', name:'Sweet Alyssum', type:'sensory', diff:'easy',
+    sun:'Full to partial sun', water:'Water regularly; moderate drought tolerance',
+    soil:'Average, well-draining soil', bloom:'Spring through fall — tiny clustered flowers',
+    fact:'Sweet Alyssum produces a honey-like fragrance so strong it can fill an entire garden. The name comes from the Greek word meaning "curing madness" — it was believed to calm emotions.',
+    tip:'Direct sow seeds or transplant starts. Shear back by half in midsummer for a fresh flush of flowers. Excellent as ground cover.',
+    benefit:'Carpet of honey-scented flowers provides powerful olfactory stimulation. Low-growing — easy to lean over and smell from a wheelchair.' },
+  { id:'gs5', emoji:'🌹', name:'Scented Geranium', type:'sensory', diff:'easy',
+    sun:'Full to partial sun', water:'Water when soil is dry; drought-tolerant',
+    soil:'Well-draining potting mix', bloom:'Small clusters of pink or white flowers',
+    fact:'Scented geraniums come in over 200 varieties with scents including rose, lemon, mint, apple, nutmeg, and even chocolate! The scent is in the leaves, not the flowers.',
+    tip:'Rub leaves gently to release fragrance. Excellent container plant. Can be overwintered indoors.',
+    benefit:'Each variety has a distinct, recognizable scent — smelling them is a wonderful memory-prompting activity. Leaves can be dried for sachets.' }
+];
+
+var GD_CALENDAR = [
+  { month:'January', zone:'Indoor', tasks:['Start seeds indoors: tomatoes, peppers','Plan your garden layout on paper','Order seed catalogs and supplies','Care for indoor plants: check for pests','Discuss: dream garden — what would you grow?'], color:'#BFDBFE' },
+  { month:'February', zone:'Indoor/Early Prep', tasks:['Start seeds indoors: lettuce, herbs, snapdragons','Inventory garden tools and supplies','Plant potatoes in bags or containers','Repot any rootbound houseplants','Sensory: smell and identify herb seeds'], color:'#E0E7FF' },
+  { month:'March', zone:'Cool Season Begins', tasks:['Direct sow: radishes, peas, lettuce, spinach','Transplant: pansies, snapdragons outdoors','Start: basil, marigolds indoors','Deadhead early spring bulbs after bloom','Club activity: seed starting workshop'], color:'#D1FAE5' },
+  { month:'April', zone:'Spring Planting', tasks:['Plant: pansies, alyssum, geraniums outdoors','Sow: carrots, beets, Swiss chard','Transplant lettuce and herb starts outside','Set up trellises for peas and climbing plants','Club activity: garden bingo'], color:'#A7F3D0' },
+  { month:'May', zone:'Full Spring', tasks:['Plant: marigolds, zinnias, impatiens outside','Transplant tomato and pepper starts (after frost)','Direct sow: beans, cucumbers, squash','Mulch garden beds to retain moisture','Club activity: Mother\'s Day flower arranging'], color:'#6EE7B7' },
+  { month:'June', zone:'Early Summer', tasks:['Harvest: lettuce, radishes, snap peas','Deadhead marigolds and zinnias for more blooms','Water consistently — heat is increasing','Watch for pests: aphids, caterpillars','Club activity: pressed flower craft'], color:'#FDE68A' },
+  { month:'July', zone:'Peak Summer', tasks:['Harvest daily: tomatoes, cucumbers, beans','Water deeply in early morning (not evening)','Pinch basil flowers to keep leaves going','Sow: second crop of lettuce for fall','Club activity: garden trivia & tasting'], color:'#FED7AA' },
+  { month:'August', zone:'Late Summer', tasks:['Continue harvesting all vegetables','Start seeds for fall: kale, spinach, chard','Save seeds from zinnias and marigolds for next year','Water regularly — driest month','Club activity: harvest celebration'], color:'#FEF3C7' },
+  { month:'September', zone:'Fall Planting', tasks:['Plant: mums, asters, ornamental kale','Direct sow: spinach, lettuce, radishes for fall','Plant spring bulbs: tulips, daffodils, hyacinth','Begin harvesting herbs; dry for winter','Club activity: bulb planting workshop'], color:'#FFEDD5' },
+  { month:'October', zone:'Fall Season', tasks:['Harvest and store remaining vegetables','Collect and dry seeds for next year','Plant: pansies for fall/winter color','Clean and store garden tools properly','Club activity: pumpkin decorating'], color:'#FED7AA' },
+  { month:'November', zone:'Wind Down', tasks:['Cut back perennials after frost','Plant: paperwhites for indoor winter bloom','Start forcing: amaryllis bulbs for December','Clean pots and store empty containers','Club activity: indoor bulb forcing workshop'], color:'#E5E7EB' },
+  { month:'December', zone:'Indoor & Planning', tasks:['Tend amaryllis and paperwhites indoors','Browse seed catalogs for next year','Make: dried herb wreaths and sachets from harvest','Give: potted plants as holiday gifts','Club activity: holiday wreath making'], color:'#DBEAFE' }
+];
+
+var GD_MEETING_IDEAS = [
+  { emoji:'🌱', title:'Seed Starting Workshop', desc:'Learn to start seeds in trays. Discuss germination and what seeds need to grow.' },
+  { emoji:'🌿', title:'Herb Identification Game', desc:'Smell and identify 6–8 herbs while blindfolded. Discuss uses and memories.' },
+  { emoji:'🪲', title:'Good Bugs vs. Bad Bugs', desc:'Learn which garden insects help and which harm. Make a garden helper poster.' },
+  { emoji:'💧', title:'Watering Wisdom', desc:'Discuss the right and wrong ways to water. Practice watering container plants.' },
+  { emoji:'🌍', title:'Gardens Around the World', desc:'Explore famous gardens — Versailles, Keukenhof, Butchart. Virtual video tour.' },
+  { emoji:'🍅', title:'Garden-to-Table Tasting', desc:'Taste fresh herbs and vegetables. Residents share favorite garden recipes.' },
+  { emoji:'🌸', title:'Flower Arranging', desc:'Cut and arrange fresh or silk flowers. Discuss color, texture, and balance.' },
+  { emoji:'📸', title:'Garden Photography Walk', desc:'Slow walk through outdoor garden. Document plants with a camera or tablet.' },
+  { emoji:'🧤', title:'Tool Time', desc:'Learn the name and use of each garden tool. Practice proper grip and use.' },
+  { emoji:'📚', title:'Garden Stories & Poems', desc:'Share garden-themed poetry and stories. Residents share their gardening memories.' }
+];
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'garden') gdInit();
+  };
+})();
+
+function gdInit() {
+  gdRenderPlants('all');
+  gdRenderCalendar();
+  gdRenderJournal();
+  gdRenderMeetings();
+  gdRenderMeetingIdeas();
+  var today = new Date().toISOString().split('T')[0];
+  var jd = document.getElementById('gd-j-date');
+  var md = document.getElementById('gd-m-date');
+  if (jd && !jd.value) jd.value = today;
+  if (md && !md.value) md.value = today;
+}
+
+/* ── MODE ── */
+function gdSetMode(mode) {
+  ['plants','calendar','journal','club'].forEach(function(m) {
+    document.getElementById('gd-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('gdmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+}
+
+/* ── PLANTS ── */
+function gdFilter(cat) {
+  gdCurrentFilter = cat || 'all';
+  document.querySelectorAll('.gd-filter-btn').forEach(function(b) {
+    b.classList.toggle('active', b.id === 'gdf-' + gdCurrentFilter);
+  });
+  gdRenderPlants(gdCurrentFilter);
+}
+
+function gdRenderPlants(cat) {
+  var diffFilter = (document.getElementById('gd-diff-filter') || {}).value || '';
+  var plants = GD_PLANTS.filter(function(p) {
+    return (!cat || cat === 'all' || p.type === cat) && (!diffFilter || p.diff === diffFilter);
+  });
+  var grid = document.getElementById('gd-plant-grid');
+  if (!grid) return;
+  if (!plants.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#15803D;">No plants match.</div>'; return; }
+  var typeLabel = { indoor:'🪴 Indoor', herb:'🌿 Herb', flower:'🌸 Flower', vegetable:'🥦 Vegetable', sensory:'🤲 Sensory' };
+  var badgeClass = { indoor:'gd-badge-indoor', herb:'gd-badge-herb', flower:'gd-badge-flower', vegetable:'gd-badge-vegetable', sensory:'gd-badge-sensory' };
+  grid.innerHTML = plants.map(function(p) {
+    return '<div class="gd-card" onclick="gdOpenModal(\'' + p.id + '\')">'
+      + '<div class="gd-card-top">'
+      + '<div class="gd-card-emoji">' + p.emoji + '</div>'
+      + '<div class="gd-card-name">' + p.name + '</div>'
+      + '<div class="gd-card-meta">'
+      + '<span class="gd-badge ' + badgeClass[p.type] + '">' + typeLabel[p.type] + '</span>'
+      + '<span style="color:#6B7280;">' + (p.diff === 'easy' ? '🟢 Easy' : '🟡 Medium') + '</span>'
+      + '</div></div>'
+      + '<div class="gd-card-bottom">☀️ ' + p.sun.split(';')[0].split('(')[0].trim() + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── MODAL ── */
+function gdOpenModal(id) {
+  var p = GD_PLANTS.find(function(x){ return x.id === id; });
+  if (!p) return;
+  gdActivePlant = p;
+  var typeLabel = { indoor:'🪴 Indoor', herb:'🌿 Herb', flower:'🌸 Flower', vegetable:'🥦 Vegetable', sensory:'🤲 Sensory' };
+  var badgeClass = { indoor:'gd-badge-indoor', herb:'gd-badge-herb', flower:'gd-badge-flower', vegetable:'gd-badge-vegetable', sensory:'gd-badge-sensory' };
+  document.getElementById('gd-modal-emoji').textContent = p.emoji;
+  document.getElementById('gd-modal-name').textContent = p.name;
+  document.getElementById('gd-modal-badges').innerHTML = '<span class="gd-badge ' + badgeClass[p.type] + '">' + typeLabel[p.type] + '</span>'
+    + '<span class="gd-badge" style="background:#F0FDF4;color:#15803D;">' + (p.diff === 'easy' ? '🟢 Easy' : '🟡 Medium') + '</span>';
+  document.getElementById('gd-modal-care').innerHTML = [
+    ['☀️ Sunlight', p.sun],
+    ['💧 Water', p.water],
+    ['🪱 Soil', p.soil],
+    ['🌸 Bloom/Harvest', p.bloom],
+    ['💡 Care Tip', p.tip]
+  ].map(function(r){ return '<div class="gd-care-row"><div class="gd-care-label">' + r[0] + '</div><div style="flex:1;font-size:14px;color:#374151;">' + r[1] + '</div></div>'; }).join('');
+  document.getElementById('gd-modal-fact').textContent = p.fact;
+  document.getElementById('gd-modal-benefit').textContent = p.benefit;
+  document.getElementById('gd-modal').classList.add('open');
+}
+function gdCloseModal() { document.getElementById('gd-modal').classList.remove('open'); gdActivePlant = null; }
+
+/* ── CALENDAR ── */
+function gdRenderCalendar() {
+  var el = document.getElementById('gd-cal-grid');
+  if (!el) return;
+  el.innerHTML = GD_CALENDAR.map(function(m) {
+    return '<div class="gd-cal-card" style="border-left:4px solid ' + m.color.replace('#','#') + ';">'
+      + '<div class="gd-cal-month">' + m.month + '</div>'
+      + '<div style="font-weight:700;font-size:12px;color:#166534;margin-bottom:6px;">' + m.zone + '</div>'
+      + m.tasks.map(function(t){ return '<div style="font-size:12px;color:#374151;padding:2px 0;">• ' + t + '</div>'; }).join('')
+      + '</div>';
+  }).join('');
+}
+
+/* ── JOURNAL ── */
+function gdGetJournal() { try { return JSON.parse(localStorage.getItem(GD_JOURNAL_KEY)) || []; } catch(e) { return []; } }
+function gdSetJournal(d) { localStorage.setItem(GD_JOURNAL_KEY, JSON.stringify(d)); }
+
+function gdSaveJournal() {
+  var date = document.getElementById('gd-j-date').value;
+  var type = document.getElementById('gd-j-type').value;
+  var plant = document.getElementById('gd-j-plant').value.trim();
+  var notes = document.getElementById('gd-j-notes').value.trim();
+  if (!notes) return alert('Please add some notes.');
+  var entries = gdGetJournal();
+  entries.unshift({ id: Date.now(), date: date, type: type, plant: plant, notes: notes });
+  gdSetJournal(entries);
+  document.getElementById('gd-j-plant').value = '';
+  document.getElementById('gd-j-notes').value = '';
+  gdRenderJournal();
+}
+
+function gdDeleteJournal(id) {
+  if (!confirm('Delete this entry?')) return;
+  gdSetJournal(gdGetJournal().filter(function(e){ return e.id !== id; }));
+  gdRenderJournal();
+}
+
+function gdRenderJournal() {
+  var entries = gdGetJournal();
+  var list = document.getElementById('gd-j-list');
+  var empty = document.getElementById('gd-j-empty');
+  var count = document.getElementById('gd-j-count');
+  if (count) count.textContent = 'Journal (' + entries.length + ' entries)';
+  if (!list) return;
+  if (!entries.length) { list.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = entries.map(function(e) {
+    return '<div class="gd-journal-entry">'
+      + '<div style="display:flex;justify-content:space-between;align-items:start;">'
+      + '<div>'
+      + '<div style="font-weight:800;font-size:14px;color:#14532D;">' + e.type + (e.plant ? ' — ' + e.plant : '') + '</div>'
+      + '<div style="font-size:12px;color:#6B7280;margin:3px 0;">' + (e.date || '') + '</div>'
+      + '<div style="font-size:14px;color:#374151;line-height:1.6;margin-top:4px;">' + e.notes + '</div>'
+      + '</div>'
+      + '<button onclick="gdDeleteJournal(' + e.id + ')" style="background:none;border:none;color:#EF4444;font-size:16px;cursor:pointer;padding:0;margin-left:8px;">✕</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+/* ── MEETINGS ── */
+function gdGetMeetings() { try { return JSON.parse(localStorage.getItem(GD_MEETING_KEY)) || []; } catch(e) { return []; } }
+function gdSetMeetings(d) { localStorage.setItem(GD_MEETING_KEY, JSON.stringify(d)); }
+
+function gdSaveMeeting() {
+  var date = document.getElementById('gd-m-date').value;
+  var topic = document.getElementById('gd-m-topic').value.trim();
+  var attendees = document.getElementById('gd-m-attendees').value.trim();
+  var notes = document.getElementById('gd-m-notes').value.trim();
+  if (!topic) return alert('Please enter a topic.');
+  var meetings = gdGetMeetings();
+  meetings.unshift({ id: Date.now(), date: date, topic: topic, attendees: attendees, notes: notes });
+  gdSetMeetings(meetings);
+  document.getElementById('gd-m-topic').value = '';
+  document.getElementById('gd-m-attendees').value = '';
+  document.getElementById('gd-m-notes').value = '';
+  gdRenderMeetings();
+}
+
+function gdDeleteMeeting(id) {
+  if (!confirm('Delete this meeting?')) return;
+  gdSetMeetings(gdGetMeetings().filter(function(m){ return m.id !== id; }));
+  gdRenderMeetings();
+}
+
+function gdRenderMeetings() {
+  var meetings = gdGetMeetings();
+  var list = document.getElementById('gd-m-list');
+  var empty = document.getElementById('gd-m-empty');
+  var count = document.getElementById('gd-m-count');
+  if (count) count.textContent = 'Meeting Log (' + meetings.length + ' meetings)';
+  if (!list) return;
+  if (!meetings.length) { list.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = meetings.map(function(m) {
+    return '<div style="background:#fff;border:2px solid #BBF7D0;border-radius:10px;padding:14px 16px;margin-bottom:10px;">'
+      + '<div style="display:flex;justify-content:space-between;align-items:start;">'
+      + '<div>'
+      + '<div style="font-weight:800;font-size:14px;color:#14532D;">🤝 ' + m.topic + '</div>'
+      + '<div style="font-size:12px;color:#6B7280;margin:3px 0;">' + (m.date || '') + (m.attendees ? ' · 👥 ' + m.attendees : '') + '</div>'
+      + (m.notes ? '<div style="font-size:13px;color:#374151;margin-top:5px;font-style:italic;">' + m.notes + '</div>' : '')
+      + '</div>'
+      + '<button onclick="gdDeleteMeeting(' + m.id + ')" style="background:none;border:none;color:#EF4444;font-size:16px;cursor:pointer;padding:0;margin-left:8px;">✕</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+function gdRenderMeetingIdeas() {
+  var el = document.getElementById('gd-meeting-ideas');
+  if (!el) return;
+  el.innerHTML = GD_MEETING_IDEAS.map(function(i) {
+    return '<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 14px;margin-bottom:8px;cursor:pointer;" onclick="document.getElementById(\'gd-m-topic\').value=\'' + i.title + '\'">'
+      + '<div style="font-weight:700;font-size:13px;color:#14532D;">' + i.emoji + ' ' + i.title + '</div>'
+      + '<div style="font-size:12px;color:#374151;margin-top:3px;">' + i.desc + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── PRINT ── */
+function gdPrint() {
+  var active = document.querySelector('.gd-mode-btn.active');
+  var mode = active ? active.id.replace('gdmode-','') : 'plants';
+  if (mode === 'plants') { if (gdActivePlant) gdPrintPlantCard(gdActivePlant); else gdPrintPlantGuide(); }
+  else if (mode === 'calendar') gdPrintCalendar();
+  else if (mode === 'journal') gdPrintJournal();
+  else if (mode === 'club') gdPrintMeetings();
+}
+
+function gdPrintPlantCard(p) {
+  if (!p) return;
+  var rows = [['☀️ Sunlight',p.sun],['💧 Water',p.water],['🪱 Soil',p.soil],['🌸 Bloom/Harvest',p.bloom],['💡 Care Tip',p.tip]]
+    .map(function(r){ return '<tr><td style="padding:9px;font-weight:700;color:#166534;width:130px;">' + r[0] + '</td><td style="padding:9px;">' + r[1] + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + p.name + ' Care Card</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:600px}h1{color:#14532D;font-size:26px}table{width:100%;border-collapse:collapse;margin-bottom:16px;}tr{border-bottom:1px solid #E5E7EB;}td{padding:9px;font-size:14px;}.box{background:#F0FDF4;padding:14px;border-radius:8px;font-size:13px;margin-bottom:12px;}</style></head><body><h1>' + p.emoji + ' ' + p.name + ' Care Card</h1><p style="color:#888;font-size:12px;">Empower Life 365 Gardening Club · ' + new Date().toLocaleDateString() + '</p><table>' + rows + '</table><div class="box"><b>🌟 Fun Fact:</b> ' + p.fact + '</div><div class="box"><b>💚 Why Seniors Love It:</b> ' + p.benefit + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function gdPrintPlantGuide() {
+  var plants = GD_PLANTS.filter(function(p){ return p.diff === 'easy'; });
+  var rows = plants.map(function(p){ return '<tr><td>' + p.emoji + ' ' + p.name + '</td><td>' + p.type + '</td><td>' + p.sun.split('(')[0].trim() + '</td><td>' + p.water.split(';')[0] + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Easy Plants Guide</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#14532D}table{width:100%;border-collapse:collapse}th{background:#16A34A;color:#fff;padding:10px;text-align:left;}td{padding:9px;border-bottom:1px solid #eee;font-size:13px;}</style></head><body><h1>🌱 Easy Plants for Seniors</h1><p style="color:#888;font-size:12px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>Plant</th><th>Type</th><th>Sunlight</th><th>Watering</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function gdPrintCalendar() {
+  var rows = GD_CALENDAR.map(function(m){ return '<tr><td style="padding:10px;border-bottom:1px solid #eee;font-weight:700;color:#14532D;vertical-align:top;">' + m.month + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-size:12px;color:#166534;vertical-align:top;">' + m.zone + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-size:13px;vertical-align:top;">' + m.tasks.map(function(t){ return '• ' + t; }).join('<br>') + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Garden Calendar</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#14532D;text-align:center}table{width:100%;border-collapse:collapse}th{background:#16A34A;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>🌱 Gardening Club Year Planner</h1><p style="text-align:center;color:#888;font-size:12px;">Empower Life 365 · ' + new Date().getFullYear() + '</p><table><tr><th>Month</th><th>Zone</th><th>Tasks & Activities</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function gdPrintJournal() {
+  var entries = gdGetJournal();
+  if (!entries.length) return alert('No journal entries yet!');
+  var html = entries.map(function(e){ return '<div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #eee;"><div style="font-weight:700;color:#14532D;">' + e.type + (e.plant ? ' — ' + e.plant : '') + '</div><div style="font-size:12px;color:#888;margin:3px 0;">' + (e.date || '') + '</div><div style="font-size:14px;line-height:1.7;">' + e.notes + '</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Garden Journal</title><style>body{font-family:Georgia,serif;padding:40px;max-width:650px}h1{color:#14532D;text-align:center}</style></head><body><h1>🌱 Garden Journal</h1><p style="text-align:center;color:#888;font-size:12px;">Empower Life 365 · Printed ' + new Date().toLocaleDateString() + '</p><hr style="border-color:#BBF7D0;margin:20px 0;">' + html + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function gdPrintMeetings() {
+  var meetings = gdGetMeetings();
+  if (!meetings.length) return alert('No meeting logs yet!');
+  var rows = meetings.map(function(m){ return '<tr><td style="padding:9px;border-bottom:1px solid #eee;">' + (m.date||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-weight:700;">' + m.topic + '</td><td style="padding:9px;border-bottom:1px solid #eee;">' + (m.attendees||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:12px;font-style:italic;">' + (m.notes||'') + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Meeting Log</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#14532D}table{width:100%;border-collapse:collapse}th{background:#16A34A;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>🤝 Gardening Club — Meeting Log</h1><p style="color:#888;font-size:12px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>Date</th><th>Topic</th><th>Attendees</th><th>Notes</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BRAIN GAMES  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var bgCurrentGame = null;
+
+/* ── DATA ─────────────────────────────────────────────── */
+var BG_ANAGRAMS = [
+  {word:'GARDEN',clue:'Where flowers grow'},
+  {word:'BUTTER',clue:'Goes on toast'},
+  {word:'WINDOW',clue:'Look outside through this'},
+  {word:'CANDLE',clue:'Gives light by flame'},
+  {word:'BRIDGE',clue:'Crosses over water'},
+  {word:'CASTLE',clue:'A royal residence'},
+  {word:'BASKET',clue:'Carry things in this'},
+  {word:'LEMON',clue:'Yellow sour fruit'},
+  {word:'PILLOW',clue:'Rest your head on this'},
+  {word:'DANCE',clue:'Move to music'},
+  {word:'SILVER',clue:'A shiny metal'},
+  {word:'MUSIC',clue:'Sound that soothes'},
+  {word:'FLOWER',clue:'A blooming plant'},
+  {word:'JACKET',clue:'Wear it when it\'s cold'},
+  {word:'STAMPS',clue:'Put on envelopes'}
+];
+
+var BG_WORDFILL = [
+  {phrase:'An apple a day keeps the _____ away',answer:'doctor',hint:'A medical professional'},
+  {phrase:'A bird in the hand is worth two in the _____',answer:'bush',hint:'A shrub'},
+  {phrase:'Every cloud has a silver _____',answer:'lining',hint:'Inside of a cloud'},
+  {phrase:'The early bird catches the _____',answer:'worm',hint:'Found in the garden'},
+  {phrase:'All that glitters is not _____',answer:'gold',hint:'A precious metal'},
+  {phrase:'Home is where the _____ is',answer:'heart',hint:'Pumps your blood'},
+  {phrase:'Make hay while the _____ shines',answer:'sun',hint:'Bright star'},
+  {phrase:'Don\'t judge a book by its _____',answer:'cover',hint:'The outside of a book'},
+  {phrase:'Actions speak louder than _____',answer:'words',hint:'What you read'},
+  {phrase:'A penny saved is a penny _____',answer:'earned',hint:'To work for something'},
+  {phrase:'Look before you _____',answer:'leap',hint:'Jump'},
+  {phrase:'Two heads are better than _____',answer:'one',hint:'The number before two'},
+  {phrase:'Where there\'s a will there\'s a _____',answer:'way',hint:'A path or road'},
+  {phrase:'You can\'t teach an old dog new _____',answer:'tricks',hint:'What a circus performer does'},
+  {phrase:'The pen is mightier than the _____',answer:'sword',hint:'A weapon'}
+];
+
+var BG_CATEGORIES = [
+  {cat:'Things in a kitchen',items:['Stove','Refrigerator','Sink','Oven','Toaster','Blender','Pot','Pan','Kettle','Dishwasher']},
+  {cat:'Types of flowers',items:['Rose','Daisy','Tulip','Sunflower','Lily','Orchid','Carnation','Violet','Marigold','Pansy']},
+  {cat:'US Presidents',items:['Washington','Lincoln','Roosevelt','Kennedy','Reagan','Eisenhower','Truman','Nixon','Carter','Clinton']},
+  {cat:'Things at the beach',items:['Sand','Waves','Seashell','Umbrella','Towel','Sunscreen','Crab','Seagull','Lighthouse','Boat']},
+  {cat:'Musical instruments',items:['Piano','Guitar','Violin','Trumpet','Drums','Flute','Saxophone','Harp','Cello','Accordion']},
+  {cat:'Types of birds',items:['Robin','Sparrow','Cardinal','Blue Jay','Hummingbird','Owl','Eagle','Crow','Finch','Woodpecker']},
+  {cat:'Things in a garden',items:['Shovel','Seeds','Hose','Gloves','Rake','Trowel','Fertilizer','Pot','Compost','Fence']},
+  {cat:'Classic TV shows',items:['I Love Lucy','Gunsmoke','The Andy Griffith Show','Bonanza','Ed Sullivan Show','Perry Mason','Lassie','The Twilight Zone','Leave It to Beaver','Father Knows Best']},
+  {cat:'State capitals',items:['Albany','Austin','Denver','Sacramento','Tallahassee','Harrisburg','Annapolis','Boston','Trenton','Columbus']},
+  {cat:'Things that are red',items:['Apple','Fire truck','Stop sign','Cardinal','Strawberry','Red rose','Tomato','Fire hydrant','Barn','Lobster']}
+];
+
+var BG_MEMORY_SETS = [
+  {name:'Animals',pairs:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼']},
+  {name:'Food',pairs:['🍎','🍊','🍋','🍇','🍓','🍑','🥝','🍒']},
+  {name:'Nature',pairs:['🌸','🌻','🌹','🍀','🌿','🍂','🌊','⭐']},
+  {name:'Faces',pairs:['😀','😎','🥰','😂','🤩','😴','🤔','😇']}
+];
+
+var BG_TRIVIA = {
+  easy:[
+    {q:'What color is a stop sign?',a:'Red',choices:['Red','Blue','Green','Yellow']},
+    {q:'How many days are in a week?',a:'7',choices:['5','6','7','8']},
+    {q:'What animal says "moo"?',a:'Cow',choices:['Pig','Horse','Cow','Sheep']},
+    {q:'What is the first month of the year?',a:'January',choices:['February','January','March','December']},
+    {q:'How many seasons are there?',a:'4',choices:['2','3','4','5']},
+    {q:'What do you use to write a letter?',a:'Pen or pencil',choices:['Fork','Pen or pencil','Spoon','Hammer']},
+    {q:'What color is a banana?',a:'Yellow',choices:['Red','Green','Yellow','Purple']},
+    {q:'What meal is eaten in the morning?',a:'Breakfast',choices:['Lunch','Dinner','Breakfast','Snack']},
+    {q:'How many fingers are on one hand?',a:'5',choices:['4','5','6','10']},
+    {q:'What holiday is on December 25th?',a:'Christmas',choices:['Thanksgiving','Easter','Christmas','Halloween']}
+  ],
+  medium:[
+    {q:'What is the capital of the United States?',a:'Washington D.C.',choices:['New York','Chicago','Washington D.C.','Los Angeles']},
+    {q:'What planet is known as the Red Planet?',a:'Mars',choices:['Venus','Jupiter','Mars','Saturn']},
+    {q:'How many stripes are on the American flag?',a:'13',choices:['10','13','15','50']},
+    {q:'What year did World War II end?',a:'1945',choices:['1943','1944','1945','1946']},
+    {q:'Who painted the Mona Lisa?',a:'Leonardo da Vinci',choices:['Picasso','Michelangelo','Leonardo da Vinci','Rembrandt']},
+    {q:'What is the largest ocean on Earth?',a:'Pacific Ocean',choices:['Atlantic Ocean','Indian Ocean','Pacific Ocean','Arctic Ocean']},
+    {q:'How many cents are in a dollar?',a:'100',choices:['50','75','100','200']},
+    {q:'What state is known as the "Sunshine State"?',a:'Florida',choices:['California','Arizona','Texas','Florida']},
+    {q:'What is the name of the longest river in the US?',a:'Missouri River',choices:['Mississippi River','Missouri River','Colorado River','Ohio River']},
+    {q:'In what decade was television invented?',a:'1920s',choices:['1910s','1920s','1930s','1940s']}
+  ],
+  hard:[
+    {q:'What year was the Declaration of Independence signed?',a:'1776',choices:['1774','1775','1776','1777']},
+    {q:'Who was the 32nd President of the United States?',a:'Franklin D. Roosevelt',choices:['Harry Truman','Dwight Eisenhower','Franklin D. Roosevelt','Herbert Hoover']},
+    {q:'What is the chemical symbol for gold?',a:'Au',choices:['Go','Gl','Au','Ag']},
+    {q:'In what city was the Titanic built?',a:'Belfast',choices:['London','Liverpool','Glasgow','Belfast']},
+    {q:'What year did the Berlin Wall fall?',a:'1989',choices:['1987','1988','1989','1991']},
+    {q:'Which US state was the 50th to join the Union?',a:'Hawaii',choices:['Alaska','Hawaii','Arizona','New Mexico']},
+    {q:'What is the longest-running Broadway show of all time?',a:'The Phantom of the Opera',choices:['Cats','Chicago','Les Misérables','The Phantom of the Opera']},
+    {q:'What is the name of the first artificial satellite launched into space?',a:'Sputnik',choices:['Explorer 1','Vostok','Sputnik','Luna 1']},
+    {q:'How many bones are in the adult human body?',a:'206',choices:['180','195','206','212']},
+    {q:'What year did the first moon landing occur?',a:'1969',choices:['1965','1967','1969','1971']}
+  ]
+};
+
+var BG_ODD_ONE_OUT = [
+  {items:['Apple','Banana','Carrot','Grape'],odd:'Carrot',reason:'It\'s a vegetable, not a fruit'},
+  {items:['Red','Blue','Green','Dog'],odd:'Dog',reason:'It\'s an animal, not a color'},
+  {items:['Piano','Guitar','Violin','Trumpet'],odd:'Trumpet',reason:'It\'s a wind instrument, not a string instrument'},
+  {items:['January','March','July','September'],odd:'September',reason:'Only September has 30 days — the others have 31'},
+  {items:['Paris','London','Rome','Texas'],odd:'Texas',reason:'It\'s a US state, not a European capital city'},
+  {items:['Oak','Maple','Pine','Rose'],odd:'Rose',reason:'It\'s a flower/shrub, not a tree'},
+  {items:['Shark','Dolphin','Whale','Salmon'],odd:'Salmon',reason:'Sharks, dolphins, and whales are not typically eaten as a common dish — or: salmon is a fish, the rest are not'},
+  {items:['Eagle','Robin','Bat','Sparrow'],odd:'Bat',reason:'It\'s a mammal, not a bird'},
+  {items:['Mercury','Venus','Earth','Moon'],odd:'Moon',reason:'It\'s a moon/satellite, not a planet'},
+  {items:['Copper','Gold','Silver','Diamond'],odd:'Diamond',reason:'It\'s a gemstone/mineral, not a metal'}
+];
+
+var BG_RHYMES = [
+  {word:'CAT',rhymes:['bat','hat','mat','rat','sat','flat','that']},
+  {word:'MOON',rhymes:['soon','tune','June','spoon','noon','boon']},
+  {word:'BREAD',rhymes:['red','bed','said','head','led','fed']},
+  {word:'TREE',rhymes:['free','see','be','me','tea','key','three']},
+  {word:'LOVE',rhymes:['dove','glove','above','shove']},
+  {word:'RAIN',rhymes:['train','plain','main','brain','chain','gain']},
+  {word:'DOOR',rhymes:['more','floor','store','core','pour','shore']},
+  {word:'NIGHT',rhymes:['light','right','might','fight','sight','white']}
+];
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'brain') bgInit();
+  };
+})();
+
+function bgInit() { /* nothing needed on load */ }
+
+function bgSetMode(mode) {
+  ['menu','word','memory','trivia','number','print'].forEach(function(m) {
+    document.getElementById('bg-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('bgmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+}
+
+function bgLaunch(game) {
+  bgCurrentGame = game;
+  if (['anagram','wordfill','categories','oddoneout','rhyme'].indexOf(game) !== -1) {
+    bgSetMode('word');
+    bgRenderWordGame(game);
+  } else if (game === 'memory') {
+    bgSetMode('memory');
+    bgRenderMemory();
+  } else if (game.indexOf('trivia') !== -1) {
+    bgSetMode('trivia');
+    bgRenderTrivia(game.replace('trivia_',''));
+  } else if (game === 'countdown') {
+    bgSetMode('number');
+    bgRenderCountdown();
+  }
+}
+
+/* ════════════════ WORD GAMES ════════════════ */
+function bgRenderWordGame(game) {
+  var c = document.getElementById('bg-word-container');
+  if (!c) return;
+  if (game === 'anagram') bgRenderAnagram(c);
+  else if (game === 'wordfill') bgRenderWordFill(c);
+  else if (game === 'categories') bgRenderCategories(c);
+  else if (game === 'oddoneout') bgRenderOddOneOut(c);
+  else if (game === 'rhyme') bgRenderRhyme(c);
+}
+
+/* ── ANAGRAM ── */
+var bgAnagramState = {};
+function bgRenderAnagram(c) {
+  var item = BG_ANAGRAMS[Math.floor(Math.random() * BG_ANAGRAMS.length)];
+  var scrambled = item.word.split('').sort(function(){ return Math.random()-.5; }).join('');
+  // ensure actually scrambled
+  while (scrambled === item.word) scrambled = item.word.split('').sort(function(){ return Math.random()-.5; }).join('');
+  bgAnagramState = { word: item.word, clue: item.clue, scrambled: scrambled, attempts: 0 };
+  c.innerHTML = '<div class="bg-play-area">'
+    + '<h3>🔀 Anagram</h3>'
+    + '<div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Unscramble the letters to find the hidden word.</div>'
+    + '<div style="font-size:36px;font-weight:900;letter-spacing:10px;color:#312E81;text-align:center;padding:20px;background:#EEF2FF;border-radius:12px;margin-bottom:16px;">' + scrambled + '</div>'
+    + '<div style="font-size:14px;color:#6B7280;text-align:center;margin-bottom:16px;">💡 Clue: ' + item.clue + '</div>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+    + '<input id="bg-anagram-input" class="bg-answer-box" type="text" placeholder="Type your answer..." onkeydown="if(event.key===\'Enter\')bgCheckAnagram()" style="flex:1;min-width:180px;" />'
+    + '<button onclick="bgCheckAnagram()" class="btn" style="background:#4F46E5;color:#fff;">Check ✓</button>'
+    + '</div>'
+    + '<div id="bg-anagram-result" style="margin-top:12px;font-size:15px;font-weight:700;text-align:center;min-height:24px;"></div>'
+    + '<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">'
+    + '<button onclick="bgRenderAnagram(document.getElementById(\'bg-word-container\'))" class="btn btn-secondary">New Word 🔄</button>'
+    + '<button onclick="bgSetMode(\'menu\')" class="btn btn-secondary">← Menu</button>'
+    + '</div></div>';
+  setTimeout(function(){ var inp = document.getElementById('bg-anagram-input'); if(inp) inp.focus(); }, 100);
+}
+function bgCheckAnagram() {
+  var inp = document.getElementById('bg-anagram-input');
+  var res = document.getElementById('bg-anagram-result');
+  if (!inp || !res) return;
+  var guess = inp.value.trim().toUpperCase();
+  bgAnagramState.attempts++;
+  if (guess === bgAnagramState.word) {
+    res.innerHTML = '<span style="color:#16A34A;">✅ Correct! The word was ' + bgAnagramState.word + '</span>';
+    inp.disabled = true;
+  } else {
+    res.innerHTML = '<span style="color:#EF4444;">Not quite — try again! (' + bgAnagramState.attempts + ' attempt' + (bgAnagramState.attempts>1?'s':'') + ')</span>';
+    inp.value = '';
+    inp.focus();
+    if (bgAnagramState.attempts >= 3) {
+      res.innerHTML = '<span style="color:#D97706;">The answer was: <b>' + bgAnagramState.word + '</b></span>';
+    }
+  }
+}
+
+/* ── WORD FILL ── */
+var bgWordFillState = {};
+function bgRenderWordFill(c) {
+  var items = BG_WORDFILL.slice().sort(function(){ return Math.random()-.5; }).slice(0,8);
+  bgWordFillState = { items: items, answered: 0, correct: 0 };
+  var html = '<div class="bg-play-area"><h3>📝 Word Fill-In</h3>'
+    + '<div style="font-size:13px;color:#6B7280;margin-bottom:20px;">Complete each famous phrase or saying. Type the missing word.</div>'
+    + items.map(function(item, i) {
+      return '<div style="background:#EEF2FF;border-radius:10px;padding:14px 16px;margin-bottom:10px;" id="bgwf-row-' + i + '">'
+        + '<div style="font-size:15px;color:#312E81;margin-bottom:8px;line-height:1.6;">' + item.phrase.replace(/_____/, '<span style="background:#fff;border-bottom:2px solid #4F46E5;padding:0 20px;display:inline-block;min-width:80px;">&nbsp;</span>') + '</div>'
+        + '<div style="display:flex;gap:8px;align-items:center;">'
+        + '<input id="bgwf-inp-' + i + '" class="bg-answer-box" type="text" placeholder="Your answer..." style="max-width:200px;" onkeydown="if(event.key===\'Enter\')bgCheckWordFill(' + i + ')" />'
+        + '<button onclick="bgCheckWordFill(' + i + ')" class="btn" style="background:#4F46E5;color:#fff;padding:8px 14px;">✓</button>'
+        + '<span style="font-size:12px;color:#6B7280;">Hint: ' + item.hint + '</span>'
+        + '</div>'
+        + '<div id="bgwf-res-' + i + '" style="margin-top:6px;font-size:13px;font-weight:700;min-height:18px;"></div>'
+        + '</div>';
+    }).join('')
+    + '<div id="bgwf-score" style="display:none;text-align:center;padding:20px;font-size:18px;font-weight:900;color:#312E81;"></div>'
+    + '<div style="display:flex;gap:8px;margin-top:16px;"><button onclick="bgRenderWordFill(document.getElementById(\'bg-word-container\'))" class="btn btn-secondary">New Set 🔄</button><button onclick="bgSetMode(\'menu\')" class="btn btn-secondary">← Menu</button></div>'
+    + '</div>';
+  c.innerHTML = html;
+}
+function bgCheckWordFill(i) {
+  var item = bgWordFillState.items[i];
+  var inp = document.getElementById('bgwf-inp-' + i);
+  var res = document.getElementById('bgwf-res-' + i);
+  if (!inp || inp.disabled) return;
+  var guess = inp.value.trim().toLowerCase();
+  var correct = item.answer.toLowerCase();
+  inp.disabled = true;
+  bgWordFillState.answered++;
+  if (guess === correct || correct.indexOf(guess) !== -1) {
+    bgWordFillState.correct++;
+    res.innerHTML = '<span style="color:#16A34A;">✅ Correct! The answer is "' + item.answer + '"</span>';
+    document.getElementById('bgwf-row-' + i).style.borderLeft = '4px solid #16A34A';
+  } else {
+    res.innerHTML = '<span style="color:#EF4444;">The answer was: <b>' + item.answer + '</b></span>';
+    document.getElementById('bgwf-row-' + i).style.borderLeft = '4px solid #EF4444';
+  }
+  if (bgWordFillState.answered === bgWordFillState.items.length) {
+    var sc = document.getElementById('bgwf-score');
+    sc.style.display = '';
+    sc.innerHTML = '🎉 You got ' + bgWordFillState.correct + ' out of ' + bgWordFillState.items.length + ' correct!';
+  }
+}
+
+/* ── CATEGORIES ── */
+function bgRenderCategories(c) {
+  var cats = BG_CATEGORIES.slice().sort(function(){ return Math.random()-.5; }).slice(0,5);
+  c.innerHTML = '<div class="bg-play-area"><h3>📋 Categories</h3>'
+    + '<div style="font-size:13px;color:#6B7280;margin-bottom:16px;">For each category, try to name 5 things. Click "Show Answers" when ready!</div>'
+    + cats.map(function(cat, i) {
+      return '<div style="background:#EEF2FF;border-radius:10px;padding:14px 16px;margin-bottom:10px;">'
+        + '<div style="font-weight:800;font-size:14px;color:#312E81;margin-bottom:8px;">' + (i+1) + '. ' + cat.cat + '</div>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:6px;min-height:30px;" id="bgcat-answers-' + i + '" style="display:none;">'
+        + cat.items.map(function(it){ return '<span style="background:#4F46E5;color:#fff;border-radius:12px;padding:3px 10px;font-size:13px;">' + it + '</span>'; }).join('')
+        + '</div>'
+        + '<button onclick="var el=document.getElementById(\'bgcat-answers-'+i+'\');el.style.display=el.style.display===\'none\'?\'flex\':\'none\';this.textContent=el.style.display===\'flex\'?\'Hide ▲\':\'Show Answers ▼\'" class="btn btn-secondary" style="font-size:12px;margin-top:8px;">Show Answers ▼</button>'
+        + '</div>';
+    }).join('')
+    + '<div style="display:flex;gap:8px;margin-top:16px;"><button onclick="bgRenderCategories(document.getElementById(\'bg-word-container\'))" class="btn btn-secondary">New Categories 🔄</button><button onclick="bgSetMode(\'menu\')" class="btn btn-secondary">← Menu</button></div>'
+    + '</div>';
+}
+
+/* ── ODD ONE OUT ── */
+var bgOddState = {};
+function bgRenderOddOneOut(c) {
+  var puzzles = BG_ODD_ONE_OUT.slice().sort(function(){ return Math.random()-.5; }).slice(0,6);
+  bgOddState = { puzzles: puzzles, answered: 0, correct: 0 };
+  c.innerHTML = '<div class="bg-play-area"><h3>🔍 Odd One Out</h3>'
+    + '<div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Which word doesn\'t belong with the others? Click it!</div>'
+    + puzzles.map(function(p, i) {
+      var shuffled = p.items.slice().sort(function(){ return Math.random()-.5; });
+      return '<div style="background:#EEF2FF;border-radius:10px;padding:14px 16px;margin-bottom:10px;" id="bgodd-row-' + i + '">'
+        + '<div style="font-weight:700;font-size:13px;color:#6B7280;margin-bottom:8px;">Puzzle ' + (i+1) + '</div>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:8px;" id="bgodd-tiles-' + i + '">'
+        + shuffled.map(function(word){ return '<button class="bg-word-tile" onclick="bgCheckOdd(' + i + ',\'' + word + '\')">' + word + '</button>'; }).join('')
+        + '</div>'
+        + '<div id="bgodd-res-' + i + '" style="font-size:13px;font-weight:700;margin-top:8px;min-height:20px;"></div>'
+        + '</div>';
+    }).join('')
+    + '<div id="bgodd-final" style="display:none;text-align:center;padding:20px;font-size:18px;font-weight:900;color:#312E81;"></div>'
+    + '<div style="display:flex;gap:8px;margin-top:16px;"><button onclick="bgRenderOddOneOut(document.getElementById(\'bg-word-container\'))" class="btn btn-secondary">New Set 🔄</button><button onclick="bgSetMode(\'menu\')" class="btn btn-secondary">← Menu</button></div>'
+    + '</div>';
+}
+function bgCheckOdd(i, word) {
+  var p = bgOddState.puzzles[i];
+  var res = document.getElementById('bgodd-res-' + i);
+  var tiles = document.getElementById('bgodd-tiles-' + i);
+  if (!res || !tiles || tiles.dataset.done) return;
+  tiles.dataset.done = '1';
+  bgOddState.answered++;
+  Array.from(tiles.querySelectorAll('.bg-word-tile')).forEach(function(btn) {
+    btn.onclick = null;
+    if (btn.textContent === p.odd) btn.classList.add('correct');
+    else if (btn.textContent === word && word !== p.odd) btn.classList.add('wrong');
+  });
+  if (word === p.odd) {
+    bgOddState.correct++;
+    res.innerHTML = '<span style="color:#16A34A;">✅ Correct! ' + p.reason + '</span>';
+  } else {
+    res.innerHTML = '<span style="color:#EF4444;">The odd one was <b>' + p.odd + '</b>. ' + p.reason + '</span>';
+  }
+  if (bgOddState.answered === bgOddState.puzzles.length) {
+    var fin = document.getElementById('bgodd-final');
+    fin.style.display = '';
+    fin.innerHTML = '🎉 Score: ' + bgOddState.correct + ' / ' + bgOddState.puzzles.length;
+  }
+}
+
+/* ── RHYME ── */
+function bgRenderRhyme(c) {
+  var items = BG_RHYMES.slice().sort(function(){ return Math.random()-.5; }).slice(0,5);
+  c.innerHTML = '<div class="bg-play-area"><h3>🎵 Rhyme Time</h3>'
+    + '<div style="font-size:13px;color:#6B7280;margin-bottom:16px;">For each word, say or write as many rhyming words as you can! Click "Show Rhymes" to check.</div>'
+    + items.map(function(item, i) {
+      return '<div style="background:#EEF2FF;border-radius:10px;padding:14px 16px;margin-bottom:10px;">'
+        + '<div style="font-size:22px;font-weight:900;color:#312E81;letter-spacing:4px;margin-bottom:10px;">' + item.word + '</div>'
+        + '<div id="bgrhyme-ans-' + i + '" style="display:none;display:flex;flex-wrap:wrap;gap:6px;">'
+        + item.rhymes.map(function(r){ return '<span style="background:#4F46E5;color:#fff;border-radius:12px;padding:4px 12px;font-size:14px;">' + r + '</span>'; }).join('')
+        + '</div>'
+        + '<button onclick="var el=document.getElementById(\'bgrhyme-ans-'+i+'\');el.style.display=el.style.display===\'none\'?\'flex\':\'none\';this.textContent=el.style.display===\'flex\'?\'Hide ▲\':\'Show Rhymes ▼\'" class="btn btn-secondary" style="font-size:12px;margin-top:8px;">Show Rhymes ▼</button>'
+        + '</div>';
+    }).join('')
+    + '<div style="display:flex;gap:8px;margin-top:16px;"><button onclick="bgRenderRhyme(document.getElementById(\'bg-word-container\'))" class="btn btn-secondary">New Words 🔄</button><button onclick="bgSetMode(\'menu\')" class="btn btn-secondary">← Menu</button></div>'
+    + '</div>';
+}
+
+/* ════════════════ MEMORY MATCH ════════════════ */
+var bgMemState = {};
+function bgRenderMemory(setIndex) {
+  setIndex = setIndex !== undefined ? setIndex : 0;
+  var set = BG_MEMORY_SETS[setIndex % BG_MEMORY_SETS.length];
+  var pairs = set.pairs.concat(set.pairs).sort(function(){ return Math.random()-.5; });
+  bgMemState = { pairs: pairs, flipped: [], matched: [], moves: 0, lock: false, setIndex: setIndex };
+  var c = document.getElementById('bg-memory-container');
+  var cols = 4;
+  c.innerHTML = '<div class="bg-play-area">'
+    + '<h3>🃏 Memory Match — ' + set.name + '</h3>'
+    + '<div class="bg-score-bar">'
+    + '<span class="bg-score-pill">Moves: <span id="bgmem-moves">0</span></span>'
+    + '<span class="bg-score-pill">Matched: <span id="bgmem-matched">0</span> / ' + set.pairs.length + '</span>'
+    + '<button onclick="bgRenderMemory((bgMemState.setIndex+1)%' + BG_MEMORY_SETS.length + ')" class="btn btn-secondary" style="font-size:12px;margin-left:auto;">Change Theme 🔄</button>'
+    + '</div>'
+    + '<div class="bg-memory-grid" style="grid-template-columns:repeat(' + cols + ',1fr);max-width:320px;" id="bgmem-grid"></div>'
+    + '<div id="bgmem-win" style="display:none;" class="bg-result-banner win"><div style="font-size:24px;font-weight:900;">🎉 You did it!</div><div style="font-size:14px;margin-top:4px;">Completed in <span id="bgmem-final-moves"></span> moves</div><button onclick="bgRenderMemory(bgMemState.setIndex)" class="btn" style="background:#16A34A;color:#fff;margin-top:12px;">Play Again</button></div>'
+    + '<button onclick="bgSetMode(\'menu\')" class="btn btn-secondary" style="margin-top:12px;">← Menu</button>'
+    + '</div>';
+  var grid = document.getElementById('bgmem-grid');
+  pairs.forEach(function(emoji, i) {
+    var card = document.createElement('div');
+    card.className = 'bg-mem-card face-down';
+    card.dataset.idx = i;
+    card.dataset.val = emoji;
+    card.onclick = function() { bgFlipCard(card); };
+    grid.appendChild(card);
+  });
+}
+function bgFlipCard(card) {
+  if (bgMemState.lock || card.classList.contains('matched') || card.classList.contains('flipped')) return;
+  card.classList.remove('face-down');
+  card.classList.add('flipped');
+  card.textContent = card.dataset.val;
+  bgMemState.flipped.push(card);
+  if (bgMemState.flipped.length === 2) {
+    bgMemState.lock = true;
+    bgMemState.moves++;
+    document.getElementById('bgmem-moves').textContent = bgMemState.moves;
+    var a = bgMemState.flipped[0], b = bgMemState.flipped[1];
+    if (a.dataset.val === b.dataset.val) {
+      a.classList.add('matched'); b.classList.add('matched');
+      a.classList.remove('flipped'); b.classList.remove('flipped');
+      bgMemState.matched.push(a.dataset.val);
+      document.getElementById('bgmem-matched').textContent = bgMemState.matched.length;
+      bgMemState.flipped = [];
+      bgMemState.lock = false;
+      var set = BG_MEMORY_SETS[bgMemState.setIndex % BG_MEMORY_SETS.length];
+      if (bgMemState.matched.length === set.pairs.length) {
+        var win = document.getElementById('bgmem-win');
+        win.style.display = '';
+        document.getElementById('bgmem-final-moves').textContent = bgMemState.moves;
+      }
+    } else {
+      setTimeout(function() {
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        a.classList.add('face-down'); b.classList.add('face-down');
+        a.textContent = ''; b.textContent = '';
+        bgMemState.flipped = [];
+        bgMemState.lock = false;
+      }, 1000);
+    }
+  }
+}
+
+/* ════════════════ TRIVIA ════════════════ */
+var bgTriviaState = {};
+function bgRenderTrivia(level) {
+  level = level || 'easy';
+  var questions = BG_TRIVIA[level].slice().sort(function(){ return Math.random()-.5; }).slice(0,8);
+  bgTriviaState = { level: level, questions: questions, current: 0, correct: 0 };
+  var c = document.getElementById('bg-trivia-container');
+  c.innerHTML = '<div class="bg-play-area">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">'
+    + '<h3 style="margin:0;">🧠 Trivia — ' + level.charAt(0).toUpperCase() + level.slice(1) + '</h3>'
+    + '<div style="display:flex;gap:6px;">'
+    + ['easy','medium','hard'].map(function(l){ return '<button onclick="bgRenderTrivia(\'' + l + '\')" class="btn' + (l===level?'':' btn-secondary') + '" style="font-size:12px;padding:5px 12px;">' + l + '</button>'; }).join('')
+    + '</div></div>'
+    + '<div class="bg-score-bar"><span class="bg-score-pill">Q <span id="bgt-qnum">1</span> / ' + questions.length + '</span><span class="bg-score-pill">Score: <span id="bgt-score">0</span></span></div>'
+    + '<div id="bgt-question-area"></div>'
+    + '</div>';
+  bgShowTriviaQ();
+}
+function bgShowTriviaQ() {
+  var s = bgTriviaState;
+  var area = document.getElementById('bgt-question-area');
+  if (!area) return;
+  if (s.current >= s.questions.length) {
+    var pct = Math.round(s.correct / s.questions.length * 100);
+    area.innerHTML = '<div class="bg-result-banner win">'
+      + '<div style="font-size:28px;font-weight:900;">🎉 ' + s.correct + ' / ' + s.questions.length + '</div>'
+      + '<div style="font-size:14px;margin-top:4px;">' + (pct >= 80 ? 'Outstanding!' : pct >= 60 ? 'Well done!' : 'Nice try!') + ' (' + pct + '%)</div>'
+      + '<button onclick="bgRenderTrivia(bgTriviaState.level)" class="btn" style="background:#16A34A;color:#fff;margin-top:12px;">Play Again</button>'
+      + '</div>';
+    return;
+  }
+  var q = s.questions[s.current];
+  var choices = q.choices.slice().sort(function(){ return Math.random()-.5; });
+  area.innerHTML = '<div style="font-size:17px;font-weight:700;color:#1E1B4B;margin-bottom:20px;line-height:1.5;">' + (s.current+1) + '. ' + q.q + '</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="bgt-choices">'
+    + choices.map(function(c, i) {
+      return '<button class="bg-word-tile" style="padding:12px 16px;font-size:14px;text-align:left;" onclick="bgAnswerTrivia(\'' + c.replace(/'/g,"\\'") + '\')">' + String.fromCharCode(65+i) + '. ' + c + '</button>';
+    }).join('')
+    + '</div>'
+    + '<div id="bgt-feedback" style="min-height:28px;margin-top:14px;font-size:14px;font-weight:700;text-align:center;"></div>';
+}
+function bgAnswerTrivia(answer) {
+  var s = bgTriviaState;
+  var q = s.questions[s.current];
+  var fb = document.getElementById('bgt-feedback');
+  var choices = document.getElementById('bgt-choices');
+  if (!choices) return;
+  Array.from(choices.querySelectorAll('.bg-word-tile')).forEach(function(btn) {
+    btn.onclick = null;
+    var btnAnswer = btn.textContent.slice(3);
+    if (btnAnswer === q.a) btn.classList.add('correct');
+    else if (btnAnswer === answer && answer !== q.a) btn.classList.add('wrong');
+  });
+  var isCorrect = answer === q.a;
+  if (isCorrect) {
+    s.correct++;
+    fb.innerHTML = '<span style="color:#16A34A;">✅ Correct!</span>';
+  } else {
+    fb.innerHTML = '<span style="color:#EF4444;">The answer is: ' + q.a + '</span>';
+  }
+  document.getElementById('bgt-score').textContent = s.correct;
+  s.current++;
+  document.getElementById('bgt-qnum').textContent = Math.min(s.current + 1, s.questions.length);
+  setTimeout(bgShowTriviaQ, 1400);
+}
+
+/* ════════════════ NUMBER GAMES ════════════════ */
+var bgCountState = {};
+function bgRenderCountdown() {
+  var patterns = [
+    {name:'Count by 2s starting at 2',start:2,step:2,count:10},
+    {name:'Count by 5s starting at 5',start:5,step:5,count:10},
+    {name:'Count by 10s starting at 10',start:10,step:10,count:10},
+    {name:'Count backward from 20',start:20,step:-1,count:10},
+    {name:'Count by 3s starting at 3',start:3,step:3,count:10}
+  ];
+  var p = patterns[Math.floor(Math.random()*patterns.length)];
+  var sequence = [];
+  for (var i = 0; i < p.count; i++) sequence.push(p.start + p.step * i);
+  var hideIdx = Math.floor(Math.random() * (sequence.length - 2)) + 1;
+  bgCountState = { sequence: sequence, hideIdx: hideIdx, answer: sequence[hideIdx], attempts: 0 };
+  var displaySeq = sequence.map(function(n, i) {
+    return i === hideIdx ? '<span style="background:#4F46E5;color:#4F46E5;border-radius:8px;padding:6px 14px;border:2px dashed #818CF8;">???</span>'
+      : '<span style="background:#EEF2FF;border-radius:8px;padding:6px 14px;font-weight:700;color:#312E81;font-size:17px;">' + n + '</span>';
+  }).join(' ');
+  var c = document.getElementById('bg-number-container');
+  c.innerHTML = '<div class="bg-play-area">'
+    + '<h3>🔢 Number Countdown</h3>'
+    + '<div style="font-size:13px;color:#6B7280;margin-bottom:16px;">' + p.name + '. What is the missing number?</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:20px;padding:16px;background:#EEF2FF;border-radius:12px;">' + displaySeq + '</div>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+    + '<input id="bg-count-input" class="bg-answer-box" type="number" placeholder="Missing number..." style="flex:1;min-width:150px;max-width:200px;" onkeydown="if(event.key===\'Enter\')bgCheckCountdown()" />'
+    + '<button onclick="bgCheckCountdown()" class="btn" style="background:#4F46E5;color:#fff;">Check ✓</button>'
+    + '</div>'
+    + '<div id="bg-count-result" style="margin-top:12px;font-size:15px;font-weight:700;text-align:center;min-height:24px;"></div>'
+    + '<div style="display:flex;gap:8px;margin-top:16px;"><button onclick="bgRenderCountdown()" class="btn btn-secondary">New Pattern 🔄</button><button onclick="bgSetMode(\'menu\')" class="btn btn-secondary">← Menu</button></div>'
+    + '</div>';
+  setTimeout(function(){ var inp = document.getElementById('bg-count-input'); if(inp) inp.focus(); }, 100);
+}
+function bgCheckCountdown() {
+  var inp = document.getElementById('bg-count-input');
+  var res = document.getElementById('bg-count-result');
+  if (!inp || !res) return;
+  var guess = parseInt(inp.value, 10);
+  bgCountState.attempts++;
+  if (guess === bgCountState.answer) {
+    res.innerHTML = '<span style="color:#16A34A;">✅ Correct! The missing number is ' + bgCountState.answer + '</span>';
+    inp.disabled = true;
+  } else {
+    inp.value = '';
+    inp.focus();
+    if (bgCountState.attempts >= 2) {
+      res.innerHTML = '<span style="color:#D97706;">The answer is: <b>' + bgCountState.answer + '</b></span>';
+    } else {
+      res.innerHTML = '<span style="color:#EF4444;">Not quite — try again!</span>';
+    }
+  }
+}
+
+/* ════════════════ PRINT SHEETS ════════════════ */
+function bgPrintCurrentGame() { bgSetMode('print'); }
+
+function bgPrintAnagramSheet() {
+  var items = BG_ANAGRAMS.slice().sort(function(){ return Math.random()-.5; }).slice(0,10);
+  var rows = items.map(function(item, i) {
+    var sc = item.word.split('').sort(function(){ return Math.random()-.5; }).join('');
+    while (sc === item.word) sc = item.word.split('').sort(function(){ return Math.random()-.5; }).join('');
+    return '<tr><td style="padding:10px;border-bottom:1px solid #eee;font-size:14px;">' + (i+1) + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;font-size:18px;font-weight:900;letter-spacing:8px;">' + sc + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;font-size:13px;color:#888;">' + item.clue + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;min-width:120px;">&nbsp;</td></tr>';
+  }).join('');
+  var answerKey = items.map(function(item,i){ return (i+1) + '. ' + item.word; }).join(' &nbsp; ');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Anagram Worksheet</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:700px}h1{color:#312E81}table{width:100%;border-collapse:collapse}th{background:#4F46E5;color:#fff;padding:10px;text-align:left;}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:30px;}</style></head><body><h1>🔀 Anagram Worksheet</h1><p style="color:#888;font-size:12px;">Unscramble each word. Use the clue to help! · Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>#</th><th>Scrambled</th><th>Clue</th><th>Your Answer</th></tr>' + rows + '</table><div class="answers"><b>Answer Key:</b> ' + answerKey + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function bgPrintCategoriesSheet() {
+  var cats = BG_CATEGORIES.slice().sort(function(){ return Math.random()-.5; }).slice(0,6);
+  var html = cats.map(function(cat){ return '<div style="margin-bottom:22px;"><b style="font-size:15px;color:#312E81;">' + cat.cat + '</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px;">' + [1,2,3,4,5].map(function(n){ return '<div style="border-bottom:1px solid #ccc;padding:6px 4px;font-size:14px;">' + n + '. _______________________</div>'; }).join('') + '</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Categories Sheet</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#312E81}</style></head><body><h1>📋 Categories Brain Game</h1><p style="color:#888;font-size:12px;">Name 5 things in each category · Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + html + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function bgPrintTriviaSheet(level) {
+  var questions = BG_TRIVIA[level].slice(0,10);
+  var qHtml = questions.map(function(q,i){ return '<div style="margin-bottom:18px;"><b>Q' + (i+1) + '.</b> ' + q.q + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;">' + q.choices.map(function(c,j){ return '<span style="padding:4px 0;font-size:13px;">'+String.fromCharCode(65+j)+'. '+c+'</span>'; }).join('') + '</div></div>'; }).join('');
+  var answers = questions.map(function(q,i){ return '<b>Q'+(i+1)+':</b> '+q.a; }).join(' &nbsp;|&nbsp; ');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Trivia Quiz</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:700px}h1{color:#312E81}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:24px;}</style></head><body><h1>🧠 Trivia Quiz — ' + level.charAt(0).toUpperCase()+level.slice(1) + '</h1><p style="color:#888;font-size:12px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + qHtml + '<div class="answers"><b>ANSWER KEY:</b><br>' + answers + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function bgPrintOddOneOutSheet() {
+  var puzzles = BG_ODD_ONE_OUT.slice().sort(function(){ return Math.random()-.5; }).slice(0,8);
+  var html = puzzles.map(function(p,i){ return '<div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #eee;"><b>'+( i+1)+'.</b> Which word doesn\'t belong?<br><div style="display:flex;gap:16px;margin-top:8px;font-size:16px;font-weight:700;">' + p.items.map(function(w){ return '<span>'+w+'</span>'; }).join('') + '</div><div style="margin-top:6px;font-size:13px;color:#ccc;">Answer: _________________</div></div>'; }).join('');
+  var answers = puzzles.map(function(p,i){ return (i+1)+'. '+p.odd; }).join(' &nbsp;|&nbsp; ');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Odd One Out</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:#312E81}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:24px;}</style></head><body><h1>🔍 Odd One Out</h1><p style="color:#888;font-size:12px;">Circle the word that doesn\'t belong · Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + html + '<div class="answers"><b>ANSWER KEY:</b><br>' + answers + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function bgPrintRhymeSheet() {
+  var items = BG_RHYMES.slice().sort(function(){ return Math.random()-.5; }).slice(0,6);
+  var html = items.map(function(r){ return '<div style="margin-bottom:20px;"><b style="font-size:18px;color:#312E81;letter-spacing:4px;">' + r.word + '</b><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">' + [1,2,3].map(function(){ return '<div style="border-bottom:1px solid #ccc;padding:8px 4px;font-size:14px;">&nbsp;</div>'; }).join('') + '</div></div>'; }).join('');
+  var answers = items.map(function(r){ return '<b>'+r.word+':</b> '+r.rhymes.slice(0,4).join(', '); }).join(' &nbsp; ');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Rhyme Time</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:#312E81}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:24px;}</style></head><body><h1>🎵 Rhyme Time</h1><p style="color:#888;font-size:12px;">Write 3 words that rhyme with each word · Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + html + '<div class="answers"><b>SOME POSSIBLE ANSWERS:</b><br>' + answers + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function bgPrintWordFillSheet() {
+  var items = BG_WORDFILL.slice().sort(function(){ return Math.random()-.5; }).slice(0,10);
+  var html = items.map(function(item,i){ return '<div style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #eee;"><b>'+(i+1)+'.</b> ' + item.phrase.replace('_____','_______________') + '</div>'; }).join('');
+  var answers = items.map(function(item,i){ return (i+1)+'. '+item.answer; }).join(' &nbsp;|&nbsp; ');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Word Fill-In</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:#312E81}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:24px;}</style></head><body><h1>📝 Word Fill-In</h1><p style="color:#888;font-size:12px;">Complete each famous phrase · Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + html + '<div class="answers"><b>ANSWER KEY:</b><br>' + answers + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
   w.document.close();
 }
 </script>
