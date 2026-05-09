@@ -1393,6 +1393,91 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .po-try-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px;
   padding:12px 14px; font-size:.88rem; color:#14532d; margin-top:12px; }
 
+
+/* ===== KARAOKE ===== */
+#panel-karaoke { padding:0; }
+.kr-header { background:linear-gradient(135deg,#be185d,#ec4899); color:#fff; padding:20px 24px 16px; }
+.kr-header h2 { margin:0 0 4px; font-size:1.4rem; }
+.kr-header p  { margin:0; opacity:.85; font-size:.9rem; }
+.kr-mode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.kr-mode-btn  { padding:6px 16px; border-radius:20px; border:2px solid rgba(255,255,255,.5);
+  background:transparent; color:#fff; cursor:pointer; font-size:.85rem; font-weight:600; transition:all .2s; }
+.kr-mode-btn.active { background:#fff; color:#be185d; border-color:#fff; }
+.kr-body { padding:16px; }
+
+/* Song library */
+.kr-filter-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; align-items:center; }
+.kr-filter-btn { padding:4px 12px; border-radius:14px; border:1px solid #e5e7eb;
+  background:#f9fafb; color:#374151; cursor:pointer; font-size:.78rem; font-weight:600; transition:all .2s; }
+.kr-filter-btn.active { background:#be185d; color:#fff; border-color:#be185d; }
+.kr-search { padding:7px 12px; border:1px solid #e5e7eb; border-radius:8px;
+  font-size:.85rem; width:200px; margin-left:auto; }
+.kr-song-table { width:100%; border-collapse:collapse; font-size:.84rem; }
+.kr-song-table th { background:#fdf2f8; color:#be185d; font-weight:700; padding:8px 10px;
+  text-align:left; border-bottom:2px solid #fce7f3; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; }
+.kr-song-table td { padding:8px 10px; border-bottom:1px solid #f3f4f6; color:#374151; vertical-align:middle; }
+.kr-song-table tr:hover td { background:#fdf2f8; }
+.kr-add-btn { background:#be185d; color:#fff; border:none; border-radius:6px;
+  padding:4px 10px; font-size:.75rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+.kr-add-btn:hover { background:#9d174d; }
+.kr-queued-btn { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7;
+  border-radius:6px; padding:4px 10px; font-size:.75rem; font-weight:700; cursor:default; }
+.kr-diff-easy   { color:#16a34a; font-weight:600; font-size:.75rem; }
+.kr-diff-medium { color:#d97706; font-weight:600; font-size:.75rem; }
+.kr-diff-hard   { color:#dc2626; font-weight:600; font-size:.75rem; }
+
+/* Queue */
+.kr-queue-empty { text-align:center; padding:40px; color:#9ca3af; font-size:.95rem; }
+.kr-queue-item { display:flex; align-items:center; gap:10px; background:#fff;
+  border:1px solid #e5e7eb; border-radius:10px; padding:10px 14px; margin-bottom:8px; }
+.kr-queue-num  { width:28px; height:28px; border-radius:50%; background:#be185d;
+  color:#fff; font-weight:800; font-size:.85rem; display:flex; align-items:center;
+  justify-content:center; flex-shrink:0; }
+.kr-queue-now  { background:#fdf2f8; border-color:#f9a8d4; }
+.kr-queue-now .kr-queue-num { background:#ec4899; }
+.kr-queue-info { flex:1; }
+.kr-queue-title { font-weight:700; color:#1f2937; font-size:.9rem; }
+.kr-queue-meta  { font-size:.75rem; color:#9ca3af; margin-top:1px; }
+.kr-queue-actions { display:flex; gap:6px; }
+.kr-q-btn { background:#f3f4f6; border:none; border-radius:6px; padding:4px 9px;
+  font-size:.78rem; cursor:pointer; color:#374151; transition:all .15s; }
+.kr-q-btn:hover { background:#e5e7eb; }
+.kr-q-play { background:#be185d; color:#fff; }
+.kr-q-play:hover { background:#9d174d; }
+
+/* TV Display */
+.kr-tv-screen { background:#0a0a0a; border-radius:16px; padding:40px 32px;
+  text-align:center; min-height:340px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.kr-tv-screen::before { content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at center,#1a0010 0%,#0a0a0a 70%); }
+.kr-tv-label { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+  color:#ec4899; font-weight:700; margin-bottom:12px; position:relative; }
+.kr-tv-title { font-size:clamp(1.8rem,5vw,3.2rem); font-weight:900; color:#fff;
+  line-height:1.15; margin-bottom:8px; position:relative; text-shadow:0 0 40px rgba(236,72,153,.5); }
+.kr-tv-artist { font-size:clamp(1rem,2.5vw,1.6rem); color:#f9a8d4; font-weight:600;
+  margin-bottom:20px; position:relative; }
+.kr-tv-meta { display:flex; gap:14px; justify-content:center; margin-bottom:24px; position:relative; }
+.kr-tv-chip { background:rgba(255,255,255,.1); color:#e5e7eb;
+  border-radius:20px; padding:4px 14px; font-size:.8rem; }
+.kr-tv-next { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+  border-radius:12px; padding:12px 20px; text-align:left; position:relative; max-width:400px; width:100%; }
+.kr-tv-next-lbl { font-size:.65rem; letter-spacing:.15em; color:#9ca3af; text-transform:uppercase; margin-bottom:4px; }
+.kr-tv-next-title { color:#fff; font-weight:700; font-size:1rem; }
+.kr-tv-next-artist { color:#9ca3af; font-size:.85rem; }
+.kr-tv-btns { display:flex; gap:10px; margin-top:18px; position:relative; flex-wrap:wrap; justify-content:center; }
+.kr-tv-btn { padding:9px 20px; border-radius:8px; border:none; cursor:pointer;
+  font-size:.85rem; font-weight:700; transition:all .2s; }
+.kr-tv-yt { background:#ff0000; color:#fff; }
+.kr-tv-next-btn { background:#be185d; color:#fff; }
+.kr-tv-full { background:rgba(255,255,255,.15); color:#fff; }
+
+/* Fullscreen TV */
+#kr-fullscreen { position:fixed; inset:0; background:#0a0a0a; z-index:10000;
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  padding:40px; text-align:center; }
+#kr-fullscreen.open { display:flex; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1466,6 +1551,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="reminiscing" id="reminiscing-tab" onclick="switchTab('reminiscing')">💭 Reminiscing</button>
       <button class="tab-btn" data-tab="stories" id="stories-tab" onclick="switchTab('stories')">📖 Stories & Writing</button>
       <button class="tab-btn" data-tab="clubs" id="clubs-tab" onclick="switchTab('clubs')">🎯 Hobby Clubs</button>
+      <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -4090,6 +4176,38 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
           <button class="hc-modal-btn hc-btn-outline" onclick="hcPrintAgenda()">📋 Print Agenda</button>
           <button class="hc-modal-btn hc-btn-outline" onclick="hcCloseModal()">Close</button>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== KARAOKE PANEL ===== -->
+  <section class="tab-panel" id="panel-karaoke">
+    <div class="kr-header">
+      <h2>🎤 Karaoke Night</h2>
+      <p>Song library, live queue manager, and TV display mode for the big screen</p>
+      <div class="kr-mode-tabs">
+        <button class="kr-mode-btn active" id="kr-mode-library"  onclick="krSetMode('library')">🎵 Song Library</button>
+        <button class="kr-mode-btn"        id="kr-mode-queue"    onclick="krSetMode('queue')">📋 Queue <span id="kr-queue-count" style="background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:.75rem;margin-left:4px;">0</span></button>
+        <button class="kr-mode-btn"        id="kr-mode-tv"       onclick="krSetMode('tv')">📺 TV Display</button>
+        <button class="kr-mode-btn"        id="kr-mode-print"    onclick="krSetMode('print')">🖨️ Print</button>
+      </div>
+    </div>
+    <div class="kr-body" id="kr-body"></div>
+    <!-- Fullscreen TV overlay -->
+    <div id="kr-fullscreen">
+      <button onclick="krExitFullscreen()" style="position:fixed;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:700;">✕ Exit</button>
+      <div style="font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:#ec4899;font-weight:700;margin-bottom:16px;" id="kr-fs-label">NOW PLAYING</div>
+      <div style="font-size:clamp(2.5rem,8vw,6rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;text-shadow:0 0 60px rgba(236,72,153,.6);" id="kr-fs-title"></div>
+      <div style="font-size:clamp(1.2rem,3vw,2.5rem);color:#f9a8d4;font-weight:600;margin-bottom:30px;" id="kr-fs-artist"></div>
+      <div style="background:rgba(255,255,255,.07);border-radius:16px;padding:16px 28px;margin-bottom:28px;" id="kr-fs-next-wrap">
+        <div style="font-size:.7rem;letter-spacing:.15em;color:#9ca3af;text-transform:uppercase;margin-bottom:6px;">Up Next</div>
+        <div style="color:#fff;font-weight:700;font-size:1.4rem;" id="kr-fs-next-title"></div>
+        <div style="color:#9ca3af;font-size:1rem;" id="kr-fs-next-artist"></div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+        <button onclick="krAdvanceQueue()" style="background:#be185d;color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:1rem;font-weight:800;cursor:pointer;">▶ Next Song</button>
+        <button onclick="krOpenYT()" style="background:#ff0000;color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:1rem;font-weight:800;cursor:pointer;">▶ YouTube Karaoke</button>
       </div>
     </div>
   </section>
@@ -33279,6 +33397,482 @@ function poPrintGuide() {
   window.swRender = function() {
     if (swCurrentMode === 'poetry') { poRender(); return; }
     _origRender && _origRender();
+  };
+})();
+</script>
+
+
+<script>
+/* ===== KARAOKE ===== */
+
+var KR_SONGS = [
+  /* Traditional / Public Domain */
+  {id:'amazing-grace',     title:'Amazing Grace',           artist:'Traditional Hymn',    year:1779, decade:'traditional', genre:'hymn',      key:'G',  diff:'easy',   notes:'Crowd favorite. Slow and dignified. Perfect opener.'},
+  {id:'you-are-sunshine',  title:'You Are My Sunshine',     artist:'Traditional',         year:1939, decade:'traditional', genre:'folk',      key:'C',  diff:'easy',   notes:'Everyone knows this one. Great for sing-along participation.'},
+  {id:'saints-march',      title:'When the Saints Go Marching In',artist:'Traditional',    year:1896, decade:'traditional', genre:'gospel',    key:'C',  diff:'easy',   notes:'High energy. Clap-along favorite. Great for groups.'},
+  {id:'ball-game',         title:'Take Me Out to the Ball Game',artist:'Traditional',      year:1908, decade:'traditional', genre:'folk',      key:'C',  diff:'easy',   notes:'Everybody loves it. Built-in crowd participation.'},
+  {id:'sweetheart',        title:'Let Me Call You Sweetheart',  artist:'Traditional',     year:1910, decade:'traditional', genre:'folk',      key:'F',  diff:'easy',   notes:'Sweet and slow. Great for couples or romantic set.'},
+  {id:'daisy-bell',        title:'Daisy Bell (Bicycle Built for Two)',artist:'Traditional',year:1892, decade:'traditional', genre:'folk',      key:'F',  diff:'easy',   notes:'Playful and nostalgic. Good for duets.'},
+  {id:'bonnie',            title:'My Bonnie Lies Over the Ocean',artist:'Traditional',    year:1800, decade:'traditional', genre:'folk',      key:'G',  diff:'easy',   notes:'Everyone knows the "Bring Back" chorus. Great group song.'},
+  {id:'bill-bailey',       title:'Bill Bailey Won\'t You Please Come Home',artist:'Traditional',year:1902,decade:'traditional',genre:'folk',  key:'G',  diff:'easy',   notes:'Fun and bouncy. Good mid-set energy.'},
+  {id:'sweet-adeline',     title:'Sweet Adeline',           artist:'Traditional',         year:1903, decade:'traditional', genre:'barbershop',key:'Bb', diff:'easy',   notes:'Classic barbershop. Works beautifully as a group piece.'},
+  {id:'home-range',        title:'Home on the Range',       artist:'Traditional',         year:1872, decade:'traditional', genre:'folk',      key:'C',  diff:'easy',   notes:'Gentle, slow, beloved. Great for quiet moments.'},
+  /* 1940s-50s */
+  {id:'white-christmas',   title:'White Christmas',         artist:'Bing Crosby',         year:1942, decade:'1940s', genre:'holiday',   key:'Bb', diff:'easy',   notes:'Best-selling single of all time. Use at holiday events or anytime.'},
+  {id:'Tennessee-waltz',   title:'Tennessee Waltz',         artist:'Patti Page',          year:1950, decade:'1950s', genre:'country',   key:'C',  diff:'easy',   notes:'Slow waltz. Residents often stand and sway. Beautiful.'},
+  {id:'blue-suede',        title:'Blue Suede Shoes',        artist:'Elvis Presley',       year:1956, decade:'1950s', genre:'rock',      key:'Bb', diff:'medium', notes:'High energy opener. Get the crowd moving.'},
+  {id:'hound-dog',         title:'Hound Dog',               artist:'Elvis Presley',       year:1956, decade:'1950s', genre:'rock',      key:'Bb', diff:'easy',   notes:'Super fun. Simple lyrics. Get the audience to shout it back.'},
+  {id:'rock-clock',        title:'Rock Around the Clock',   artist:'Bill Haley & Comets', year:1955, decade:'1950s', genre:'rock',      key:'A',  diff:'medium', notes:'Fast tempo. Great for getting energy up mid-show.'},
+  {id:'que-sera',          title:'Que Sera Sera',           artist:'Doris Day',           year:1956, decade:'1950s', genre:'pop',       key:'C',  diff:'easy',   notes:'Timeless. Great audience participation on the chorus.'},
+  {id:'aint-she-sweet',    title:'Ain\'t She Sweet',        artist:'Traditional',         year:1927, decade:'1940s', genre:'jazz',      key:'G',  diff:'easy',   notes:'Upbeat and cheerful. Fun to parade around with.'},
+  {id:'how-much-dog',      title:'How Much Is That Doggie', artist:'Patti Page',          year:1952, decade:'1950s', genre:'pop',       key:'C',  diff:'easy',   notes:'Crowd loves this. Simple, fun, nostalgic.'},
+  /* 1960s */
+  {id:'stand-by-me',       title:'Stand By Me',             artist:'Ben E. King',         year:1961, decade:'1960s', genre:'soul',      key:'A',  diff:'easy',   notes:'Timeless. Simple melody. Deeply loved by this generation.'},
+  {id:'cant-help',         title:'Can\'t Help Falling in Love',artist:'Elvis Presley',    year:1961, decade:'1960s', genre:'pop',       key:'D',  diff:'easy',   notes:'Beautiful slow song. Brides often chose this. Very emotional.'},
+  {id:'wonderful-world',   title:'What a Wonderful World',  artist:'Louis Armstrong',     year:1967, decade:'1960s', genre:'jazz',      key:'F',  diff:'easy',   notes:'Deeply moving. Gets a great reaction. Slower pace.'},
+  {id:'hey-jude',          title:'Hey Jude',                artist:'The Beatles',          year:1968, decade:'1960s', genre:'rock',      key:'F',  diff:'easy',   notes:'The "na na na" outro is pure crowd magic. Finish strong.'},
+  {id:'moon-river',        title:'Moon River',              artist:'Andy Williams',        year:1961, decade:'1960s', genre:'pop',       key:'C',  diff:'easy',   notes:'Gentle and beautiful. Residents often tear up a little.'},
+  {id:'georgia',           title:'Georgia on My Mind',      artist:'Ray Charles',          year:1960, decade:'1960s', genre:'soul',      key:'F',  diff:'easy',   notes:'Soulful and slow. Beloved across all backgrounds.'},
+  {id:'unchained',         title:'Unchained Melody',        artist:'Righteous Brothers',   year:1965, decade:'1960s', genre:'pop',       key:'Ab', diff:'medium', notes:'High notes required. Best with a confident singer.'},
+  {id:'california-dream',  title:'California Dreamin\'',    artist:'The Mamas & the Papas',year:1965, decade:'1960s', genre:'folk-rock', key:'G',  diff:'medium', notes:'Great group harmony. Residents who remember the 60s love it.'},
+  {id:'yesterday',         title:'Yesterday',               artist:'The Beatles',          year:1965, decade:'1960s', genre:'rock',      key:'F',  diff:'easy',   notes:'One of the most covered songs ever. Slow and emotional.'},
+  {id:'sweet-caroline',    title:'Sweet Caroline',          artist:'Neil Diamond',         year:1969, decade:'1960s', genre:'pop',       key:'A',  diff:'easy',   notes:'The "bom bom bom" is pure gold. ALWAYS gets audience participation.'},
+  {id:'brown-eyed-girl',   title:'Brown Eyed Girl',         artist:'Van Morrison',         year:1967, decade:'1960s', genre:'rock',      key:'G',  diff:'easy',   notes:'Upbeat and fun. Easy to learn. Crowd sings along naturally.'},
+  /* 1970s */
+  {id:'country-roads',     title:'Take Me Home, Country Roads',artist:'John Denver',       year:1971, decade:'1970s', genre:'country',   key:'G',  diff:'easy',   notes:'Universal crowd-pleaser. Everyone joins in on the chorus.'},
+  {id:'american-pie',      title:'American Pie',            artist:'Don McLean',           year:1971, decade:'1970s', genre:'folk-rock', key:'G',  diff:'medium', notes:'Long! Consider starting at the chorus. Audiences know it well.'},
+  {id:'lean-on-me',        title:'Lean on Me',              artist:'Bill Withers',         year:1972, decade:'1970s', genre:'soul',      key:'C',  diff:'easy',   notes:'Uplifting message. Great for group singing. Simple melody.'},
+  {id:'piano-man',         title:'Piano Man',               artist:'Billy Joel',           year:1973, decade:'1970s', genre:'pop',       key:'C',  diff:'medium', notes:'Absolute karaoke staple. Long but worth every verse.'},
+  {id:'dancing-queen',     title:'Dancing Queen',           artist:'ABBA',                 year:1976, decade:'1970s', genre:'pop',       key:'A',  diff:'easy',   notes:'Pure joy. Women especially love this one. High energy.'},
+  {id:'ring-of-fire',      title:'Ring of Fire',            artist:'Johnny Cash',          year:1963, decade:'1970s', genre:'country',   key:'Bb', diff:'easy',   notes:'Iconic. Simple. The horn intro brings the house down.'},
+  {id:'jolly-holiday',     title:'I\'d Like to Teach the World to Sing',artist:'The New Seekers',year:1971,decade:'1970s',genre:'pop',key:'C',diff:'easy', notes:'Positive and uplifting. Great community sing-along.'},
+  {id:'hotel-california',  title:'Hotel California',        artist:'Eagles',               year:1977, decade:'1970s', genre:'rock',      key:'Bm', diff:'hard',   notes:'Long intro. Best for confident singers who know all the words.'},
+  {id:'i-will-survive',    title:'I Will Survive',          artist:'Gloria Gaynor',        year:1978, decade:'1970s', genre:'disco',     key:'Am', diff:'medium', notes:'Empowering and fun. Women love this one. Crowd always cheers.'},
+  {id:'rhinestone',        title:'Rhinestone Cowboy',       artist:'Glen Campbell',        year:1975, decade:'1970s', genre:'country',   key:'Bb', diff:'easy',   notes:'Upbeat and nostalgic. Strong chorus for crowd participation.'},
+  /* 1980s */
+  {id:'dont-stop-believin', title:'Don\'t Stop Believin\'', artist:'Journey',              year:1981, decade:'1980s', genre:'rock',      key:'E',  diff:'medium', notes:'The ultimate karaoke song. Huge crowd moment on the chorus.'},
+  {id:'total-eclipse',     title:'Total Eclipse of the Heart',artist:'Bonnie Tyler',       year:1983, decade:'1980s', genre:'pop',       key:'Dm', diff:'hard',   notes:'Big dramatic song. Best for an enthusiastic, fearless singer.'},
+  {id:'walking-sunshine',  title:'Walking on Sunshine',     artist:'Katrina & the Waves',  year:1985, decade:'1980s', genre:'pop',       key:'A',  diff:'easy',   notes:'Pure happiness. Gets everyone bouncing.'},
+  {id:'girls-fun',         title:'Girls Just Want to Have Fun',artist:'Cyndi Lauper',      year:1983, decade:'1980s', genre:'pop',       key:'C',  diff:'easy',   notes:'Huge crowd song. Easy lyrics. Fun for all genders.'},
+  {id:'sweet-home-alabama',title:'Sweet Home Alabama',      artist:'Lynyrd Skynyrd',       year:1974, decade:'1980s', genre:'rock',      key:'D',  diff:'easy',   notes:'Instant crowd recognition. Simple and powerful.'},
+  {id:'livin-prayer',      title:'Livin\' on a Prayer',     artist:'Bon Jovi',             year:1986, decade:'1980s', genre:'rock',      key:'Em', diff:'medium', notes:'The key change in the final chorus is everything. Crowd goes wild.'},
+  {id:'africa',            title:'Africa',                  artist:'Toto',                 year:1982, decade:'1980s', genre:'pop',       key:'F#m',diff:'medium', notes:'Beloved by those who remember the 80s. Distinctive intro.'},
+  {id:'like-prayer',       title:'Like a Prayer',           artist:'Madonna',              year:1989, decade:'1980s', genre:'pop',       key:'Dm', diff:'medium', notes:'Gospel-influenced. Big dramatic moments. Great for confident singers.'},
+  /* Country Classics */
+  {id:'crazy',             title:'Crazy',                   artist:'Patsy Cline',          year:1961, decade:'country', genre:'country', key:'F',  diff:'medium', notes:'One of the greatest karaoke songs ever. Slow and emotional.'},
+  {id:'i-fall-pieces',     title:'I Fall to Pieces',        artist:'Patsy Cline',          year:1961, decade:'country', genre:'country', key:'A',  diff:'easy',   notes:'Classic country weeper. Residents who grew up on country love this.'},
+  {id:'cheatin-heart',     title:'Your Cheatin\' Heart',    artist:'Hank Williams',        year:1953, decade:'country', genre:'country', key:'G',  diff:'easy',   notes:'Simple and powerful. Hank Williams is beloved by this generation.'},
+  {id:'jolene',            title:'Jolene',                  artist:'Dolly Parton',         year:1973, decade:'country', genre:'country', key:'Cm', diff:'medium', notes:'Instantly recognizable opening. Women especially love singing this.'},
+  {id:'friends-low',       title:'Friends in Low Places',   artist:'Garth Brooks',         year:1990, decade:'country', genre:'country', key:'A',  diff:'easy',   notes:'The chorus is a massive sing-along. Beer optional.'},
+  {id:'on-road-again',     title:'On the Road Again',       artist:'Willie Nelson',        year:1980, decade:'country', genre:'country', key:'E',  diff:'easy',   notes:'Very easy. Willie Nelson\'s voice is so distinctive residents love imitating it.'},
+  {id:'stand-by-man',      title:'Stand By Your Man',       artist:'Tammy Wynette',        year:1968, decade:'country', genre:'country', key:'G',  diff:'easy',   notes:'Iconic. Simple melody. Crowd always responds warmly.'},
+  {id:'blue-eyes-crying',  title:'Blue Eyes Crying in the Rain',artist:'Willie Nelson',   year:1975, decade:'country', genre:'country', key:'G',  diff:'easy',   notes:'Beautiful and simple. Perfect slow ballad closer.'},
+  /* Holiday */
+  {id:'jingle-bells',      title:'Jingle Bells',            artist:'Traditional',          year:1857, decade:'holiday', genre:'holiday', key:'C',  diff:'easy',   notes:'Can\'t go wrong. Everyone knows every word.'},
+  {id:'rudolph',           title:'Rudolph the Red-Nosed Reindeer',artist:'Gene Autry',    year:1949, decade:'holiday', genre:'holiday', key:'C',  diff:'easy',   notes:'Classic. All ages know this one.'},
+  {id:'silent-night',      title:'Silent Night',            artist:'Traditional Hymn',     year:1818, decade:'holiday', genre:'holiday', key:'G',  diff:'easy',   notes:'Beautiful and reverent. Perfect for a quiet emotional moment.'},
+  {id:'frosty',            title:'Frosty the Snowman',      artist:'Gene Autry',           year:1950, decade:'holiday', genre:'holiday', key:'C',  diff:'easy',   notes:'Upbeat and fun. Kids and grandkids love it too.'}
+];
+
+var krState = {
+  mode: 'library',
+  filter: { decade:'all', genre:'all', search:'' },
+  queue: [],
+  nowIdx: -1
+};
+
+function krInit() { krRender(); }
+
+function krSetMode(m) {
+  krState.mode = m;
+  ['library','queue','tv','print'].forEach(function(id) {
+    document.getElementById('kr-mode-'+id).classList.toggle('active', m === id);
+  });
+  krUpdateQueueCount();
+  krRender();
+}
+
+function krUpdateQueueCount() {
+  var el = document.getElementById('kr-queue-count');
+  if (el) el.textContent = krState.queue.length;
+}
+
+function krRender() {
+  var body = document.getElementById('kr-body');
+  if (!body) return;
+  if (krState.mode === 'library') krRenderLibrary(body);
+  else if (krState.mode === 'queue') krRenderQueue(body);
+  else if (krState.mode === 'tv') krRenderTV(body);
+  else krRenderPrint(body);
+}
+
+/* ── LIBRARY ── */
+function krRenderLibrary(body) {
+  var decades = ['all','traditional','1940s','1950s','1960s','1970s','1980s','country','holiday'];
+  var dLabels = {all:'All Decades', traditional:'🎵 Traditional', '1940s':'40s', '1950s':'50s',
+    '1960s':'60s', '1970s':'70s', '1980s':'80s', country:'🤠 Country', holiday:'🎄 Holiday'};
+  var genres = ['all','folk','hymn','gospel','country','rock','pop','soul','jazz','disco','barbershop','holiday'];
+
+  var html = '<div class="kr-filter-row">';
+  decades.forEach(function(d) {
+    html += '<button class="kr-filter-btn'+(krState.filter.decade===d?' active':'')+
+      '" onclick="krFilter(\'decade\',\''+d+'\')">'+(dLabels[d]||d)+'</button>';
+  });
+  html += '<input class="kr-search" type="text" placeholder="🔍 Search songs..." id="kr-search-input"'+
+    ' value="'+krState.filter.search+'" oninput="krFilter(\'search\',this.value)"></div>';
+
+  var songs = KR_SONGS.filter(function(s) {
+    if (krState.filter.decade !== 'all' && s.decade !== krState.filter.decade) return false;
+    if (krState.filter.search) {
+      var q = krState.filter.search.toLowerCase();
+      if (!s.title.toLowerCase().includes(q) && !s.artist.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+
+  html += '<div style="font-size:.8rem;color:#9ca3af;margin-bottom:8px;">'+songs.length+' songs</div>';
+  html += '<div style="overflow-x:auto;"><table class="kr-song-table"><thead><tr>'+
+    '<th></th><th>Song</th><th>Artist</th><th>Year</th><th>Key</th><th>Difficulty</th><th>Notes</th>'+
+    '</tr></thead><tbody>';
+
+  songs.forEach(function(s) {
+    var inQueue = krState.queue.some(function(q){ return q.id === s.id; });
+    var diffClass = 'kr-diff-'+s.diff;
+    var diffLabel = {easy:'Easy ●', medium:'Medium ●●', hard:'Hard ●●●'}[s.diff];
+    html += '<tr><td>'+
+      (inQueue ? '<span class="kr-queued-btn">✓ Queued</span>' :
+        '<button class="kr-add-btn" onclick="krAddToQueue(\''+s.id+'\')">+ Queue</button>')+
+      '</td>'+
+      '<td style="font-weight:700;color:#1f2937;">'+s.title+'</td>'+
+      '<td style="color:#6b7280;">'+s.artist+'</td>'+
+      '<td style="color:#9ca3af;">'+s.year+'</td>'+
+      '<td><span style="background:#fdf2f8;color:#be185d;border-radius:6px;padding:2px 8px;font-weight:700;font-size:.78rem;">'+s.key+'</span></td>'+
+      '<td><span class="'+diffClass+'">'+diffLabel+'</span></td>'+
+      '<td style="font-size:.78rem;color:#6b7280;max-width:200px;">'+s.notes+'</td>'+
+      '</tr>';
+  });
+  html += '</tbody></table></div>';
+  body.innerHTML = html;
+}
+
+function krFilter(type, val) {
+  krState.filter[type] = val;
+  if (type === 'search') {
+    var el = document.getElementById('kr-search-input');
+    if (el) krState.filter.search = el.value;
+  }
+  krRenderLibrary(document.getElementById('kr-body'));
+}
+
+function krAddToQueue(id) {
+  if (krState.queue.some(function(q){ return q.id===id; })) return;
+  var song = KR_SONGS.find(function(s){ return s.id===id; });
+  if (!song) return;
+  krState.queue.push(song);
+  if (krState.nowIdx < 0) krState.nowIdx = 0;
+  krUpdateQueueCount();
+  krRenderLibrary(document.getElementById('kr-body'));
+}
+
+/* ── QUEUE ── */
+function krRenderQueue(body) {
+  if (!krState.queue.length) {
+    body.innerHTML = '<div class="kr-queue-empty">🎵<br><br>No songs in queue yet.<br>Go to Song Library and click <b>+ Queue</b> to add songs.</div>';
+    return;
+  }
+  var html = '<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">'+
+    '<button onclick="krClearQueue()" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:8px;padding:6px 14px;font-size:.82rem;font-weight:600;cursor:pointer;">🗑 Clear Queue</button>'+
+    '<button onclick="krAdvanceQueue()" style="background:#be185d;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:.82rem;font-weight:600;cursor:pointer;">▶ Mark Current as Played</button>'+
+    '</div>';
+
+  krState.queue.forEach(function(s, i) {
+    var isNow = i === krState.nowIdx;
+    html += '<div class="kr-queue-item'+(isNow?' kr-queue-now':'')+'">' +
+      '<div class="kr-queue-num">'+(isNow?'🎤':(i+1))+'</div>'+
+      '<div class="kr-queue-info">'+
+      '<div class="kr-queue-title">'+s.title+(isNow?' <span style="background:#ec4899;color:#fff;border-radius:8px;padding:1px 8px;font-size:.7rem;font-weight:700;margin-left:6px;">NOW PLAYING</span>':'')+'</div>'+
+      '<div class="kr-queue-meta">'+s.artist+' · Key: '+s.key+' · '+({easy:'Easy',medium:'Medium',hard:'Hard'}[s.diff])+'</div>'+
+      '</div>'+
+      '<div class="kr-queue-actions">'+
+      (i > 0 ? '<button class="kr-q-btn" onclick="krMoveQueue('+i+',-1)">↑</button>' : '')+
+      (i < krState.queue.length-1 ? '<button class="kr-q-btn" onclick="krMoveQueue('+i+',1)">↓</button>' : '')+
+      '<button class="kr-q-btn" onclick="krRemoveQueue('+i+')" title="Remove">✕</button>'+
+      (isNow ? '<button class="kr-q-btn kr-q-play" onclick="krOpenYT()">▶ YouTube</button>' : '')+
+      '</div></div>';
+  });
+  body.innerHTML = html;
+}
+
+function krAdvanceQueue() {
+  if (krState.nowIdx < krState.queue.length - 1) {
+    krState.nowIdx++;
+    krRender();
+    var fs = document.getElementById('kr-fullscreen');
+    if (fs && fs.classList.contains('open')) krUpdateFullscreen();
+  }
+}
+
+function krRemoveQueue(i) {
+  krState.queue.splice(i, 1);
+  if (krState.nowIdx >= krState.queue.length) krState.nowIdx = krState.queue.length - 1;
+  krUpdateQueueCount();
+  krRender();
+}
+
+function krMoveQueue(i, dir) {
+  var j = i + dir;
+  if (j < 0 || j >= krState.queue.length) return;
+  var tmp = krState.queue[i]; krState.queue[i] = krState.queue[j]; krState.queue[j] = tmp;
+  if (krState.nowIdx === i) krState.nowIdx = j;
+  else if (krState.nowIdx === j) krState.nowIdx = i;
+  krRenderQueue(document.getElementById('kr-body'));
+}
+
+function krClearQueue() {
+  if (!confirm('Clear the entire queue?')) return;
+  krState.queue = []; krState.nowIdx = -1;
+  krUpdateQueueCount(); krRender();
+}
+
+/* ── TV DISPLAY ── */
+function krRenderTV(body) {
+  var now = krState.queue[krState.nowIdx] || null;
+  var next = krState.queue[krState.nowIdx + 1] || null;
+
+  var html = '<div class="kr-tv-screen">';
+  if (!now) {
+    html += '<div style="position:relative;color:#555;font-size:1rem;">Add songs to the queue to begin</div>';
+  } else {
+    html += '<div class="kr-tv-label">NOW PLAYING</div>'+
+      '<div class="kr-tv-title">'+now.title+'</div>'+
+      '<div class="kr-tv-artist">'+now.artist+'</div>'+
+      '<div class="kr-tv-meta">'+
+      '<span class="kr-tv-chip">🎵 Key: '+now.key+'</span>'+
+      '<span class="kr-tv-chip">'+({easy:'Easy ●',medium:'Medium ●●',hard:'Hard ●●●'}[now.diff])+'</span>'+
+      '<span class="kr-tv-chip">'+now.year+'</span>'+
+      '</div>';
+    if (next) {
+      html += '<div class="kr-tv-next">'+
+        '<div class="kr-tv-next-lbl">Up Next</div>'+
+        '<div class="kr-tv-next-title">'+next.title+'</div>'+
+        '<div class="kr-tv-next-artist">'+next.artist+'</div>'+
+        '</div>';
+    }
+    html += '<div class="kr-tv-btns">'+
+      '<button class="kr-tv-btn kr-tv-yt" onclick="krOpenYT()">▶ YouTube Karaoke</button>'+
+      '<button class="kr-tv-btn kr-tv-next-btn" onclick="krAdvanceQueue();krRenderTV(document.getElementById(\'kr-body\'))">Next Song ▶</button>'+
+      '<button class="kr-tv-btn kr-tv-full" onclick="krEnterFullscreen()">⛶ Fullscreen</button>'+
+      '</div>';
+  }
+  html += '</div>';
+
+  html += '<div style="margin-top:16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;">'+
+    '<div style="font-size:.8rem;font-weight:700;color:#be185d;margin-bottom:8px;">💡 HOST TIPS</div>'+
+    (now ? '<div style="font-size:.85rem;color:#374151;line-height:1.6;">'+now.notes+'</div>' :
+    '<div style="font-size:.85rem;color:#9ca3af;">Build a queue to see tips for each song.</div>')+
+    '</div>';
+  body.innerHTML = html;
+}
+
+function krEnterFullscreen() {
+  var fs = document.getElementById('kr-fullscreen');
+  if (!fs) return;
+  krUpdateFullscreen();
+  fs.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function krExitFullscreen() {
+  var fs = document.getElementById('kr-fullscreen');
+  if (fs) { fs.classList.remove('open'); document.body.style.overflow = ''; }
+}
+
+function krUpdateFullscreen() {
+  var now  = krState.queue[krState.nowIdx] || null;
+  var next = krState.queue[krState.nowIdx + 1] || null;
+  var t = document.getElementById('kr-fs-title');
+  var a = document.getElementById('kr-fs-artist');
+  var l = document.getElementById('kr-fs-label');
+  var nw = document.getElementById('kr-fs-next-wrap');
+  var nt = document.getElementById('kr-fs-next-title');
+  var na = document.getElementById('kr-fs-next-artist');
+  if (t) t.textContent = now ? now.title : '—';
+  if (a) a.textContent = now ? now.artist : '';
+  if (l) l.textContent = now ? 'NOW PLAYING' : 'QUEUE EMPTY';
+  if (nw) nw.style.display = next ? '' : 'none';
+  if (nt) nt.textContent = next ? next.title : '';
+  if (na) na.textContent = next ? next.artist : '';
+}
+
+function krOpenYT() {
+  var now = krState.queue[krState.nowIdx];
+  if (!now) return;
+  var q = encodeURIComponent(now.title + ' ' + now.artist + ' karaoke');
+  window.open('https://www.youtube.com/results?search_query='+q, '_blank');
+}
+
+/* ── PRINT ── */
+function krRenderPrint(body) {
+  var items = [
+    {title:'Song Request Slips', desc:'8 per page — residents fill out and hand to host', fn:'krPrintRequestSlips'},
+    {title:'Current Queue Setlist', desc:'Printable running order for the host', fn:'krPrintSetlist'},
+    {title:'Full Song Menu', desc:'All '+KR_SONGS.length+' songs — hand out for browsing', fn:'krPrintSongMenu'},
+    {title:'Karaoke Night Poster', desc:'Announce the event — fill in date and time', fn:'krPrintPoster'},
+    {title:'Host Cheat Sheet', desc:'Tips for running great senior karaoke', fn:'krPrintHostGuide'}
+  ];
+  var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">';
+  items.forEach(function(item) {
+    html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;" onclick="'+item.fn+'()">'+
+      '<div style="font-size:1.5rem;margin-bottom:8px;">🖨️</div>'+
+      '<div style="font-weight:700;font-size:.9rem;color:#1f2937;margin-bottom:4px;">'+item.title+'</div>'+
+      '<p style="font-size:.8rem;color:#6b7280;margin:0 0 10px;">'+item.desc+'</p>'+
+      '<button style="background:#be185d;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:.8rem;font-weight:600;cursor:pointer;">Print</button>'+
+      '</div>';
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function krPrintRequestSlips() {
+  var slip = function(n) {
+    return '<div style="border:1.5px dashed #be185d;border-radius:8px;padding:10px 12px;page-break-inside:avoid;">'+
+      '<div style="font-size:10px;font-weight:700;color:#be185d;letter-spacing:.1em;margin-bottom:6px;">🎤 SONG REQUEST #'+n+'</div>'+
+      '<div style="font-size:11px;margin-bottom:5px;">Song: <span style="border-bottom:1px solid #374151;display:inline-block;min-width:160px;">&nbsp;</span></div>'+
+      '<div style="font-size:11px;margin-bottom:5px;">Artist: <span style="border-bottom:1px solid #374151;display:inline-block;min-width:150px;">&nbsp;</span></div>'+
+      '<div style="font-size:11px;">Name: <span style="border-bottom:1px solid #374151;display:inline-block;min-width:160px;">&nbsp;</span></div>'+
+      '</div>';
+  };
+  var w = window.open('','_blank');
+  var slips = Array.from({length:8},function(_,i){return slip(i+1);}).join('');
+  w.document.write('<!DOCTYPE html><html><head><title>Karaoke Request Slips</title>'+
+    '<style>body{font-family:Arial,sans-serif;padding:20px;}'+
+    '.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}'+
+    '@media print{body{padding:10px;}}</style></head><body>'+
+    '<h3 style="color:#be185d;margin-bottom:12px;">🎤 Karaoke Song Request Slips</h3>'+
+    '<div class="grid">'+slips+'</div>'+
+    '<p style="font-size:10px;color:#9ca3af;text-align:center;margin-top:12px;">Empower Life 365 · empowerlife365.app · Printed '+new Date().toLocaleDateString()+'</p>'+
+    '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+function krPrintSetlist() {
+  var rows = krState.queue.map(function(s,i){
+    return '<tr><td style="padding:8px;border:1px solid #e5e7eb;font-weight:700;">'+(i+1)+'</td>'+
+      '<td style="padding:8px;border:1px solid #e5e7eb;">'+s.title+'</td>'+
+      '<td style="padding:8px;border:1px solid #e5e7eb;color:#6b7280;">'+s.artist+'</td>'+
+      '<td style="padding:8px;border:1px solid #e5e7eb;text-align:center;">'+s.key+'</td>'+
+      '<td style="padding:8px;border:1px solid #e5e7eb;text-align:center;">□</td>'+
+      '</tr>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Karaoke Setlist</title>'+
+    '<style>body{font-family:Arial,sans-serif;padding:28px;max-width:680px;margin:0 auto;}'+
+    'h1{color:#be185d;}table{width:100%;border-collapse:collapse;}'+
+    'th{background:#be185d;color:#fff;padding:8px;text-align:left;}'+
+    '@media print{body{padding:14px;}}</style></head><body>'+
+    '<h1>🎤 Karaoke Setlist</h1>'+
+    '<p style="font-size:13px;color:#9ca3af;">Date: _________________ &nbsp; Host: _________________</p>'+
+    (rows ? '<table><tr><th>#</th><th>Song</th><th>Artist</th><th>Key</th><th>Played</th></tr>'+rows+'</table>' :
+    '<p style="color:#9ca3af;">Queue is empty — add songs first.</p>')+
+    '<p style="font-size:10px;color:#9ca3af;text-align:center;margin-top:16px;">Empower Life 365 · empowerlife365.app</p>'+
+    '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+function krPrintSongMenu() {
+  var decades = ['traditional','1940s','1950s','1960s','1970s','1980s','country','holiday'];
+  var dLabels = {traditional:'🎵 Traditional Favorites','1940s':'1940s','1950s':'1950s',
+    '1960s':'1960s','1970s':'1970s','1980s':'1980s','country':'🤠 Country Classics','holiday':'🎄 Holiday Songs'};
+  var sections = decades.map(function(d) {
+    var songs = KR_SONGS.filter(function(s){return s.decade===d;});
+    var rows = songs.map(function(s){
+      return '<tr><td style="padding:5px 8px;border-bottom:1px solid #f3f4f6;">'+s.title+'</td>'+
+        '<td style="padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#6b7280;">'+s.artist+'</td>'+
+        '<td style="padding:5px 8px;border-bottom:1px solid #f3f4f6;text-align:center;color:#be185d;font-weight:700;">'+s.key+'</td>'+
+        '</tr>';
+    }).join('');
+    return '<div style="margin-bottom:16px;page-break-inside:avoid;"><h3 style="color:#be185d;margin:0 0 6px;font-size:13px;">'+dLabels[d]+'</h3>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:12px;">'+
+      '<tr style="background:#fdf2f8;"><th style="padding:4px 8px;text-align:left;">Song</th><th style="padding:4px 8px;text-align:left;">Artist</th><th style="padding:4px 8px;">Key</th></tr>'+
+      rows+'</table></div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Karaoke Song Menu</title>'+
+    '<style>body{font-family:Arial,sans-serif;padding:24px;columns:2;column-gap:20px;}'+
+    'h1{column-span:all;color:#be185d;font-size:20px;margin-bottom:4px;}'+
+    '.sub{column-span:all;font-size:11px;color:#9ca3af;margin-bottom:16px;}'+
+    '@media print{body{padding:12px;}}</style></head><body>'+
+    '<h1>🎤 Karaoke Song Menu</h1>'+
+    '<div class="sub">'+KR_SONGS.length+' songs · Empower Life 365 · empowerlife365.app</div>'+
+    sections+
+    '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+function krPrintPoster() {
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Karaoke Night Poster</title>'+
+    '<style>body{font-family:Arial,sans-serif;background:#fdf2f8;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;}'+
+    '.poster{background:#fff;border:6px solid #be185d;border-radius:20px;padding:40px;text-align:center;max-width:480px;box-shadow:0 8px 40px rgba(190,24,93,.2);}'+
+    '@media print{body{background:#fdf2f8;}.poster{box-shadow:none;}}</style></head><body>'+
+    '<div class="poster">'+
+    '<div style="font-size:4rem;margin-bottom:10px;">🎤</div>'+
+    '<div style="font-size:2.8rem;font-weight:900;color:#be185d;line-height:1.1;margin-bottom:8px;">KARAOKE<br>NIGHT!</div>'+
+    '<div style="font-size:1rem;color:#6b7280;margin-bottom:24px;">Sing your heart out — everyone\'s welcome!</div>'+
+    '<div style="background:#fdf2f8;border-radius:12px;padding:16px 20px;margin-bottom:20px;">'+
+    '<div style="font-size:14px;color:#9ca3af;margin-bottom:4px;">DATE & TIME</div>'+
+    '<div style="font-size:1.6rem;font-weight:800;color:#1f2937;border-bottom:2px dashed #be185d;padding-bottom:10px;margin-bottom:10px;">_________________________</div>'+
+    '<div style="font-size:14px;color:#9ca3af;margin-bottom:4px;">LOCATION</div>'+
+    '<div style="font-size:1.4rem;font-weight:700;color:#1f2937;">_________________________</div>'+
+    '</div>'+
+    '<div style="font-size:.9rem;color:#be185d;font-weight:700;">🎵 60+ Songs to Choose From!</div>'+
+    '<div style="font-size:.8rem;color:#9ca3af;margin-top:8px;">From the 1940s through the 1980s · Country · Classics · Holiday</div>'+
+    '<div style="font-size:.75rem;color:#d1d5db;margin-top:16px;">Empower Life 365 · empowerlife365.app</div>'+
+    '</div>'+
+    '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+function krPrintHostGuide() {
+  var tips = [
+    {icon:'🎤',title:'You go first', body:'Start the session by performing the first song yourself — staff going first breaks the ice instantly and gives residents permission to try.'},
+    {icon:'🎵',title:'Duets are gold', body:'Pair willing residents together. Duets reduce individual anxiety, create natural chemistry, and always get the best reactions from the audience.'},
+    {icon:'👏',title:'Applause is the job', body:'Your most important role is leading enthusiastic applause after every single performance — no exceptions. Even a shaky performance deserves a standing ovation.'},
+    {icon:'🎶',title:'Classics over hits', body:'Songs from the 1950s–1970s get far better participation than recent hits. Residents know every word and that confidence is everything.'},
+    {icon:'🎵',title:'Key matters', body:'Most karaoke apps let you adjust the key by semitones. If a singer is struggling, lower it 2–3 steps — this saves many songs.'},
+    {icon:'🎤',title:'Warm up the room', body:'Start with a group song everyone knows (Sweet Caroline, Country Roads) before individual performances. Gets voices loose and spirits high.'},
+    {icon:'😄',title:'Celebrate imperfection', body:'The best karaoke moments are imperfect ones. If someone goes off-key, laugh with them and cheer louder. Perfection is not the point.'},
+    {icon:'🌟',title:'The Sweet Caroline rule', body:'End the night with Sweet Caroline. Always. The "Bom Bom Bom" is the best community moment in karaoke. It never fails.'}
+  ];
+  var rows = tips.map(function(t) {
+    return '<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;background:#fdf2f8;border-radius:8px;padding:10px 12px;">'+
+      '<span style="font-size:1.4rem;flex-shrink:0;">'+t.icon+'</span>'+
+      '<div><strong style="font-size:13px;color:#be185d;">'+t.title+'</strong><br><span style="font-size:12px;color:#374151;line-height:1.5;">'+t.body+'</span></div></div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Karaoke Host Guide</title>'+
+    '<style>body{font-family:Arial,sans-serif;max-width:640px;margin:0 auto;padding:28px;}'+
+    'h1{color:#be185d;font-size:20px;margin-bottom:4px;}'+
+    '@media print{body{padding:14px;}}</style></head><body>'+
+    '<h1>🎤 Karaoke Night — Host Guide</h1>'+
+    '<p style="font-size:12px;color:#9ca3af;margin-bottom:18px;">Empower Life 365 · empowerlife365.app</p>'+
+    rows+
+    '<div style="background:#fdf2f8;border:2px solid #be185d;border-radius:8px;padding:12px 14px;margin-top:16px;">'+
+    '<strong style="font-size:13px;color:#be185d;">Suggested Set Order</strong><br>'+
+    '<span style="font-size:12px;color:#374151;line-height:1.8;">1. Group warm-up song (Sweet Caroline or Country Roads)<br>'+
+    '2. Easy ballad (Stand By Me, Moon River)<br>3. Upbeat classic (Blue Suede Shoes, Dancing Queen)<br>'+
+    '4. Country favorite (Crazy, Jolene)<br>5. Guest requests x 3–5<br>6. Group closer (When the Saints, Amazing Grace, or Sweet Caroline again)</span></div>'+
+    '<p style="font-size:10px;color:#9ca3af;text-align:center;margin-top:16px;">Empower Life 365 · empowerlife365.app · Printed '+new Date().toLocaleDateString()+'</p>'+
+    '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+/* Hook switchTab */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'karaoke') krInit();
   };
 })();
 </script>
