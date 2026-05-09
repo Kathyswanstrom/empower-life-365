@@ -2082,6 +2082,83 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .pz-print-card h4{color:#3d2000;margin:0 0 4px;font-size:14px;}
 .pz-print-card p{color:#666;font-size:12px;margin:0;}
 
+/* ═══════ WHAT AM I ═══════ */
+.wa-panel{padding:20px;}
+.wa-menu{text-align:center;padding:20px 0;}
+.wa-menu h3{color:#1e40af;font-size:20px;margin-bottom:16px;}
+.wa-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;max-width:700px;margin:0 auto 24px;}
+.wa-cat-btn{background:#fff;border:3px solid #bfdbfe;border-radius:14px;padding:20px 10px;
+  cursor:pointer;transition:all .2s;text-align:center;}
+.wa-cat-btn:hover,.wa-cat-btn.active{border-color:#1e40af;background:#eff6ff;transform:translateY(-2px);}
+.wa-cat-btn .wa-cat-icon{font-size:36px;display:block;margin-bottom:6px;}
+.wa-cat-btn .wa-cat-name{font-weight:700;color:#1e40af;font-size:14px;}
+.wa-cat-btn .wa-cat-count{font-size:11px;color:#64748b;margin-top:2px;}
+.wa-start-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.wa-start-btn{padding:12px 32px;background:#1e40af;color:#fff;border:none;border-radius:10px;
+  font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;}
+.wa-start-btn:hover{background:#1d4ed8;}
+.wa-start-btn.secondary{background:#fff;color:#1e40af;border:2px solid #1e40af;}
+/* Clue screen */
+.wa-game{max-width:700px;margin:0 auto;}
+.wa-header-bar{display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.wa-cat-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:700;}
+.wa-score-track{font-size:14px;color:#1e40af;font-weight:600;}
+.wa-clue-card{background:#fff;border-radius:16px;border:3px solid #bfdbfe;
+  padding:24px;margin-bottom:16px;min-height:200px;}
+.wa-clue-number{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:4px;}
+.wa-clue-points{display:inline-block;background:#fef3c7;color:#92400e;font-size:12px;
+  font-weight:700;padding:2px 10px;border-radius:12px;margin-bottom:16px;}
+.wa-clue-list{list-style:none;padding:0;margin:0;}
+.wa-clue-list li{padding:10px 14px;margin-bottom:8px;background:#f8fafc;border-radius:8px;
+  border-left:3px solid #bfdbfe;font-size:15px;color:#334155;line-height:1.6;
+  animation:waSlideIn .3s ease;}
+@keyframes waSlideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.wa-clue-list li.wa-new{border-left-color:#1e40af;background:#eff6ff;}
+.wa-guess-area{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.wa-guess-input{flex:1;min-width:200px;padding:12px 16px;border:2px solid #bfdbfe;
+  border-radius:10px;font-size:16px;color:#1e293b;}
+.wa-guess-input:focus{outline:none;border-color:#1e40af;}
+.wa-btn-primary{padding:11px 24px;background:#1e40af;color:#fff;border:none;
+  border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.wa-btn-primary:hover{background:#1d4ed8;}
+.wa-action-row{display:flex;gap:10px;flex-wrap:wrap;}
+.wa-btn-sec{padding:9px 18px;background:#fff;color:#1e40af;border:2px solid #bfdbfe;
+  border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;}
+.wa-btn-sec:hover{border-color:#1e40af;background:#eff6ff;}
+.wa-btn-danger{padding:9px 18px;background:#fff;color:#e57373;border:2px solid #fecaca;
+  border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;}
+.wa-wrong-msg{color:#e57373;font-weight:600;font-size:14px;padding:6px 0;min-height:24px;}
+/* Reveal screen */
+.wa-reveal{text-align:center;max-width:700px;margin:0 auto;}
+.wa-result-banner{border-radius:14px;padding:18px;margin-bottom:20px;}
+.wa-result-banner.correct{background:#dcfce7;border:2px solid #16a34a;}
+.wa-result-banner.wrong{background:#fee2e2;border:2px solid #e57373;}
+.wa-result-banner h2{margin:0 0 4px;font-size:26px;}
+.wa-result-banner p{margin:0;font-size:16px;color:#555;}
+.wa-photo-frame{border-radius:20px;overflow:hidden;border:4px solid #bfdbfe;
+  background:#f8fafc;margin:0 auto 20px;max-width:500px;position:relative;min-height:280px;
+  display:flex;align-items:center;justify-content:center;}
+.wa-photo-frame img{width:100%;max-height:400px;object-fit:cover;display:block;}
+.wa-photo-emoji{font-size:120px;line-height:1;}
+.wa-photo-loading{font-size:18px;color:#94a3b8;}
+.wa-reveal-name{font-size:28px;font-weight:800;color:#1e293b;margin-bottom:8px;}
+.wa-reveal-fact{font-size:14px;color:#64748b;line-height:1.7;max-width:480px;
+  margin:0 auto 20px;padding:12px 16px;background:#f8fafc;border-radius:10px;
+  font-style:italic;}
+.wa-stars{font-size:28px;margin-bottom:6px;}
+.wa-score-earned{font-size:18px;font-weight:700;color:#1e40af;margin-bottom:20px;}
+.wa-reveal-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+/* Scoreboard */
+.wa-scoreboard{background:#fff;border-radius:14px;border:2px solid #bfdbfe;padding:20px;
+  max-width:500px;margin:20px auto 0;}
+.wa-scoreboard h3{color:#1e40af;margin:0 0 14px;}
+.wa-score-row{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:14px;}
+.wa-score-row:last-child{border-bottom:none;}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -2167,6 +2244,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="olympics" onclick="switchTab('olympics')">🏆 Mini Olympics</button>
       <button class="tab-btn" data-tab="bookclub" onclick="switchTab('bookclub')">📚 Book Club</button>
         <button class="tab-btn" data-tab="puzzle" onclick="switchTab('puzzle')">🧩 Puzzle Studio</button>
+        <button class="tab-btn" data-tab="whoami" onclick="switchTab('whoami')">🔍 What Am I?</button>
         <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -6087,6 +6165,117 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         </div>
         <div class="pz-print-card" onclick="pzPrint('all')">
           <div class="pz-pico">📋</div><h4>Activity Sampler</h4><p>Mix of all puzzle types</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-whoami">
+  <div class="wa-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;">
+      <div>
+        <h2 style="margin:0;color:#1e293b;font-size:24px;">🔍 What Am I?</h2>
+        <p style="margin:4px 0 0;color:#1e40af;font-size:14px;">Clue by clue — then a photo reveal!</p>
+      </div>
+      <div id="wa-total-score" style="font-size:16px;font-weight:700;color:#1e40af;
+        background:#eff6ff;padding:6px 16px;border-radius:20px;border:2px solid #bfdbfe;"></div>
+    </div>
+
+    <!-- MENU -->
+    <div id="wa-menu" class="wa-menu">
+      <h3>Choose a Category</h3>
+      <div class="wa-cat-grid">
+        <div class="wa-cat-btn active" onclick="waSelectCat('all',this)">
+          <span class="wa-cat-icon">🎯</span>
+          <div class="wa-cat-name">All</div>
+          <div class="wa-cat-count">40 subjects</div>
+        </div>
+        <div class="wa-cat-btn" onclick="waSelectCat('places',this)">
+          <span class="wa-cat-icon">🌍</span>
+          <div class="wa-cat-name">Places</div>
+          <div class="wa-cat-count">10 subjects</div>
+        </div>
+        <div class="wa-cat-btn" onclick="waSelectCat('animals',this)">
+          <span class="wa-cat-icon">🦁</span>
+          <div class="wa-cat-name">Animals</div>
+          <div class="wa-cat-count">10 subjects</div>
+        </div>
+        <div class="wa-cat-btn" onclick="waSelectCat('people',this)">
+          <span class="wa-cat-icon">⭐</span>
+          <div class="wa-cat-name">Famous People</div>
+          <div class="wa-cat-count">10 subjects</div>
+        </div>
+        <div class="wa-cat-btn" onclick="waSelectCat('objects',this)">
+          <span class="wa-cat-icon">🎨</span>
+          <div class="wa-cat-name">Objects</div>
+          <div class="wa-cat-count">10 subjects</div>
+        </div>
+      </div>
+      <div class="wa-start-row">
+        <button class="wa-start-btn" onclick="waStartGame()">▶ Start Game</button>
+        <button class="wa-start-btn secondary" onclick="waShowScoreboard()">🏆 Scoreboard</button>
+      </div>
+      <div id="wa-scoreboard-panel" style="display:none;">
+        <div class="wa-scoreboard">
+          <h3>🏆 Session Scoreboard</h3>
+          <div id="wa-score-history"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLUE GAME SCREEN -->
+    <div id="wa-game" style="display:none;">
+      <div class="wa-game">
+        <div class="wa-header-bar">
+          <span class="wa-cat-badge" id="wa-cat-badge"></span>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="wa-score-track" id="wa-game-score"></span>
+            <button onclick="waBackToMenu()" style="padding:5px 12px;background:#fff;color:#64748b;
+              border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;font-size:13px;">✕ Quit</button>
+          </div>
+        </div>
+        <div class="wa-clue-card">
+          <div class="wa-clue-number" id="wa-clue-num">Clue 1 of 5</div>
+          <div class="wa-clue-points" id="wa-clue-pts">⭐ Worth 5 points</div>
+          <ul class="wa-clue-list" id="wa-clue-list"></ul>
+        </div>
+        <div class="wa-guess-area">
+          <input type="text" id="wa-guess-input" class="wa-guess-input"
+            placeholder="What or who am I? Type your guess..."
+            onkeydown="if(event.key==='Enter')waCheckGuess()">
+          <button class="wa-btn-primary" onclick="waCheckGuess()">Check ✓</button>
+        </div>
+        <div class="wa-wrong-msg" id="wa-wrong-msg"></div>
+        <div class="wa-action-row">
+          <button class="wa-btn-sec" id="wa-next-clue-btn" onclick="waNextClue()">💡 Next Clue</button>
+          <button class="wa-btn-danger" onclick="waGiveUp()">👁️ Reveal Answer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVEAL SCREEN -->
+    <div id="wa-reveal" style="display:none;">
+      <div class="wa-reveal">
+        <div class="wa-result-banner" id="wa-result-banner">
+          <h2 id="wa-result-title"></h2>
+          <p id="wa-result-sub"></p>
+        </div>
+        <div class="wa-photo-frame" id="wa-photo-frame">
+          <div class="wa-photo-loading" id="wa-photo-loading">Loading photo...</div>
+          <img id="wa-photo-img" style="display:none;" alt="Subject photo"
+            onerror="waImgFallback()">
+          <div class="wa-photo-emoji" id="wa-photo-emoji" style="display:none;"></div>
+        </div>
+        <div class="wa-reveal-name" id="wa-reveal-name"></div>
+        <div class="wa-reveal-fact" id="wa-reveal-fact"></div>
+        <div class="wa-stars" id="wa-stars"></div>
+        <div class="wa-score-earned" id="wa-score-earned"></div>
+        <div class="wa-reveal-btns">
+          <button class="wa-btn-primary" onclick="waNextItem()">Next Subject ▶</button>
+          <button class="wa-btn-sec" onclick="waBackToMenu()">Back to Menu</button>
         </div>
       </div>
     </div>
@@ -41370,6 +41559,553 @@ function pzPrint(type){
 (function(){
   var _o=window.switchTab;
   window.switchTab=function(n){_o&&_o(n);if(n==='puzzle')pzInit();};
+})();
+</script>
+
+
+<script>
+// ═══════════════════════════════════════════════════
+//  🔍 WHAT AM I?
+// ═══════════════════════════════════════════════════
+var WA_ITEMS=[
+  // ── PLACES ──
+  {id:'eiffel',cat:'places',emoji:'🗼',answer:'Eiffel Tower',alts:['eiffel'],wiki:'Eiffel Tower',
+   clues:[
+     'Built between 1887 and 1889, this structure required over 300 workers and more than 2.5 million rivets.',
+     'It was originally designed as a temporary exhibit and its creator\'s own colleagues called it an eyesore.',
+     'Standing over 1,000 feet tall and made entirely of iron, it expands by up to 6 inches on hot summer days.',
+     'Located in one of the world\'s most-visited cities, it sparkles with 20,000 light bulbs every evening.',
+     'This iconic iron landmark was built for the 1889 World\'s Fair on the banks of the Seine River in Paris, France.'
+   ]},
+  {id:'liberty',cat:'places',emoji:'🗽',answer:'Statue of Liberty',alts:['lady liberty','statue'],wiki:'Statue of Liberty',
+   clues:[
+     'This famous monument was a gift from one nation to another, symbolizing a shared love of freedom.',
+     'It was shipped across the Atlantic Ocean in 214 separate crates and took four months to reassemble.',
+     'The figure holds a torch aloft in one hand and a tablet inscribed with a date in the other.',
+     'It stands on an island in a harbor on the eastern coast of the United States.',
+     'This green-hued copper lady in New York Harbor has welcomed millions of immigrants arriving in America since 1886.'
+   ]},
+  {id:'tajmahal',cat:'places',emoji:'🕌',answer:'Taj Mahal',alts:['taj'],wiki:'Taj Mahal',
+   clues:[
+     'This world-famous structure took over 20 years to build and required more than 20,000 workers.',
+     'It was commissioned by a heartbroken ruler in memory of his beloved wife who died in childbirth.',
+     'The building is perfectly symmetrical and its color appears to change from pink at dawn to golden at night.',
+     'Built from white marble inlaid with precious and semi-precious stones, it sits beside a long reflecting pool.',
+     'This magnificent mausoleum in Agra, India, is considered the jewel of Muslim art and a UNESCO World Heritage Site.'
+   ]},
+  {id:'grandcanyon',cat:'places',emoji:'🏜️',answer:'Grand Canyon',alts:['grand canyon'],wiki:'Grand Canyon',
+   clues:[
+     'This natural wonder was carved over millions of years by a river cutting through layers of rock.',
+     'It is 277 miles long, up to 18 miles wide, and over a mile deep in some places.',
+     'Native Americans have called this place home for thousands of years.',
+     'Located in the American Southwest, it is one of the most-visited national parks in the United States.',
+     'This breathtaking gorge in Arizona was formed by the Colorado River and draws 6 million visitors a year.'
+   ]},
+  {id:'niagarafalls',cat:'places',emoji:'💧',answer:'Niagara Falls',alts:['niagara'],wiki:'Niagara Falls',
+   clues:[
+     'This powerful natural feature has been a popular honeymoon destination for over 200 years.',
+     'It is actually made up of three separate waterfalls on an international border.',
+     'Daredevils have attempted to go over it in barrels, and tightrope walkers have crossed above it.',
+     'It generates enormous amounts of hydroelectric power for two countries.',
+     'These roaring waterfalls sit on the border between the United States and Canada, not far from Buffalo, New York.'
+   ]},
+  {id:'sydneyopera',cat:'places',emoji:'🎭',answer:'Sydney Opera House',alts:['opera house','sydney opera'],wiki:'Sydney Opera House',
+   clues:[
+     'This famous building was designed by a Danish architect who won an international competition in 1957.',
+     'Its construction took 14 years and cost 15 times the original budget.',
+     'The roof was inspired by peeling an orange — each section is a piece of a perfect sphere.',
+     'It sits on a peninsula jutting into one of the most beautiful harbors in the world.',
+     'This UNESCO World Heritage structure with its iconic shell-shaped sail roofs sits on Bennelong Point in Australia.'
+   ]},
+  {id:'colosseum',cat:'places',emoji:'🏟️',answer:'Colosseum',alts:['coliseum'],wiki:'Colosseum',
+   clues:[
+     'This ancient structure could hold between 50,000 and 80,000 spectators and had 80 entrances.',
+     'It was completed around 80 AD and took only about ten years to build — a remarkable feat of engineering.',
+     'Wild animals including lions, tigers, and elephants were kept beneath its floor in a network of tunnels.',
+     'Gladiators fought here to the roar of enormous crowds in the capital of a great ancient empire.',
+     'This iconic oval amphitheater in the heart of Rome, Italy, is the largest ever built in the ancient world.'
+   ]},
+  {id:'everest',cat:'places',emoji:'🏔️',answer:'Mount Everest',alts:['everest'],wiki:'Mount Everest',
+   clues:[
+     'This natural wonder was formed by tectonic plates colliding and is still growing by about 4 millimeters each year.',
+     'It sits on the border of two countries and is known by different names in each language.',
+     'Two climbers first reached its summit on May 29, 1953, after many failed attempts by others.',
+     'Thousands of people have attempted to climb it, and the journey takes about two months round trip.',
+     'At 29,032 feet above sea level, this peak in the Himalayas is the highest point on Earth.'
+   ]},
+  {id:'greatbarrier',cat:'places',emoji:'🐠',answer:'Great Barrier Reef',alts:['barrier reef','great barrier'],wiki:'Great Barrier Reef',
+   clues:[
+     'This natural structure is so large it can be seen from outer space.',
+     'It is the world\'s largest living structure, built by billions of tiny creatures over thousands of years.',
+     'It is home to over 1,500 species of fish, 4,000 types of mollusk, and 240 species of birds.',
+     'Climate change and warming oceans are threatening to destroy it, which would be an ecological catastrophe.',
+     'This magnificent underwater ecosystem stretching over 1,400 miles along the northeast coast of Australia is the world\'s largest coral reef system.'
+   ]},
+  {id:'bigben',cat:'places',emoji:'🕰️',answer:'Big Ben',alts:['clock tower','elizabeth tower'],wiki:'Big Ben',
+   clues:[
+     'This famous timepiece has been keeping time for over 160 years, though it once stopped for nine days due to frost.',
+     'It is actually the name of the great bell inside the tower, not the tower itself.',
+     'It chimes every quarter hour and its deep resonant bong is one of the most recognizable sounds in the world.',
+     'The tower leaned slightly to the northwest for years due to underground railway construction nearby.',
+     'This iconic clock tower stands at the north end of the Houses of Parliament overlooking the Thames River in London, England.'
+   ]},
+  // ── ANIMALS ──
+  {id:'panda',cat:'animals',emoji:'🐼',answer:'Giant Panda',alts:['panda'],wiki:'Giant panda',
+   clues:[
+     'This animal spends up to 16 hours a day eating and must consume up to 85 pounds of food daily.',
+     'Despite looking cuddly, it has powerful jaw muscles and a wrist bone that acts as a thumb for gripping.',
+     'Newborns of this species are remarkably tiny — about the size of a stick of butter — and are born pink.',
+     'Once thought to be extinct, conservation efforts have helped its numbers recover in recent decades.',
+     'This beloved black-and-white bear from China eats almost nothing but bamboo and is the symbol of the WWF.'
+   ]},
+  {id:'bluewhale',cat:'animals',emoji:'🐋',answer:'Blue Whale',alts:['blue whale'],wiki:'Blue whale',
+   clues:[
+     'This animal\'s heart is so large that a small child could crawl through its main arteries.',
+     'Its call is the loudest sound produced by any animal — up to 188 decibels and detectable 1,000 miles away.',
+     'Despite its enormous size, it feeds almost exclusively on some of the tiniest creatures in the ocean.',
+     'A newborn of this species weighs about 3 tons and drinks 100 gallons of milk per day.',
+     'At up to 100 feet long and 200 tons, this magnificent marine mammal is the largest animal ever known to exist on Earth.'
+   ]},
+  {id:'flamingo',cat:'animals',emoji:'🦩',answer:'Flamingo',alts:['flamingos'],wiki:'Flamingo',
+   clues:[
+     'This bird\'s distinctive color is not natural — it comes entirely from its diet.',
+     'It is born gray or white and only develops its famous hue after several years of eating.',
+     'It is famous for standing on one leg for hours, which actually requires less muscle effort than standing on two.',
+     'It feeds by holding its head upside down in the water and filtering out algae and shrimp with its specially shaped bill.',
+     'This tall, graceful pink wading bird lives in large flocks in tropical and subtropical regions around the world.'
+   ]},
+  {id:'monarch',cat:'animals',emoji:'🦋',answer:'Monarch Butterfly',alts:['monarch','butterfly'],wiki:'Monarch butterfly',
+   clues:[
+     'This creature travels up to 3,000 miles each year on one of nature\'s most remarkable journeys.',
+     'It is toxic to predators because of the plants its caterpillars eat — and its bright colors serve as a warning.',
+     'Millions of them gather in certain forests in Mexico every winter, covering the trees like living orange tapestries.',
+     'It begins life as a tiny egg, becomes a striped caterpillar, forms a jade-green chrysalis, then emerges transformed.',
+     'This striking orange-and-black insect is known for its incredible annual migration across North America.'
+   ]},
+  {id:'emperorepenguin',cat:'animals',emoji:'🐧',answer:'Emperor Penguin',alts:['emperor penguin','penguin'],wiki:'Emperor penguin',
+   clues:[
+     'This animal endures some of the harshest conditions on the planet — temperatures of minus 80 degrees Fahrenheit.',
+     'The father of this species holds the egg on his feet under a special pouch for about 65 days without eating.',
+     'It is the tallest and heaviest of its kind, standing about 4 feet tall.',
+     'It can dive to depths of over 1,800 feet and hold its breath for up to 22 minutes.',
+     'This iconic black-and-white bird raises its chicks in enormous colonies on the frozen sea ice of Antarctica.'
+   ]},
+  {id:'cheetah',cat:'animals',emoji:'🐆',answer:'Cheetah',alts:['cheetahs'],wiki:'Cheetah',
+   clues:[
+     'This animal can accelerate from 0 to 60 mph in just 3 seconds — faster than most sports cars.',
+     'Unlike most big cats, it cannot roar. Instead, it purrs, chirps, and makes a high-pitched yelp.',
+     'It has special pads on its feet that work like tire treads, and its claws are semi-retractable for grip.',
+     'Its distinctive black stripes running from the inner corners of its eyes to its mouth reduce glare when hunting.',
+     'The fastest land animal on Earth, this spotted African cat can reach speeds of up to 75 miles per hour in short bursts.'
+   ]},
+  {id:'octopus',cat:'animals',emoji:'🐙',answer:'Octopus',alts:['octopi','octopuses'],wiki:'Octopus',
+   clues:[
+     'This creature has three hearts, blue blood, and a beak like a parrot hidden beneath its body.',
+     'It can change the color and texture of its skin in milliseconds to camouflage itself or communicate.',
+     'Each of its eight limbs has a mind of its own — about two-thirds of its neurons are located in its arms.',
+     'When threatened, it squirts a cloud of ink to confuse a predator and can also mimic other sea creatures.',
+     'This highly intelligent eight-armed sea creature can open jars, solve mazes, and even play with toys.'
+   ]},
+  {id:'polarbear',cat:'animals',emoji:'🐻‍❄️',answer:'Polar Bear',alts:['polar bears'],wiki:'Polar bear',
+   clues:[
+     'Its fur is not actually white — each individual hair is a clear, hollow tube that scatters light.',
+     'It can swim continuously for days, covering up to 60 miles at a stretch in frigid Arctic waters.',
+     'Underneath its fur, its skin is jet black to absorb as much heat from the sun as possible.',
+     'It is the world\'s largest land carnivore and primarily hunts one type of animal by waiting patiently at breathing holes in ice.',
+     'This magnificent white bear of the Arctic Circle is increasingly threatened by the melting of sea ice due to climate change.'
+   ]},
+  {id:'hummingbird',cat:'animals',emoji:'🕊️',answer:'Hummingbird',alts:['hummingbirds'],wiki:'Hummingbird',
+   clues:[
+     'This creature\'s heart can beat more than 1,200 times per minute during flight.',
+     'It is the only bird capable of flying backwards, and can also hover perfectly still in mid-air.',
+     'Its wings beat between 50 and 80 times per second, creating the distinctive humming sound it is named for.',
+     'To fuel its incredible metabolism, it must consume roughly half its weight in sugar every single day.',
+     'This tiny jewel-like bird is the smallest bird in North America and pollinates flowers while hovering to drink nectar.'
+   ]},
+  {id:'komodo',cat:'animals',emoji:'🦎',answer:'Komodo Dragon',alts:['komodo'],wiki:'Komodo dragon',
+   clues:[
+     'This reptile can smell its prey from up to 5 miles away using its forked tongue and a special organ in its mouth.',
+     'It can run up to 12 mph in short bursts and has a tail strong enough to knock a person off their feet.',
+     'Scientists recently discovered it has venom glands that prevent blood from clotting in its victims.',
+     'It is found on only a handful of islands in one Southeast Asian country, including one island that shares its name.',
+     'The largest living lizard on Earth, this fearsome predator from Indonesia can grow up to 10 feet long and weigh 150 pounds.'
+   ]},
+  // ── FAMOUS PEOPLE ──
+  {id:'lincoln',cat:'people',emoji:'🎩',answer:'Abraham Lincoln',alts:['lincoln','abe lincoln'],wiki:'Abraham Lincoln',
+   clues:[
+     'Born in a one-room log cabin in Kentucky in 1809, this person was largely self-educated, reading by firelight.',
+     'He was known for his great height — 6 feet 4 inches — and his signature stovepipe hat, which he sometimes used as a briefcase.',
+     'He issued a famous proclamation in 1863 that changed the course of American history.',
+     'He guided the United States through its most devastating internal conflict: a war fought over the issue of slavery.',
+     'The 16th President of the United States led the country through the Civil War and was tragically assassinated in 1865.'
+   ]},
+  {id:'einstein',cat:'people',emoji:'🧠',answer:'Albert Einstein',alts:['einstein'],wiki:'Albert Einstein',
+   clues:[
+     'As a child, this person was thought by some teachers to be a slow learner because they rarely spoke.',
+     'They worked as a patent clerk while developing some of the most revolutionary ideas in the history of science.',
+     'Their famous equation relating mass to energy — just five characters long — changed physics forever.',
+     'They fled Nazi Germany and became a U.S. citizen, eventually writing a letter urging President Roosevelt to develop the atomic bomb.',
+     'This wild-haired German-born physicist developed the Theory of Relativity and won the Nobel Prize in Physics in 1921.'
+   ]},
+  {id:'curie',cat:'people',emoji:'⚗️',answer:'Marie Curie',alts:['curie','madame curie'],wiki:'Marie Curie',
+   clues:[
+     'Born in Poland in 1867, this person was not allowed to attend university in their home country because of their gender.',
+     'They kept radioactive samples in their desk drawers, unaware of the danger — their notebooks are still too radioactive to handle.',
+     'They named one of their discoveries after their beloved homeland.',
+     'They were the first woman to win a Nobel Prize and remains the only person to win Nobel Prizes in two different sciences.',
+     'This pioneering physicist and chemist discovered the elements polonium and radium and is one of the greatest scientists in history.'
+   ]},
+  {id:'earhart',cat:'people',emoji:'✈️',answer:'Amelia Earhart',alts:['earhart','amelia'],wiki:'Amelia Earhart',
+   clues:[
+     'As a child, they built a homemade roller coaster on the roof of the family\'s Kansas barn.',
+     'They worked as a nurse\'s aide during World War I and became fascinated watching pilots do aerial stunts.',
+     'In 1928 they became the first woman to fly across the Atlantic Ocean — though initially as a passenger.',
+     'On a record-breaking solo flight across the Atlantic in 1932, they flew from Newfoundland to Northern Ireland.',
+     'This trailblazing American aviator disappeared over the Pacific Ocean in 1937 while attempting to circumnavigate the globe.'
+   ]},
+  {id:'elvis',cat:'people',emoji:'🎸',answer:'Elvis Presley',alts:['elvis','presley'],wiki:'Elvis Presley',
+   clues:[
+     'Growing up poor in Tupelo, Mississippi, this person received a guitar for Christmas at age 11 instead of a bicycle.',
+     'They were discovered at 18 when they walked into a recording studio to make a record as a birthday gift for their mother.',
+     'Their hip-swiveling stage moves caused such a sensation that TV cameras famously filmed them only from the waist up.',
+     'They starred in 33 films and held record-breaking concert residencies in Las Vegas in the 1970s.',
+     'Known as the King of Rock and Roll, this beloved American entertainer lived at a mansion called Graceland in Memphis, Tennessee.'
+   ]},
+  {id:'armstrong',cat:'people',emoji:'🚀',answer:'Neil Armstrong',alts:['armstrong'],wiki:'Neil Armstrong',
+   clues:[
+     'Born in Ohio in 1930, this person earned a student pilot\'s license before they could even get a driver\'s license.',
+     'Before the space program, they flew 78 combat missions during the Korean War.',
+     'On their most famous mission, they traveled 240,000 miles from Earth in just over three days.',
+     'They stepped onto an alien surface and said, "That\'s one small step for man, one giant leap for mankind."',
+     'On July 20, 1969, this American astronaut became the first human being to walk on the surface of the Moon.'
+   ]},
+  {id:'nightingale',cat:'people',emoji:'🏥',answer:'Florence Nightingale',alts:['nightingale','florence'],wiki:'Florence Nightingale',
+   clues:[
+     'Born into a wealthy Victorian family, they defied expectations by insisting on pursuing a career in caring for the sick.',
+     'They were a gifted mathematician and pioneered the use of statistics and data visualization in medicine.',
+     'During a war in the 1850s, they transformed a filthy military hospital by insisting on cleanliness, saving thousands of lives.',
+     'Known as "The Lady with the Lamp" for walking the wards at night, their very presence boosted patients\' spirits.',
+     'This British woman is considered the founder of modern nursing and laid the groundwork for sanitary hospital practices in the 19th century.'
+   ]},
+  {id:'davinci',cat:'people',emoji:'🎨',answer:'Leonardo da Vinci',alts:['da vinci','leonardo','davinci'],wiki:'Leonardo da Vinci',
+   clues:[
+     'Growing up as an illegitimate child in Renaissance Italy, this person was largely self-taught.',
+     'Their notebooks — filled with mirror writing — contain designs for tanks, solar power, and aircraft, all centuries ahead of their time.',
+     'They were simultaneously a painter, sculptor, architect, musician, mathematician, engineer, and scientist.',
+     'They spent four years painting a portrait of a Florentine merchant\'s wife that is now the most famous painting in the world.',
+     'This extraordinary 15th-century Italian polymath painted the Mona Lisa and The Last Supper and is considered the ultimate Renaissance man.'
+   ]},
+  {id:'frida',cat:'people',emoji:'🌺',answer:'Frida Kahlo',alts:['kahlo','frida'],wiki:'Frida Kahlo',
+   clues:[
+     'As a teenager, this person survived a terrible bus accident that shattered their spine, collarbone, and pelvis.',
+     'During a long recovery in bed, they began painting using a special easel, with a mirror mounted above so they could see themselves.',
+     'Their distinctive look — including a unibrow and traditional Mexican clothing — became iconic symbols of their identity.',
+     'They married the famous muralist Diego Rivera — twice — in a tumultuous and passionate relationship.',
+     'This beloved Mexican artist is famous for her vivid, deeply personal self-portraits blending folk art, symbolism, and surrealism.'
+   ]},
+  {id:'twain',cat:'people',emoji:'📝',answer:'Mark Twain',alts:['twain','samuel clemens'],wiki:'Mark Twain',
+   clues:[
+     'Born in Missouri in 1835 under the same name as a famous comet, they died 75 years later when it returned.',
+     'They worked as a riverboat pilot on the Mississippi River, and their pen name comes from a riverboatman\'s term meaning "two fathoms deep."',
+     'They were dear friends with Nikola Tesla, Helen Keller, and President Ulysses S. Grant.',
+     'Their two most beloved novels follow two young boys — one of whom rafts down the Mississippi with an escaped slave.',
+     'This beloved American humorist and author of The Adventures of Tom Sawyer and Adventures of Huckleberry Finn is one of the greatest American writers.'
+   ]},
+  // ── OBJECTS ──
+  {id:'telephone',cat:'objects',emoji:'📞',answer:'Telephone',alts:['phone','telephone'],wiki:'Telephone',
+   clues:[
+     'The first words ever spoken using this device were: "Mr. Watson — come here — I want to see you."',
+     'Its inventor, an American of Scottish descent, was actually a speech teacher who worked with deaf students.',
+     'When first offered for sale, many people thought it was a toy or a parlor trick with no practical use.',
+     'Within 10 years of its invention, there were over 150,000 of them in use across America.',
+     'Invented by Alexander Graham Bell in 1876, this revolutionary communication device let people speak to each other across distances for the very first time.'
+   ]},
+  {id:'lightbulb',cat:'objects',emoji:'💡',answer:'Light Bulb',alts:['lightbulb','light bulb','bulb','incandescent'],wiki:'Incandescent light bulb',
+   clues:[
+     'Its inventor tried over 1,000 different materials for the key element before finding one that worked.',
+     'The same inventor who created it also built the first power stations to generate electricity to run it.',
+     'Before it existed, people relied on candles, oil lamps, or gas lights after dark — all of which caused frequent fires.',
+     'It works by passing electricity through a very thin wire until it gets so hot it glows brightly.',
+     'Invented by Thomas Edison in 1879, this glowing glass sphere filled with a wire filament transformed daily life and became a symbol of bright ideas.'
+   ]},
+  {id:'piano',cat:'objects',emoji:'🎹',answer:'Piano',alts:['pianoforte'],wiki:'Piano',
+   clues:[
+     'This instrument was invented around 1700 by a harpsichord maker in Florence, Italy, who wanted to vary the volume.',
+     'A standard version has 88 keys — 52 white and 36 black — and over 12,000 individual parts.',
+     'When you press a key, a felt-covered hammer strikes a set of metal strings inside, then immediately springs back.',
+     'Some of history\'s greatest composers including Beethoven, Chopin, and Mozart wrote music centered around it.',
+     'This large keyboard instrument found in concert halls, living rooms, and school music rooms produces sound through hammers striking stretched strings.'
+   ]},
+  {id:'compass',cat:'objects',emoji:'🧭',answer:'Compass',alts:['magnetic compass'],wiki:'Compass',
+   clues:[
+     'This instrument was invented in China more than 2,000 years ago, originally used for spiritual purposes rather than navigation.',
+     'It works because the Earth itself acts as an enormous magnet with poles that attract a magnetized needle.',
+     'European sailors adopted it around the 12th century, which helped make the Age of Exploration possible.',
+     'Without it, Columbus could never have crossed the Atlantic, and Magellan could not have circumnavigated the globe.',
+     'This simple navigational tool with a magnetized needle that always points north revolutionized sea travel and exploration.'
+   ]},
+  {id:'balloon',cat:'objects',emoji:'🎈',answer:'Hot Air Balloon',alts:['hot air balloon','balloon'],wiki:'Hot air balloon',
+   clues:[
+     'The first passengers to ride in one were not humans but a duck, a rooster, and a sheep.',
+     'It was invented by two French brothers who noticed that smoke rose and filled a bag held above a fire.',
+     'On November 21, 1783, two French noblemen flew over Paris for 25 minutes, becoming the first humans to fly.',
+     'It works on a simple principle: hot air is lighter than cool air, so a bag filled with it will rise.',
+     'The Montgolfier brothers\' invention of 1783 was the first aircraft to successfully carry human passengers — a giant fabric bag filled with heated air.'
+   ]},
+  {id:'telescope',cat:'objects',emoji:'🔭',answer:'Telescope',alts:['telescopes'],wiki:'Telescope',
+   clues:[
+     'Its invention is credited to a Dutch spectacle maker in 1608 who noticed two lenses in a row made distant objects appear closer.',
+     'A famous Italian scientist heard about the idea, built his own improved version, and used it to study the night sky.',
+     'Using it, that scientist discovered that Jupiter has moons — proof that not everything orbits the Earth.',
+     'Modern versions of it can see galaxies billions of light-years away and capture images of the universe\'s earliest moments.',
+     'This optical instrument, first used for astronomy by Galileo in 1609, uses lenses or mirrors to make distant objects appear larger.'
+   ]},
+  {id:'phonograph',cat:'objects',emoji:'📻',answer:'Phonograph',alts:['record player','gramophone'],wiki:'Phonograph',
+   clues:[
+     'The first sound ever recorded and played back was its inventor reciting "Mary Had a Little Lamb."',
+     'The same prolific inventor who created it also invented the light bulb and the motion picture camera.',
+     'Early versions used a rotating cylinder wrapped in tin foil or wax, which a needle traced to reproduce sound.',
+     'It transformed music from something that could only be experienced live into something anyone could enjoy at home.',
+     'Thomas Edison\'s 1877 invention was the first device ever able to record sound and play it back — the ancestor of every music player that followed.'
+   ]},
+  {id:'press',cat:'objects',emoji:'📚',answer:'Printing Press',alts:['gutenberg press','movable type'],wiki:'Printing press',
+   clues:[
+     'Before this invention, books had to be copied by hand by monks — a process that could take years for a single volume.',
+     'Its German inventor adapted the mechanism from a wine press and used individual metal letters that could be rearranged.',
+     'The first major book produced on it was the Bible, around 1455, in what is now Germany.',
+     'Within 50 years of its invention, an estimated 20 million books had been produced across Europe.',
+     'Johannes Gutenberg\'s invention of movable type around 1440 revolutionized the spread of knowledge and made books affordable for ordinary people.'
+   ]},
+  {id:'rubik',cat:'objects',emoji:'🎲',answer:"Rubik's Cube",alts:['rubiks cube','rubik cube'],wiki:"Rubik's Cube",
+   clues:[
+     'Its inventor, a Hungarian professor of architecture, originally created it to help his students understand 3D geometry.',
+     'After he assembled it himself, it took him over a month to figure out how to solve it.',
+     'It has 43 quintillion possible combinations — that\'s 43 followed by 18 zeros — but any scrambled version can be solved in 20 moves or fewer.',
+     'In 1980 it became a global sensation and has sold over 450 million units, making it the best-selling puzzle toy in history.',
+     'Invented by Erno Rubik in 1974, this colorful six-sided puzzle of rotating squares has baffled and delighted generations of people worldwide.'
+   ]},
+  {id:'sewingmachine',cat:'objects',emoji:'🧵',answer:'Sewing Machine',alts:['sewing machine'],wiki:'Sewing machine',
+   clues:[
+     'Before this invention, making a single shirt by hand took an expert seamstress about 14 hours.',
+     'Its American inventor sold the patent rights for just $400 — one of the worst deals in business history.',
+     'A businessman named Isaac Singer made millions commercializing it and pioneered the installment payment plan to sell it.',
+     'It transformed the clothing industry, made fashionable clothes affordable for ordinary people, and changed the lives of women worldwide.',
+     'Patented by Elias Howe in 1846, this mechanical device that stitches fabric together with a needle and thread revolutionized the garment industry.'
+   ]}
+];
+
+var WA_CAT_META={
+  places:{label:'Places',icon:'🌍',color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe'},
+  animals:{label:'Animals',icon:'🦁',color:'#15803d',bg:'#f0fdf4',border:'#bbf7d0'},
+  people:{label:'Famous People',icon:'⭐',color:'#92400e',bg:'#fffbeb',border:'#fde68a'},
+  objects:{label:'Objects',icon:'🎨',color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe'}
+};
+
+var waState={
+  cat:'all',queue:[],idx:0,clueIdx:0,
+  correct:false,score:0,history:[],
+  totalScore:0
+};
+
+function waLoad(){
+  var d=localStorage.getItem('el365_whoami');
+  if(d){var p=JSON.parse(d);waState.totalScore=p.totalScore||0;waState.history=p.history||[];}
+}
+function waSave(){
+  localStorage.setItem('el365_whoami',JSON.stringify({totalScore:waState.totalScore,history:waState.history}));
+}
+function waInit(){waLoad();waShowMenu();}
+
+function waShowMenu(){
+  document.getElementById('wa-menu').style.display='block';
+  document.getElementById('wa-game').style.display='none';
+  document.getElementById('wa-reveal').style.display='none';
+  document.getElementById('wa-scoreboard-panel').style.display='none';
+  waUpdateTotalScore();
+}
+
+function waUpdateTotalScore(){
+  document.getElementById('wa-total-score').textContent='Total Score: '+waState.totalScore+' pts';
+}
+
+function waSelectCat(cat,btn){
+  waState.cat=cat;
+  document.querySelectorAll('.wa-cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+function waStartGame(){
+  var pool=waState.cat==='all'?WA_ITEMS:WA_ITEMS.filter(function(i){return i.cat===waState.cat;});
+  // Shuffle
+  waState.queue=pool.slice().sort(function(){return Math.random()-.5;});
+  waState.idx=0;waState.score=0;
+  document.getElementById('wa-menu').style.display='none';
+  waShowItem();
+}
+
+function waShowItem(){
+  if(waState.idx>=waState.queue.length){
+    // All done — back to menu
+    alert('Game over! You scored '+waState.score+' points this round. Great job!');
+    waBackToMenu();return;
+  }
+  var item=waState.queue[waState.idx];
+  waState.clueIdx=0;waState.correct=false;
+  var meta=WA_CAT_META[item.cat];
+  document.getElementById('wa-cat-badge').innerHTML=meta.icon+' '+meta.label;
+  document.getElementById('wa-cat-badge').style.cssText='background:'+meta.bg+';color:'+meta.color+';border:2px solid '+meta.border+';padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;';
+  document.getElementById('wa-game-score').textContent='Round score: '+waState.score+' pts';
+  document.getElementById('wa-guess-input').value='';
+  document.getElementById('wa-wrong-msg').textContent='';
+  document.getElementById('wa-game').style.display='block';
+  document.getElementById('wa-reveal').style.display='none';
+  waRenderClues();
+  document.getElementById('wa-guess-input').focus();
+}
+
+function waRenderClues(){
+  var item=waState.queue[waState.idx];
+  var pts=5-waState.clueIdx;
+  document.getElementById('wa-clue-num').textContent='Clue '+(waState.clueIdx+1)+' of 5';
+  document.getElementById('wa-clue-pts').textContent='⭐ Worth '+pts+' point'+(pts===1?'':'s')+' to guess now!';
+  var h='';
+  for(var i=0;i<=waState.clueIdx;i++){
+    h+='<li'+(i===waState.clueIdx?' class="wa-new"':'')+'>'+item.clues[i]+'</li>';
+  }
+  document.getElementById('wa-clue-list').innerHTML=h;
+  document.getElementById('wa-next-clue-btn').style.display=waState.clueIdx>=4?'none':'inline-block';
+}
+
+function waNextClue(){
+  if(waState.clueIdx<4){
+    waState.clueIdx++;
+    waRenderClues();
+    document.getElementById('wa-wrong-msg').textContent='';
+  }
+}
+
+function waCheckGuess(){
+  var inp=document.getElementById('wa-guess-input').value.trim().toLowerCase();
+  if(!inp)return;
+  var item=waState.queue[waState.idx];
+  var ans=item.answer.toLowerCase();
+  var alts=(item.alts||[]).map(function(a){return a.toLowerCase();});
+  var correct=inp===ans||alts.indexOf(inp)>=0||
+    (inp.length>=4&&ans.indexOf(inp)>=0)||
+    (inp.length>=4&&alts.some(function(a){return a.indexOf(inp)>=0;}));
+  if(correct){
+    var pts=5-waState.clueIdx;
+    waState.score+=pts;
+    waState.totalScore+=pts;
+    waReveal(true,pts);
+  } else {
+    document.getElementById('wa-wrong-msg').textContent='Not quite — try again!';
+    document.getElementById('wa-guess-input').select();
+  }
+}
+
+function waGiveUp(){
+  waReveal(false,0);
+}
+
+function waReveal(correct,pts){
+  var item=waState.queue[waState.idx];
+  waState.history.push({answer:item.answer,correct:correct,pts:pts,cat:item.cat});
+  waSave();
+  document.getElementById('wa-game').style.display='none';
+  document.getElementById('wa-reveal').style.display='block';
+  // Banner
+  var banner=document.getElementById('wa-result-banner');
+  banner.className='wa-result-banner '+(correct?'correct':'wrong');
+  document.getElementById('wa-result-title').textContent=correct?'🎉 Correct!':'The answer was...';
+  document.getElementById('wa-result-sub').textContent=correct?
+    'Well done! You got it!':
+    'Don\'t worry — now you\'ll always remember it!';
+  // Name + stars + score
+  var meta=WA_CAT_META[item.cat];
+  document.getElementById('wa-reveal-name').innerHTML=
+    '<span style="font-size:20px;margin-right:8px;">'+meta.icon+'</span>'+item.answer;
+  var starsStr=correct?(pts>=5?'⭐⭐⭐⭐⭐':pts>=4?'⭐⭐⭐⭐':pts>=3?'⭐⭐⭐':pts>=2?'⭐⭐':'⭐'):'';
+  document.getElementById('wa-stars').textContent=starsStr;
+  document.getElementById('wa-score-earned').textContent=correct?
+    '+'+pts+' point'+(pts===1?'':'s')+' earned! (Round total: '+waState.score+')':
+    'No points this round — better luck next time!';
+  waUpdateTotalScore();
+  // Photo: loading state
+  document.getElementById('wa-photo-loading').style.display='block';
+  document.getElementById('wa-photo-img').style.display='none';
+  document.getElementById('wa-photo-emoji').style.display='none';
+  document.getElementById('wa-reveal-fact').textContent='';
+  // Fetch Wikipedia
+  var wikiTitle=encodeURIComponent(item.wiki);
+  fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+wikiTitle)
+    .then(function(r){return r.json();})
+    .then(function(data){
+      document.getElementById('wa-photo-loading').style.display='none';
+      if(data.thumbnail&&data.thumbnail.source){
+        var imgUrl=data.thumbnail.source.replace(/\/\d+px-/,'/500px-');
+        document.getElementById('wa-photo-img').src=imgUrl;
+        document.getElementById('wa-photo-img').style.display='block';
+      } else {
+        waImgFallback();
+      }
+      if(data.extract){
+        var fact=data.extract.split('.')[0]+'.';
+        if(fact.length>250)fact=fact.substring(0,250)+'...';
+        document.getElementById('wa-reveal-fact').textContent=fact;
+      }
+    })
+    .catch(function(){
+      document.getElementById('wa-photo-loading').style.display='none';
+      waImgFallback();
+    });
+}
+
+function waImgFallback(){
+  var item=waState.queue[waState.idx];
+  document.getElementById('wa-photo-img').style.display='none';
+  document.getElementById('wa-photo-loading').style.display='none';
+  document.getElementById('wa-photo-emoji').style.display='block';
+  document.getElementById('wa-photo-emoji').textContent=item.emoji;
+}
+
+function waNextItem(){
+  waState.idx++;
+  waShowItem();
+}
+
+function waBackToMenu(){
+  document.getElementById('wa-menu').style.display='block';
+  document.getElementById('wa-game').style.display='none';
+  document.getElementById('wa-reveal').style.display='none';
+}
+
+function waShowScoreboard(){
+  var panel=document.getElementById('wa-scoreboard-panel');
+  if(panel.style.display==='block'){panel.style.display='none';return;}
+  panel.style.display='block';
+  var h='';
+  if(!waState.history.length){
+    h='<p style="color:#999;text-align:center;">No games played yet. Start a game!</p>';
+  } else {
+    var recent=waState.history.slice(-15).reverse();
+    recent.forEach(function(r){
+      var meta=WA_CAT_META[r.cat];
+      h+='<div class="wa-score-row">'+
+        '<span>'+meta.icon+' '+r.answer+'</span>'+
+        '<span style="color:'+(r.correct?'#16a34a':'#e57373')+';font-weight:700;">'+
+          (r.correct?'+'+r.pts+' pts':'✗')+'</span>'+
+      '</div>';
+    });
+    h+='<div class="wa-score-row" style="border-top:2px solid #bfdbfe;margin-top:8px;padding-top:8px;">'+
+      '<strong>Total Score</strong><strong style="color:#1e40af;">'+waState.totalScore+' pts</strong></div>';
+  }
+  document.getElementById('wa-score-history').innerHTML=h;
+}
+
+(function(){
+  var _o=window.switchTab;
+  window.switchTab=function(n){_o&&_o(n);if(n==='whoami')waInit();};
 })();
 </script>
 
