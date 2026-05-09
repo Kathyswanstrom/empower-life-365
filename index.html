@@ -1192,6 +1192,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="music"    id="music-tab"    onclick="switchTab('music')">🎵 Music</button>
       <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
       <button class="tab-btn" data-tab="travel"   id="travel-tab"   onclick="switchTab('travel')">✈️ Travel Hub</button>
+      <button class="tab-btn" data-tab="mens"     id="mens-tab"     onclick="switchTab('mens')">👨 Men's Corner</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3442,6 +3443,70 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 
 </section>
+<section class="tab-panel" id="panel-mens">
+  <style>
+    .mc-card { background:#fff; border:1px solid #E5E7EB; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:10px; transition:box-shadow .2s; }
+    .mc-card:hover { box-shadow:0 4px 18px rgba(0,0,0,0.10); }
+    .mc-badge { display:inline-block; border-radius:20px; padding:3px 11px; font-size:11px; font-weight:700; }
+    .mc-simple { background:#D1FAE5; color:#065F46; }
+    .mc-medium { background:#FEF3C7; color:#92400E; }
+    .mc-cost1 { background:#EFF6FF; color:#1D4ED8; }
+    .mc-cost2 { background:#F3E8FF; color:#7C3AED; }
+    .mc-cost3 { background:#FEE2E2; color:#B91C1C; }
+    .mc-cat-btn { background:var(--gray-100); border:none; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-600); transition:all .15s; }
+    .mc-cat-btn:hover { background:var(--gray-200); }
+    .mc-cat-btn.active { background:#1A2A5C; color:#fff; }
+  </style>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+    <div>
+      <h2 style="margin:0;">👨 Men's Corner</h2>
+      <div class="subtitle">Purposeful activities built for the guys — sports, skills, stories & more.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="mcPrintAll()" class="btn btn-secondary" style="font-size:13px;">🖨️ Print All Plans</button>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;align-items:center;">
+    <span style="font-size:13px;font-weight:600;color:#374151;">Filter:</span>
+    <button class="mc-cat-btn active" data-mc="all"      onclick="mcFilter('all')">🏠 All Activities</button>
+    <button class="mc-cat-btn" data-mc="games"            onclick="mcFilter('games')">🎯 Games & Competition</button>
+    <button class="mc-cat-btn" data-mc="workshop"         onclick="mcFilter('workshop')">🔧 Workshop & Building</button>
+    <button class="mc-cat-btn" data-mc="outdoors"         onclick="mcFilter('outdoors')">🌳 Outdoors & Sports</button>
+    <button class="mc-cat-btn" data-mc="social"           onclick="mcFilter('social')">💬 Stories & Social</button>
+    <button class="mc-cat-btn" data-mc="food"             onclick="mcFilter('food')">🍖 Food & Tastings</button>
+  </div>
+
+  <!-- Legend -->
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;font-size:12px;align-items:center;">
+    <span style="color:#6B7280;font-weight:600;">Complexity:</span>
+    <span class="mc-badge mc-simple">🟢 Simple</span>
+    <span class="mc-badge mc-medium">🟡 Medium</span>
+    <span style="color:#6B7280;font-weight:600;margin-left:8px;">Cost:</span>
+    <span class="mc-badge mc-cost1">$ Free–$10</span>
+    <span class="mc-badge mc-cost2">$$ $10–$30</span>
+    <span class="mc-badge mc-cost3">$$$ $30+</span>
+  </div>
+
+  <!-- Activity grid -->
+  <div id="mc-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;"></div>
+
+  <!-- Print detail modal -->
+  <div id="mc-print-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.6);overflow:auto;" onclick="if(event.target===this)mcClosePrint()">
+    <div style="background:#fff;border-radius:18px;max-width:660px;margin:40px auto;padding:34px;position:relative;">
+      <button onclick="mcClosePrint()" style="position:absolute;top:14px;right:14px;background:#F3F4F6;border:none;border-radius:8px;padding:6px 14px;font-size:18px;cursor:pointer;">✕</button>
+      <div id="mc-modal-content"></div>
+      <div style="margin-top:24px;display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="mcClosePrint()" class="btn btn-secondary">Close</button>
+        <button onclick="mcPrintOne()" class="btn btn-primary">🖨️ Print This Plan</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section class="tab-panel" id="panel-family">
   <style>
     .fc-tab { background:var(--gray-100); border:none; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-600); transition:all 0.15s; }
@@ -26889,6 +26954,399 @@ document.addEventListener('DOMContentLoaded', function() {
     switchCraftTab = function(name) {
       _csCraftOrig(name);
       if (name === 'coloring') { csInit(); }
+    };
+  }
+});
+</script>
+
+<script>
+/* ════════════════════════ MEN'S CORNER ═══════════════════════ */
+var MC_ACTIVITIES = [
+  /* ── GAMES & COMPETITION ──────────────────────────────── */
+  { id:'poker', cat:'games', emoji:'♠️', title:'Poker Night',
+    complexity:'Simple', cost:'$', costLabel:'Free–$10',
+    desc:'Classic Texas Hold\'em or 5-card draw with poker chips. No money needed — use chips for bragging rights.',
+    duration:'60–90 min', groupSize:'4–10 men',
+    supplies:['Poker chip set ($8–12 on Amazon)','Standard deck of cards','Tables and chairs','Score sheet (printable below)'],
+    steps:['Set up tables in a horseshoe arrangement','Distribute equal chips to each player','Review rules together (use the printable cheat sheet)','Play 3–4 rounds, track leaders on whiteboard','Announce winner — consider a simple trophy ribbon'],
+    tips:['Use candy instead of chips for a fun twist','Print a simple rules cheat sheet for beginners','Pair with root beer floats for a real "guys\' night" vibe'],
+    variations:['Cribbage Night','Gin Rummy Tournament','Spades League'] },
+
+  { id:'chess', cat:'games', emoji:'♟️', title:'Chess & Checkers Club',
+    complexity:'Simple', cost:'$', costLabel:'Free–$10',
+    desc:'Rotating tournament bracket — checkers for beginners, chess for the veterans. Track wins on a leaderboard.',
+    duration:'45–60 min', groupSize:'2–12 men',
+    supplies:['Chess/checkers combo sets ($10–15)','Whiteboard or leaderboard poster','Tournament bracket sheet','Timer (optional)'],
+    steps:['Create a double-elimination bracket','Pair players by skill level first session','Rotate opponents each week','Post standings on a visible leaderboard','Award a monthly champion title'],
+    tips:['Invite a resident who knows chess to teach others','Keep checkers going simultaneously so no one waits long'],
+    variations:['Dominoes Tournament','Backgammon League','Battleship Showdown'] },
+
+  { id:'trivia', cat:'games', emoji:'🏆', title:'Sports Trivia Showdown',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Team-based sports trivia covering baseball, football, boxing, golf, and Olympics. Use printed question cards.',
+    duration:'45 min', groupSize:'4–16 men',
+    supplies:['Printed trivia cards (included in print plan)','Scorecard per team','Whiteboard','Small prizes (candy, ribbons)'],
+    steps:['Divide into 2–4 teams','Read questions by decade and sport','Award 1 point per correct answer','Include a final "lightning round" worth double','Winning team picks next week\'s game'],
+    tips:['Cover multiple eras so all ages can participate','Include obscure stats for the true sports buffs','Give each team a team name for extra fun'],
+    variations:['NASCAR Trivia','Boxing History Quiz','Olympics Challenge'] },
+
+  { id:'brackets', cat:'games', emoji:'🏀', title:'March Madness / Super Bowl Squares',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Seasonal bracket competition or Super Bowl Squares grid. Huge engagement with minimal setup.',
+    duration:'Season-long', groupSize:'Any',
+    supplies:['Printed bracket or 10×10 squares grid','Pens','Large poster board','Optional: small prize (gift card, candy)'],
+    steps:['Print and post the bracket/grid in common area','Each resident fills in their picks','Display prominently and update after each game','Announce weekly standings','Award winner at end of season'],
+    tips:['Works for any major sport season','Super Bowl Squares can raise a few dollars for a resident fund','Keep brackets simple — no one needs to understand every rule'],
+    variations:['World Series Bracket','Masters Golf Pool','Stanley Cup Picks'] },
+
+  { id:'cornhole', cat:'games', emoji:'🎯', title:'Cornhole Tournament',
+    complexity:'Simple', cost:'$$', costLabel:'$10–$30',
+    desc:'Classic outdoor game that\'s easy on joints. Set up a bracket and run a monthly championship.',
+    duration:'60 min', groupSize:'4–16 men',
+    supplies:['Cornhole board set ($20–30 or borrow)','Bean bags (8)','Tournament bracket sheet','Chalk line or tape for distance markers'],
+    steps:['Set boards 27 ft apart (or adjust for ability)','Play best-of-3 rounds per match','Record results on bracket','Keep it social — no strict clock','Award a "Cornhole King" ribbon monthly'],
+    tips:['Reduce distance to 15–20 ft if needed','Allow seated throwing for residents with mobility issues','Pair with a cookout for maximum fun'],
+    variations:['Horseshoes','Bocce Ball','Ladder Toss'] },
+
+  { id:'horseracing', cat:'games', emoji:'🐴', title:'Horse Racing Game',
+    complexity:'Simple', cost:'$', costLabel:'Free–$10',
+    desc:'Six toy horses on a track, moved by playing cards. Fast, exciting, and zero gambling required.',
+    duration:'30–45 min', groupSize:'6–20 men',
+    supplies:['6 small toy horses or paper horses on sticks','Long table as "racetrack"','Standard deck of cards','Number cards 1–6 for lane markers'],
+    steps:['Assign each horse a number 1–6','Shuffle and flip cards — matching number moves that horse forward','Announce each flip dramatically for excitement','First horse to finish line wins the round','Play 3–5 races, track overall wins'],
+    tips:['Volunteer as an enthusiastic announcer for big laughs','Let residents name the horses before the race','Award a pretend trophy ribbon to the winner'],
+    variations:['Dice Racing','Marble Racing','Balloon Car Race'] },
+
+  /* ── WORKSHOP & BUILDING ──────────────────────────────── */
+  { id:'birdhouse', cat:'workshop', emoji:'🏠', title:'Birdhouse Building',
+    complexity:'Medium', cost:'$$', costLabel:'$10–$30',
+    desc:'Pre-cut wood kits make this accessible even with limited hand strength. Sand, assemble, and paint.',
+    duration:'90 min', groupSize:'4–10 men',
+    supplies:['Pre-cut birdhouse kits ($8–12 each on Amazon)','Wood glue','Sandpaper (medium grit)','Paint or wood stain','Brushes','Protective table covers'],
+    steps:['Sand all pieces smooth','Apply wood glue per kit instructions','Clamp or hold pieces while drying (10–15 min)','Paint or stain in preferred color/pattern','Let dry completely — take home or donate to garden'],
+    tips:['Order kits with pre-drilled holes for ease','Supervise glue gun use carefully','Make it competitive: vote on best design'],
+    variations:['Build a small shelf kit','Picture frame assembly','Simple wooden toolbox'] },
+
+  { id:'model', cat:'workshop', emoji:'✈️', title:'Model Airplane or Ship',
+    complexity:'Medium', cost:'$$', costLabel:'$10–$30',
+    desc:'Snap-together (no glue) model kits of classic WWII planes, cars, or ships. Great for fine motor skills.',
+    duration:'60–120 min (2 sessions)', groupSize:'2–8 men',
+    supplies:['Snap-together model kit ($10–20)','Small hobby knife (staff handles)','Tweezers','Paint pens (optional)','Reference photo of the real vehicle'],
+    steps:['Review instructions together before starting','Sort and identify parts','Assemble in order — larger pieces first','Use paint pens for detail if desired','Display finished models in common area'],
+    tips:['Look for 1:72 scale WWII planes — nostalgic and detailed','Veterans often have personal stories about these aircraft','Consider dedicating display space for finished models'],
+    variations:['Model car kit','Balsa wood plane','Ship in a bottle (display only)'] },
+
+  { id:'woodcarving', cat:'workshop', emoji:'🪵', title:'Beginner Wood Carving',
+    complexity:'Medium', cost:'$$', costLabel:'$10–$30',
+    desc:'Carve simple shapes from soft basswood blocks using safe carving tools. Make a small figure, spoon, or plaque.',
+    duration:'60–90 min', groupSize:'2–6 men',
+    supplies:['Basswood carving blocks ($10–15 set)','Beginner carving knife set ($15–20)','Sandpaper','Cutting mat','Design template (simple shape)'],
+    steps:['Draw design outline on wood block with pencil','Demonstrate safe carving direction (away from body)','Carve rough shape in first session','Sand smooth in second session','Optional: apply wood finish or paint'],
+    tips:['Use the softest basswood available','Consider having a local woodworker volunteer as a guest instructor','Keep sessions to 45 min max — hands tire quickly'],
+    variations:['Wood burning (pyrography)','Paint a wooden sign','Whittle a walking stick'] },
+
+  { id:'toolbox', cat:'workshop', emoji:'🔧', title:'Tool ID & Safety Workshop',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Show a collection of classic hand tools — name them, explain their use, share a story. Hugely engaging for former tradesmen.',
+    duration:'45 min', groupSize:'Any',
+    supplies:['Collection of hand tools (hammer, pliers, levels, squares, etc.)','Table for display','Optional: "Name That Tool" quiz sheet','Whiteboard'],
+    steps:['Lay tools out on table before group arrives','Go around — each man picks up a tool and names it','Share what it\'s used for and a personal memory','Play "Name That Tool" quiz as a group','Discuss changes in tools over the decades'],
+    tips:['Ask a resident who was a tradesman to co-lead','This often sparks deep, meaningful conversation','Can segue into a "greatest project I ever built" discussion'],
+    variations:['Car parts ID quiz','Kitchen gadget ID (cross-program)','Antique tool collection show-and-tell'] },
+
+  /* ── OUTDOORS & SPORTS ────────────────────────────────── */
+  { id:'fishing', cat:'outdoors', emoji:'🎣', title:'Indoor Fishing Derby',
+    complexity:'Simple', cost:'$', costLabel:'Free–$10',
+    desc:'Paper fish with paperclip "hooks" in a kiddie pool. Award points by fish size. Pure fun, zero fishing license required.',
+    duration:'45 min', groupSize:'4–12 men',
+    supplies:['Blue tablecloth or kiddie pool as "pond"','Paper fish (laminated, various point values)','Magnet fishing poles (dowel + string + magnet, ~$5 to make)','Score sheet','Small prizes (candy)'],
+    steps:['Scatter fish face-down in the "pond"','Each player gets 60 seconds to catch as many as possible','Tally points by fish value','Announce derby champion','Award a "Biggest Fish" ribbon'],
+    tips:['If weather permits, take to an actual pond with simple cane poles','Ask who fished as a kid — stories will flow naturally','Great pre-game for a fish fry lunch'],
+    variations:['Outdoor casting practice','Visit a local fishing pier','Watch a fishing classic movie (A River Runs Through It)'] },
+
+  { id:'bocce', cat:'outdoors', emoji:'🎳', title:'Bocce Ball League',
+    complexity:'Simple', cost:'$$', costLabel:'$10–$30',
+    desc:'One of the best senior sports — low impact, highly social, playable on any flat surface. Run a weekly league.',
+    duration:'45–60 min', groupSize:'4–8 men',
+    supplies:['Bocce ball set ($20–30)','Flat outdoor or indoor space','Tape measure or string for measuring','League score sheet','Team bandanas or colored wristbands'],
+    steps:['Toss pallino (small ball) as target','Teams alternate throwing bocce balls toward pallino','Closest team scores points','Play to 12 points per round','Track weekly standings on a posted leaderboard'],
+    tips:['Works great on grass, concrete, or indoors on hard floor','Encourage trash talk — it\'s half the fun','Monthly champion gets their name on a simple trophy board'],
+    variations:['Lawn bowling','Shuffleboard','Horseshoes'] },
+
+  { id:'horseshoes', cat:'outdoors', emoji:'🏇', title:'Horseshoes',
+    complexity:'Simple', cost:'$$', costLabel:'$10–$30',
+    desc:'The original backyard game. Great upper body motion, highly competitive, endlessly social.',
+    duration:'45 min', groupSize:'2–8 men',
+    supplies:['Rubber horseshoe set for safety ($15–20)','2 stakes or posts','Measuring tape','Score card'],
+    steps:['Set stakes 20–30 ft apart (adjust as needed)','Players alternate throwing toward opposite stake','Score: 3 pts for ringer, 1 pt for closest within 6 inches','Play to 21 points','Run a round-robin tournament over multiple sessions'],
+    tips:['Use rubber horseshoes — safer and lighter than traditional iron','Allow seated throwing option','Great to run during outdoor cookouts'],
+    variations:['Ring toss','Stake toss','Ladder ball'] },
+
+  { id:'sports_watch', cat:'outdoors', emoji:'📺', title:'Sports Watch Party',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Scheduled viewing of a major game with commentary, predictions, and snacks. Structure it like a real sports bar.',
+    duration:'2–3 hrs', groupSize:'Any',
+    supplies:['TV or projector','Game schedule printed in advance','Prediction sheet (who\'ll win, final score)','Snacks: chips, wings, hot dogs','Team-color decorations'],
+    steps:['Post game schedule 2 weeks ahead','Hand out prediction sheets day before','Set up seating for good viewing angles','Play trivia or debate predictions during halftime','Announce prediction winners after the game'],
+    tips:['Rotate sports: NFL, MLB, boxing, golf, NASCAR','Make a "sports menu" — nachos for football, hot dogs for baseball','Invite families for big games like the Super Bowl'],
+    variations:['Golf tournament viewing','Boxing match night','Classic game replay (old Super Bowl on YouTube)'] },
+
+  /* ── STORIES & SOCIAL ─────────────────────────────────── */
+  { id:'stories', cat:'social', emoji:'🎙️', title:'Greatest Job I Ever Had',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Structured storytelling circle where men share career stories — funniest boss, biggest project, first paycheck. Gold.',
+    duration:'45–60 min', groupSize:'4–12 men',
+    supplies:['Conversation prompt cards (printable below)','Optional: simple recording device to preserve stories','Coffee or beverages','Comfortable seating in a circle'],
+    steps:['Open with an easy prompt: "First job you ever had"','Go around the circle — no pressure to speak long','Use follow-up prompts if energy dips','Close with: "What would you tell a young man starting out today?"','Consider recording stories for a "Men\'s Wisdom" book project'],
+    tips:['The best sessions feel like a barbershop — relaxed, a little rowdy, deeply honest','Never rush — let stories breathe','Pair with a barber visit day for the full effect'],
+    variations:['Best road trip story','Funniest thing that happened at work','The one that got away (fishing, sports, romance...)'] },
+
+  { id:'military', cat:'social', emoji:'🎖️', title:'Veterans Story Circle',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Respectful, structured sharing for veterans — branches, deployments, funny memories, and life lessons. Profoundly meaningful.',
+    duration:'60 min', groupSize:'4–10 men',
+    supplies:['Branch flags or small decorations','Conversation prompt cards','Optional: old military photos from residents','Coffee'],
+    steps:['Open by acknowledging their service','Go by branch: Army, Navy, Air Force, Marines, Coast Guard','Ask about best memory, biggest challenge, funniest moment','Invite them to share a photo or memento if comfortable','Close with a moment of appreciation'],
+    tips:['Never force sharing on difficult topics','Focus on camaraderie and humor first — heavy topics follow naturally when trust is built','Consider inviting a local VFW member as a guest'],
+    variations:['Watch a classic war film together','Military trivia by branch','Build a "Wall of Honor" display with photos and service dates'] },
+
+  { id:'dadjokes', cat:'social', emoji:'😄', title:'Dad Jokes Showdown',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Each man brings their best (worst) jokes. Audience rates on a 1–10 groan scale. The more they groan, the better.',
+    duration:'30–45 min', groupSize:'4–16 men',
+    supplies:['Joke rating cards (1–10, or rubber ducks for "quack" jokes)','Whiteboard for scoring','Optional: joke book as backup','Prizes (candy) for highest groan score'],
+    steps:['Each man tells 2–3 jokes','Audience holds up score cards after each one','Staff tallies scores on whiteboard','Give titles: "Most Groan-Worthy," "Actually Funny," "Pure Torture"','Close by reading the single best joke of the day together'],
+    tips:['Print 20 classic dad jokes as backup for quieter residents','No joke shaming — the whole point is affectionate suffering','Pairs well with a "coffee and conversation" morning'],
+    variations:['Tall Tales contest','Best one-liner competition','Clean comedy video watching (Bob Hope, Red Skelton)'] },
+
+  { id:'carshow', cat:'social', emoji:'🚗', title:'Classic Car Slideshow & Trivia',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'Project photos of classic cars decade by decade. Men name the make, model, year — and share personal car stories.',
+    duration:'45–60 min', groupSize:'Any',
+    supplies:['Laptop/TV to display images','Printable Car ID quiz sheets','Score cards','Optional: model cars for show-and-tell'],
+    steps:['Show 20–30 photos of classic cars one at a time','Teams call out make, model, year','Award points for correct answers','Ask: "Did anyone own one of these? What was your favorite car?"','Close with "Dream Garage" — if you could have any 3 cars...'],
+    tips:['YouTube has amazing classic car slideshows pre-made','Focus on cars from the 1940s–1980s for best nostalgia hit','Invite a resident who restores cars to give a mini-talk'],
+    variations:['Vintage motorcycle show','Classic truck trivia','Watch American Graffiti (1973)'] },
+
+  { id:'tietying', cat:'social', emoji:'👔', title:'Tie-Tying & Grooming Refresher',
+    complexity:'Simple', cost:'$', costLabel:'Free',
+    desc:'A relaxed how-to on classic tie knots, shoe shining, and looking sharp. Mix of practical skill and nostalgia.',
+    duration:'45 min', groupSize:'4–12 men',
+    supplies:['Assorted neckties (collect donations)','Hand mirror','Shoe shine kit ($10–15)','Printed knot guide (Windsor, Half-Windsor, Four-in-Hand)','Optional: cologne samples'],
+    steps:['Open with "When did you last wear a tie?" — conversation starter','Demo the Half-Windsor knot step by step','Each man tries it — help as needed','Show basic shoe shining technique','Close with a photo in their best look'],
+    tips:['Frame as fun nostalgia, not a lesson','Invite a barber for a concurrent beard trim or shave day','Great to run before a special event or family visit day'],
+    variations:['Pocket square folding','Watch-setting and small watch maintenance','Classic cologne discussion and smelling session'] },
+
+  { id:'woodburning', cat:'social', emoji:'🔥', title:'Name Plaque Wood Burning',
+    complexity:'Medium', cost:'$$', costLabel:'$10–$30',
+    desc:'Burn a name, sports team logo, or simple design onto a small wood plaque using a pen-style burner. Keep or give as gift.',
+    duration:'60 min', groupSize:'2–8 men',
+    supplies:['Wood burning tool set ($15–20)','Small wood plaques or basswood pieces','Pencil for sketching design','Sandpaper','Protective work surface'],
+    steps:['Sand plaques smooth','Sketch design lightly in pencil','Demonstrate burner technique on scrap wood','Each man burns their design at their own pace','Sand lightly to remove rough edges, apply clear finish optionally'],
+    tips:['Staff must supervise the tool closely — tips get to 900°F','Keep sessions calm and unhurried','Many men find this deeply meditative'],
+    variations:['Decoupage','Paint a wooden sign','Stamp and ink a custom tote bag'] },
+
+  /* ── FOOD & TASTINGS ──────────────────────────────────── */
+  { id:'bbq', cat:'food', emoji:'🔥', title:'Backyard BBQ & Grill Club',
+    complexity:'Medium', cost:'$$$', costLabel:'$30+',
+    desc:'Let the men help plan, season, and grill (or supervise grilling). Burgers, dogs, corn — the works.',
+    duration:'2–3 hrs', groupSize:'Any',
+    supplies:['Charcoal or gas grill','Burgers, hot dogs, corn on the cob','Condiment station','Aprons for the men','Paper plates, napkins'],
+    steps:['Meet 30 min early to season meat and prep','Men take turns being "Head Grill Master"','Set up a condiment bar with all the fixings','Eat together — outdoor picnic style','Award a "Grill Master" apron or pin to the best cook'],
+    tips:['Work with dietary team to accommodate restrictions','A simple rub mix (paprika, garlic, salt, pepper) teaches something new','Pair with a cold lemonade or root beer station'],
+    variations:['Hot dog bar with 12 topping choices','Chili cook-off','Taste test: store-bought BBQ sauce bracket'] },
+
+  { id:'rootbeer', cat:'food', emoji:'🍺', title:'Root Beer Float Bar',
+    complexity:'Simple', cost:'$$', costLabel:'$10–$30',
+    desc:'Classic root beer floats with a "craft" twist — multiple root beer brands, topping options, and blind taste test.',
+    duration:'30–45 min', groupSize:'Any',
+    supplies:['3–4 brands of root beer','Vanilla and chocolate ice cream','Tall glasses or mugs','Whipped cream, cherries','Printed taste test ballot'],
+    steps:['Set up "flight" of three root beer brands in small cups','Blind taste test — rank favorite brand','Then build full floats with their choice of ice cream','Vote on best brand, post results','Optional: try a ginger beer or cream soda float too'],
+    tips:['Barq\'s vs A&W vs IBC is a classic debate that never gets old','Frame it as a "craft tasting" — men get serious about this','Pairs with poker night perfectly'],
+    variations:['Hot sauce tasting (mild to hot)','Coffee brand blind taste test','Jerky tasting from different brands'] },
+
+  { id:'chili', cat:'food', emoji:'🥣', title:'Chili Cook-Off',
+    complexity:'Medium', cost:'$$$', costLabel:'$30+',
+    desc:'Each man (or team) enters a chili. Anonymous judging on taste, heat, and presentation. Trophy goes to the winner.',
+    duration:'Cook: evening before. Event: 60 min', groupSize:'Any',
+    supplies:['Crock pots (1–2 per entry)','Chili ingredients ($20–30 per pot)','Numbered tasting cups','Judge scorecards','Trophy or ribbon for winner'],
+    steps:['Announce cook-off 2 weeks ahead — sign up sheet','Men prep and bring chili in crock pot night before or morning of','Set up numbered tasting stations (no names visible)','Judges (can include women\'s group) score on: taste, heat, thickness, creativity','Announce winner with ceremony and award'],
+    tips:['Have a "non-spicy" category for sensitive stomachs','Cornbread muffins as a side elevate the whole event','This works brilliantly as a fall activity'],
+    variations:['Soup cook-off','Best burger topping competition','Homemade salsa contest'] },
+
+  { id:'steaktalk', cat:'food', emoji:'🥩', title:'Steak Night & Cut Discussion',
+    complexity:'Simple', cost:'$$$', costLabel:'$30+',
+    desc:'Cook or order various steak cuts (or use chicken/pork for budget). Taste and discuss: ribeye vs sirloin vs NY strip. Men have strong opinions.',
+    duration:'60–90 min', groupSize:'4–12 men',
+    supplies:['Steak or protein samples (coordinate with dietary/kitchen)','Printed cut diagram of a cow','Seasonings for comparison','Score cards for ranking','Side dishes'],
+    steps:['Show the cut diagram — explain where each cut comes from','Kitchen or grill prepares samples of 2–3 cuts identically seasoned','Men taste each and rank favorite','Discuss: how do you like your steak cooked? Why?','Close with "best steak you ever ate" storytelling round'],
+    tips:['Work with dietary team on safe preparation and portions','Even a small sample goes a long way','This is especially popular with former grill masters and restaurant workers'],
+    variations:['BBQ sauce tasting bracket','Hot dog vs bratwurst debate','Best burger they\'ve ever had — storytelling'] }
+];
+
+var mcCurrentFilter = 'all';
+var mcPrintTarget = null;
+
+function initMens() {
+  mcFilter('all');
+}
+
+function mcFilter(cat) {
+  mcCurrentFilter = cat;
+  document.querySelectorAll('.mc-cat-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.mc === cat);
+  });
+  mcRenderGrid();
+}
+
+function mcRenderGrid() {
+  var grid = document.getElementById('mc-grid');
+  if (!grid) return;
+  var list = mcCurrentFilter === 'all'
+    ? MC_ACTIVITIES
+    : MC_ACTIVITIES.filter(function(a){ return a.cat === mcCurrentFilter; });
+
+  grid.innerHTML = list.map(function(a) {
+    var complexClass = a.complexity === 'Simple' ? 'mc-simple' : 'mc-medium';
+    var complexIcon = a.complexity === 'Simple' ? '🟢' : '🟡';
+    var costClass = a.cost === '$' ? 'mc-cost1' : a.cost === '$$' ? 'mc-cost2' : 'mc-cost3';
+    return '<div class="mc-card" data-id="' + a.id + '">'
+      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">'
+      + '<div style="font-size:32px;">' + a.emoji + '</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">'
+      + '<span class="mc-badge ' + complexClass + '">' + complexIcon + ' ' + a.complexity + '</span>'
+      + '<span class="mc-badge ' + costClass + '">' + a.cost + ' ' + a.costLabel + '</span>'
+      + '</div>'
+      + '</div>'
+      + '<div style="font-weight:800;font-size:16px;color:#111827;">' + a.title + '</div>'
+      + '<div style="font-size:13px;color:#6B7280;line-height:1.5;">' + a.desc + '</div>'
+      + '<div style="display:flex;gap:12px;font-size:12px;color:#9CA3AF;margin-top:2px;">'
+      + '<span>⏱️ ' + a.duration + '</span>'
+      + '<span>👥 ' + a.groupSize + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;margin-top:6px;">'
+      + '<button onclick="mcShowDetail(\'' + a.id + '\')" class="btn btn-secondary" style="flex:1;font-size:13px;padding:8px;">📋 Full Plan</button>'
+      + '<button onclick="mcQuickPrint(\'' + a.id + '\')" class="btn" style="background:#F0FDF4;color:#166534;border:1px solid #BBF7D0;font-size:13px;padding:8px 14px;">🖨️</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function mcShowDetail(id) {
+  var a = MC_ACTIVITIES.find(function(x){ return x.id === id; });
+  if (!a) return;
+  mcPrintTarget = a;
+  var complexClass = a.complexity === 'Simple' ? 'mc-simple' : 'mc-medium';
+  var costClass = a.cost === '$' ? 'mc-cost1' : a.cost === '$$' ? 'mc-cost2' : 'mc-cost3';
+  var html = '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">'
+    + '<div style="font-size:48px;">' + a.emoji + '</div>'
+    + '<div><div style="font-size:22px;font-weight:900;color:#111827;">' + a.title + '</div>'
+    + '<div style="display:flex;gap:8px;margin-top:6px;">'
+    + '<span class="mc-badge ' + complexClass + '">' + a.complexity + '</span>'
+    + '<span class="mc-badge ' + costClass + '">' + a.cost + ' ' + a.costLabel + '</span>'
+    + '<span style="font-size:12px;color:#6B7280;padding:3px 0;">⏱️ ' + a.duration + ' &nbsp;|&nbsp; 👥 ' + a.groupSize + '</span>'
+    + '</div></div></div>'
+    + '<p style="color:#374151;font-size:14px;line-height:1.7;margin-bottom:18px;">' + a.desc + '</p>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">'
+    + '<div style="background:#F8FAFF;border:1px solid #DCE8FF;border-radius:10px;padding:14px;">'
+    + '<div style="font-weight:700;font-size:13px;color:#1D4ED8;margin-bottom:8px;">📦 Supplies Needed</div>'
+    + '<ul style="margin:0;padding-left:16px;font-size:13px;color:#374151;line-height:1.9;">'
+    + a.supplies.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ul></div>'
+    + '<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px;">'
+    + '<div style="font-weight:700;font-size:13px;color:#166534;margin-bottom:8px;">✅ How to Run It</div>'
+    + '<ol style="margin:0;padding-left:16px;font-size:13px;color:#374151;line-height:1.9;">'
+    + a.steps.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ol></div>'
+    + '</div>'
+    + '<div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px;margin-bottom:14px;">'
+    + '<div style="font-weight:700;font-size:13px;color:#92400E;margin-bottom:8px;">💡 Pro Tips</div>'
+    + '<ul style="margin:0;padding-left:16px;font-size:13px;color:#374151;line-height:1.9;">'
+    + a.tips.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul></div>'
+    + '<div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:14px;">'
+    + '<div style="font-weight:700;font-size:13px;color:#5B21B6;margin-bottom:6px;">🔄 Variations</div>'
+    + '<div style="font-size:13px;color:#374151;">' + a.variations.join(' &nbsp;•&nbsp; ') + '</div>'
+    + '</div>';
+
+  document.getElementById('mc-modal-content').innerHTML = html;
+  document.getElementById('mc-print-modal').style.display = 'block';
+}
+
+function mcClosePrint() {
+  document.getElementById('mc-print-modal').style.display = 'none';
+}
+
+function mcQuickPrint(id) {
+  var a = MC_ACTIVITIES.find(function(x){ return x.id === id; });
+  if (a) { mcPrintTarget = a; mcDoPrint(a); }
+}
+
+function mcPrintOne() {
+  if (mcPrintTarget) mcDoPrint(mcPrintTarget);
+}
+
+function mcDoPrint(a) {
+  var w = window.open('','_blank','width=800,height=1000');
+  w.document.write('<!DOCTYPE html><html><head><title>' + a.title + ' — Men\'s Corner</title>'
+    + '<style>body{font-family:Arial,sans-serif;padding:30px;max-width:700px;margin:0 auto;color:#111;}'
+    + 'h1{color:#1A2A5C;margin-bottom:4px;} .badge{display:inline-block;border-radius:12px;padding:3px 12px;font-size:12px;font-weight:700;margin-right:6px;}'
+    + '.simple{background:#D1FAE5;color:#065F46;} .medium{background:#FEF3C7;color:#92400E;}'
+    + '.cost1{background:#EFF6FF;color:#1D4ED8;} .cost2{background:#F3E8FF;color:#7C3AED;} .cost3{background:#FEE2E2;color:#B91C1C;}'
+    + 'h3{color:#1A2A5C;margin:18px 0 8px;} ul,ol{margin:0;padding-left:20px;line-height:1.9;}'
+    + '.box{border:1px solid #ddd;border-radius:8px;padding:14px;margin-bottom:14px;}'
+    + '.footer{margin-top:28px;text-align:center;color:#aaa;font-size:11px;border-top:1px solid #eee;padding-top:12px;}'
+    + '@media print{body{padding:0;}}</style></head><body>'
+    + '<div style="font-size:36px;margin-bottom:4px;">' + a.emoji + '</div>'
+    + '<h1>' + a.title + '</h1>'
+    + '<div style="margin-bottom:14px;">'
+    + '<span class="badge ' + (a.complexity==='Simple'?'simple':'medium') + '">' + a.complexity + '</span>'
+    + '<span class="badge ' + (a.cost==='$'?'cost1':a.cost==='$$'?'cost2':'cost3') + '">' + a.cost + ' ' + a.costLabel + '</span>'
+    + '<span style="color:#6B7280;font-size:13px;">⏱️ ' + a.duration + '  &nbsp;|&nbsp; 👥 ' + a.groupSize + '</span>'
+    + '</div>'
+    + '<p style="line-height:1.7;">' + a.desc + '</p>'
+    + '<div class="box"><h3>📦 Supplies Needed</h3><ul>' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div class="box"><h3>✅ How to Run It</h3><ol>' + a.steps.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ol></div>'
+    + '<div class="box"><h3>💡 Pro Tips</h3><ul>' + a.tips.map(function(t){return '<li>'+t+'</li>';}).join('') + '</ul></div>'
+    + '<div class="box"><h3>🔄 Variations to Try</h3><p>' + a.variations.join(' • ') + '</p></div>'
+    + '<div class="footer">Men\'s Corner — Empower Life 365 &nbsp;|&nbsp; empowerlife365.app</div>'
+    + '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+function mcPrintAll() {
+  var list = mcCurrentFilter === 'all' ? MC_ACTIVITIES : MC_ACTIVITIES.filter(function(a){ return a.cat === mcCurrentFilter; });
+  var rows = list.map(function(a) {
+    var complexClass = a.complexity === 'Simple' ? 'background:#D1FAE5;color:#065F46' : 'background:#FEF3C7;color:#92400E';
+    var costClass = a.cost === '$' ? 'background:#EFF6FF;color:#1D4ED8' : a.cost === '$$' ? 'background:#F3E8FF;color:#7C3AED' : 'background:#FEE2E2;color:#B91C1C';
+    return '<tr>'
+      + '<td style="padding:10px 12px;font-size:20px;">' + a.emoji + '</td>'
+      + '<td style="padding:10px 8px;font-weight:700;">' + a.title + '</td>'
+      + '<td style="padding:10px 8px;font-size:12px;"><span style="border-radius:10px;padding:2px 8px;' + complexClass + '">' + a.complexity + '</span></td>'
+      + '<td style="padding:10px 8px;font-size:12px;"><span style="border-radius:10px;padding:2px 8px;' + costClass + '">' + a.cost + ' ' + a.costLabel + '</span></td>'
+      + '<td style="padding:10px 8px;font-size:12px;color:#6B7280;">' + a.duration + '</td>'
+      + '<td style="padding:10px 8px;font-size:13px;color:#374151;">' + a.desc.substring(0,80) + '…</td>'
+      + '</tr>';
+  }).join('');
+  var w = window.open('','_blank','width=1000,height=800');
+  w.document.write('<!DOCTYPE html><html><head><title>Men\'s Corner Activities</title>'
+    + '<style>body{font-family:Arial,sans-serif;padding:24px;}h1{color:#1A2A5C;}'
+    + 'table{width:100%;border-collapse:collapse;}th{background:#1A2A5C;color:#fff;padding:10px 8px;text-align:left;font-size:13px;}'
+    + 'tr:nth-child(even){background:#F9FAFB;}tr:hover{background:#EFF6FF;}'
+    + '.footer{margin-top:20px;text-align:center;color:#aaa;font-size:11px;}'
+    + '@media print{body{padding:0;}}</style></head><body>'
+    + '<h1>👨 Men\'s Corner Activity Guide</h1>'
+    + '<p style="color:#6B7280;margin-bottom:16px;">Empower Life 365 — ' + list.length + ' activities listed</p>'
+    + '<table><thead><tr><th></th><th>Activity</th><th>Complexity</th><th>Cost</th><th>Duration</th><th>Description</th></tr></thead>'
+    + '<tbody>' + rows + '</tbody></table>'
+    + '<div class="footer">empowerlife365.app</div>'
+    + '<script>window.onload=function(){window.print();};<\/script></body></html>');
+  w.document.close();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof switchTab === 'function') {
+    var _mcOrig = switchTab;
+    switchTab = function(name) {
+      _mcOrig(name);
+      if (name === 'mens') initMens();
     };
   }
 });
