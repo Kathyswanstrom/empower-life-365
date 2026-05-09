@@ -1653,6 +1653,46 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .ts-idea-name { font-weight:800; font-size:13px; color:#4C1D95; }
 .ts-idea-desc { font-size:11px; color:#6B7280; margin-top:3px; }
 
+
+/* ═══════════════ WOMEN'S GROUPS ═══════════════ */
+.wg-header { background:linear-gradient(135deg,#F9A8D4,#EC4899); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.wg-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#FFF1F7; border-bottom:1px solid #FBCFE8; flex-wrap:wrap; }
+.wg-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #EC4899; background:#fff; color:#9D174D; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.wg-mode-btn.active, .wg-mode-btn:hover { background:#EC4899; color:#fff; }
+.wg-body { padding:20px; }
+.wg-filter-btn { padding:5px 14px; border-radius:16px; border:2px solid #FBCFE8; background:#fff; color:#9D174D; font-size:12px; font-weight:700; cursor:pointer; transition:all .2s; }
+.wg-filter-btn.active, .wg-filter-btn:hover { background:#EC4899; color:#fff; border-color:#EC4899; }
+.wg-prog-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+.wg-prog-card { background:#fff; border:2px solid #FBCFE8; border-radius:14px; overflow:hidden; cursor:pointer; transition:all .2s; }
+.wg-prog-card:hover { box-shadow:0 6px 20px rgba(236,72,153,.18); border-color:#EC4899; }
+.wg-prog-top { padding:16px; }
+.wg-prog-emoji { font-size:34px; margin-bottom:6px; }
+.wg-prog-title { font-weight:800; font-size:15px; color:#831843; margin-bottom:4px; }
+.wg-prog-meta { font-size:12px; color:#9D174D; display:flex; gap:10px; }
+.wg-prog-bottom { background:#FFF1F7; padding:9px 14px; font-size:12px; color:#BE185D; line-height:1.5; }
+.wg-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+.wg-modal-overlay.open { display:flex; }
+.wg-modal { background:#fff; border-radius:18px; max-width:640px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.wg-modal-hdr { background:linear-gradient(135deg,#F9A8D4,#EC4899); color:#fff; padding:20px 24px; border-radius:18px 18px 0 0; display:flex; justify-content:space-between; align-items:start; }
+.wg-modal-body { padding:22px 24px; }
+.wg-modal-section { font-weight:900; font-size:12px; color:#9D174D; letter-spacing:.5px; margin:16px 0 8px; text-transform:uppercase; }
+.wg-disc-cat { margin-bottom:24px; }
+.wg-disc-cat-title { font-weight:900; font-size:15px; color:#831843; border-left:4px solid #EC4899; padding-left:10px; margin-bottom:10px; }
+.wg-disc-prompt { background:#fff; border:1px solid #FBCFE8; border-radius:10px; padding:11px 14px; margin-bottom:8px; font-size:14px; color:#374151; line-height:1.6; cursor:pointer; transition:background .15s; }
+.wg-disc-prompt:hover { background:#FFF1F7; }
+.wg-women-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+.wg-woman-card { background:#fff; border:2px solid #FBCFE8; border-radius:14px; overflow:hidden; cursor:pointer; transition:all .2s; }
+.wg-woman-card:hover { box-shadow:0 6px 20px rgba(236,72,153,.15); border-color:#EC4899; }
+.wg-woman-top { background:linear-gradient(135deg,#FFF1F7,#FBCFE8); padding:16px; text-align:center; }
+.wg-woman-emoji { font-size:42px; margin-bottom:6px; }
+.wg-woman-name { font-weight:900; font-size:15px; color:#831843; }
+.wg-woman-years { font-size:12px; color:#9D174D; margin-top:2px; }
+.wg-woman-body { padding:12px 16px; }
+.wg-woman-field { font-size:12px; font-weight:700; color:#EC4899; margin-bottom:4px; }
+.wg-woman-desc { font-size:13px; color:#374151; line-height:1.5; }
+.wg-meeting-form { background:#FFF1F7; border:2px solid #FBCFE8; border-radius:14px; padding:18px 20px; margin-bottom:20px; }
+.wg-meeting-form input, .wg-meeting-form select, .wg-meeting-form textarea { width:100%; padding:8px 12px; border:1px solid #FBCFE8; border-radius:8px; font-size:14px; margin-bottom:10px; box-sizing:border-box; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1731,6 +1771,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="brain" id="brain-tab" onclick="switchTab('brain')">🧩 Brain Games</button>
       <button class="tab-btn" data-tab="monthly" id="monthly-tab" onclick="switchTab('monthly')">📅 Monthly Themes</button>
       <button class="tab-btn" data-tab="talent" id="talent-tab" onclick="switchTab('talent')">🎭 Talent Show</button>
+      <button class="tab-btn" data-tab="womens" id="womens-tab" onclick="switchTab('womens')">👩 Women's Groups</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -5007,6 +5048,159 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">Winner Certificates</div>
         <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Category award certificates</div>
         <button onclick="tsPrintWinners()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-womens">
+  <div class="wg-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">👩 Women's Groups</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">25 programs · discussion guides · inspiring women · meeting planner · print materials</div>
+    </div>
+    <button onclick="wgPrint()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+  </div>
+  <div class="wg-mode-bar">
+    <button class="wg-mode-btn active" id="wgmode-programs" onclick="wgSetMode('programs')">🌸 Programs</button>
+    <button class="wg-mode-btn" id="wgmode-discuss" onclick="wgSetMode('discuss')">💬 Discussion Topics</button>
+    <button class="wg-mode-btn" id="wgmode-women" onclick="wgSetMode('women')">⭐ Inspiring Women</button>
+    <button class="wg-mode-btn" id="wgmode-meetings" onclick="wgSetMode('meetings')">📋 Meeting Planner</button>
+    <button class="wg-mode-btn" id="wgmode-print" onclick="wgSetMode('print')">🖨️ Print Materials</button>
+  </div>
+
+  <!-- PROGRAMS -->
+  <div id="wg-view-programs" class="wg-body">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+      <span style="font-weight:700;font-size:13px;color:#831843;margin-right:4px;">Filter:</span>
+      <button class="wg-filter-btn active" id="wgf-all" onclick="wgFilter('all')">All</button>
+      <button class="wg-filter-btn" id="wgf-social" onclick="wgFilter('social')">☕ Social</button>
+      <button class="wg-filter-btn" id="wgf-creative" onclick="wgFilter('creative')">🎨 Creative</button>
+      <button class="wg-filter-btn" id="wgf-wellness" onclick="wgFilter('wellness')">💆 Wellness</button>
+      <button class="wg-filter-btn" id="wgf-learning" onclick="wgFilter('learning')">📚 Learning</button>
+      <button class="wg-filter-btn" id="wgf-pampering" onclick="wgFilter('pampering')">💅 Pampering</button>
+      <button class="wg-filter-btn" id="wgf-food" onclick="wgFilter('food')">🍰 Food</button>
+    </div>
+    <div class="wg-prog-grid" id="wg-prog-grid"></div>
+  </div>
+
+  <!-- DISCUSSION TOPICS -->
+  <div id="wg-view-discuss" class="wg-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#831843;margin-bottom:6px;">💬 Discussion Topic Library</div>
+    <div style="font-size:13px;color:#9D174D;margin-bottom:16px;">Click any prompt to copy it for your session. Print a full guide below.</div>
+    <div id="wg-discuss-body"></div>
+    <button onclick="wgPrintDiscussionGuide()" class="btn" style="background:#EC4899;color:#fff;margin-top:8px;">🖨️ Print Full Discussion Guide</button>
+  </div>
+
+  <!-- INSPIRING WOMEN -->
+  <div id="wg-view-women" class="wg-body" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-weight:800;font-size:16px;color:#831843;">⭐ Inspiring Women Through History</div>
+        <div style="font-size:13px;color:#9D174D;margin-top:2px;">Click any card for the full profile. Great for discussion, trivia, and Women's History Month.</div>
+      </div>
+      <button onclick="wgPrintWomenProfiles()" class="btn" style="background:#EC4899;color:#fff;font-size:13px;">🖨️ Print Profiles</button>
+    </div>
+    <div class="wg-women-grid" id="wg-women-grid"></div>
+  </div>
+
+  <!-- MEETING PLANNER -->
+  <div id="wg-view-meetings" class="wg-body" style="display:none;">
+    <div class="wg-meeting-form">
+      <div style="font-weight:800;font-size:15px;color:#831843;margin-bottom:12px;">📋 Log a Meeting</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#9D174D;">Date</label>
+          <input type="date" id="wg-m-date" />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#9D174D;">Program / Topic</label>
+          <input type="text" id="wg-m-topic" placeholder="e.g. Tea & Talk, Book Club..." />
+        </div>
+      </div>
+      <label style="font-size:12px;font-weight:700;color:#9D174D;">Attendees (names or count)</label>
+      <input type="text" id="wg-m-attendees" placeholder="e.g. 12 residents, or list names..." />
+      <label style="font-size:12px;font-weight:700;color:#9D174D;">Highlights / Notes</label>
+      <textarea id="wg-m-notes" rows="3" placeholder="What happened? Memorable moments, favorite discussion points..."></textarea>
+      <label style="font-size:12px;font-weight:700;color:#9D174D;">Next Meeting Idea</label>
+      <input type="text" id="wg-m-next" placeholder="What will you do next time?" />
+      <button onclick="wgSaveMeeting()" class="btn" style="background:#EC4899;color:#fff;">✅ Save Meeting</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:15px;color:#831843;" id="wg-m-count">Meeting Log</div>
+      <button onclick="wgPrintMeetingLog()" class="btn" style="background:#FFF1F7;color:#BE185D;border:2px solid #FBCFE8;font-size:13px;">🖨️ Print Log</button>
+    </div>
+    <div id="wg-m-empty" style="text-align:center;padding:40px;color:#9D174D;font-size:15px;">No meetings logged yet. Start your first entry above!</div>
+    <div id="wg-m-list"></div>
+  </div>
+
+  <!-- PRINT -->
+  <div id="wg-view-print" class="wg-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#831843;margin-bottom:14px;">🖨️ Print Materials</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+      <div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">🌸</div><div style="font-weight:800;color:#831843;margin-bottom:6px;">Program Guide</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">All 25 women's programs with descriptions</div><button onclick="wgPrintProgramGuide()" class="btn" style="background:#EC4899;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">💬</div><div style="font-weight:800;color:#831843;margin-bottom:6px;">Discussion Guide</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Full topic library by category</div><button onclick="wgPrintDiscussionGuide()" class="btn" style="background:#EC4899;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">⭐</div><div style="font-weight:800;color:#831843;margin-bottom:6px;">Inspiring Women Profiles</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">20 profiles for discussion</div><button onclick="wgPrintWomenProfiles()" class="btn" style="background:#EC4899;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">🧠</div><div style="font-weight:800;color:#831843;margin-bottom:6px;">Women's History Trivia</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Quiz sheet with answer key</div><button onclick="wgPrintTrivia()" class="btn" style="background:#EC4899;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">📣</div><div style="font-weight:800;color:#831843;margin-bottom:6px;">Group Flyer / Poster</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Recruitment poster for the group</div><button onclick="wgPrintPoster()" class="btn" style="background:#EC4899;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">📅</div><div style="font-weight:800;color:#831843;margin-bottom:6px;">Year at a Glance</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">12-month program calendar</div><button onclick="wgPrintYearPlan()" class="btn" style="background:#EC4899;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+    </div>
+  </div>
+
+  <!-- PROGRAM MODAL -->
+  <div class="wg-modal-overlay" id="wg-prog-modal" onclick="if(event.target===this)wgCloseProgModal()">
+    <div class="wg-modal">
+      <div class="wg-modal-hdr">
+        <div>
+          <div id="wg-pm-emoji" style="font-size:32px;"></div>
+          <div id="wg-pm-title" style="font-size:20px;font-weight:900;margin-top:4px;"></div>
+          <div id="wg-pm-meta" style="font-size:13px;opacity:.85;margin-top:3px;"></div>
+        </div>
+        <button onclick="wgCloseProgModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:22px;cursor:pointer;border-radius:50%;width:36px;height:36px;">✕</button>
+      </div>
+      <div class="wg-modal-body">
+        <div id="wg-pm-desc" style="font-size:14px;color:#374151;line-height:1.7;margin-bottom:14px;"></div>
+        <div class="wg-modal-section">🛒 WHAT YOU NEED</div>
+        <div id="wg-pm-supplies"></div>
+        <div class="wg-modal-section">📋 HOW TO RUN IT</div>
+        <div id="wg-pm-steps"></div>
+        <div class="wg-modal-section">💬 DISCUSSION PROMPTS</div>
+        <div id="wg-pm-prompts"></div>
+        <div style="background:#FFF1F7;border-radius:10px;padding:12px 16px;margin-top:14px;">
+          <div style="font-weight:800;font-size:12px;color:#9D174D;margin-bottom:4px;">💡 FACILITATOR TIP</div>
+          <div id="wg-pm-tip" style="font-size:13px;color:#374151;line-height:1.6;"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+          <button onclick="wgPrintProgramSheet(wgActiveProgram)" class="btn" style="background:#EC4899;color:#fff;">🖨️ Print Program Sheet</button>
+          <button onclick="wgCloseProgModal()" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WOMEN PROFILE MODAL -->
+  <div class="wg-modal-overlay" id="wg-woman-modal" onclick="if(event.target===this)wgCloseWomanModal()">
+    <div class="wg-modal">
+      <div class="wg-modal-hdr">
+        <div style="text-align:center;width:100%;">
+          <div id="wg-wm-emoji" style="font-size:48px;margin-bottom:8px;"></div>
+          <div id="wg-wm-name" style="font-size:22px;font-weight:900;"></div>
+          <div id="wg-wm-years" style="font-size:13px;opacity:.85;margin-top:4px;"></div>
+        </div>
+        <button onclick="wgCloseWomanModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:22px;cursor:pointer;border-radius:50%;width:36px;height:36px;">✕</button>
+      </div>
+      <div class="wg-modal-body">
+        <div style="background:#FFF1F7;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#374151;line-height:1.7;" id="wg-wm-bio"></div>
+        <div class="wg-modal-section">🌟 KNOWN FOR</div>
+        <div id="wg-wm-known"></div>
+        <div class="wg-modal-section">💬 FAMOUS QUOTE</div>
+        <div style="background:#fff;border-left:4px solid #EC4899;padding:12px 16px;border-radius:0 10px 10px 0;font-size:15px;font-style:italic;color:#374151;line-height:1.7;" id="wg-wm-quote"></div>
+        <div class="wg-modal-section">🗣️ DISCUSSION QUESTIONS</div>
+        <div id="wg-wm-questions"></div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+          <button onclick="wgCloseWomanModal()" class="btn btn-secondary">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -37040,6 +37234,531 @@ function tsPrintPoster() {
   var performers = acts.length ? '<div style="margin-top:20px;font-size:16px;"><b>Featuring:</b><br>' + acts.map(function(a){ return a.name; }).join(' · ') + '</div>' : '';
   var w = window.open('','_blank');
   w.document.write('<html><head><title>Event Poster</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:60px 40px;max-width:600px;margin:0 auto;background:linear-gradient(135deg,#FAF5FF,#EDE9FE);}h1{font-size:52px;color:#4C1D95;margin-bottom:0;}h2{font-size:24px;color:#7C3AED;font-style:italic;}p{font-size:18px;color:#374151;line-height:1.9;}.star{font-size:40px;margin:10px;}.line{border:3px solid #7C3AED;margin:20px 0;}</style></head><body><div class="star">🎭</div><h1>' + info.title + '</h1><div class="line"></div><h2>A Live Performance Event</h2><p style="font-size:22px;font-weight:700;color:#4C1D95;">' + info.date + '</p><p>Hosted by ' + info.mc + '</p>' + performers + '<div class="line"></div><p style="font-size:16px;color:#7C3AED;">All are welcome · Refreshments to follow</p><p style="font-size:14px;color:#aaa;margin-top:30px;">Empower Life 365</p><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   WOMEN'S GROUPS  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var WG_MEETINGS_KEY = 'el365_wg_meetings';
+var wgActiveProgram = null;
+
+var WG_PROGRAMS = [
+  /* SOCIAL */
+  { id:'ws1', emoji:'☕', title:'Tea & Talk', cat:'social', duration:'60 min', groupSize:'4–20',
+    desc:'A relaxed, elegant tea social where residents gather to chat, share stories, and enjoy a variety of teas. The perfect low-key program that encourages conversation and connection.',
+    supplies:['Assorted teas (herbal, black, green, flavored)','Hot water kettle or urn','Teacups and saucers','Small cookies, scones, or finger sandwiches','Honey, lemon, cream, sugar','Pretty tablecloth and flowers'],
+    steps:['Set up a tea station with 4–6 different teas labeled with flavor cards.','Arrange seating in a circle or at small tables of 4.','As residents arrive, invite them to choose a tea and make a small plate.','Once everyone is settled, open with a light discussion prompt.','Let conversation flow naturally — minimal structure is ideal.','Close with a group favorite moment from the day.'],
+    prompts:['What\'s your favorite tea or warm drink, and do you have a memory connected to it?','Did you ever have a formal tea or afternoon tea growing up?','What\'s the best conversation you can remember having over a cup of something warm?'],
+    tip:'Variety is key — having both herbal and caffeinated options accommodates all residents. Scones or finger sandwiches elevate the experience. Even the presentation of teacups creates a mood.' },
+  { id:'ws2', emoji:'📚', title:'Book Club', cat:'social', duration:'60–90 min', groupSize:'4–12',
+    desc:'A structured reading discussion where residents explore a shared book, poem collection, or short stories together. Even residents who haven\'t read ahead can participate in discussion.',
+    supplies:['Copies of the selected book or reading (large print preferred)','Discussion question cards','Notepad and pens','Light refreshments'],
+    steps:['Select a book at least 3–4 weeks in advance so residents can read at their own pace.','For residents who can\'t read independently, offer to read aloud together.','Prepare 5–7 open-ended discussion questions.','Open each session with a brief summary for those who need a refresher.','Facilitate discussion — encourage quieter members with direct but gentle questions.','Close by voting on the next book together.'],
+    prompts:['What character did you relate to most, and why?','Did anything in the book remind you of your own life?','Would you recommend this book to a friend? Why or why not?'],
+    tip:'Short story collections work well when not everyone can commit to a full book. Read-alouds allow every resident to participate equally. Classic novels from the 1940s–1970s often resonate most with this generation.' },
+  { id:'ws3', emoji:'👗', title:'Fashion Through the Decades', cat:'social', duration:'60 min', groupSize:'Any',
+    desc:'A fun, visual trip through the history of women\'s fashion from the 1940s through the 1980s. Residents share what they wore, what was in style, and what they loved.',
+    supplies:['Fashion magazines or printed photos from each decade','Poster board or bulletin board','Colorful markers','Optional: fabric swatches or accessories to handle'],
+    steps:['Create a visual display or slideshow with fashion from each decade.','Start with the 1940s and work forward.','Ask residents to share what they remember wearing in each era.','Invite them to share their favorite outfit or style memory.','Discuss how fashion reflected the times.','End with a lighthearted "best dressed" memory vote.'],
+    prompts:['What decade had your favorite fashion, and what was your signature look?','Did you ever sew your own clothes or alter a store-bought outfit?','What outfit do you remember buying or wearing that made you feel really beautiful?'],
+    tip:'Bring out vintage accessories — a pillbox hat, white gloves, cat-eye glasses — for tactile engagement. Fashion magazines from the era are wonderful visual aids and conversation sparks.' },
+  { id:'ws4', emoji:'🌹', title:'Romance Through the Ages', cat:'social', duration:'60 min', groupSize:'Any',
+    desc:'A warm, nostalgic discussion about love, courtship, and romance across the decades — from first dances to love letters to marriage proposals.',
+    supplies:['Discussion prompt cards','Old photos if available (ask in advance)','Soft background music'],
+    steps:['Set a warm, intimate atmosphere with soft music.','Begin with a light ice-breaker: "Describe romance in one word from when you were young."','Work through 4–5 discussion prompts.','Invite sharing of love stories — engagement stories are especially popular.','End with the group\'s advice to young people about love.'],
+    prompts:['Tell us about your first date or first love.','How did courtship or dating differ when you were young?','What\'s the most romantic thing anyone ever did for you?','What\'s your advice for a lasting relationship?'],
+    tip:'Keep the tone celebratory and joyful. Residents with dementia often have vivid long-term memories of romance and respond beautifully to this topic. Have tissues ready — in the best way.' },
+  /* CREATIVE */
+  { id:'wc1', emoji:'✍️', title:'Life Story Writing Circle', cat:'creative', duration:'60 min', groupSize:'4–10',
+    desc:'Residents write or dictate short memories and stories from their lives, guided by weekly prompts. Over time, their entries can be compiled into a personal memoir booklet.',
+    supplies:['Writing journals or printed prompt sheets','Pens (easy-grip preferred)','Optional: voice recorder for dictation'],
+    steps:['Begin with a brief warm-up: read a sample short memory aloud.','Share the week\'s prompt on the board.','Give residents 15–20 minutes to write, draw, or dictate.','Invite willing participants to share what they wrote.','Affirm all contributions warmly.','Collect or photograph entries to build their memory book over time.'],
+    prompts:['Write about a place you loved as a child.','Describe a woman who shaped who you became.','Write about a moment when you felt truly brave.','Describe your home — the smells, the sounds, the feeling of it.'],
+    tip:'Residents who can\'t write can dictate to a volunteer or family member. Keep a binder for each resident\'s entries — presenting it as a gift to their family is a powerful finale to the program.' },
+  { id:'wc2', emoji:'🧵', title:'Needlework & Stitch Circle', cat:'creative', duration:'60–90 min', groupSize:'4–12',
+    desc:'A relaxed gathering where residents do needlework — embroidery, knitting, crochet, or cross-stitch — while listening to music or chatting. No skill requirement.',
+    supplies:['Embroidery hoops, yarn, knitting needles, or cross-stitch kits','Large-eye needles','Magnifying glasses (helpful)','Background music'],
+    steps:['Offer a range of options so residents choose their preferred craft.','Seat residents in a circle to encourage conversation.','Play soft music from their era in the background.','Have a simple project ready for residents who want to try something new.','Chat naturally — this is as much about socializing as crafting.'],
+    prompts:['Did you knit, sew, or embroider growing up? Who taught you?','What\'s the most meaningful thing you ever made by hand?','Do you remember a specific pattern or project from your past?'],
+    tip:'This program has the wonderful quality of allowing quiet residents to participate without pressure. Many women of this generation have deep needlework skills and enjoy the chance to use them again.' },
+  { id:'wc3', emoji:'📝', title:'Love Letter Writing', cat:'creative', duration:'45 min', groupSize:'Any',
+    desc:'Residents write a letter to someone they love — a family member, old friend, or even their younger self. The act of writing deepens connection and meaning.',
+    supplies:['Pretty stationery or decorated paper','Envelopes','Pens','Stamps (optional, if mailing)','Optional: dried flower petals or stickers to decorate'],
+    steps:['Begin by reading aloud a short, famous love letter as inspiration.','Offer three options: write to a family member, write to a friend, or write to your younger self.','Give residents 20 minutes of quiet writing time.','Offer to read letters aloud (only volunteers).','Help address envelopes for those who want to mail their letters.'],
+    prompts:['What would you say to your younger self that you needed to hear?','Who in your life deserves a letter of gratitude?'],
+    tip:'Writing to their younger self is often the most powerful option and produces deeply moving results. Stationery matters — beautiful paper elevates the experience significantly.' },
+  { id:'wc4', emoji:'🎨', title:'Vision Board Making', cat:'creative', duration:'60 min', groupSize:'4–12',
+    desc:'Residents create personal vision boards using magazines, photos, and decorative paper — focused on things they love, values, memories, and wishes.',
+    supplies:['Old magazines (lifestyle, travel, home, food)','Poster board or large cardstock','Scissors (easy-grip)','Glue sticks','Markers','Stickers and decorations'],
+    steps:['Explain that vision boards are personal collages of things that bring joy.','Encourage residents to flip through magazines and tear out anything that appeals.','Allow 20–30 minutes of independent creating.','Walk around and ask residents about their choices.','End with a share: "Tell us one thing on your board and why you chose it."'],
+    prompts:['What images or words called out to you most?','What do you still want to do, see, or experience?','What does your vision board say about who you are?'],
+    tip:'Frame this as "things I love" rather than goals — which feels more accessible and pressure-free for seniors. The process of sorting through images is itself calming and enjoyable.' },
+  /* WELLNESS */
+  { id:'ww1', emoji:'🧘', title:'Gentle Yoga & Mindfulness', cat:'wellness', duration:'45 min', groupSize:'Any',
+    desc:'A chair-based gentle yoga and breathing session designed specifically for seniors. Focuses on relaxation, gentle movement, and mindfulness.',
+    supplies:['Chairs without armrests (or with soft arms)','Optional: yoga mats if doing floor work','Soft music','Printed pose cards (large print)'],
+    steps:['Begin with 5 minutes of slow deep breathing.','Lead 4–5 gentle seated stretches (neck rolls, shoulder rolls, wrist circles).','Add 2–3 simple poses: seated forward fold, seated twist, arm raises.','Include a 5-minute body scan or guided visualization.','Close with 3 deep breaths together.'],
+    prompts:['How does your body feel compared to when we started?','What part of this made you feel most relaxed?','When in your life did you feel your most physically strong or capable?'],
+    tip:'Emphasize that this is about how it feels, not how it looks. Never push past comfort. A calm, reassuring voice is the most important tool in this program.' },
+  { id:'ww2', emoji:'💆', title:'Stress Less Workshop', cat:'wellness', duration:'60 min', groupSize:'4–12',
+    desc:'A discussion-based workshop exploring simple strategies for managing stress, anxiety, and difficult emotions — tailored to the challenges common in senior living.',
+    supplies:['Discussion prompt cards','Handout: "10 Ways to Feel Better Right Now"','Herbal tea or lavender sachets','Optional: stress balls or fidget items'],
+    steps:['Open with: "What is one small thing that helps you when you\'re feeling overwhelmed?"','Share and discuss 5–7 simple stress-reduction strategies.','Practice one technique together (deep breathing, progressive muscle relaxation).','Discuss what works personally for each resident.','Provide take-home tip sheet.'],
+    prompts:['What\'s your go-to way to calm yourself down?','What worries take up the most space in your mind lately?','When in your life did you feel the most at peace?'],
+    tip:'This program opens important conversations about mental health and resilience. Validate every coping strategy shared. If serious concerns arise, have a private follow-up with the individual.' },
+  { id:'ww3', emoji:'🌿', title:'Aromatherapy & Relaxation', cat:'wellness', duration:'45 min', groupSize:'Any',
+    desc:'A sensory relaxation experience using lavender, rose, peppermint, and other essential oils combined with gentle music and guided relaxation.',
+    supplies:['Essential oils: lavender, rose, peppermint, eucalyptus, orange','Diffuser or cotton balls with drops of oil','Soft blankets','Relaxation music'],
+    steps:['Prepare the room: dim lights, soft music, pleasant scent in diffuser.','Pass around cotton balls with each scent for residents to smell and identify.','Share a brief fact about each scent and its traditional use.','Guide a 10-minute relaxation session (breathing + body awareness).','Close with residents sharing their favorite scent and why.'],
+    prompts:['What smell takes you back to a happy memory?','What scent reminds you of home, cooking, or someone you love?','What smell do you always associate with summer/winter/holidays?'],
+    tip:'Scent is the most powerful memory trigger of all five senses — this program often unlocks beautiful, unexpected memories. Keep a box of tissues nearby. Check for allergies in advance.' },
+  { id:'ww4', emoji:'🚶', title:'Walking Club — Ladies Edition', cat:'wellness', duration:'30–45 min', groupSize:'Any',
+    desc:'A ladies-only walking social where residents walk the halls or outdoor paths together with a cheerful, social atmosphere. Friendly and low-pressure.',
+    supplies:['Walking route planned in advance','Optional: pedometers or step counters','Sticker chart for celebrating milestones','Water station at finish'],
+    steps:['Meet at a designated spot and do a brief warm-up stretch (2 min).','Walk a planned route at a comfortable pace.','Rotate walking partners every 5 minutes to encourage new conversations.','Celebrate each participant at the end with a sticker or stamp on their chart.','Cool down with water and a brief chat.'],
+    prompts:['Where did you love to walk or hike when you were younger?','Tell us about a meaningful walk or journey you took.','What\'s your favorite thing to notice when you walk outside?'],
+    tip:'The social component is as important as the exercise. Pair ambulatory residents with those who are slower to ensure no one feels left behind. Celebrate participation, not speed.' },
+  /* LEARNING */
+  { id:'wl1', emoji:'🗺️', title:'Women\'s History Tour', cat:'learning', duration:'60 min', groupSize:'Any',
+    desc:'A guided exploration of pivotal moments in women\'s history — from suffrage to the workplace to modern milestones — with discussion and personal connections.',
+    supplies:['Printed timeline or display photos','Discussion cards','Optional: projector/tablet for images'],
+    steps:['Create or display a visual timeline: 1848 Seneca Falls through today.','Walk through 5–6 key milestones, pausing to discuss each.','Ask residents to share where they were or what they remember.','Discuss which women they most admire from history.','Close by asking what milestone they\'re most proud of witnessing.'],
+    prompts:['Which milestone in women\'s rights do you most remember experiencing?','Who is the most influential woman you ever met personally?','What changed most in women\'s lives during your lifetime?'],
+    tip:'Residents lived through the women\'s movement — they ARE history. Centering their personal experiences alongside the historical facts makes this deeply meaningful.' },
+  { id:'wl2', emoji:'🌎', title:'Women Around the World', cat:'learning', duration:'60 min', groupSize:'Any',
+    desc:'An armchair travel program exploring how women live, work, and celebrate in different cultures — with food tastes, music samples, and discussion.',
+    supplies:['Printed photos or display board (Japan, Mexico, India, France, Kenya, etc.)','Small food tastes (international cookies, teas, or snacks)','Background music from each region'],
+    steps:['Visit 3–4 countries per session.','Share how women in each culture dress, celebrate, and live.','Sample a food or tea from the region.','Play a brief snippet of music.','Discuss what surprised or resonated with residents.'],
+    prompts:['Did you ever travel to another country? Where?','Which culture\'s traditions feel most different from your own?','What do you think women around the world have most in common?'],
+    tip:'Keep the tone curious and celebratory — not comparative or judgmental. Food and music samples make this multisensory and particularly engaging.' },
+  { id:'wl3', emoji:'🎬', title:'Classic Films — Leading Ladies', cat:'learning', duration:'90 min', groupSize:'Any',
+    desc:'A movie-watching social featuring classic films with iconic female leads. A discussion guide turns the viewing into a rich group experience.',
+    supplies:['TV/projector','Selected film (see suggestions below)','Popcorn and beverages','Discussion guide'],
+    steps:['Select a film: Casablanca, Roman Holiday, The Sound of Music, Rebecca, Breakfast at Tiffany\'s, All About Eve, or similar.','Provide a brief context about the film and the actress before starting.','Watch together with commentary welcome.','After the film, lead a 15-minute discussion.'],
+    prompts:['Which actress did you most admire growing up, and why?','Did this film remind you of anything from your own life?','What made the female lead in this film memorable or inspiring?'],
+    tip:'Shorter films or first-halves work better than 2-hour commitments. Classic musicals often have the broadest appeal. Popcorn is mandatory.' },
+  { id:'wl4', emoji:'🧠', title:'Women\'s History Trivia', cat:'learning', duration:'45 min', groupSize:'Any',
+    desc:'A fun, spirited trivia game focused on famous women in history, entertainment, politics, science, and sports. Teams or individual play.',
+    supplies:['Trivia question cards (see Print tab for printable version)','Small prizes or certificates','Buzzers or hand-raise system'],
+    steps:['Divide into 2–4 teams or play individually.','Read questions aloud — allow 10 seconds per answer.','Award points for correct answers.','Mix easy questions with harder ones to keep everyone engaged.','Award "Queen of Trivia" certificate to the winner.'],
+    prompts:['Which of these women\'s stories surprised you most?','Who from today\'s trivia did you admire growing up?'],
+    tip:'Read all answers aloud whether they are correct or not — learning is the goal as much as winning. Brief stories about each woman after the answer extend the conversation naturally.' },
+  /* PAMPERING */
+  { id:'wp1', emoji:'💅', title:'Spa Day', cat:'pampering', duration:'90 min', groupSize:'4–8',
+    desc:'A full pampering session including hand massage with lotion, nail painting, hand soak, and face care — the ultimate self-care experience.',
+    supplies:['Hand lotion (fragrant: lavender, rose, vanilla)','Nail polish (soft pinks, reds, neutrals)','Nail polish remover and cotton balls','Warm water basins for hand soaks','Face cream or cucumber eye pads','Soft towels','Relaxing music'],
+    steps:['Set the mood: dim lights, soft music, pleasant scent.','Begin with a warm hand soak (5 min).','Apply hand lotion with a gentle massage (staff or volunteer).','Offer nail polish — let residents choose their color.','Apply cucumber pads or face cream while nails dry.','Offer a mirror for residents to admire their results.'],
+    prompts:['What beauty routine did you have when you were younger?','Do you have a signature color or style when it comes to nails?','What\'s a beauty tip or secret you swear by?'],
+    tip:'This program often produces the most joyful and giggly atmosphere of any activity. Let residents choose their nail color — autonomy and personal preference matter enormously.' },
+  { id:'wp2', emoji:'💄', title:'Beauty Through the Decades', cat:'pampering', duration:'60 min', groupSize:'Any',
+    desc:'A fun exploration of beauty trends from the 1940s–1980s — from victory rolls to cat-eye liner to the big hair of the 80s — with hands-on demonstration.',
+    supplies:['Vintage beauty product images or examples','Lipstick or lip gloss for demo','Scarves for hair styling','Mirror'],
+    steps:['Display photos of beauty trends by decade.','Discuss what was fashionable and why.','Invite residents to share their own beauty routines from the past.','Do a hands-on scarves styling demo.','Offer lipstick touch-ups if desired.'],
+    prompts:['What was your signature makeup look when you were young?','What beauty product could you not live without?','What trend do you wish would come back?'],
+    tip:'Providing a small lipstick touch-up at the end — even just a sheer pink — gives residents a tangible boost of confidence and joy. Many will ask for a photo afterward.' },
+  { id:'wp3', emoji:'🛁', title:'Self-Care Planning Workshop', cat:'pampering', duration:'45 min', groupSize:'4–12',
+    desc:'A gentle workshop helping residents identify their own self-care needs and create a personalized self-care routine for their daily or weekly lives.',
+    supplies:['Printed self-care menu cards','Pens','Optional: small self-care kits to take home (lotion, lip balm, tea bag)'],
+    steps:['Open with: "What does taking care of yourself look like for you?"','Share a "self-care menu" covering physical, emotional, social, and spiritual needs.','Invite residents to circle 3 self-care activities they want to try this week.','Discuss as a group.','Provide a small take-home item as a reminder.'],
+    prompts:['When do you feel most like yourself and at your best?','What did you used to do for yourself that you\'d like to do again?','What\'s one small thing that always lifts your spirits?'],
+    tip:'Frame self-care as nourishment, not indulgence — this generation often feels guilty about prioritizing themselves. Validate that caring for themselves allows them to give more to others.' },
+  /* FOOD */
+  { id:'wf1', emoji:'🍰', title:'Recipe Swap & Sharing', cat:'food', duration:'60 min', groupSize:'Any',
+    desc:'Residents share their most beloved recipes, the stories behind them, and what made these dishes so special. Optional: prepare a simple dish together.',
+    supplies:['Recipe cards (blank)','Pens','Optional: ingredients for one simple dish','Printed recipe collection to compile and give to residents'],
+    steps:['Ask residents in advance to think of a recipe they\'d like to share.','Open with a group question about their most beloved food memory.','Go around the circle — each resident shares their recipe and its story.','Record recipes on cards.','Optional: prepare one simple dish together from the shared recipes.','Compile a "Our Favorite Recipes" booklet for residents to keep.'],
+    prompts:['What dish are you most famous for?','What\'s the most important recipe you inherited from your mother or grandmother?','What food always takes you back to childhood?'],
+    tip:'The stories behind the recipes are often more meaningful than the recipes themselves. A compiled recipe booklet distributed at a future meeting is a deeply cherished keepsake.' },
+  { id:'wf2', emoji:'🫖', title:'Fancy Dessert Social', cat:'food', duration:'60 min', groupSize:'Any',
+    desc:'A celebration of sweets — residents sample and rate 4–6 different desserts, share their favorites, and enjoy a lively, delicious discussion.',
+    supplies:['4–6 different desserts in small portions','Rating cards (1–5 stars)','Pens','Napkins and small plates','Sparkling water or punch'],
+    steps:['Present each dessert on a labeled plate or tray.','Residents sample and fill out a simple rating card.','After tasting, reveal the group\'s top-rated dessert.','Open discussion: favorite desserts, memorable sweets, baking memories.','Optional: vote on what to bake together next time.'],
+    prompts:['What dessert do you dream about?','What was the best dessert you ever had, and where?','Did you bake? What was your specialty?'],
+    tip:'Presentation elevates the experience dramatically. Small portions on pretty plates feel special and festive. Chocolate-based desserts almost always win — in case you were wondering.' },
+  { id:'wf3', emoji:'🥂', title:'Cooking Demonstration', cat:'food', duration:'60 min', groupSize:'Any',
+    desc:'Staff or a resident demonstrates making a simple dish while others watch, comment, and share related memories. A crowd-pleasing, low-effort program.',
+    supplies:['Ingredients for the chosen dish','Demonstration table or cart','Printed recipe cards to distribute','Samples for residents'],
+    steps:['Choose a simple, classic recipe: chocolate chip cookies, fruit salad, no-bake dessert.','Set up a demonstration table visible to all.','Walk through each step, inviting commentary and questions.','Share samples when complete.','Distribute printed recipe cards.'],
+    prompts:['What kitchen skill are you most proud of?','What\'s the most impressive dish you ever made?','Who was the best cook you ever knew, and what made them special?'],
+    tip:'The smell of baking or cooking transforms a room instantly. Even residents with limited engagement will perk up at the scent of cookies in the oven.' }
+];
+
+var WG_DISCUSSIONS = [
+  { cat:'Life & Wisdom', emoji:'🌟', prompts:[
+    'What is the best piece of advice you ever received?',
+    'What\'s something you wish you\'d known at 30 that you know now?',
+    'What would you tell a young woman just starting her adult life?',
+    'What has been the biggest surprise about growing older?',
+    'What decision in your life are you most proud of?',
+    'What do you want to be remembered for?',
+    'What is something you used to worry about that you no longer care about?',
+    'If you could go back to any age for just one day, which would you choose?'
+  ]},
+  { cat:'Family & Relationships', emoji:'👨‍👩‍👧', prompts:[
+    'Tell us about the most important relationship in your life.',
+    'What made your mother or a maternal figure remarkable?',
+    'What\'s the best thing you ever did for someone you love?',
+    'How has your understanding of friendship changed over your lifetime?',
+    'Tell us about a neighbor or community member who shaped your life.',
+    'What tradition from your family do you most cherish?',
+    'What do you wish you\'d said to someone while you had the chance?',
+    'What does unconditional love look like to you?'
+  ]},
+  { cat:'Career & Accomplishments', emoji:'💼', prompts:[
+    'What are you most proud of accomplishing in your lifetime?',
+    'Tell us about a time you surprised yourself with what you were capable of.',
+    'What obstacles did you face as a woman that you had to push through?',
+    'What was your first paying job, and what did it teach you?',
+    'Did you have a career you loved? Tell us about it.',
+    'Who believed in you when you needed it most?',
+    'What was the hardest thing you ever had to do — and how did you do it?',
+    'What skill are you most proud of mastering in your life?'
+  ]},
+  { cat:'Fashion & Beauty', emoji:'👗', prompts:[
+    'What decade had your personal best fashion era?',
+    'Tell us about an outfit that made you feel like a million dollars.',
+    'What\'s your signature color, style, or accessory?',
+    'Did you sew your own clothes or alter anything? Tell us about it.',
+    'What beauty routine or product did you swear by?',
+    'Who was your style icon?',
+    'Tell us about a piece of jewelry with a special story.',
+    'What fashion trend are you glad is gone — and which do you wish would come back?'
+  ]},
+  { cat:'Fun & Light-Hearted', emoji:'😄', prompts:[
+    'What song always makes you want to get up and dance?',
+    'If you could have lunch with any woman in history, who would it be and why?',
+    'What\'s the most spontaneous thing you\'ve ever done?',
+    'What\'s something you\'re still terrible at and don\'t care?',
+    'What made you laugh the hardest in your life?',
+    'What\'s the most interesting place you\'ve ever been?',
+    'If you won the lottery tomorrow, what would you do first?',
+    'What\'s a skill you\'d love to learn if you had unlimited time?'
+  ]},
+  { cat:'Health & Wellness', emoji:'🌿', prompts:[
+    'What does it mean to you to feel truly well?',
+    'What\'s the best thing you do for yourself to stay healthy in mind and spirit?',
+    'What have you learned about your body\'s wisdom over the years?',
+    'Who was the most important health advocate in your life?',
+    'What do you do when you\'re feeling low that always helps?',
+    'How has your relationship with your body changed over the decades?',
+    'What\'s one habit you\'re grateful you started — or stopped?'
+  ]}
+];
+
+var WG_WOMEN = [
+  { id:'ww1', emoji:'🗽', name:'Eleanor Roosevelt', years:'1884–1962', field:'Diplomat & Human Rights Leader',
+    bio:'First Lady for 12 years and the first US Delegate to the United Nations, Eleanor Roosevelt transformed the role of First Lady from ceremonial to activist. She championed civil rights, women\'s rights, and human dignity at a time when these causes were deeply controversial.',
+    known:['Chair of the UN Commission on Human Rights','Author of the Universal Declaration of Human Rights','Syndicated newspaper column "My Day" — written daily for 26 years','Advocate for African American civil rights at great political cost'],
+    quote:'"You gain strength, courage, and confidence by every experience in which you really stop to look fear in the face. You must do the thing you think you cannot do."',
+    questions:['Eleanor was often criticized for stepping outside the traditional First Lady role. Have you ever been criticized for not conforming to expectations?','She was described as painfully shy as a young woman. How did shyness (or confidence) shape your path in life?','What cause would you speak up for if you had a platform?']},
+  { id:'ww2', emoji:'🎭', name:'Audrey Hepburn', years:'1929–1993', field:'Actress & Humanitarian',
+    bio:'Born in the Netherlands during World War II, Audrey Hepburn survived wartime hardship before becoming one of Hollywood\'s most beloved actresses. Later in life she devoted herself entirely to UNICEF, traveling to the world\'s poorest nations to advocate for children.',
+    known:['Only actress to win an Oscar, Emmy, Grammy, and Tony (EGOT)','Starred in Roman Holiday, Breakfast at Tiffany\'s, Sabrina, My Fair Lady','UNICEF Goodwill Ambassador from 1988 until her death','Named the third Greatest Female Screen Legend of Classic Hollywood'],
+    quote:'"Nothing is impossible. The word itself says \'I\'m possible!\'"',
+    questions:['Audrey said her wartime childhood taught her never to take food, kindness, or a peaceful night\'s sleep for granted. What hardship in your life gave you an unexpected gift?','She walked away from fame to give her time to humanitarian work. What would you do if time and money were no object?','What\'s a classic Audrey Hepburn film you loved?']},
+  { id:'ww3', emoji:'🔬', name:'Marie Curie', years:'1867–1934', field:'Physicist & Chemist',
+    bio:'The first woman to win a Nobel Prize — and the only person in history to win Nobel Prizes in two different sciences (Physics and Chemistry). Born in Poland when women were not allowed in universities, she secretly attended an underground "floating university" before moving to Paris.',
+    known:['Discovered polonium and radium','First woman professor at the University of Paris','Won Nobel Prize in Physics (1903) and Nobel Prize in Chemistry (1911)','Her research on radioactivity laid the foundation for cancer treatment'],
+    quote:'"Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less."',
+    questions:['Marie faced enormous resistance simply because she was a woman in science. Have you ever been told you couldn\'t do something because of your gender?','She named a chemical element after her homeland of Poland as a tribute to her roots. What place means the most to you and why?','What discovery or invention from your lifetime amazed you most?']},
+  { id:'ww4', emoji:'✊', name:'Rosa Parks', years:'1913–2005', field:'Civil Rights Activist',
+    bio:'On December 1, 1955, Rosa Parks refused to give up her seat on a Montgomery, Alabama bus — a single act of quiet defiance that sparked the Montgomery Bus Boycott and became one of the most iconic moments of the Civil Rights Movement.',
+    known:['Her arrest sparked the 381-day Montgomery Bus Boycott','Named "the first lady of civil rights" by Congress','Received the Presidential Medal of Freedom and Congressional Gold Medal','Continued advocating for civil rights for the rest of her long life'],
+    quote:'"You must never be fearful about what you are doing when it is right."',
+    questions:['Rosa Parks said she was simply tired — tired of giving in. Have you ever reached a moment where you simply couldn\'t stay quiet any longer?','What act of courage — large or small — are you most proud of?','What change in society during your lifetime are you most grateful you witnessed?']},
+  { id:'ww5', emoji:'🌍', name:'Amelia Earhart', years:'1897–1937', field:'Aviator & Pioneer',
+    bio:'The first woman to fly solo across the Atlantic Ocean, Amelia Earhart shattered what everyone assumed possible for women in an era of corsets and domestic expectations. She became the most famous female aviator in the world before her mysterious disappearance over the Pacific.',
+    known:['First woman to fly solo across the Atlantic (1932)','Set multiple speed and altitude records for women','Author of two bestselling books about her flight experiences','Symbol of courage and independence for generations of women'],
+    quote:'"The most difficult thing is the decision to act — the rest is merely tenacity."',
+    questions:['Amelia said she flew because it gave her a sense of freedom she couldn\'t find anywhere else. What gave you that feeling of freedom?','She was called reckless by many for her ambitions. Who in your life called you reckless or too bold — and were they right?','What\'s something you did that nobody expected of you?']},
+  { id:'ww6', emoji:'📖', name:'Maya Angelou', years:'1928–2014', field:'Poet & Author',
+    bio:'Raised in segregated Arkansas, Maya Angelou overcame an extraordinarily difficult childhood to become one of America\'s greatest poets and authors. Her memoir "I Know Why the Caged Bird Sings" is considered a landmark of American literature.',
+    known:['Author of I Know Why the Caged Bird Sings and six additional autobiographies','Recited a poem at President Clinton\'s 1993 inauguration','Received the Presidential Medal of Freedom from President Obama','Professor of American Studies at Wake Forest University for 30 years'],
+    quote:'"I\'ve learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel."',
+    questions:['Maya wrote extensively about the power of resilience. What is the most resilient thing you have ever done?','She became mute for five years after a childhood trauma — and later found her voice through poetry. What helped you find your voice?','What quote or saying has guided your life?']},
+  { id:'ww7', emoji:'🎵', name:'Ella Fitzgerald', years:'1917–1996', field:'Jazz Singer',
+    bio:'Called the "First Lady of Song," Ella Fitzgerald won 13 Grammy Awards and recorded over 200 albums. Orphaned as a teenager and briefly homeless, she was discovered at age 17 at an amateur talent contest at the Apollo Theater.',
+    known:['Won 13 Grammy Awards — more than any female jazz artist at the time','Known for her improvisational "scat" singing style','Collaborated with Louis Armstrong, Duke Ellington, and Count Basie','Her "Songbook" albums are considered definitive recordings of the Great American Songbook'],
+    quote:'"It isn\'t where you came from; it\'s where you\'re going that counts."',
+    questions:['Ella overcame poverty and homelessness to become one of the greatest singers who ever lived. What obstacle in your life became a stepping stone?','What\'s your all-time favorite song — and does it have a memory attached to it?','Ella could listen to a song once and sing it perfectly. What\'s a skill that came naturally to you?']},
+  { id:'ww8', emoji:'🏛️', name:'Sandra Day O\'Connor', years:'1930–2023', field:'First Female Supreme Court Justice',
+    bio:'Appointed by President Reagan in 1981, Sandra Day O\'Connor became the first woman to serve on the United States Supreme Court — shattering a barrier that had stood for 191 years. She served for 24 years as the Court\'s pivotal swing vote.',
+    known:['First woman to serve on the US Supreme Court','Graduated third in her Stanford Law class — but could only find work as a secretary','Named one of Time\'s 100 Most Powerful Women in the World','Advocated for civics education after her retirement'],
+    quote:'"Do the best you can in every task, no matter how unimportant it may seem at the time."',
+    questions:['Sandra was told no law firm would hire a woman and was offered a secretarial job despite graduating at the top of her class. Have you ever been underestimated?','She was a swing vote — meaning she listened carefully and decided each case on its own merits. Who in your life is someone you deeply respect for their fairness?','What barrier — personal, professional, or social — are you most proud to have broken through in your own life?']},
+  { id:'ww9', emoji:'🩰', name:'Katharine Hepburn', years:'1907–2003', field:'Actress',
+    bio:'Winner of four Academy Awards — the most of any actor in history — Katharine Hepburn was famous not just for her talent but for her fierce independence, refusal to conform, and unapologetic individuality at a time when Hollywood tried to control everything about its stars.',
+    known:['Won four Best Actress Academy Awards — a record never equaled','Wore trousers publicly at a time when this was considered scandalous','Starred in The African Queen, Philadelphia Story, Guess Who\'s Coming to Dinner, and On Golden Pond','Her 26-year partnership with Spencer Tracy was one of Hollywood\'s greatest love stories'],
+    quote:'"I never realized until lately that women were supposed to be the inferior sex."',
+    questions:['Hepburn wore pants and refused to wear makeup or follow rules about how women should present themselves. What rules did you break — or wish you had broken?','She was called "box office poison" early in her career but came back stronger than ever. Have you ever had a comeback story?','What Katharine Hepburn film is your favorite?']},
+  { id:'ww10', emoji:'🌺', name:'Frida Kahlo', years:'1907–1954', field:'Artist',
+    bio:'After surviving a devastating bus accident at age 18 that left her with lifelong pain, Frida Kahlo channeled her experiences into extraordinary paintings that explored identity, pain, gender, and Mexican culture. She is now one of the most recognized and beloved artists in the world.',
+    known:['Created 143 paintings, 55 of which are self-portraits','Her work was embraced by the Surrealist movement, though she rejected the label','Married famous muralist Diego Rivera twice','Her home La Casa Azul is now the most visited museum in Mexico City'],
+    quote:'"I used to think I was the strangest person in the world but then I thought, there are so many people in the world, there must be someone just like me."',
+    questions:['Frida painted through enormous physical pain — art was her way of processing suffering. What creative outlet has helped you through difficult times?','She celebrated her Mexican heritage at a time when blending in was more fashionable. What aspects of your heritage or identity are you proudest of?','What\'s something about you that makes you unique — something that only you can offer the world?']}
+];
+
+var WG_YEAR_PLAN = [
+  {month:'January',program:'Tea & Talk: New Year Goals & Dreams',why:'Warm, cozy start to the year — intimate discussion'},
+  {month:'February',program:'Love Letter Writing + Romance Through the Ages',why:'Valentine\'s Day theme — love, relationships, memories'},
+  {month:'March',program:"Women's History Tour + Inspiring Women Trivia",why:"Women's History Month — celebrate and honor"},
+  {month:'April',program:'Vision Board Making + Spring Themes',why:'New beginnings — perfect time for visioning'},
+  {month:'May',program:'Recipe Swap & Sharing + Mother\'s Day Tea',why:"Mother's Day — honoring mothers and family recipes"},
+  {month:'June',program:'Fancy Dessert Social + Summer Kickoff',why:'Celebrate summer — light, festive, food-focused'},
+  {month:'July',program:'Classic Films: Leading Ladies Night',why:"Summer evening — Audrey Hepburn, Katharine Hepburn, others"},
+  {month:'August',program:'Spa Day + Self-Care Workshop',why:'Mid-year pampering — rest, restore, and celebrate'},
+  {month:'September',program:'Life Story Writing Circle Kickoff',why:'Fall reflections — begin memoir-writing project'},
+  {month:'October',program:'Fashion Through the Decades + Beauty Demo',why:'Fall fashion — fun, nostalgic, social'},
+  {month:'November',program:'Gratitude Circle + Cooking Demonstration',why:'Thanksgiving theme — gratitude and recipes'},
+  {month:'December',program:'Holiday Tea Party + Year in Review',why:'Year-end celebration — reflect on favorite moments'}
+];
+
+var WG_TRIVIA = [
+  {q:'Who was the first woman to win a Nobel Prize?',a:'Marie Curie',choices:['Amelia Earhart','Marie Curie','Eleanor Roosevelt','Rosa Parks']},
+  {q:'In what year did American women win the right to vote?',a:'1920',choices:['1912','1918','1920','1924']},
+  {q:'Which actress won the most Academy Awards in history (four total)?',a:'Katharine Hepburn',choices:['Meryl Streep','Bette Davis','Katharine Hepburn','Audrey Hepburn']},
+  {q:'Rosa Parks\' famous act of defiance took place on what type of transportation?',a:'A city bus',choices:['A train','A city bus','An airplane','A streetcar']},
+  {q:'Amelia Earhart was the first woman to fly solo across which ocean?',a:'Atlantic Ocean',choices:['Pacific Ocean','Atlantic Ocean','Indian Ocean','Arctic Ocean']},
+  {q:'What poet recited her work at President Clinton\'s inauguration in 1993?',a:'Maya Angelou',choices:['Maya Angelou','Toni Morrison','Rita Dove','Sylvia Plath']},
+  {q:'Who was the first woman to serve on the US Supreme Court?',a:'Sandra Day O\'Connor',choices:['Ruth Bader Ginsburg','Sonia Sotomayor','Sandra Day O\'Connor','Elena Kagan']},
+  {q:'Ella Fitzgerald was famous for what vocal improvisation style?',a:'Scat singing',choices:['Blues','Yodeling','Scat singing','Belting']},
+  {q:'In what year did women gain the right to have their own credit card in the US?',a:'1974',choices:['1960','1968','1974','1980']},
+  {q:'Which was the first country in the world to give women the right to vote?',a:'New Zealand',choices:['United States','United Kingdom','New Zealand','Australia']}
+];
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'womens') wgInit();
+  };
+})();
+
+function wgInit() {
+  wgRenderPrograms('all');
+  wgRenderDiscussions();
+  wgRenderWomen();
+  wgRenderMeetings();
+  var today = new Date().toISOString().split('T')[0];
+  var md = document.getElementById('wg-m-date');
+  if (md && !md.value) md.value = today;
+}
+
+/* ── MODE ── */
+function wgSetMode(mode) {
+  ['programs','discuss','women','meetings','print'].forEach(function(m) {
+    document.getElementById('wg-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('wgmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+}
+
+/* ── PROGRAMS ── */
+function wgFilter(cat) {
+  document.querySelectorAll('.wg-filter-btn').forEach(function(b){ b.classList.toggle('active', b.id === 'wgf-' + cat); });
+  wgRenderPrograms(cat);
+}
+
+function wgRenderPrograms(cat) {
+  var progs = cat === 'all' ? WG_PROGRAMS : WG_PROGRAMS.filter(function(p){ return p.cat === cat; });
+  var grid = document.getElementById('wg-prog-grid');
+  if (!grid) return;
+  grid.innerHTML = progs.map(function(p) {
+    return '<div class="wg-prog-card" onclick="wgOpenProgModal(\'' + p.id + '\')">'
+      + '<div class="wg-prog-top"><div class="wg-prog-emoji">' + p.emoji + '</div>'
+      + '<div class="wg-prog-title">' + p.title + '</div>'
+      + '<div class="wg-prog-meta"><span>⏱ ' + p.duration + '</span><span>👥 ' + p.groupSize + '</span></div></div>'
+      + '<div class="wg-prog-bottom">' + p.desc.slice(0, 90) + '…</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── PROGRAM MODAL ── */
+function wgOpenProgModal(id) {
+  var p = WG_PROGRAMS.find(function(x){ return x.id === id; });
+  if (!p) return;
+  wgActiveProgram = p;
+  document.getElementById('wg-pm-emoji').textContent = p.emoji;
+  document.getElementById('wg-pm-title').textContent = p.title;
+  document.getElementById('wg-pm-meta').textContent = '⏱ ' + p.duration + ' · 👥 ' + p.groupSize;
+  document.getElementById('wg-pm-desc').textContent = p.desc;
+  document.getElementById('wg-pm-supplies').innerHTML = p.supplies.map(function(s){ return '<span style="display:inline-block;background:#FFF1F7;border:1px solid #FBCFE8;border-radius:12px;padding:3px 10px;font-size:12px;color:#9D174D;margin:3px;font-weight:600;">• ' + s + '</span>'; }).join('');
+  document.getElementById('wg-pm-steps').innerHTML = p.steps.map(function(s, i){ return '<div style="display:flex;gap:10px;margin-bottom:10px;"><div style="width:24px;height:24px;border-radius:50%;background:#EC4899;color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">' + (i+1) + '</div><div style="font-size:14px;color:#374151;line-height:1.6;">' + s + '</div></div>'; }).join('');
+  document.getElementById('wg-pm-prompts').innerHTML = p.prompts.map(function(q, i){ return '<div style="background:#FFF1F7;border-radius:8px;padding:9px 14px;margin-bottom:7px;font-size:13px;color:#374151;"><b>' + (i+1) + '.</b> ' + q + '</div>'; }).join('');
+  document.getElementById('wg-pm-tip').textContent = p.tip;
+  document.getElementById('wg-prog-modal').classList.add('open');
+}
+function wgCloseProgModal() { document.getElementById('wg-prog-modal').classList.remove('open'); wgActiveProgram = null; }
+
+/* ── DISCUSSIONS ── */
+function wgRenderDiscussions() {
+  var el = document.getElementById('wg-discuss-body');
+  if (!el) return;
+  el.innerHTML = WG_DISCUSSIONS.map(function(cat) {
+    return '<div class="wg-disc-cat">'
+      + '<div class="wg-disc-cat-title">' + cat.emoji + ' ' + cat.cat + '</div>'
+      + cat.prompts.map(function(p){ return '<div class="wg-disc-prompt" onclick="wgCopyPrompt(this)" title="Click to highlight">💬 ' + p + '</div>'; }).join('')
+      + '</div>';
+  }).join('');
+}
+function wgCopyPrompt(el) {
+  el.style.background = '#FBCFE8';
+  setTimeout(function(){ el.style.background = ''; }, 1200);
+}
+
+/* ── INSPIRING WOMEN ── */
+function wgRenderWomen() {
+  var grid = document.getElementById('wg-women-grid');
+  if (!grid) return;
+  grid.innerHTML = WG_WOMEN.map(function(w) {
+    return '<div class="wg-woman-card" onclick="wgOpenWomanModal(\'' + w.id + '\')">'
+      + '<div class="wg-woman-top"><div class="wg-woman-emoji">' + w.emoji + '</div>'
+      + '<div class="wg-woman-name">' + w.name + '</div>'
+      + '<div class="wg-woman-years">' + w.years + '</div></div>'
+      + '<div class="wg-woman-body"><div class="wg-woman-field">' + w.field + '</div>'
+      + '<div class="wg-woman-desc">' + w.bio.slice(0,100) + '…</div></div>'
+      + '</div>';
+  }).join('');
+}
+function wgOpenWomanModal(id) {
+  var w = WG_WOMEN.find(function(x){ return x.id === id; });
+  if (!w) return;
+  document.getElementById('wg-wm-emoji').textContent = w.emoji;
+  document.getElementById('wg-wm-name').textContent = w.name;
+  document.getElementById('wg-wm-years').textContent = w.years + ' · ' + w.field;
+  document.getElementById('wg-wm-bio').textContent = w.bio;
+  document.getElementById('wg-wm-known').innerHTML = w.known.map(function(k){ return '<div style="background:#FFF1F7;border-radius:8px;padding:8px 14px;margin-bottom:6px;font-size:13px;color:#374151;">✦ ' + k + '</div>'; }).join('');
+  document.getElementById('wg-wm-quote').textContent = w.quote;
+  document.getElementById('wg-wm-questions').innerHTML = w.questions.map(function(q, i){ return '<div style="background:#fff;border:1px solid #FBCFE8;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:13px;color:#374151;"><b>' + (i+1) + '.</b> ' + q + '</div>'; }).join('');
+  document.getElementById('wg-woman-modal').classList.add('open');
+}
+function wgCloseWomanModal() { document.getElementById('wg-woman-modal').classList.remove('open'); }
+
+/* ── MEETINGS ── */
+function wgGetMeetings() { try { return JSON.parse(localStorage.getItem(WG_MEETINGS_KEY)) || []; } catch(e) { return []; } }
+function wgSetMeetings(d) { localStorage.setItem(WG_MEETINGS_KEY, JSON.stringify(d)); }
+
+function wgSaveMeeting() {
+  var date = document.getElementById('wg-m-date').value;
+  var topic = document.getElementById('wg-m-topic').value.trim();
+  var attendees = document.getElementById('wg-m-attendees').value.trim();
+  var notes = document.getElementById('wg-m-notes').value.trim();
+  var next = document.getElementById('wg-m-next').value.trim();
+  if (!topic) return alert('Please enter a topic or program name.');
+  var meetings = wgGetMeetings();
+  meetings.unshift({ id: Date.now(), date: date, topic: topic, attendees: attendees, notes: notes, next: next });
+  wgSetMeetings(meetings);
+  document.getElementById('wg-m-topic').value = '';
+  document.getElementById('wg-m-attendees').value = '';
+  document.getElementById('wg-m-notes').value = '';
+  document.getElementById('wg-m-next').value = '';
+  wgRenderMeetings();
+}
+
+function wgDeleteMeeting(id) {
+  if (!confirm('Delete this meeting record?')) return;
+  wgSetMeetings(wgGetMeetings().filter(function(m){ return m.id !== id; }));
+  wgRenderMeetings();
+}
+
+function wgRenderMeetings() {
+  var meetings = wgGetMeetings();
+  var list = document.getElementById('wg-m-list');
+  var empty = document.getElementById('wg-m-empty');
+  var count = document.getElementById('wg-m-count');
+  if (count) count.textContent = 'Meeting Log (' + meetings.length + ' sessions)';
+  if (!list) return;
+  if (!meetings.length) { list.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = meetings.map(function(m) {
+    return '<div style="background:#fff;border:2px solid #FBCFE8;border-radius:12px;padding:14px 16px;margin-bottom:10px;">'
+      + '<div style="display:flex;justify-content:space-between;align-items:start;">'
+      + '<div style="flex:1;">'
+      + '<div style="font-weight:800;font-size:14px;color:#831843;">🌸 ' + m.topic + '</div>'
+      + '<div style="font-size:12px;color:#9D174D;margin:3px 0;">' + (m.date || '') + (m.attendees ? ' · 👥 ' + m.attendees : '') + '</div>'
+      + (m.notes ? '<div style="font-size:13px;color:#374151;margin-top:5px;font-style:italic;">' + m.notes + '</div>' : '')
+      + (m.next ? '<div style="font-size:12px;color:#EC4899;margin-top:5px;font-weight:700;">→ Next time: ' + m.next + '</div>' : '')
+      + '</div>'
+      + '<button onclick="wgDeleteMeeting(' + m.id + ')" style="background:none;border:none;color:#EF4444;font-size:16px;cursor:pointer;padding:0;margin-left:8px;">✕</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+/* ── PRINT ── */
+function wgPrint() {
+  var active = document.querySelector('.wg-mode-btn.active');
+  var m = active ? active.id.replace('wgmode-','') : 'programs';
+  if (m === 'programs') wgPrintProgramGuide();
+  else if (m === 'discuss') wgPrintDiscussionGuide();
+  else if (m === 'women') wgPrintWomenProfiles();
+  else if (m === 'meetings') wgPrintMeetingLog();
+  else wgPrintProgramGuide();
+}
+
+function wgPrintProgramSheet(p) {
+  if (!p) return;
+  var steps = p.steps.map(function(s,i){ return '<div style="display:flex;gap:10px;margin-bottom:10px;"><div style="width:24px;height:24px;border-radius:50%;background:#EC4899;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + (i+1) + '</div><div>' + s + '</div></div>'; }).join('');
+  var supplies = p.supplies.map(function(s){ return '<li>' + s + '</li>'; }).join('');
+  var prompts = p.prompts.map(function(q,i){ return '<div style="margin-bottom:10px;padding:10px;background:#FFF1F7;border-radius:8px;"><b>' + (i+1) + '.</b> ' + q + '</div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + p.title + '</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#831843}h2{color:#BE185D;font-size:15px;border-bottom:2px solid #FBCFE8;padding-bottom:5px;margin-top:22px}ul{line-height:2}.tip{background:#FFF1F7;padding:14px;border-radius:8px;margin-top:20px;font-size:13px;}</style></head><body><h1>' + p.emoji + ' ' + p.title + '</h1><p style="color:#888;font-size:13px;">⏱ ' + p.duration + ' · 👥 ' + p.groupSize + ' · Empower Life 365 Women\'s Groups</p><p>' + p.desc + '</p><h2>🛒 Supplies Needed</h2><ul>' + supplies + '</ul><h2>📋 How to Run It</h2>' + steps + '<h2>💬 Discussion Prompts</h2>' + prompts + '<div class="tip"><b>💡 Facilitator Tip:</b> ' + p.tip + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintProgramGuide() {
+  var rows = WG_PROGRAMS.map(function(p){ return '<tr><td style="padding:9px;border-bottom:1px solid #eee;font-size:18px;">' + p.emoji + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-weight:700;">' + p.title + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:13px;color:#9D174D;">' + p.duration + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:13px;">' + p.desc.slice(0,80) + '…</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Women\'s Group Programs</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:800px}h1{color:#831843;text-align:center}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>👩 Women\'s Group Program Guide</h1><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th></th><th>Program</th><th>Duration</th><th>Description</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintDiscussionGuide() {
+  var html = WG_DISCUSSIONS.map(function(cat){ return '<div style="margin-bottom:24px;"><div style="font-weight:900;font-size:16px;color:#831843;border-bottom:2px solid #FBCFE8;padding-bottom:6px;margin-bottom:12px;">' + cat.emoji + ' ' + cat.cat + '</div>' + cat.prompts.map(function(p, i){ return '<div style="margin-bottom:10px;padding:10px 14px;background:#FFF1F7;border-radius:8px;font-size:14px;"><b>' + (i+1) + '.</b> ' + p + '<div style="margin-top:6px;border-top:1px solid #FBCFE8;padding-top:4px;font-size:11px;color:#aaa;">Notes: _________________________________</div></div>'; }).join('') + '</div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Discussion Guide</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:700px}h1{color:#831843;text-align:center}</style></head><body><h1>💬 Women\'s Group Discussion Guide</h1><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + html + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintWomenProfiles() {
+  var html = WG_WOMEN.map(function(w){ return '<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #FBCFE8;page-break-inside:avoid;"><div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;"><div style="font-size:40px;">' + w.emoji + '</div><div><div style="font-weight:900;font-size:18px;color:#831843;">' + w.name + '</div><div style="color:#BE185D;font-size:13px;">' + w.years + ' · ' + w.field + '</div></div></div><p style="font-size:13px;line-height:1.7;">' + w.bio + '</p><div style="background:#FFF1F7;border-left:4px solid #EC4899;padding:10px 14px;border-radius:0 8px 8px 0;font-style:italic;font-size:13px;margin-top:8px;">' + w.quote + '</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Inspiring Women</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:700px}h1{color:#831843;text-align:center}</style></head><body><h1>⭐ Inspiring Women Through History</h1><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 Women\'s Group · ' + new Date().toLocaleDateString() + '</p>' + html + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintTrivia() {
+  var qHtml = WG_TRIVIA.map(function(q,i){ return '<div style="margin-bottom:18px;"><b>Q' + (i+1) + '.</b> ' + q.q + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;">' + q.choices.map(function(c,j){ return '<span style="font-size:13px;">'+String.fromCharCode(65+j)+'. '+c+'</span>'; }).join('') + '</div></div>'; }).join('');
+  var answers = WG_TRIVIA.map(function(q,i){ return '<b>Q'+(i+1)+':</b> '+q.a; }).join(' &nbsp;|&nbsp; ');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Women\'s History Trivia</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#831843}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:24px;}</style></head><body><h1>🧠 Women\'s History Trivia Quiz</h1><p style="color:#888;font-size:12px;">Empower Life 365 Women\'s Group · ' + new Date().toLocaleDateString() + '</p>' + qHtml + '<div class="answers"><b>ANSWER KEY:</b><br>' + answers + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintPoster() {
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Women\'s Group Poster</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:60px 40px;max-width:600px;margin:0 auto;background:linear-gradient(135deg,#FFF1F7,#FBCFE8);}h1{font-size:42px;color:#831843;margin-bottom:8px;}h2{font-size:20px;color:#EC4899;font-style:italic;font-weight:400;}p{font-size:16px;color:#374151;line-height:1.9;}.line{border:3px solid #EC4899;margin:24px 0;}.emoji{font-size:50px;margin:10px 0;}</style></head><body><div class="emoji">👩</div><h1>Women\'s Group</h1><div class="line"></div><h2>Connecting · Creating · Celebrating</h2><p style="margin:24px 0;font-size:18px;color:#831843;font-weight:700;">You are warmly invited!</p><p>Join us for tea, conversation, crafts, pampering, and programs designed just for women.<br><br>All residents welcome.<br>No experience required — just bring yourself!</p><div class="line"></div><p style="font-size:14px;color:#BE185D;">Ask your Activity Director for the schedule<br>Empower Life 365</p><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintYearPlan() {
+  var rows = WG_YEAR_PLAN.map(function(m){ return '<tr><td style="padding:10px;border-bottom:1px solid #eee;font-weight:700;color:#831843;">' + m.month + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-size:14px;">' + m.program + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-size:12px;color:#9D174D;">' + m.why + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Women\'s Group Year Plan</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#831843;text-align:center}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>👩 Women\'s Group — Year at a Glance</h1><p style="text-align:center;color:#888;font-size:12px;">Empower Life 365 · ' + new Date().getFullYear() + '</p><table><tr><th>Month</th><th>Program</th><th>Why This Month?</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function wgPrintMeetingLog() {
+  var meetings = wgGetMeetings();
+  if (!meetings.length) return alert('No meetings logged yet!');
+  var rows = meetings.map(function(m){ return '<tr><td style="padding:9px;border-bottom:1px solid #eee;">' + (m.date||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-weight:700;">' + m.topic + '</td><td style="padding:9px;border-bottom:1px solid #eee;">' + (m.attendees||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:12px;font-style:italic;">' + (m.notes||'') + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Women\'s Group Log</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#831843}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>👩 Women\'s Group Meeting Log</h1><p style="color:#888;font-size:12px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>Date</th><th>Program</th><th>Attendees</th><th>Notes</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
   w.document.close();
 }
 </script>
