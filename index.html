@@ -1229,6 +1229,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="mens"     id="mens-tab"     onclick="switchTab('mens')">👨 Men's Corner</button>
       <button class="tab-btn" data-tab="outdoors"  id="outdoors-tab"  onclick="switchTab('outdoors')">🌿 Outdoors</button>
       <button class="tab-btn" data-tab="pettherapy" id="pettherapy-tab" onclick="switchTab('pettherapy')">🐾 Pet Therapy</button>
+      <button class="tab-btn" data-tab="roomservice" id="roomservice-tab" onclick="switchTab('roomservice')">🚪 Room Service</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3604,6 +3605,61 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <!-- Detail modal -->
   <div id="pt-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)ptCloseModal()">
     <div style="background:#fff;max-width:680px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="pt-modal-body"></div>
+  </div>
+</section>
+
+<section class="tab-panel" id="panel-roomservice">
+  <div style="padding:18px 20px 24px;">
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+      <div>
+        <h2 style="margin:0 0 4px;">🚪 Room Activity Service</h2>
+        <p style="margin:0;color:#6b7280;font-size:13px;">Residents choose up to 2 activities to have delivered to their room. Print door hangers, laminate &amp; reuse.</p>
+      </div>
+    </div>
+    <!-- Two-column layout: settings left, preview right -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;" id="ras-layout">
+      <!-- LEFT: Settings -->
+      <div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px;margin-bottom:16px;">
+          <h3 style="margin:0 0 12px;font-size:15px;color:#1e293b;">⚙️ Customise Your Hanger</h3>
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#374151;">Facility Name</label>
+          <input id="ras-facility" type="text" value="Empower Life 365" placeholder="Your facility name"
+            style="width:100%;box-sizing:border-box;border:1px solid #d1d5db;border-radius:8px;padding:8px 12px;font-size:14px;margin-bottom:14px;"
+            oninput="rasUpdatePreview()"/>
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#374151;">Accent Colour</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="ras-color-btns">
+            <button class="ras-color-btn active" data-color="#f472b6" onclick="rasSetColor('#f472b6',this)" style="width:28px;height:28px;border-radius:50%;background:#f472b6;border:3px solid #f472b6;cursor:pointer;"></button>
+            <button class="ras-color-btn" data-color="#818cf8" onclick="rasSetColor('#818cf8',this)" style="width:28px;height:28px;border-radius:50%;background:#818cf8;border:3px solid #e5e7eb;cursor:pointer;"></button>
+            <button class="ras-color-btn" data-color="#34d399" onclick="rasSetColor('#34d399',this)" style="width:28px;height:28px;border-radius:50%;background:#34d399;border:3px solid #e5e7eb;cursor:pointer;"></button>
+            <button class="ras-color-btn" data-color="#fbbf24" onclick="rasSetColor('#fbbf24',this)" style="width:28px;height:28px;border-radius:50%;background:#fbbf24;border:3px solid #e5e7eb;cursor:pointer;"></button>
+            <button class="ras-color-btn" data-color="#60a5fa" onclick="rasSetColor('#60a5fa',this)" style="width:28px;height:28px;border-radius:50%;background:#60a5fa;border:3px solid #e5e7eb;cursor:pointer;"></button>
+            <button class="ras-color-btn" data-color="#f87171" onclick="rasSetColor('#f87171',this)" style="width:28px;height:28px;border-radius:50%;background:#f87171;border:3px solid #e5e7eb;cursor:pointer;"></button>
+          </div>
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:8px;color:#374151;">Activities to include <span style="font-weight:400;color:#9ca3af;">(choose 4–8)</span></label>
+          <div id="ras-activity-checks" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"></div>
+        </div>
+        <button onclick="rasPrint()" style="width:100%;background:#f472b6;color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;">🖨️ Print Door Hangers (2 per page)</button>
+        <button onclick="rasPrintSheet(4)" style="width:100%;background:#818cf8;color:#fff;border:none;border-radius:10px;padding:10px;font-size:14px;font-weight:700;cursor:pointer;">📄 Print Sheet of 4 (cut &amp; share)</button>
+      </div>
+      <!-- RIGHT: Preview -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="font-size:12px;color:#9ca3af;margin-bottom:8px;text-align:center;">Live Preview · Laminate &amp; reuse</div>
+        <div id="ras-preview-wrap" style="transform:scale(0.75);transform-origin:top center;margin-bottom:-80px;"></div>
+      </div>
+    </div>
+    <!-- How it works -->
+    <div style="background:#fdf4ff;border:1px solid #e9d5ff;border-radius:12px;padding:16px;margin-top:24px;">
+      <h3 style="margin:0 0 10px;color:#7c3aed;font-size:14px;">💡 How It Works</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;font-size:13px;color:#374151;">
+        <div>🖨️ <strong>Print</strong> on A4 / Letter, cut &amp; laminate for reuse</div>
+        <div>🚪 <strong>Hang</strong> one on each resident's door or leave in rooms</div>
+        <div>☑️ <strong>Resident</strong> ticks up to 2 activities they'd like</div>
+        <div>🎒 <strong>Staff</strong> collects hanger and delivers the activity pack</div>
+        <div>🔄 <strong>Wipe</strong> off dry-erase marks and reuse daily</div>
+        <div>🧠 <strong>Perfect for</strong> dementia care, isolation, quiet time, one-to-one</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -28534,6 +28590,151 @@ function ptPrintThankYou() {
   window.switchTab = function(name) {
     _ptOrig && _ptOrig(name);
     if (name === 'pettherapy') initPetTherapy();
+  };
+})();
+</script>
+
+<script>
+/* ===== ROOM ACTIVITY SERVICE ===== */
+var RAS_COLOR = '#f472b6';
+
+var RAS_ACTIVITIES = [
+  { id:'coloring',   label:'Colouring Pack',        emoji:'🖍️', on:true  },
+  { id:'craft',      label:'Craft Pack',             emoji:'✂️', on:true  },
+  { id:'cards',      label:'Card Games',             emoji:'🃏', on:true  },
+  { id:'jigsaw',     label:'Jigsaw Puzzle',          emoji:'🧩', on:true  },
+  { id:'wordsearch', label:'Word Search / Puzzles',  emoji:'🔤', on:true  },
+  { id:'crossword',  label:'Crossword',              emoji:'📝', on:true  },
+  { id:'reading',    label:'Reading / Books',        emoji:'📚', on:false },
+  { id:'music',      label:'Music & Headphones',     emoji:'🎵', on:false },
+  { id:'trivia',     label:'Brain Games / Trivia',   emoji:'🧠', on:false },
+  { id:'writing',    label:'Writing / Journaling',   emoji:'✏️', on:false },
+  { id:'knitting',   label:'Knitting / Needlework',  emoji:'🧶', on:false },
+  { id:'movie',      label:'Movie / Video',          emoji:'🎬', on:false },
+  { id:'exercise',   label:'Chair Exercise',         emoji:'💪', on:false },
+  { id:'bingo',      label:'Bingo Card',             emoji:'🎰', on:false },
+  { id:'garden',     label:'Gardening Activity',     emoji:'🌱', on:false },
+  { id:'sensory',    label:'Sensory Pack',           emoji:'🌸', on:false },
+  { id:'drawing',    label:'Drawing / Sketching',    emoji:'✏️', on:false },
+  { id:'pet',        label:'Pet Therapy Visit',      emoji:'🐾', on:false },
+  { id:'cooking',    label:'Recipe / Cooking Card',  emoji:'🍳', on:false },
+  { id:'reminisce',  label:'Reminiscence Cards',     emoji:'💭', on:false }
+];
+
+function initRoomService() {
+  rasRenderChecks();
+  rasUpdatePreview();
+}
+
+function rasRenderChecks() {
+  var el = document.getElementById('ras-activity-checks');
+  if (!el) return;
+  el.innerHTML = RAS_ACTIVITIES.map(function(a) {
+    return '<label style="display:flex;align-items:center;gap:6px;font-size:12px;padding:4px 6px;border-radius:6px;cursor:pointer;background:' + (a.on ? '#fdf4ff' : '#fff') + ';border:1px solid ' + (a.on ? '#e9d5ff' : '#e5e7eb') + ';">'
+      + '<input type="checkbox" ' + (a.on ? 'checked' : '') + ' onchange="rasToggle(\'' + a.id + '\',this.checked)" style="margin:0;">'
+      + '<span>' + a.emoji + ' ' + a.label + '</span>'
+      + '</label>';
+  }).join('');
+}
+
+function rasToggle(id, on) {
+  var a = RAS_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (a) { a.on = on; rasUpdatePreview(); }
+}
+
+function rasSetColor(col, btn) {
+  RAS_COLOR = col;
+  document.querySelectorAll('.ras-color-btn').forEach(function(b) {
+    b.style.border = '3px solid ' + (b === btn ? col : '#e5e7eb');
+  });
+  rasUpdatePreview();
+}
+
+function rasSelected() {
+  return RAS_ACTIVITIES.filter(function(a){ return a.on; });
+}
+
+function rasHangerHtml(facilityName, color) {
+  var acts = rasSelected();
+  var stripeColors = [color, '#fbbf24', '#34d399', '#60a5fa', '#f87171', '#a78bfa'];
+  var rows = acts.slice(0,8).map(function(a) {
+    return '<div style="display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #f1f5f9;border-radius:8px;padding:8px 10px;margin-bottom:5px;">'
+      + '<div style="width:22px;height:22px;border:2px solid #d1d5db;border-radius:4px;flex-shrink:0;background:#fff;"></div>'
+      + '<span style="font-size:18px;flex-shrink:0;">' + a.emoji + '</span>'
+      + '<span style="font-size:13px;font-weight:600;color:#1e293b;line-height:1.2;">' + a.label + '</span>'
+      + '</div>';
+  }).join('');
+  var stripeBar = stripeColors.map(function(c){
+    return '<div style="flex:1;background:' + c + ';height:10px;"></div>';
+  }).join('');
+  var balloonColors = ['#f87171','#fbbf24','#34d399','#60a5fa','#a78bfa','#f472b6','#fb923c','#4ade80','#38bdf8'];
+  var balloons = balloonColors.map(function(c){
+    return '<div style="display:inline-flex;flex-direction:column;align-items:center;margin:0 2px;">'
+      + '<div style="width:18px;height:22px;background:' + c + ';border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;"></div>'
+      + '<div style="width:1px;height:8px;background:#9ca3af;"></div>'
+      + '</div>';
+  }).join('');
+  return '<div style="width:210px;background:#fff;border-radius:18px;border:2px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.10);font-family:Arial,sans-serif;overflow:hidden;position:relative;">'
+    + '<div style="height:60px;display:flex;justify-content:center;align-items:center;border-bottom:2px dashed #e2e8f0;position:relative;">'
+    + '<div style="width:44px;height:44px;border-radius:50%;border:3px dashed ' + color + ';background:#f8fafc;"></div>'
+    + '</div>'
+    + '<div style="display:flex;height:10px;">' + stripeBar + '</div>'
+    + '<div style="text-align:center;padding:8px 12px 0;font-size:10px;color:#9ca3af;letter-spacing:.5px;text-transform:uppercase;">' + (facilityName||'Your Facility') + '</div>'
+    + '<div style="text-align:center;font-size:11px;color:#6b7280;padding:2px 12px;">Please choose up to <strong>two</strong></div>'
+    + '<div style="margin:8px 12px;background:' + color + '18;border:2px solid ' + color + ';border-radius:8px;padding:6px 10px;text-align:center;">'
+    + '<div style="font-size:13px;font-weight:900;color:' + color + ';letter-spacing:.5px;text-transform:uppercase;">Room Activity Service</div>'
+    + '</div>'
+    + '<div style="padding:4px 12px 8px;">' + rows + '</div>'
+    + '<div style="background:#f8fafc;border-top:2px solid #f1f5f9;padding:10px;text-align:center;display:flex;justify-content:center;align-items:flex-end;">' + balloons + '</div>'
+    + '</div>';
+}
+
+function rasUpdatePreview() {
+  var wrap = document.getElementById('ras-preview-wrap');
+  if (!wrap) return;
+  var name = (document.getElementById('ras-facility')||{}).value || 'Your Facility';
+  wrap.innerHTML = rasHangerHtml(name, RAS_COLOR);
+}
+
+function rasGetPrintDoc(n) {
+  var name = (document.getElementById('ras-facility')||{}).value || 'Your Facility';
+  var hangerHtml = rasHangerHtml(name, RAS_COLOR);
+  var items = '';
+  for (var i=0; i<n; i++) {
+    if (i > 0 && i % 2 === 0) items += '<div class="cut-line"><span class="cut-label">✂ cut here</span></div>';
+    if (i % 2 === 0) items += '<div class="row">';
+    items += '<div class="hanger-wrap">' + hangerHtml + '</div>';
+    if (i % 2 === 1 || i === n-1) items += '</div>';
+  }
+  return '<!DOCTYPE html><html><head><title>Room Activity Service Hangers</title>'
+    + '<style>body{margin:0;padding:12mm;background:#fff;font-family:Arial,sans-serif;}'
+    + '.row{display:flex;justify-content:center;gap:20mm;margin-bottom:6mm;}'
+    + '.hanger-wrap{display:flex;}'
+    + '.cut-line{width:100%;border-top:2px dashed #d1d5db;display:flex;align-items:center;justify-content:center;margin:4mm 0;}'
+    + '.cut-label{background:#fff;padding:0 8px;font-size:10px;color:#9ca3af;}'
+    + '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'
+    + '<\/style><\/head><body>' + items + '<\/body><\/html>';
+}
+
+function rasPrint() {
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write(rasGetPrintDoc(2));
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},600);
+}
+
+function rasPrintSheet(n) {
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write(rasGetPrintDoc(n));
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},600);
+}
+
+(function(){
+  var _rasOrig = window.switchTab;
+  window.switchTab = function(name) {
+    _rasOrig && _rasOrig(name);
+    if (name === 'roomservice') initRoomService();
   };
 })();
 </script>
