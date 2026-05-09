@@ -1951,6 +1951,137 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .ol-print-name { font-size:13px; font-weight:800; color:#333; margin-bottom:3px; }
 .ol-print-desc { font-size:11px; color:#888; }
 
+/* ═══════ BOOK CLUB ═══════ */
+.bc-panel{padding:20px;}
+.bc-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
+.bc-filter-btn{padding:6px 14px;border-radius:20px;border:2px solid #8B4513;background:#fff;
+  color:#8B4513;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;}
+.bc-filter-btn.active,.bc-filter-btn:hover{background:#8B4513;color:#fff;}
+.bc-mode-btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;
+  font-weight:600;font-size:13px;transition:all .2s;}
+.bc-mode-btn.active{background:#8B4513;color:#fff;}
+.bc-mode-btn:not(.active){background:#f5e6d3;color:#8B4513;}
+.bc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:16px;}
+.bc-book-card{background:#fff;border-radius:12px;border:2px solid #e0c9a0;
+  cursor:pointer;transition:all .2s;overflow:hidden;}
+.bc-book-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(139,69,19,.2);border-color:#8B4513;}
+.bc-book-spine{height:110px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.bc-book-info{padding:10px;}
+.bc-book-title{font-weight:700;font-size:14px;color:#3d2000;margin-bottom:3px;line-height:1.3;}
+.bc-book-author{font-size:12px;color:#8B4513;margin-bottom:5px;}
+.bc-book-meta{display:flex;justify-content:space-between;align-items:center;}
+.bc-genre-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;}
+.bc-detail{background:#fff;border-radius:16px;padding:24px;border:2px solid #e0c9a0;}
+.bc-detail-header{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap;}
+.bc-detail-cover{width:100px;height:140px;border-radius:8px;display:flex;
+  align-items:center;justify-content:center;font-size:48px;flex-shrink:0;}
+.bc-detail-info h2{color:#3d2000;margin:0 0 8px;font-size:22px;}
+.bc-detail-info p{color:#666;margin:4px 0;font-size:14px;}
+.bc-synopsis{color:#444;line-height:1.7;font-size:15px;margin-bottom:20px;
+  padding:16px;background:#fdf8f0;border-radius:8px;border-left:4px solid #8B4513;}
+.bc-questions h3{color:#8B4513;margin-bottom:12px;}
+.bc-question-item{background:#fdf8f0;border-radius:8px;padding:12px 16px;
+  margin-bottom:10px;border-left:3px solid #e0c9a0;font-size:14px;color:#444;line-height:1.6;}
+.bc-question-num{font-weight:700;color:#8B4513;margin-right:6px;}
+.bc-reading-list{display:flex;flex-direction:column;gap:12px;}
+.bc-reading-item{background:#fff;border-radius:12px;padding:16px;
+  border:2px solid #e0c9a0;display:flex;align-items:center;gap:16px;}
+.bc-reading-info{flex:1;}
+.bc-reading-info h4{margin:0 0 4px;color:#3d2000;font-size:15px;}
+.bc-reading-info p{margin:0;font-size:13px;color:#666;}
+.bc-star-rating{display:flex;gap:3px;margin-top:6px;}
+.bc-star{font-size:18px;cursor:pointer;color:#ccc;transition:color .15s;}
+.bc-star.lit{color:#f59e0b;}
+.bc-status-select{padding:4px 8px;border-radius:6px;border:1px solid #e0c9a0;
+  font-size:12px;color:#666;background:#fff;cursor:pointer;}
+.bc-meeting-form{background:#fff;border-radius:12px;padding:20px;border:2px solid #e0c9a0;margin-bottom:20px;}
+.bc-meeting-form h3{color:#8B4513;margin:0 0 16px;}
+.bc-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.bc-form-row.full{grid-template-columns:1fr;}
+.bc-meeting-list{display:flex;flex-direction:column;gap:12px;}
+.bc-meeting-card{background:#fff;border-radius:12px;padding:16px;border:2px solid #e0c9a0;}
+.bc-meeting-card h4{color:#3d2000;margin:0 0 8px;}
+.bc-meeting-card p{margin:2px 0;font-size:13px;color:#666;}
+.bc-meeting-actions{display:flex;gap:8px;margin-top:12px;}
+.bc-print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:16px;}
+.bc-print-card{background:#fff;border-radius:12px;padding:16px;border:2px solid #e0c9a0;
+  cursor:pointer;text-align:center;transition:all .2s;}
+.bc-print-card:hover{border-color:#8B4513;background:#fdf8f0;}
+.bc-print-card .bc-pc-icon{font-size:36px;margin-bottom:8px;}
+.bc-print-card h4{color:#3d2000;margin:0 0 4px;font-size:14px;}
+.bc-print-card p{color:#666;font-size:12px;margin:0;}
+
+/* ═══════ PUZZLE STUDIO ═══════ */
+.pz-panel{padding:20px;}
+.pz-mode-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.pz-mode-btn{padding:8px 18px;border-radius:8px;border:none;cursor:pointer;
+  font-weight:600;font-size:13px;transition:all .2s;}
+.pz-mode-btn.active{background:#6d28d9;color:#fff;}
+.pz-mode-btn:not(.active){background:#ede9fe;color:#6d28d9;}
+/* Cryptogram */
+.pz-crypto-header{background:linear-gradient(135deg,#6d28d9,#4c1d95);color:#fff;
+  border-radius:14px;padding:20px;margin-bottom:20px;}
+.pz-crypto-header h3{margin:0 0 6px;font-size:18px;}
+.pz-crypto-header p{margin:0;font-size:13px;opacity:.85;}
+.pz-display{display:flex;flex-wrap:wrap;gap:6px;padding:20px;background:#f5f3ff;
+  border-radius:12px;border:2px solid #c4b5fd;margin-bottom:16px;min-height:80px;}
+.pz-word{display:flex;gap:3px;align-items:flex-end;}
+.pz-tile{display:flex;flex-direction:column;align-items:center;}
+.pz-enc{width:30px;height:30px;background:#4c1d95;color:#fff;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;}
+.pz-inp{width:30px;height:28px;text-align:center;border:2px solid #c4b5fd;
+  border-radius:5px;font-size:13px;font-weight:700;text-transform:uppercase;
+  margin-top:3px;color:#3d2000;background:#fff;box-sizing:border-box;padding:0;}
+.pz-inp:focus{outline:none;border-color:#6d28d9;}
+.pz-inp.pz-ok{background:#dcfce7;border-color:#16a34a;color:#16a34a;}
+.pz-inp.pz-no{background:#fee2e2;border-color:#dc2626;color:#dc2626;}
+.pz-punc{padding:0 1px;font-size:22px;color:#6d28d9;font-weight:700;align-self:center;}
+.pz-cipher-row{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0;}
+.pz-key-tile{width:30px;text-align:center;}
+.pz-key-enc{font-size:10px;color:#6d28d9;font-weight:700;}
+.pz-key-dec{width:30px;height:24px;border:1px solid #c4b5fd;border-radius:4px;
+  text-align:center;font-size:11px;font-weight:700;background:#fff;color:#3d2000;
+  text-transform:uppercase;}
+.pz-key-dec.pz-ok{background:#dcfce7;color:#16a34a;}
+.pz-crypto-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.pz-solved-banner{background:#dcfce7;border:2px solid #16a34a;border-radius:12px;
+  padding:16px;text-align:center;margin-top:12px;}
+.pz-solved-banner h3{color:#16a34a;margin:0 0 4px;}
+/* Riddles / Teasers */
+.pz-card{background:#fff;border-radius:14px;border:2px solid #e9d5ff;padding:24px;
+  max-width:680px;margin:0 auto;}
+.pz-card-q{font-size:18px;color:#3d2000;line-height:1.6;margin-bottom:20px;font-weight:500;}
+.pz-reveal-btn{padding:10px 24px;background:#6d28d9;color:#fff;border:none;border-radius:8px;
+  cursor:pointer;font-weight:700;font-size:14px;transition:all .2s;}
+.pz-reveal-btn:hover{background:#5b21b6;}
+.pz-answer-box{background:#f5f3ff;border-radius:10px;padding:14px 20px;margin-top:14px;
+  border-left:4px solid #6d28d9;font-size:17px;color:#4c1d95;font-weight:600;}
+.pz-nav-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.pz-nav-btn{padding:8px 16px;background:#ede9fe;color:#6d28d9;border:none;border-radius:8px;
+  cursor:pointer;font-weight:600;font-size:14px;}
+.pz-nav-btn:hover{background:#ddd6fe;}
+.pz-progress{font-size:14px;color:#6d28d9;font-weight:600;}
+/* Word Scramble */
+.pz-scramble-word{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+  margin:20px 0;padding:16px;background:#f5f3ff;border-radius:12px;border:2px solid #c4b5fd;}
+.pz-scramble-letter{width:44px;height:50px;background:#6d28d9;color:#fff;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;
+  box-shadow:0 3px 8px rgba(109,40,217,.3);}
+.pz-scramble-input{width:260px;font-size:22px;text-align:center;border:3px solid #c4b5fd;
+  border-radius:10px;padding:10px;font-weight:700;text-transform:uppercase;color:#3d2000;
+  background:#fff;}
+.pz-scramble-input:focus{outline:none;border-color:#6d28d9;}
+.pz-score-badge{background:#6d28d9;color:#fff;border-radius:20px;padding:4px 14px;
+  font-size:13px;font-weight:700;}
+/* Print */
+.pz-print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-top:16px;}
+.pz-print-card{background:#fff;border-radius:12px;padding:16px;border:2px solid #e9d5ff;
+  cursor:pointer;text-align:center;transition:all .2s;}
+.pz-print-card:hover{border-color:#6d28d9;background:#f5f3ff;}
+.pz-print-card .pz-pico{font-size:36px;margin-bottom:8px;}
+.pz-print-card h4{color:#3d2000;margin:0 0 4px;font-size:14px;}
+.pz-print-card p{color:#666;font-size:12px;margin:0;}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -2034,7 +2165,9 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="events" onclick="switchTab('events')">🎪 Event Planner</button>
       <button class="tab-btn" data-tab="spotlight" onclick="switchTab('spotlight')">🌟 Resident Spotlight</button>
       <button class="tab-btn" data-tab="olympics" onclick="switchTab('olympics')">🏆 Mini Olympics</button>
-      <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
+      <button class="tab-btn" data-tab="bookclub" onclick="switchTab('bookclub')">📚 Book Club</button>
+        <button class="tab-btn" data-tab="puzzle" onclick="switchTab('puzzle')">🧩 Puzzle Studio</button>
+        <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -5689,6 +5822,278 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     </div>
   </div>
 </section>
+
+<section class="tab-panel" id="panel-bookclub">
+  <div class="bc-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;">
+      <div>
+        <h2 style="margin:0;color:#3d2000;font-size:24px;">📚 Book Club</h2>
+        <p style="margin:4px 0 0;color:#8B4513;font-size:14px;">Explore great books, guide discussions &amp; plan meetings</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" id="bc-mode-btns">
+        <button class="bc-mode-btn active" onclick="bcSetMode('browse')">📖 Browse Books</button>
+        <button class="bc-mode-btn" onclick="bcSetMode('list')">📋 My Reading List</button>
+        <button class="bc-mode-btn" onclick="bcSetMode('meeting')">📅 Meeting Planner</button>
+        <button class="bc-mode-btn" onclick="bcSetMode('print')">🖨️ Print Materials</button>
+      </div>
+    </div>
+
+    <!-- BROWSE MODE -->
+    <div id="bc-browse">
+      <div class="bc-toolbar">
+        <button class="bc-filter-btn active" onclick="bcFilter('all',this)">All Books</button>
+        <button class="bc-filter-btn" onclick="bcFilter('classics',this)">📜 Classics</button>
+        <button class="bc-filter-btn" onclick="bcFilter('historical',this)">🏛️ Historical</button>
+        <button class="bc-filter-btn" onclick="bcFilter('mystery',this)">🔍 Mystery</button>
+        <button class="bc-filter-btn" onclick="bcFilter('memoir',this)">✍️ Memoir</button>
+        <button class="bc-filter-btn" onclick="bcFilter('inspirational',this)">🌟 Inspirational</button>
+        <button class="bc-filter-btn" onclick="bcFilter('humor',this)">😄 Humor</button>
+        <button class="bc-filter-btn" onclick="bcFilter('feelgood',this)">💛 Feel-Good</button>
+      </div>
+      <div class="bc-grid" id="bc-book-grid"></div>
+    </div>
+
+    <!-- BOOK DETAIL -->
+    <div id="bc-detail-view" style="display:none;">
+      <button onclick="bcBackToBrowse()" style="margin-bottom:16px;padding:8px 16px;border-radius:8px;
+        border:2px solid #8B4513;background:#fff;color:#8B4513;cursor:pointer;font-weight:600;">
+        ← Back to Books
+      </button>
+      <div class="bc-detail" id="bc-detail-content"></div>
+    </div>
+
+    <!-- MY READING LIST -->
+    <div id="bc-list-mode" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 style="margin:0;color:#3d2000;">My Reading List</h3>
+        <span id="bc-list-stats" style="font-size:13px;color:#8B4513;"></span>
+      </div>
+      <div id="bc-reading-list-container">
+        <div style="text-align:center;padding:40px;color:#999;">
+          <div style="font-size:48px;margin-bottom:12px;">📚</div>
+          <p>No books on your list yet. Browse books and add them!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEETING PLANNER -->
+    <div id="bc-meeting-mode" style="display:none;">
+      <div class="bc-meeting-form">
+        <h3>Plan a Meeting</h3>
+        <div class="bc-form-row">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Meeting Date</label>
+            <input type="date" id="bc-meet-date" class="form-input" style="width:100%;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Time</label>
+            <input type="time" id="bc-meet-time" class="form-input" style="width:100%;box-sizing:border-box;">
+          </div>
+        </div>
+        <div class="bc-form-row">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Book Title</label>
+            <input type="text" id="bc-meet-book" class="form-input" placeholder="Book being discussed" style="width:100%;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Location / Room</label>
+            <input type="text" id="bc-meet-location" class="form-input" placeholder="e.g. Fireside Lounge" style="width:100%;box-sizing:border-box;">
+          </div>
+        </div>
+        <div class="bc-form-row">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Expected Attendees</label>
+            <input type="number" id="bc-meet-attendees" class="form-input" placeholder="12" min="1" style="width:100%;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Refreshments</label>
+            <input type="text" id="bc-meet-food" class="form-input" placeholder="Tea, cookies, lemonade" style="width:100%;box-sizing:border-box;">
+          </div>
+        </div>
+        <div class="bc-form-row full">
+          <label style="font-size:13px;font-weight:600;color:#666;display:block;margin-bottom:4px;">Discussion Leader / Notes</label>
+          <textarea id="bc-meet-notes" class="form-input" rows="3" placeholder="Who is leading? Special activities? Theme?" style="width:100%;box-sizing:border-box;resize:vertical;"></textarea>
+        </div>
+        <button onclick="bcSaveMeeting()" style="padding:10px 24px;background:#8B4513;color:#fff;
+          border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:15px;">
+          📅 Save Meeting
+        </button>
+      </div>
+      <h3 style="color:#3d2000;margin-bottom:12px;">Upcoming Meetings</h3>
+      <div id="bc-meeting-list" class="bc-meeting-list">
+        <div style="text-align:center;padding:30px;color:#999;">No meetings planned yet.</div>
+      </div>
+    </div>
+
+    <!-- PRINT MODE -->
+    <div id="bc-print-mode" style="display:none;">
+      <h3 style="color:#3d2000;margin-bottom:8px;">Print Materials</h3>
+      <p style="color:#666;font-size:14px;margin-bottom:0;">Beautiful printables for your book club program</p>
+      <div class="bc-print-grid">
+        <div class="bc-print-card" onclick="bcPrint('discussion')">
+          <div class="bc-pc-icon">💬</div>
+          <h4>Discussion Cards</h4>
+          <p>Universal questions for any book</p>
+        </div>
+        <div class="bc-print-card" onclick="bcPrint('reading_log')">
+          <div class="bc-pc-icon">📋</div>
+          <h4>Reading Log</h4>
+          <p>Track books &amp; star ratings</p>
+        </div>
+        <div class="bc-print-card" onclick="bcPrint('agenda')">
+          <div class="bc-pc-icon">📅</div>
+          <h4>Meeting Agenda</h4>
+          <p>Next meeting schedule</p>
+        </div>
+        <div class="bc-print-card" onclick="bcPrint('bingo')">
+          <div class="bc-pc-icon">🎲</div>
+          <h4>Reading Bingo</h4>
+          <p>Fun genre challenge card</p>
+        </div>
+        <div class="bc-print-card" onclick="bcPrint('certificate')">
+          <div class="bc-pc-icon">🏆</div>
+          <h4>Reader Certificate</h4>
+          <p>Celebrate avid readers</p>
+        </div>
+        <div class="bc-print-card" onclick="bcPrint('catalog')">
+          <div class="bc-pc-icon">📚</div>
+          <h4>Book Catalog</h4>
+          <p>All 30 books with summaries</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-puzzle">
+  <div class="pz-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;">
+      <div>
+        <h2 style="margin:0;color:#3d2000;font-size:24px;">🧩 Puzzle Studio</h2>
+        <p style="margin:4px 0 0;color:#6d28d9;font-size:14px;">Cryptograms, riddles, brain teasers &amp; word scrambles</p>
+      </div>
+      <div id="pz-score-display" style="font-size:14px;color:#6d28d9;font-weight:600;"></div>
+    </div>
+
+    <!-- MODE BUTTONS -->
+    <div class="pz-mode-bar" id="pz-mode-btns">
+      <button class="pz-mode-btn active" onclick="pzSetMode('crypto')">🔐 Cryptograms</button>
+      <button class="pz-mode-btn" onclick="pzSetMode('riddle')">🤔 Riddles</button>
+      <button class="pz-mode-btn" onclick="pzSetMode('teaser')">🧠 Brain Teasers</button>
+      <button class="pz-mode-btn" onclick="pzSetMode('scramble')">🔀 Word Scramble</button>
+      <button class="pz-mode-btn" onclick="pzSetMode('print')">🖨️ Print Worksheets</button>
+    </div>
+
+    <!-- CRYPTOGRAM MODE -->
+    <div id="pz-crypto-mode">
+      <div class="pz-crypto-header">
+        <h3 id="pz-crypto-title">🔐 Cryptogram 1 of 10</h3>
+        <p>Each letter has been replaced by another. Fill in the boxes below each coded letter to decode the famous quote!</p>
+      </div>
+      <div class="pz-nav-row">
+        <button class="pz-nav-btn" onclick="pzCryptoNav(-1)">◀ Prev</button>
+        <span class="pz-progress" id="pz-crypto-prog">1 / 10</span>
+        <button class="pz-nav-btn" onclick="pzCryptoNav(1)">Next ▶</button>
+      </div>
+      <div class="pz-display" id="pz-display"></div>
+      <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:#6d28d9;font-weight:600;font-size:13px;">Show Cipher Key</summary>
+        <div class="pz-cipher-row" id="pz-cipher-key"></div>
+      </details>
+      <div class="pz-crypto-btns">
+        <button class="pz-mode-btn" style="background:#ede9fe;color:#6d28d9;" onclick="pzHint()">💡 Hint (+1 hint used)</button>
+        <button class="pz-mode-btn" style="background:#ede9fe;color:#6d28d9;" onclick="pzRevealAll()">👁️ Reveal All</button>
+        <button class="pz-mode-btn" style="background:#ede9fe;color:#6d28d9;" onclick="pzResetCrypto()">🔄 Reset</button>
+      </div>
+      <div id="pz-solved" style="display:none;" class="pz-solved-banner">
+        <h3>🎉 Brilliant! You solved it!</h3>
+        <p id="pz-solved-msg"></p>
+      </div>
+    </div>
+
+    <!-- RIDDLE MODE -->
+    <div id="pz-riddle-mode" style="display:none;">
+      <div class="pz-nav-row">
+        <button class="pz-nav-btn" onclick="pzRiddleNav(-1)">◀ Prev</button>
+        <span class="pz-progress" id="pz-riddle-prog">1 / 20</span>
+        <button class="pz-nav-btn" onclick="pzRiddleNav(1)">Next ▶</button>
+      </div>
+      <div class="pz-card">
+        <div style="font-size:32px;margin-bottom:12px;">🤔</div>
+        <div class="pz-card-q" id="pz-riddle-q"></div>
+        <button class="pz-reveal-btn" onclick="pzToggleRiddle()">Reveal Answer</button>
+        <div class="pz-answer-box" id="pz-riddle-a" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- BRAIN TEASER MODE -->
+    <div id="pz-teaser-mode" style="display:none;">
+      <div class="pz-nav-row">
+        <button class="pz-nav-btn" onclick="pzTeaserNav(-1)">◀ Prev</button>
+        <span class="pz-progress" id="pz-teaser-prog">1 / 12</span>
+        <button class="pz-nav-btn" onclick="pzTeaserNav(1)">Next ▶</button>
+      </div>
+      <div class="pz-card">
+        <div style="font-size:32px;margin-bottom:12px;">🧠</div>
+        <div class="pz-card-q" id="pz-teaser-q"></div>
+        <button class="pz-reveal-btn" onclick="pzToggleTeaser()">Reveal Answer</button>
+        <div class="pz-answer-box" id="pz-teaser-a" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- WORD SCRAMBLE MODE -->
+    <div id="pz-scramble-mode" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+        <div class="pz-nav-row" style="margin:0;">
+          <button class="pz-nav-btn" onclick="pzScrambleNav(-1)">◀ Prev</button>
+          <span class="pz-progress" id="pz-scramble-prog">1 / 10</span>
+          <button class="pz-nav-btn" onclick="pzScrambleNav(1)">Next ▶</button>
+        </div>
+        <span class="pz-score-badge" id="pz-scramble-score">Score: 0 / 10</span>
+      </div>
+      <div class="pz-card" style="text-align:center;">
+        <div style="font-size:13px;font-weight:600;color:#6d28d9;margin-bottom:10px;">UNSCRAMBLE THIS WORD</div>
+        <div class="pz-scramble-word" id="pz-scramble-display"></div>
+        <p style="color:#666;font-size:14px;font-style:italic;margin:8px 0 16px;" id="pz-scramble-hint"></p>
+        <input type="text" class="pz-scramble-input" id="pz-scramble-input"
+          placeholder="Type your answer..." maxlength="20"
+          oninput="this.value=this.value.toUpperCase()">
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
+          <button class="pz-reveal-btn" onclick="pzCheckScramble()">✓ Check Answer</button>
+          <button class="pz-mode-btn" style="background:#ede9fe;color:#6d28d9;" onclick="pzRevealScramble()">👁️ Reveal</button>
+        </div>
+        <div id="pz-scramble-result" style="margin-top:14px;font-size:16px;font-weight:700;min-height:24px;"></div>
+      </div>
+    </div>
+
+    <!-- PRINT MODE -->
+    <div id="pz-print-mode" style="display:none;">
+      <h3 style="color:#3d2000;margin-bottom:8px;">Print Worksheets</h3>
+      <p style="color:#666;font-size:14px;margin-bottom:0;">Take-home puzzle sheets for residents</p>
+      <div class="pz-print-grid">
+        <div class="pz-print-card" onclick="pzPrint('cryptogram')">
+          <div class="pz-pico">🔐</div><h4>Cryptogram Sheet</h4><p>Printable decode puzzle</p>
+        </div>
+        <div class="pz-print-card" onclick="pzPrint('riddles')">
+          <div class="pz-pico">🤔</div><h4>Riddle Booklet</h4><p>20 riddles to enjoy</p>
+        </div>
+        <div class="pz-print-card" onclick="pzPrint('teasers')">
+          <div class="pz-pico">🧠</div><h4>Brain Teasers</h4><p>12 mind-bending puzzles</p>
+        </div>
+        <div class="pz-print-card" onclick="pzPrint('scrambles')">
+          <div class="pz-pico">🔀</div><h4>Word Scrambles</h4><p>10 scrambled words</p>
+        </div>
+        <div class="pz-print-card" onclick="pzPrint('all')">
+          <div class="pz-pico">📋</div><h4>Activity Sampler</h4><p>Mix of all puzzle types</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section class="tab-panel" id="panel-family">
   <style>
     .fc-tab { background:var(--gray-100); border:none; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-600); transition:all 0.15s; }
@@ -40056,4 +40461,916 @@ function olPrint(type){
   window.switchTab=function(n){_o&&_o(n);if(n==='olympics')olInit();};
 })();
 </script>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  📚 BOOK CLUB
+// ═══════════════════════════════════════════════════
+var BC_BOOKS=[
+  // ── CLASSICS ──
+  {id:'tkam',genre:'classics',emoji:'🦜',color:'#2563eb',bg:'#eff6ff',
+   title:'To Kill a Mockingbird',author:'Harper Lee',year:1960,
+   synopsis:'Set in the American South during the 1930s, this Pulitzer Prize-winning novel follows young Scout Finch as her father, lawyer Atticus Finch, defends a Black man unjustly accused of a crime. A timeless story of innocence, justice, and moral courage that continues to resonate with readers of every age.',
+   questions:['How does Scout\'s perspective as a child shape our understanding of events in Maycomb?','Atticus Finch is often called a moral hero. What qualities make him most admirable to you?','How does the novel explore the loss of innocence? Which character experiences this most profoundly?','What role does social class play in Maycomb society, and how does it intersect with race?','Why do you think this book has remained so beloved and relevant for over 60 years?']},
+  {id:'gwtw',genre:'classics',emoji:'🌹',color:'#dc2626',bg:'#fef2f2',
+   title:'Gone with the Wind',author:'Margaret Mitchell',year:1936,
+   synopsis:'The epic story of Scarlett O\'Hara, a headstrong Southern belle who must find strength to survive the devastation of the Civil War and Reconstruction era. A sweeping tale of love, loss, and resilience set against one of America\'s most turbulent periods.',
+   questions:['Scarlett O\'Hara is both admirable and deeply flawed. How do you feel about her as a protagonist?','How does the novel romanticize the antebellum South, and what problems arise from that portrayal?','What does Rhett Butler represent in the story — hero, villain, or something else entirely?','How does the theme of survival shape the characters\' choices throughout the novel?','Which scenes or characters from this epic have stayed with you the longest?']},
+  {id:'rebecca',genre:'classics',emoji:'🌊',color:'#0891b2',bg:'#ecfeff',
+   title:'Rebecca',author:'Daphne du Maurier',year:1938,
+   synopsis:'A young woman marries the wealthy widower Maxim de Winter and moves to Manderley, his beautiful estate — where the memory of his first wife, Rebecca, seems to haunt every room. A gothic masterpiece of suspense, jealousy, and dark secrets.',
+   questions:['The narrator is never given a name. How does this affect your connection to her?','How does Mrs. Danvers function as a villain, and what makes her so chilling?','Rebecca never appears yet dominates every page. How does du Maurier achieve this effect?','What does the estate of Manderley represent — paradise, prison, or both?','Were you surprised by the ending? Did it change how you viewed earlier events?']},
+  {id:'oldman',genre:'classics',emoji:'⚓',color:'#0369a1',bg:'#f0f9ff',
+   title:'The Old Man and the Sea',author:'Ernest Hemingway',year:1952,
+   synopsis:'The story of Santiago, an aging Cuban fisherman who struggles with a magnificent marlin far out in the Gulf Stream. A short, powerful meditation on perseverance, pride, and the dignity of an undefeated human spirit.',
+   questions:['What do you think the marlin symbolizes in the story?','Hemingway uses spare, simple prose. How does the writing style affect the emotional impact?','Santiago says a man can be destroyed but not defeated. What does this mean to you personally?','How does aging and physical decline affect Santiago\'s sense of identity and purpose?','What parallels can you draw between Santiago\'s struggle and experiences in your own life?']},
+  {id:'mice',genre:'classics',emoji:'🐭',color:'#16a34a',bg:'#f0fdf4',
+   title:'Of Mice and Men',author:'John Steinbeck',year:1937,
+   synopsis:'George and Lennie, two migrant workers in Depression-era California, dream of one day owning their own land. A short but devastating novella about friendship, dreams, and the cruelty of circumstance.',
+   questions:['What does the dream of living off the land represent for George and Lennie?','How does loneliness affect each character differently in the story?','The ending is one of the most debated in American literature. Was George\'s choice right?','How does Steinbeck portray the lives of migrant workers? Does the setting feel vivid and real?','Which character do you find most sympathetic, and why?']},
+  // ── HISTORICAL FICTION ──
+  {id:'roots',genre:'historical',emoji:'🌳',color:'#92400e',bg:'#fffbeb',
+   title:'Roots',author:'Alex Haley',year:1976,
+   synopsis:'The saga of Kunta Kinte, an 18th-century African captured into slavery, and the seven generations of his descendants in America. Alex Haley spent twelve years tracing his family history, creating one of the most impactful books in American literature.',
+   questions:['How did reading about Kunta Kinte\'s capture and enslavement affect you emotionally?','What surprised you most about the historical details of slavery portrayed in the book?','How does family identity persist through generations despite the horrors of slavery?','Alex Haley blended documented history with narrative storytelling. Does that approach work for you?','How has Roots influenced American conversations about race, heritage, and history?']},
+  {id:'guernsey',genre:'historical',emoji:'🥔',color:'#7c3aed',bg:'#f5f3ff',
+   title:'The Guernsey Literary Society',author:'Mary Ann Shaffer',year:2008,
+   synopsis:'Told entirely through letters, this charming novel follows a London writer who discovers the remarkable story of a literary society that formed on the German-occupied island of Guernsey during World War II.',
+   questions:['How did the epistolary letter-writing format affect your reading experience?','What role did books and literature play in helping the islanders cope with occupation?','Which character\'s letters did you enjoy most, and why?','How does the novel balance humor and lightness with the darker wartime realities?','Have you ever been part of a group that became unexpectedly important to you?']},
+  {id:'sarah',genre:'historical',emoji:'🌻',color:'#ca8a04',bg:'#fefce8',
+   title:'Sarah\'s Key',author:'Tatiana de Rosnay',year:2006,
+   synopsis:'Alternating between 1942 Paris and 2002, this novel weaves together the story of Sarah, a young Jewish girl caught in the Vel\' d\'Hiv Roundup, and Julia Jarmond, an American journalist investigating the tragedy decades later.',
+   questions:['How does the contrast between past and present create emotional impact?','What compels Julia to pursue the truth so relentlessly?','How does the novel handle French culpability in the Holocaust?','What did you know about the Vel\' d\'Hiv Roundup before reading this book?','How does trauma pass from one generation to the next in this story?']},
+  {id:'pillars',genre:'historical',emoji:'⛪',color:'#64748b',bg:'#f8fafc',
+   title:'The Pillars of the Earth',author:'Ken Follett',year:1989,
+   synopsis:'A sweeping epic set in 12th-century England following the building of a magnificent cathedral and the lives of the people whose fates are intertwined with its construction over several generations.',
+   questions:['How did the building of the cathedral serve as a metaphor for ambition and faith?','Which character\'s journey resonated most — Tom Builder, Jack, Aliena, or Prior Philip?','How does Follett portray the church as both a force for good and an instrument of power?','The novel spans decades. How did this scope affect your engagement with the story?','What surprised you most about life in medieval England as depicted here?']},
+  {id:'coldmtn',genre:'historical',emoji:'🏔️',color:'#374151',bg:'#f9fafb',
+   title:'Cold Mountain',author:'Charles Frazier',year:1997,
+   synopsis:'Inman, a wounded Civil War soldier, deserts and walks hundreds of miles back to Cold Mountain, NC and to Ada, the woman he loves. A lyrical odyssey that paints a vivid portrait of the wartime South.',
+   questions:['How does the parallel structure of Inman\'s journey and Ada\'s transformation work?','Ruby transforms Ada from helpless to self-sufficient. What does Ruby represent in the story?','How does Frazier use the Appalachian landscape as almost a character itself?','Were you satisfied with the ending? What had you hoped for?','Which of Inman\'s many encounters on his journey affected you most?']},
+  // ── MYSTERY ──
+  {id:'orient',genre:'mystery',emoji:'🚂',color:'#1e40af',bg:'#eff6ff',
+   title:'Murder on the Orient Express',author:'Agatha Christie',year:1934,
+   synopsis:'World-famous detective Hercule Poirot is stranded on the snowbound Orient Express when a passenger is murdered. Every suspect has an alibi, and the solution is one of the most surprising and clever in all of detective fiction.',
+   questions:['Were you surprised by the solution? Looking back, what clues did you miss?','Poirot\'s method focuses on psychology and the little grey cells. How does he differ from other detectives?','The ending raises a profound moral question about justice. Do you agree with the final decision?','Christie carefully plants red herrings. Which one fooled you most completely?','What makes Agatha Christie\'s mysteries so enduring and satisfying to read today?']},
+  {id:'andthen',genre:'mystery',emoji:'🏝️',color:'#0f766e',bg:'#f0fdfa',
+   title:'And Then There Were None',author:'Agatha Christie',year:1939,
+   synopsis:'Ten strangers are lured to a remote island. One by one they are killed in accordance with a children\'s nursery rhyme. Perhaps the most perfectly constructed mystery novel ever written.',
+   questions:['The novel is structured like a countdown. How did this technique build tension for you?','Each guest is guilty of a past crime. Does that affect your sympathy for them as victims?','How did Christie manage to keep you guessing until the very last pages?','What effect does using a children\'s nursery rhyme as the murder template create?','Which of the ten characters did you find most compelling or complex?']},
+  {id:'no1ladies',genre:'mystery',emoji:'☀️',color:'#b45309',bg:'#fffbeb',
+   title:'The No. 1 Ladies\' Detective Agency',author:'Alexander McCall Smith',year:1998,
+   synopsis:'Precious Ramotswe uses her father\'s legacy to open Botswana\'s only female-run detective agency. This warm, gentle mystery series celebrates African life, wisdom, and the power of human decency.',
+   questions:['How does the setting in Botswana shape the tone and values of the novel?','Precious solves crimes through understanding human nature rather than evidence. What does this say?','The novel is often called cozy. Does that label fit, or does it underestimate the book?','What does Mma Ramotswe\'s philosophy of be kind, be honest, be good mean in practice?','How does the novel portray the changing role of women in Botswana society?']},
+  {id:'stilllife',genre:'mystery',emoji:'🎨',color:'#6d28d9',bg:'#f5f3ff',
+   title:'Still Life',author:'Louise Penny',year:2005,
+   synopsis:'Chief Inspector Armand Gamache investigates the death of a beloved villager in Three Pines, a tiny idyllic Quebec village. The first in a beloved series combining masterful mysteries with meditations on kindness.',
+   questions:['Three Pines is almost a character itself. How does the village atmosphere affect the story?','Inspector Gamache leads with kindness and listening. Is this a realistic style of detective work?','The killer\'s motive surprised many readers. Did it feel earned and believable to you?','Louise Penny weaves themes of forgiveness and redemption through the mystery. How?','What quality of Gamache\'s do you most wish more people in the world possessed?']},
+  // ── MEMOIR ──
+  {id:'diary',genre:'memoir',emoji:'📔',color:'#059669',bg:'#ecfdf5',
+   title:'The Diary of a Young Girl',author:'Anne Frank',year:1947,
+   synopsis:'Written while hiding from the Nazis in a concealed apartment in Amsterdam from 1942 to 1944, this diary is one of the most widely read accounts of the Holocaust and one of the most powerful documents of the 20th century.',
+   questions:['How does Anne\'s voice and personality come through in her diary entries?','What surprised you most about Anne\'s daily concerns, hopes, and dreams?','How does the diary humanize the Holocaust in a way history books cannot?','Anne wrote about her ambitions to be a writer. What does that tell us about her spirit?','How do you think reading this diary should affect how we live our own lives?']},
+  {id:'angelas',genre:'memoir',emoji:'🍀',color:'#15803d',bg:'#f0fdf4',
+   title:'Angela\'s Ashes',author:'Frank McCourt',year:1996,
+   synopsis:'Frank McCourt\'s Pulitzer Prize-winning memoir of his miserable Irish Catholic childhood in Limerick and his determination to escape to America. Despite grinding poverty, it is told with remarkable humor and beauty.',
+   questions:['How does McCourt use humor to deal with an otherwise devastating childhood?','The memoir is told in present tense as if Frank is a child reliving events. How does this affect you?','What role does the Catholic Church play in this family\'s life and in Irish society generally?','Malachy McCourt Sr. is a deeply flawed father. How do you feel about him by the end?','Have you ever used humor as a way to cope with hardship? How does McCourt\'s approach resonate?']},
+  {id:'cagebird',genre:'memoir',emoji:'🐦',color:'#7c3aed',bg:'#f5f3ff',
+   title:'I Know Why the Caged Bird Sings',author:'Maya Angelou',year:1969,
+   synopsis:'Maya Angelou\'s lyrical autobiography chronicles her childhood in the American South during the 1930s and 40s, covering racism, trauma, and the healing power of literature and community.',
+   questions:['How did literature and poetry become a lifeline for Maya as a child?','What role does Momma Henderson play in Maya\'s development of strength and identity?','How does Angelou use the caged bird metaphor throughout the memoir?','The book deals with serious trauma. How does Angelou balance difficult content with beauty?','What did you learn about the African American experience in the 1930s and 1940s South?']},
+  {id:'tuesdays',genre:'memoir',emoji:'🌞',color:'#d97706',bg:'#fffbeb',
+   title:'Tuesdays with Morrie',author:'Mitch Albom',year:1997,
+   synopsis:'Sportswriter Mitch Albom reconnects with his dying college professor Morrie Schwartz, and the two spend fourteen Tuesdays discussing the meaning of life. A short, powerful meditation on what truly matters.',
+   questions:['Which of Morrie\'s lessons resonated most deeply with you and why?','Morrie says the culture we have does not make people feel good about themselves. Do you agree?','How did reading this book change or reinforce your thoughts about death?','Mitch had become caught up in career and success. Do you identify with his situation before the reunion?','What would you want to discuss with a wise mentor in their final weeks?']},
+  {id:'glassc',genre:'memoir',emoji:'🏠',color:'#dc2626',bg:'#fef2f2',
+   title:'The Glass Castle',author:'Jeannette Walls',year:2005,
+   synopsis:'Jeannette Walls grew up with wildly eccentric, brilliant but wholly neglectful parents. This memoir of poverty, resilience, and complicated family love is impossible to put down.',
+   questions:['How do you feel about Rex Walls? Is he a terrible father, a magical one, or both?','Jeannette writes about her childhood without bitterness. Is this admirable, puzzling, or something else?','The Glass Castle is both literal and symbolic. What does it represent for the family?','How did the siblings support each other in the absence of reliable parenting?','This memoir raises questions about what makes a good enough parent. Where do you draw the line?']},
+  // ── INSPIRATIONAL ──
+  {id:'mans',genre:'inspirational',emoji:'⭐',color:'#4f46e5',bg:'#eef2ff',
+   title:'Man\'s Search for Meaning',author:'Viktor Frankl',year:1946,
+   synopsis:'Psychiatrist Viktor Frankl survived the Nazi death camps and emerged with a profound insight: we can endure almost anything if we find meaning in it. His logotherapy theory has helped millions find purpose in suffering.',
+   questions:['Frankl argues that choosing our attitude is the last human freedom. Do you agree?','What is your primary source of meaning in life? Has it changed over time?','How does Frankl\'s experience compare to difficult times you have faced in your own life?','Frankl says suffering is only unbearable if it seems purposeless. Has that been true for you?','Which passage or idea from this book will you carry forward?']},
+  {id:'alchemist',genre:'inspirational',emoji:'✨',color:'#b45309',bg:'#fffbeb',
+   title:'The Alchemist',author:'Paulo Coelho',year:1988,
+   synopsis:'A young Andalusian shepherd named Santiago travels from Spain to Egypt in search of treasure, guided by omens and wise figures. A modern fable about following your dreams and listening to your heart.',
+   questions:['What does your own Personal Legend — your deepest dream — look like?','The novel suggests the universe conspires to help us fulfill our destiny. Do you believe this?','Santiago nearly gives up several times. What kept him going? What has kept you going in hard times?','What does the Alchemist himself represent in the story?','Is the novel\'s message too simple, or does its simplicity give it power?']},
+  {id:'breath',genre:'inspirational',emoji:'🌿',color:'#0369a1',bg:'#f0f9ff',
+   title:'When Breath Becomes Air',author:'Paul Kalanithi',year:2016,
+   synopsis:'Brilliant neurosurgeon Paul Kalanithi is diagnosed with terminal lung cancer at 36. This memoir explores what makes life meaningful when death is near — a question he pondered as a doctor and now faces as a patient.',
+   questions:['How did Paul\'s medical background change how he processed his own dying?','Paul\'s writing is extraordinarily beautiful for someone facing such circumstances. What does that say?','The book asks what makes a life meaningful when it is cut short. How do you define a meaningful life?','Paul\'s wife Lucy wrote the epilogue. How did that final section affect you?','What would you want people to remember most about you?']},
+  // ── HUMOR ──
+  {id:'walk',genre:'humor',emoji:'🌲',color:'#166534',bg:'#f0fdf4',
+   title:'A Walk in the Woods',author:'Bill Bryson',year:1998,
+   synopsis:'After living abroad for twenty years, Bill Bryson decides to reconnect with America by hiking the Appalachian Trail — all 2,189 miles of it. With his out-of-shape friend Katz in tow, the result is one of the funniest travel books ever written.',
+   questions:['Bryson uses humor to explore serious environmental topics. Was this effective for you?','Katz is an unlikely hiking companion. What does their friendship add to the story?','Did you want to hike the AT while reading, or did Bryson\'s account put you off?','What did you learn about American wilderness and conservation from this book?','Have you had any misadventures in nature that this book reminded you of?']},
+  {id:'major',genre:'humor',emoji:'🌺',color:'#be123c',bg:'#fff1f2',
+   title:'Major Pettigrew\'s Last Stand',author:'Helen Simonson',year:2010,
+   synopsis:'Retired Major Ernest Pettigrew, a widower in the English countryside, finds unexpected companionship with Pakistani shopkeeper Mrs. Ali. A warm, witty novel about love later in life, tradition, and the courage to defy expectations.',
+   questions:['The Major is deeply rooted in tradition and propriety. Is he sympathetic or frustrating?','What obstacles does the relationship between the Major and Mrs. Ali face?','How does the novel portray English village society and its resistance to change?','Were you rooting for the Major and Mrs. Ali from the start? When did you feel sure?','Is it ever too late to change, or to fall in love? What does this novel say?']},
+  // ── FEEL-GOOD ──
+  {id:'thehelp',genre:'feelgood',emoji:'🥧',color:'#9333ea',bg:'#faf5ff',
+   title:'The Help',author:'Kathryn Stockett',year:2009,
+   synopsis:'In 1960s Jackson, Mississippi, an aspiring white writer teams up with Black maids to tell their stories in a book that could change everything. A story of courage, friendship, and speaking the truth.',
+   questions:['How did reading from Skeeter, Aibileen, and Minny\'s perspectives affect your understanding?','Minny\'s secret is one of the most memorable moments. Were you shocked?','How does the novel handle the moral complexity of race in the segregated South?','Aibileen\'s relationship with Mae Mobley is deeply moving. How does it illustrate the human cost of segregation?','What act of courage from your own life does Aibileen\'s bravery remind you of?']},
+  {id:'ove',genre:'feelgood',emoji:'🔧',color:'#1d4ed8',bg:'#eff6ff',
+   title:'A Man Called Ove',author:'Fredrik Backman',year:2012,
+   synopsis:'Ove is the grumpiest man in Sweden — a stickler for rules who has lost his will to live after the death of his wife. Then his new neighbors arrive and his carefully guarded heart begins to crack open. A beloved, life-affirming novel.',
+   questions:['How does Backman use humor to approach Ove\'s grief and suicidal intentions?','Have you known anyone like Ove — gruff on the outside but deeply caring underneath?','What do Ove\'s flashbacks reveal about how he became the man he is?','The new neighbors, especially Parvaneh, are the key to Ove\'s transformation. Why do they reach him?','What does this book say about the importance of community and connection in later life?']},
+  {id:'crawdads',genre:'feelgood',emoji:'🦅',color:'#065f46',bg:'#ecfdf5',
+   title:'Where the Crawdads Sing',author:'Delia Owens',year:2018,
+   synopsis:'Kya Clark, the Marsh Girl of coastal North Carolina, raises herself in the wilderness after being abandoned by her family. A mystery, a love story, and a gorgeous celebration of nature and the human will to survive.',
+   questions:['How does Delia Owens use the marsh as both setting and symbol throughout the novel?','Kya raises herself from childhood. What qualities allow her to survive and even flourish?','Were you surprised by the ending of the mystery? Did you see it coming?','How does the novel address how society treats those who are different or outside the mainstream?','Which of the two love interests — Tate or Chase — did you prefer for Kya, and why?']},
+  {id:'charlotte',genre:'feelgood',emoji:'🕷️',color:'#4b5563',bg:'#f9fafb',
+   title:'Charlotte\'s Web',author:'E.B. White',year:1952,
+   synopsis:'Wilbur the pig is in danger of becoming bacon when Charlotte the spider embarks on a plan to save him by spinning words of praise in her web. A perfect story about friendship, sacrifice, and the bittersweet nature of life.',
+   questions:['Charlotte\'s Web is often called one of the greatest books ever written. What makes it so special?','Charlotte says it is not often that someone comes along who is a true friend and a good writer. What qualities define a true friend to you?','How does the book handle the themes of death and loss in a way that suits all ages?','Wilbur is saved, but Charlotte is not. How do you feel about this outcome?','Have you read this before? How does it feel different reading it now as an adult?']},
+  {id:'lonesome',genre:'feelgood',emoji:'🌵',color:'#92400e',bg:'#fffbeb',
+   title:'Lonesome Dove',author:'Larry McMurtry',year:1985,
+   synopsis:'Former Texas Rangers Gus McCrae and Call lead a cattle drive from Texas to Montana. A Pulitzer Prize-winning epic of the American frontier that is funny, heartbreaking, and full of unforgettable characters.',
+   questions:['Gus and Call are complete opposites bound by deep friendship. What holds them together?','What does the frontier represent in this novel — freedom, opportunity, or something darker?','Which secondary character stayed with you most — Elmira, Lorena, Newt, or Jake Spoon?','The novel is both a celebration and an elegy for the frontier way of life. How does it achieve both?','Gus says it is not dying he is talking about, it is living. What does he mean by this?']}
+];
+
+var BC_GENRE_META={
+  classics:{label:'Classics',color:'#2563eb',bg:'#eff6ff'},
+  historical:{label:'Historical',color:'#92400e',bg:'#fffbeb'},
+  mystery:{label:'Mystery',color:'#1e40af',bg:'#e0f2fe'},
+  memoir:{label:'Memoir',color:'#7c3aed',bg:'#f5f3ff'},
+  inspirational:{label:'Inspirational',color:'#4f46e5',bg:'#eef2ff'},
+  humor:{label:'Humor',color:'#166534',bg:'#f0fdf4'},
+  feelgood:{label:'Feel-Good',color:'#9333ea',bg:'#faf5ff'}
+};
+
+var bcState={mode:'browse',filter:'all',readingList:[],meetings:[]};
+
+function bcLoad(){
+  var d=localStorage.getItem('el365_bookclub');
+  if(d){var p=JSON.parse(d);bcState.readingList=p.readingList||[];bcState.meetings=p.meetings||[];}
+}
+function bcSave(){
+  localStorage.setItem('el365_bookclub',JSON.stringify({readingList:bcState.readingList,meetings:bcState.meetings}));
+}
+function bcInit(){
+  bcLoad();
+  bcSetMode('browse');
+  bcRenderGrid();
+}
+
+function bcSetMode(m){
+  bcState.mode=m;
+  var ids=['bc-browse','bc-detail-view','bc-list-mode','bc-meeting-mode','bc-print-mode'];
+  ids.forEach(function(id){document.getElementById(id).style.display='none';});
+  var showId=m==='browse'?'bc-browse':m==='list'?'bc-list-mode':m==='meeting'?'bc-meeting-mode':'bc-print-mode';
+  document.getElementById(showId).style.display='block';
+  var modeOrder=['browse','list','meeting','print'];
+  document.querySelectorAll('#bc-mode-btns .bc-mode-btn').forEach(function(b,i){
+    b.classList.toggle('active',modeOrder[i]===m);
+  });
+  if(m==='list')bcRenderList();
+  if(m==='meeting')bcRenderMeetings();
+}
+
+function bcFilter(g,btn){
+  bcState.filter=g;
+  document.querySelectorAll('.bc-filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  bcRenderGrid();
+}
+
+function bcRenderGrid(){
+  var books=bcState.filter==='all'?BC_BOOKS:BC_BOOKS.filter(function(b){return b.genre===bcState.filter;});
+  var h='';
+  books.forEach(function(b){
+    var inList=bcState.readingList.find(function(r){return r.id===b.id;});
+    var g=BC_GENRE_META[b.genre];
+    h+='<div class="bc-book-card" onclick="bcShowDetail(\''+b.id+'\')">'+
+      '<div class="bc-book-spine" style="background:'+b.bg+'">'+b.emoji+'</div>'+
+      '<div class="bc-book-info">'+
+        '<div class="bc-book-title">'+b.title+'</div>'+
+        '<div class="bc-book-author">'+b.author+' ('+b.year+')</div>'+
+        '<div class="bc-book-meta">'+
+          '<span class="bc-genre-badge" style="background:'+g.bg+';color:'+g.color+'">'+g.label+'</span>'+
+          '<span style="font-size:16px;">'+(inList?'✅':'')+'</span>'+
+        '</div>'+
+      '</div></div>';
+  });
+  document.getElementById('bc-book-grid').innerHTML=h||'<p style="color:#999;padding:20px;">No books in this category.</p>';
+}
+
+function bcShowDetail(id){
+  var b=BC_BOOKS.find(function(x){return x.id===id;});
+  if(!b)return;
+  var inList=bcState.readingList.find(function(r){return r.id===b.id;});
+  var g=BC_GENRE_META[b.genre];
+  var qs=b.questions.map(function(q,i){
+    return '<div class="bc-question-item"><span class="bc-question-num">Q'+(i+1)+'.</span>'+q+'</div>';
+  }).join('');
+  var addBtn=inList?
+    '<button onclick="bcRemoveFromList(\''+b.id+'\')" style="padding:8px 18px;background:#fff;color:#e57373;border:2px solid #e57373;border-radius:8px;cursor:pointer;font-weight:600;">✓ On Reading List</button>':
+    '<button onclick="bcAddToList(\''+b.id+'\')" style="padding:8px 18px;background:#8B4513;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">+ Add to My List</button>';
+  var html='<div class="bc-detail-header">'+
+    '<div class="bc-detail-cover" style="background:'+b.bg+'">'+b.emoji+'</div>'+
+    '<div class="bc-detail-info">'+
+      '<h2>'+b.title+'</h2>'+
+      '<p><strong>Author:</strong> '+b.author+'</p>'+
+      '<p><strong>Published:</strong> '+b.year+'</p>'+
+      '<p><span class="bc-genre-badge" style="background:'+g.bg+';color:'+g.color+';padding:3px 12px;border-radius:10px;font-size:12px;font-weight:600;">'+g.label+'</span></p>'+
+      '<div style="margin-top:12px;">'+addBtn+'</div>'+
+    '</div></div>'+
+    '<div class="bc-synopsis">'+b.synopsis+'</div>'+
+    '<div class="bc-questions"><h3>📖 Discussion Questions</h3>'+qs+'</div>';
+  document.getElementById('bc-detail-content').innerHTML=html;
+  document.getElementById('bc-browse').style.display='none';
+  document.getElementById('bc-detail-view').style.display='block';
+}
+
+function bcBackToBrowse(){
+  document.getElementById('bc-detail-view').style.display='none';
+  document.getElementById('bc-browse').style.display='block';
+}
+
+function bcAddToList(id){
+  if(bcState.readingList.find(function(r){return r.id===id;}))return;
+  bcState.readingList.push({id:id,status:'want',rating:0,dateAdded:new Date().toISOString()});
+  bcSave();bcShowDetail(id);bcRenderGrid();
+}
+function bcRemoveFromList(id){
+  bcState.readingList=bcState.readingList.filter(function(r){return r.id!==id;});
+  bcSave();bcShowDetail(id);bcRenderGrid();
+}
+
+function bcRenderList(){
+  var c=document.getElementById('bc-reading-list-container');
+  var stats=document.getElementById('bc-list-stats');
+  if(!bcState.readingList.length){
+    c.innerHTML='<div style="text-align:center;padding:40px;color:#999;"><div style="font-size:48px;margin-bottom:12px;">📚</div><p>No books on your list yet. Browse books and add them!</p></div>';
+    stats.textContent='';return;
+  }
+  var read=bcState.readingList.filter(function(r){return r.status==='read';}).length;
+  stats.textContent=read+' read · '+bcState.readingList.length+' total';
+  var h='<div class="bc-reading-list">';
+  bcState.readingList.forEach(function(r){
+    var b=BC_BOOKS.find(function(x){return x.id===r.id;});if(!b)return;
+    var stars='';
+    for(var i=1;i<=5;i++)stars+='<span class="bc-star'+(i<=r.rating?' lit':'')+'" onclick="bcRate(\''+r.id+'\','+i+')">&#9733;</span>';
+    h+='<div class="bc-reading-item">'+
+      '<div style="width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;background:'+BC_GENRE_META[b.genre].bg+';flex-shrink:0;">'+b.emoji+'</div>'+
+      '<div class="bc-reading-info">'+
+        '<h4>'+b.title+'</h4>'+
+        '<p>'+b.author+' &middot; '+BC_GENRE_META[b.genre].label+'</p>'+
+        '<div style="display:flex;align-items:center;gap:10px;margin-top:6px;">'+
+          '<div class="bc-star-rating">'+stars+'</div>'+
+          '<select class="bc-status-select" onchange="bcUpdateStatus(\''+r.id+'\',this.value)">'+
+            '<option value="want"'+(r.status==='want'?' selected':'')+'>&#128204; Want to Read</option>'+
+            '<option value="reading"'+(r.status==='reading'?' selected':'')+'>&#128214; Reading</option>'+
+            '<option value="read"'+(r.status==='read'?' selected':'')+'>&#9989; Finished</option>'+
+          '</select>'+
+        '</div>'+
+      '</div>'+
+      '<button onclick="bcState.readingList=bcState.readingList.filter(function(x){return x.id!==\''+r.id+'\';});bcSave();bcRenderList();bcRenderGrid();" '+
+        'style="background:none;border:none;color:#e57373;font-size:18px;cursor:pointer;padding:4px;" title="Remove">&times;</button>'+
+    '</div>';
+  });
+  h+='</div>';
+  c.innerHTML=h;
+}
+
+function bcRate(id,stars){
+  var r=bcState.readingList.find(function(x){return x.id===id;});
+  if(r){r.rating=stars;bcSave();bcRenderList();}
+}
+function bcUpdateStatus(id,status){
+  var r=bcState.readingList.find(function(x){return x.id===id;});
+  if(r){r.status=status;bcSave();}
+}
+
+function bcSaveMeeting(){
+  var date=document.getElementById('bc-meet-date').value;
+  var book=document.getElementById('bc-meet-book').value.trim();
+  if(!date||!book){alert('Please enter a date and book title.');return;}
+  bcState.meetings.push({id:'bm'+Date.now(),
+    date:date,
+    time:document.getElementById('bc-meet-time').value,
+    book:book,
+    location:document.getElementById('bc-meet-location').value.trim(),
+    attendees:document.getElementById('bc-meet-attendees').value,
+    food:document.getElementById('bc-meet-food').value.trim(),
+    notes:document.getElementById('bc-meet-notes').value.trim()
+  });
+  bcState.meetings.sort(function(a,b){return a.date.localeCompare(b.date);});
+  bcSave();
+  ['bc-meet-date','bc-meet-time','bc-meet-book','bc-meet-location','bc-meet-attendees','bc-meet-food','bc-meet-notes'].forEach(function(id){document.getElementById(id).value='';});
+  bcRenderMeetings();
+}
+
+function bcRenderMeetings(){
+  var el=document.getElementById('bc-meeting-list');
+  if(!bcState.meetings.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#999;">No meetings planned yet.</div>';return;}
+  var h='';
+  bcState.meetings.forEach(function(m){
+    var d=new Date(m.date+'T12:00:00');
+    var ds=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    var today=new Date();today.setHours(0,0,0,0);
+    var diff=Math.round((d-today)/(86400000));
+    var tag=diff<0?'<span style="color:#e57373;font-size:12px;">Past</span>':
+             diff===0?'<span style="color:#16a34a;font-size:12px;font-weight:700;">TODAY!</span>':
+             '<span style="color:#8B4513;font-size:12px;">'+diff+' days away</span>';
+    h+='<div class="bc-meeting-card">'+
+      '<div style="display:flex;justify-content:space-between;align-items:start;"><h4>&#128214; '+m.book+'</h4>'+tag+'</div>'+
+      '<p>&#128197; '+ds+(m.time?' at '+m.time:'')+'</p>'+
+      (m.location?'<p>&#128205; '+m.location+'</p>':'')+
+      (m.attendees?'<p>&#128101; '+m.attendees+' expected</p>':'')+
+      (m.food?'<p>&#127850; '+m.food+'</p>':'')+
+      (m.notes?'<p>&#128221; '+m.notes+'</p>':'')+
+      '<div class="bc-meeting-actions">'+
+        '<button onclick="bcPrintMeeting(\''+m.id+'\')" style="padding:6px 12px;background:#8B4513;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">&#128424; Print</button>'+
+        '<button onclick="bcDeleteMeeting(\''+m.id+'\')" style="padding:6px 12px;background:#fff;color:#e57373;border:2px solid #e57373;border-radius:6px;cursor:pointer;font-size:13px;">Delete</button>'+
+      '</div></div>';
+  });
+  el.innerHTML=h;
+}
+
+function bcDeleteMeeting(id){
+  bcState.meetings=bcState.meetings.filter(function(m){return m.id!==id;});
+  bcSave();bcRenderMeetings();
+}
+
+function bcPrint(type){
+  var w=window.open('','_blank','width=900,height=700');
+  var body='';var title='Book Club';
+  if(type==='discussion'){
+    title='Discussion Cards';
+    body='<h1 style="color:#8B4513;text-align:center;">&#128218; Book Club Discussion Cards</h1>';
+    body+='<p style="text-align:center;color:#666;">Great questions to spark meaningful conversations</p><hr>';
+    var qs2=['What was the central theme of this book? Did it surprise you?',
+      'Which moment in the book stayed with you the longest, and why?',
+      'Have you ever had an experience that mirrored something in this story?',
+      'Did this book change your perspective on anything?',
+      'Which character felt most real or relatable to you, and why?',
+      'What did the author do particularly well in terms of craft and writing?',
+      'Were there any passages you wanted to read aloud to someone?',
+      'How does the time period affect the story? Would it be different set today?',
+      'What questions do you still have after finishing the book?',
+      'Would you recommend this book? Who would love it most?'];
+    qs2.forEach(function(q,i){
+      body+='<div style="border:2px solid #e0c9a0;border-radius:10px;padding:16px;margin:12px 0;background:#fdf8f0;">'+
+        '<strong style="color:#8B4513;">Q'+(i+1)+'. </strong>'+q+'</div>';
+    });
+  } else if(type==='reading_log'){
+    title='Reading Log';
+    body='<h1 style="color:#8B4513;text-align:center;">&#128203; My Reading Log</h1>';
+    if(bcState.readingList.length){
+      body+='<table style="width:100%;border-collapse:collapse;margin-top:20px;">';
+      body+='<tr style="background:#8B4513;color:#fff;"><th style="padding:10px;text-align:left;">Book</th><th>Author</th><th>Genre</th><th>Status</th><th>Rating</th></tr>';
+      bcState.readingList.forEach(function(r,i){
+        var b2=BC_BOOKS.find(function(x){return x.id===r.id;});if(!b2)return;
+        var stars2=Array(r.rating).fill('★').join('')+Array(5-r.rating).fill('☆').join('');
+        body+='<tr style="background:'+(i%2===0?'#fff':'#fdf8f0')+'">'+
+          '<td style="padding:8px;border:1px solid #e0c9a0;">'+b2.emoji+' '+b2.title+'</td>'+
+          '<td style="padding:8px;border:1px solid #e0c9a0;">'+b2.author+'</td>'+
+          '<td style="padding:8px;border:1px solid #e0c9a0;">'+BC_GENRE_META[b2.genre].label+'</td>'+
+          '<td style="padding:8px;border:1px solid #e0c9a0;">'+(r.status==='want'?'Want to Read':r.status==='reading'?'Reading':'Finished')+'</td>'+
+          '<td style="padding:8px;border:1px solid #e0c9a0;color:#f59e0b;">'+stars2+'</td>'+
+        '</tr>';
+      });
+      body+='</table>';
+    } else {
+      body+='<p style="text-align:center;color:#999;margin-top:40px;">No books on your reading list yet.</p>';
+    }
+  } else if(type==='agenda'){
+    title='Meeting Agenda';
+    var next=bcState.meetings.find(function(m){return new Date(m.date+'T12:00:00')>=new Date();});
+    if(next){
+      var d3=new Date(next.date+'T12:00:00');
+      var ds3=d3.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+      body='<h1 style="color:#8B4513;text-align:center;">&#128197; Book Club Meeting Agenda</h1>';
+      body+='<div style="text-align:center;margin-bottom:24px;">';
+      body+='<p style="font-size:18px;font-weight:700;color:#3d2000;">'+next.book+'</p>';
+      body+='<p style="color:#666;">'+ds3+(next.time?' &middot; '+next.time:'')+'</p>';
+      if(next.location)body+='<p style="color:#666;">'+next.location+'</p>';
+      body+='</div>';
+      var agenda2=[
+        {t:'0:00 – 0:05',a:'Welcome &amp; Introductions'},
+        {t:'0:05 – 0:15',a:'Opening: What was your overall impression of the book?'},
+        {t:'0:15 – 0:35',a:'Discussion Questions (rotate through the group)'},
+        {t:'0:35 – 0:45',a:'Favorite passages or memorable quotes'},
+        {t:'0:45 – 0:55',a:'Would you recommend it? To whom?'},
+        {t:'0:55 – 1:00',a:'Announce next book &amp; wrap up'}
+      ];
+      body+='<table style="width:100%;border-collapse:collapse;">';
+      agenda2.forEach(function(a,i){
+        body+='<tr style="background:'+(i%2===0?'#fff':'#fdf8f0')+'">'+
+          '<td style="padding:10px;border:1px solid #e0c9a0;color:#8B4513;font-weight:700;white-space:nowrap;">'+a.t+'</td>'+
+          '<td style="padding:10px;border:1px solid #e0c9a0;">'+a.a+'</td></tr>';
+      });
+      body+='</table>';
+      if(next.food)body+='<p style="margin-top:16px;"><strong>Refreshments:</strong> '+next.food+'</p>';
+      if(next.notes)body+='<p><strong>Notes:</strong> '+next.notes+'</p>';
+    } else {
+      body='<h2 style="text-align:center;color:#999;margin-top:60px;">No upcoming meetings planned.</h2>';
+    }
+  } else if(type==='bingo'){
+    title='Reading Bingo';
+    body='<h1 style="color:#8B4513;text-align:center;">&#128218; Reading Bingo Challenge</h1>';
+    body+='<p style="text-align:center;color:#666;margin-bottom:20px;">Read a book from each square to complete your card!</p>';
+    var cells2=['A Classic Novel','A Mystery','A Memoir','Historical Fiction','A Feel-Good Story',
+      'Inspirational Book','Written by a Woman','Set Abroad','Under 200 Pages','Published Before 1960',
+      'A Book Club Pick','Humor or Comedy','FREE SPACE &#11088;','A Prize Winner','Set in America',
+      'About Friendship','Non-Fiction','Set in Nature','A Love Story','1st Person Narrator',
+      'Family Saga','About Survival','About Art or Music','Published After 2000','About Growing Up'];
+    body+='<table style="border-collapse:collapse;margin:0 auto;">';
+    for(var row=0;row<5;row++){
+      body+='<tr>';
+      for(var col=0;col<5;col++){
+        var ci=row*5+col;
+        var isC=(row===2&&col===2);
+        body+='<td style="width:110px;height:80px;border:2px solid #8B4513;text-align:center;padding:6px;font-size:11px;vertical-align:middle;background:'+(isC?'#fdf8f0':'#fff')+';font-weight:'+(isC?'700':'400')+';color:'+(isC?'#8B4513':'#444')+'">'+cells2[ci]+'</td>';
+      }
+      body+='</tr>';
+    }
+    body+='</table>';
+  } else if(type==='certificate'){
+    title='Reader Certificate';
+    body='<div style="border:8px double #8B4513;padding:48px;text-align:center;font-family:Georgia,serif;margin:20px;">';
+    body+='<div style="font-size:48px;margin-bottom:16px;">&#128218;</div>';
+    body+='<h1 style="color:#8B4513;font-size:32px;margin:0 0 8px;">Certificate of Achievement</h1>';
+    body+='<p style="color:#666;font-size:16px;margin-bottom:24px;">This certifies that</p>';
+    body+='<div style="border-bottom:2px solid #8B4513;width:300px;margin:0 auto 8px;min-height:40px;"></div>';
+    body+='<p style="color:#8B4513;font-size:13px;font-style:italic;margin-bottom:24px;">Name</p>';
+    body+='<p style="color:#444;font-size:16px;">has been recognized as an</p>';
+    body+='<h2 style="color:#3d2000;font-size:26px;margin:8px 0;">Outstanding Book Club Reader</h2>';
+    body+='<p style="color:#444;font-size:14px;margin:16px auto;max-width:400px;">For their thoughtful contributions to discussion, love of literature, and enthusiasm for lifelong learning.</p>';
+    body+='<p style="margin-top:32px;color:#666;">Date: _______________</p>';
+    body+='</div>';
+  } else if(type==='catalog'){
+    title='Book Catalog';
+    body='<h1 style="color:#8B4513;text-align:center;">&#128218; Book Club Catalog</h1>';
+    body+='<p style="text-align:center;color:#666;margin-bottom:24px;">30 Handpicked Books for Senior Living Book Clubs</p>';
+    var genres3=['classics','historical','mystery','memoir','inspirational','humor','feelgood'];
+    genres3.forEach(function(g){
+      var gm=BC_GENRE_META[g];
+      var bks=BC_BOOKS.filter(function(b){return b.genre===g;});
+      body+='<h2 style="color:'+gm.color+';border-bottom:2px solid '+gm.color+';padding-bottom:4px;margin-top:28px;">'+gm.label+'</h2>';
+      bks.forEach(function(b){
+        body+='<div style="margin:12px 0;padding:12px;background:#fdf8f0;border-radius:8px;border-left:3px solid '+b.color+'">'+
+          '<strong>'+b.emoji+' '+b.title+'</strong> by '+b.author+' ('+b.year+')<br>'+
+          '<span style="font-size:13px;color:#555;">'+b.synopsis.substring(0,130)+'...</span>'+
+        '</div>';
+      });
+    });
+  }
+  w.document.write('<!DOCTYPE html><html><head><title>'+title+'</title>'+
+    '<style>body{font-family:Georgia,serif;max-width:820px;margin:0 auto;padding:32px;color:#333;}'+
+    'h1,h2,h3{font-family:Georgia,serif;}@media print{body{padding:0;}}</style></head>'+
+    '<body>'+body+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function bcPrintMeeting(id){bcPrint('agenda');}
+
+(function(){
+  var _o=window.switchTab;
+  window.switchTab=function(n){_o&&_o(n);if(n==='bookclub')bcInit();};
+})();
+</script>
+
+
+<script>
+// ═══════════════════════════════════════════════════
+//  🧩 PUZZLE STUDIO
+// ═══════════════════════════════════════════════════
+var PZ_CIPHER='QWERTYUIOPASDFGHJKLZXCVBNM';
+function pzEncode(t){
+  return t.toUpperCase().split('').map(function(c){
+    var i=c.charCodeAt(0)-65;
+    return(i>=0&&i<26)?PZ_CIPHER[i]:c;
+  }).join('');
+}
+function pzDecodeMap(text){
+  var enc=pzEncode(text),map={};
+  for(var i=0;i<text.length;i++){
+    var o=text[i].toUpperCase();
+    if(o>='A'&&o<='Z')map[enc[i]]=o;
+  }
+  return map;
+}
+
+var PZ_CRYPTOS=[
+  {text:'TO BE OR NOT TO BE THAT IS THE QUESTION',author:'William Shakespeare'},
+  {text:'THE ONLY THING WE HAVE TO FEAR IS FEAR ITSELF',author:'Franklin D. Roosevelt'},
+  {text:'ASK NOT WHAT YOUR COUNTRY CAN DO FOR YOU',author:'John F. Kennedy'},
+  {text:'IT WAS THE BEST OF TIMES IT WAS THE WORST OF TIMES',author:'Charles Dickens'},
+  {text:'LIFE IS WHAT HAPPENS WHEN YOU ARE BUSY MAKING OTHER PLANS',author:'John Lennon'},
+  {text:'IT ALWAYS SEEMS IMPOSSIBLE UNTIL IT IS DONE',author:'Nelson Mandela'},
+  {text:'IN THREE WORDS I CAN SUM UP EVERYTHING I KNOW ABOUT LIFE IT GOES ON',author:'Robert Frost'},
+  {text:'HAPPINESS IS NOT SOMETHING READY MADE IT COMES FROM YOUR OWN ACTIONS',author:'Dalai Lama'},
+  {text:'WELL BEHAVED WOMEN SELDOM MAKE HISTORY',author:'Laurel Thatcher Ulrich'},
+  {text:'YOU ARE NEVER TOO OLD TO SET ANOTHER GOAL OR TO DREAM A NEW DREAM',author:'C. S. Lewis'}
+];
+
+var PZ_RIDDLES=[
+  {q:'The more you take, the more you leave behind. What am I?',a:'Footsteps'},
+  {q:'I have cities but no houses. I have mountains but no trees. I have water but no fish. What am I?',a:'A map'},
+  {q:'I speak without a mouth and hear without ears. I have no body but I come alive with wind. What am I?',a:'An echo'},
+  {q:'What has hands but cannot clap?',a:'A clock'},
+  {q:'What gets wetter as it dries?',a:'A towel'},
+  {q:'What can you catch but not throw?',a:'A cold'},
+  {q:'I have keys but no locks. I have space but no room. You can enter but cannot go inside. What am I?',a:'A keyboard'},
+  {q:'What has one eye but cannot see?',a:'A needle'},
+  {q:'What has a head and a tail but no body?',a:'A coin'},
+  {q:'What comes once in a minute, twice in a moment, but never in a thousand years?',a:'The letter M'},
+  {q:'I am tall when young and short when old. What am I?',a:'A candle'},
+  {q:'What has many teeth but cannot bite?',a:'A comb'},
+  {q:'What is always in front of you but cannot be seen?',a:'The future'},
+  {q:'I have branches but no fruit, trunk, or leaves. What am I?',a:'A bank'},
+  {q:'What can run but never walks, has a mouth but never talks, has a bed but never sleeps?',a:'A river'},
+  {q:'What has four legs in the morning, two in the afternoon, and three in the evening?',a:'A person (crawls as a baby, walks upright, uses a cane when elderly) — the Riddle of the Sphinx!'},
+  {q:'What word is spelled incorrectly in every dictionary?',a:'Incorrectly'},
+  {q:'The more you have of it, the less you see. What is it?',a:'Darkness'},
+  {q:'What has 13 hearts but no other organs?',a:'A deck of cards'},
+  {q:'What goes up but never comes down?',a:'Your age'}
+];
+
+var PZ_TEASERS=[
+  {q:'If you have 3 apples and you take away 2, how many apples do YOU have?',a:'2 — the ones you took!'},
+  {q:'A rooster lays an egg on top of the barn roof. Which way does it roll?',a:'Roosters don\'t lay eggs!'},
+  {q:'Two fathers and two sons go fishing and each catches one fish. They bring home only 3 fish. How?',a:'There are only 3 people: a grandfather, his son, and his grandson.'},
+  {q:'Before Mount Everest was discovered, what was the tallest mountain in the world?',a:'Mount Everest — it was still the tallest, just not yet discovered!'},
+  {q:'What weighs more: a pound of feathers or a pound of gold?',a:'They weigh the same — both are one pound!'},
+  {q:'Johnny\'s mother has four children. The first is named April, the second May, the third June. What is the fourth child\'s name?',a:'Johnny — it\'s his mother!'},
+  {q:'A farmer has 15 cows. All but 8 die. How many cows does he have left?',a:'8 cows'},
+  {q:'If you divide 30 by half and add 10, what do you get?',a:'70! (30 ÷ 0.5 = 60, plus 10 = 70)'},
+  {q:'How many months of the year have 28 days?',a:'All 12 of them — every month has at least 28 days!'},
+  {q:'An electric train is heading north. The wind is blowing south. Which direction does the smoke blow?',a:'Electric trains don\'t produce smoke!'},
+  {q:'Mary has 4 daughters, and each of her daughters has one brother. How many children does Mary have in total?',a:'5 children — 4 daughters and 1 son (shared by all sisters)'},
+  {q:'How far can a dog run into the woods?',a:'Only halfway — after that it\'s running OUT of the woods!'}
+];
+
+var PZ_SCRAMBLES=[
+  {word:'BASEBALL',scrambled:'BLAASBLE',hint:'America\'s favorite pastime'},
+  {word:'SUNSHINE',scrambled:'SNUSHINE',hint:'What makes flowers grow'},
+  {word:'CHOCOLATE',scrambled:'LACEHOCOT',hint:'A sweet treat loved by many'},
+  {word:'BUTTERFLY',scrambled:'TTERBLUFY',hint:'It starts as a caterpillar'},
+  {word:'GARDENING',scrambled:'NIGENRDAG',hint:'Growing things in your yard'},
+  {word:'LAUGHTER',scrambled:'TERLAHGU',hint:'They say it is the best medicine'},
+  {word:'REMEMBER',scrambled:'BMEERMER',hint:'To bring the past back to mind'},
+  {word:'ADVENTURE',scrambled:'NREATDVEU',hint:'An exciting journey or experience'},
+  {word:'FRIENDSHIP',scrambled:'NPIDHSERIF',hint:'A treasured relationship'},
+  {word:'GRANDCHILDREN',scrambled:'NRCHIALDRENDG',hint:'The greatest joy of grandparents'}
+];
+
+var pzState={mode:'crypto',cryptoIdx:0,cryptoGuesses:{},cryptoHints:0,cryptoSolved:false,
+  riddleIdx:0,riddleShown:false,teaserIdx:0,teaserShown:false,
+  scrambleIdx:0,scrambleScores:[],scrambleRevealed:false};
+
+function pzLoad(){
+  var d=localStorage.getItem('el365_puzzle');
+  if(d){var p=JSON.parse(d);pzState.scrambleScores=p.scrambleScores||[];}
+}
+function pzSave(){
+  localStorage.setItem('el365_puzzle',JSON.stringify({scrambleScores:pzState.scrambleScores}));
+}
+function pzInit(){pzLoad();pzSetMode('crypto');}
+
+function pzSetMode(m){
+  pzState.mode=m;
+  var modes=['crypto','riddle','teaser','scramble','print'];
+  modes.forEach(function(mo){
+    document.getElementById('pz-'+mo+'-mode').style.display='none';
+  });
+  document.getElementById('pz-'+m+'-mode').style.display='block';
+  document.querySelectorAll('#pz-mode-btns .pz-mode-btn').forEach(function(b,i){
+    b.classList.toggle('active',modes[i]===m);
+  });
+  if(m==='crypto')pzRenderCrypto();
+  if(m==='riddle')pzRenderRiddle();
+  if(m==='teaser')pzRenderTeaser();
+  if(m==='scramble')pzRenderScramble();
+}
+
+// ── CRYPTOGRAM ──
+function pzRenderCrypto(){
+  var p=PZ_CRYPTOS[pzState.cryptoIdx];
+  var encoded=pzEncode(p.text);
+  var dmap=pzDecodeMap(p.text);
+  document.getElementById('pz-crypto-title').textContent='🔐 Cryptogram '+(pzState.cryptoIdx+1)+' of 10';
+  document.getElementById('pz-crypto-prog').textContent=(pzState.cryptoIdx+1)+' / 10';
+  // Build display
+  var words=p.text.split(' ');
+  var encWords=encoded.split(' ');
+  var h='';
+  words.forEach(function(w,wi){
+    h+='<div class="pz-word">';
+    var ew=encWords[wi];
+    for(var i=0;i<ew.length;i++){
+      var ec=ew[i];
+      if(ec>='A'&&ec<='Z'){
+        var g=pzState.cryptoGuesses[ec]||'';
+        var isOk=g&&g===dmap[ec];
+        var isNo=g&&!isOk;
+        h+='<div class="pz-tile">'+
+          '<div class="pz-enc">'+ec+'</div>'+
+          '<input class="pz-inp'+(isOk?' pz-ok':isNo?' pz-no':'')+'" maxlength="1" '+
+          'data-enc="'+ec+'" value="'+g+'" oninput="pzType(this)" onkeydown="pzKeyNav(event,this)">'+
+        '</div>';
+      } else {
+        h+='<div class="pz-tile"><div class="pz-enc" style="background:#9f7aea;">'+ec+'</div>'+
+          '<div style="width:30px;height:31px;"></div></div>';
+      }
+    }
+    h+='</div>';
+  });
+  document.getElementById('pz-display').innerHTML=h;
+  // Build cipher key
+  var usedEnc=Object.keys(dmap).sort();
+  var kh='';
+  usedEnc.forEach(function(ec){
+    var g=pzState.cryptoGuesses[ec]||'';
+    var isOk=g&&g===dmap[ec];
+    kh+='<div class="pz-key-tile">'+
+      '<div class="pz-key-enc">'+ec+'</div>'+
+      '<input class="pz-key-dec'+(isOk?' pz-ok':'')+'" maxlength="1" data-enc="'+ec+'" '+
+      'value="'+g+'" oninput="pzType(this)" readonly style="cursor:default;">'+
+    '</div>';
+  });
+  document.getElementById('pz-cipher-key').innerHTML=kh;
+  // Check solved
+  pzCheckSolved(dmap);
+}
+
+function pzType(inp){
+  var ec=inp.getAttribute('data-enc');
+  var val=inp.value.replace(/[^a-zA-Z]/g,'').toUpperCase().substring(0,1);
+  pzState.cryptoGuesses[ec]=val;
+  var dmap=pzDecodeMap(PZ_CRYPTOS[pzState.cryptoIdx].text);
+  // Update all inputs for this enc
+  document.querySelectorAll('.pz-inp[data-enc="'+ec+'"],.pz-key-dec[data-enc="'+ec+'"]').forEach(function(el2){
+    el2.value=val;
+    el2.classList.remove('pz-ok','pz-no');
+    if(val){
+      if(val===dmap[ec])el2.classList.add('pz-ok');
+      else el2.classList.add('pz-no');
+    }
+  });
+  pzCheckSolved(dmap);
+  // Move focus to next unfilled input
+  if(val){
+    var all=document.querySelectorAll('.pz-inp');
+    var idx2=Array.from(all).indexOf(inp);
+    if(idx2>=0){
+      for(var j=idx2+1;j<all.length;j++){
+        if(!all[j].value){all[j].focus();break;}
+      }
+    }
+  }
+}
+
+function pzKeyNav(e,inp){
+  if(e.key==='Backspace'&&!inp.value){
+    var all=document.querySelectorAll('.pz-inp');
+    var idx2=Array.from(all).indexOf(inp);
+    if(idx2>0)all[idx2-1].focus();
+  }
+}
+
+function pzCheckSolved(dmap){
+  var p=PZ_CRYPTOS[pzState.cryptoIdx];
+  var encoded=pzEncode(p.text);
+  var solved=true;
+  for(var i=0;i<encoded.length;i++){
+    var ec=encoded[i];
+    if(ec>='A'&&ec<='Z'){
+      if(pzState.cryptoGuesses[ec]!==dmap[ec]){solved=false;break;}
+    }
+  }
+  var banner=document.getElementById('pz-solved');
+  if(solved&&!pzState.cryptoSolved){
+    pzState.cryptoSolved=true;
+    banner.style.display='block';
+    var hintsUsed=pzState.cryptoHints;
+    var stars=hintsUsed===0?'⭐⭐⭐':hintsUsed<=2?'⭐⭐':'⭐';
+    document.getElementById('pz-solved-msg').textContent='— '+PZ_CRYPTOS[pzState.cryptoIdx].author+
+      '  |  '+stars+' ('+hintsUsed+' hint'+(hintsUsed===1?'':'s')+' used)';
+  } else if(!solved){
+    banner.style.display='none';
+  }
+}
+
+function pzHint(){
+  var p=PZ_CRYPTOS[pzState.cryptoIdx];
+  var dmap=pzDecodeMap(p.text);
+  var unsolvedKeys=Object.keys(dmap).filter(function(k){return pzState.cryptoGuesses[k]!==dmap[k];});
+  if(!unsolvedKeys.length)return;
+  var k=unsolvedKeys[Math.floor(Math.random()*unsolvedKeys.length)];
+  pzState.cryptoGuesses[k]=dmap[k];
+  pzState.cryptoHints++;
+  pzRenderCrypto();
+}
+
+function pzRevealAll(){
+  var p=PZ_CRYPTOS[pzState.cryptoIdx];
+  var dmap=pzDecodeMap(p.text);
+  Object.keys(dmap).forEach(function(k){pzState.cryptoGuesses[k]=dmap[k];});
+  pzState.cryptoHints=Math.max(pzState.cryptoHints,5);
+  pzRenderCrypto();
+}
+
+function pzResetCrypto(){
+  pzState.cryptoGuesses={};pzState.cryptoHints=0;pzState.cryptoSolved=false;
+  pzRenderCrypto();
+}
+
+function pzCryptoNav(dir){
+  pzState.cryptoIdx=(pzState.cryptoIdx+dir+PZ_CRYPTOS.length)%PZ_CRYPTOS.length;
+  pzState.cryptoGuesses={};pzState.cryptoHints=0;pzState.cryptoSolved=false;
+  document.getElementById('pz-solved').style.display='none';
+  pzRenderCrypto();
+}
+
+// ── RIDDLES ──
+function pzRenderRiddle(){
+  var r=PZ_RIDDLES[pzState.riddleIdx];
+  document.getElementById('pz-riddle-q').textContent=r.q;
+  document.getElementById('pz-riddle-a').textContent='Answer: '+r.a;
+  document.getElementById('pz-riddle-a').style.display='none';
+  pzState.riddleShown=false;
+  document.getElementById('pz-riddle-prog').textContent=(pzState.riddleIdx+1)+' / '+PZ_RIDDLES.length;
+}
+function pzToggleRiddle(){
+  pzState.riddleShown=!pzState.riddleShown;
+  document.getElementById('pz-riddle-a').style.display=pzState.riddleShown?'block':'none';
+}
+function pzRiddleNav(d){
+  pzState.riddleIdx=(pzState.riddleIdx+d+PZ_RIDDLES.length)%PZ_RIDDLES.length;
+  pzRenderRiddle();
+}
+
+// ── BRAIN TEASERS ──
+function pzRenderTeaser(){
+  var t=PZ_TEASERS[pzState.teaserIdx];
+  document.getElementById('pz-teaser-q').textContent=t.q;
+  document.getElementById('pz-teaser-a').textContent='Answer: '+t.a;
+  document.getElementById('pz-teaser-a').style.display='none';
+  pzState.teaserShown=false;
+  document.getElementById('pz-teaser-prog').textContent=(pzState.teaserIdx+1)+' / '+PZ_TEASERS.length;
+}
+function pzToggleTeaser(){
+  pzState.teaserShown=!pzState.teaserShown;
+  document.getElementById('pz-teaser-a').style.display=pzState.teaserShown?'block':'none';
+}
+function pzTeaserNav(d){
+  pzState.teaserIdx=(pzState.teaserIdx+d+PZ_TEASERS.length)%PZ_TEASERS.length;
+  pzRenderTeaser();
+}
+
+// ── WORD SCRAMBLE ──
+function pzRenderScramble(){
+  var s=PZ_SCRAMBLES[pzState.scrambleIdx];
+  var h='';
+  s.scrambled.split('').forEach(function(c){
+    h+='<div class="pz-scramble-letter">'+c+'</div>';
+  });
+  document.getElementById('pz-scramble-display').innerHTML=h;
+  document.getElementById('pz-scramble-hint').textContent='Hint: '+s.hint;
+  document.getElementById('pz-scramble-input').value='';
+  document.getElementById('pz-scramble-result').textContent='';
+  pzState.scrambleRevealed=false;
+  document.getElementById('pz-scramble-prog').textContent=(pzState.scrambleIdx+1)+' / '+PZ_SCRAMBLES.length;
+  pzUpdateScrambleScore();
+}
+function pzCheckScramble(){
+  var s=PZ_SCRAMBLES[pzState.scrambleIdx];
+  var val=document.getElementById('pz-scramble-input').value.trim().toUpperCase();
+  var res=document.getElementById('pz-scramble-result');
+  if(val===s.word){
+    res.innerHTML='<span style="color:#16a34a;">&#127881; Correct! Well done!</span>';
+    if(!pzState.scrambleScores[pzState.scrambleIdx]&&!pzState.scrambleRevealed){
+      pzState.scrambleScores[pzState.scrambleIdx]=true;
+      pzSave();
+      pzUpdateScrambleScore();
+    }
+  } else if(!val){
+    res.textContent='';
+  } else {
+    res.innerHTML='<span style="color:#dc2626;">Not quite — try again!</span>';
+  }
+}
+function pzRevealScramble(){
+  pzState.scrambleRevealed=true;
+  var s=PZ_SCRAMBLES[pzState.scrambleIdx];
+  document.getElementById('pz-scramble-input').value=s.word;
+  document.getElementById('pz-scramble-result').innerHTML='<span style="color:#6d28d9;">Answer: '+s.word+'</span>';
+}
+function pzUpdateScrambleScore(){
+  var correct=pzState.scrambleScores.filter(Boolean).length;
+  document.getElementById('pz-scramble-score').textContent='Score: '+correct+' / '+PZ_SCRAMBLES.length;
+}
+function pzScrambleNav(d){
+  pzState.scrambleIdx=(pzState.scrambleIdx+d+PZ_SCRAMBLES.length)%PZ_SCRAMBLES.length;
+  pzRenderScramble();
+}
+
+// ── PRINT ──
+function pzPrint(type){
+  var w=window.open('','_blank','width=900,height=700');
+  var body='';var title='Puzzle Studio';
+  if(type==='cryptogram'){
+    var p=PZ_CRYPTOS[pzState.cryptoIdx];
+    var enc=pzEncode(p.text);
+    title='Cryptogram Puzzle';
+    body='<h1 style="color:#6d28d9;text-align:center;">&#128272; Cryptogram Puzzle</h1>';
+    body+='<p style="text-align:center;color:#666;">Decode the hidden quote! Each letter has been replaced with another.</p>';
+    body+='<h3 style="color:#4c1d95;text-align:center;">Puzzle '+(pzState.cryptoIdx+1)+' of 10</h3>';
+    body+='<div style="background:#f5f3ff;border:2px solid #c4b5fd;border-radius:10px;padding:20px;margin:20px 0;">';
+    body+='<p style="font-weight:700;color:#6d28d9;margin:0 0 12px;">ENCODED TEXT:</p>';
+    body+='<p style="font-size:22px;letter-spacing:6px;font-weight:700;color:#4c1d95;word-break:break-all;">'+enc+'</p></div>';
+    body+='<p style="color:#666;font-size:13px;">Each letter A-Z is replaced. Figure out the pattern!</p>';
+    body+='<div style="margin-top:20px;">';
+    body+='<p style="font-weight:700;color:#6d28d9;">Decode your answer here:</p>';
+    body+='<div style="letter-spacing:4px;font-size:20px;color:#ccc;border-bottom:1px solid #ccc;padding-bottom:8px;word-break:break-all;">';
+    for(var i=0;i<enc.length;i++)body+=(enc[i]===' '?'&nbsp;&nbsp;&nbsp;':'_ ');
+    body+='</div></div>';
+    body+='<p style="margin-top:30px;color:#999;font-size:12px;">(Hint: The author is '+p.author+')</p>';
+  } else if(type==='riddles'){
+    title='Riddle Booklet';
+    body='<h1 style="color:#6d28d9;text-align:center;">&#129300; Riddles &amp; Brain Teasers</h1>';
+    PZ_RIDDLES.forEach(function(r,i){
+      body+='<div style="margin:16px 0;padding:14px;background:#f5f3ff;border-radius:8px;border-left:3px solid #6d28d9;">'+
+        '<p style="font-weight:700;color:#4c1d95;margin:0 0 8px;">'+(i+1)+'. '+r.q+'</p>'+
+        '<p style="color:#ccc;font-size:12px;margin:0;">Answer: ___________________</p>'+
+      '</div>';
+    });
+    body+='<div style="page-break-before:always;margin-top:40px;"><h2 style="color:#6d28d9;">Answer Key</h2>';
+    PZ_RIDDLES.forEach(function(r,i){
+      body+='<p><strong>'+(i+1)+'.</strong> '+r.a+'</p>';
+    });
+    body+='</div>';
+  } else if(type==='teasers'){
+    title='Brain Teasers';
+    body='<h1 style="color:#6d28d9;text-align:center;">&#129504; Brain Teasers</h1>';
+    PZ_TEASERS.forEach(function(t,i){
+      body+='<div style="margin:16px 0;padding:14px;background:#f5f3ff;border-radius:8px;border-left:3px solid #6d28d9;">'+
+        '<p style="font-weight:700;color:#4c1d95;margin:0 0 8px;">'+(i+1)+'. '+t.q+'</p>'+
+        '<p style="color:#ccc;font-size:12px;margin:0;">Answer: ___________________</p>'+
+      '</div>';
+    });
+    body+='<div style="page-break-before:always;margin-top:40px;"><h2 style="color:#6d28d9;">Answer Key</h2>';
+    PZ_TEASERS.forEach(function(t,i){
+      body+='<p><strong>'+(i+1)+'.</strong> '+t.a+'</p>';
+    });
+    body+='</div>';
+  } else if(type==='scrambles'){
+    title='Word Scrambles';
+    body='<h1 style="color:#6d28d9;text-align:center;">&#128256; Word Scrambles</h1>';
+    body+='<p style="text-align:center;color:#666;">Unscramble each word!</p>';
+    PZ_SCRAMBLES.forEach(function(s,i){
+      body+='<div style="margin:14px 0;padding:14px;background:#f5f3ff;border-radius:8px;">'+
+        '<p style="font-size:24px;font-weight:700;letter-spacing:6px;color:#4c1d95;margin:0 0 6px;">'+(i+1)+'. '+s.scrambled+'</p>'+
+        '<p style="color:#666;font-size:13px;margin:0 0 8px;font-style:italic;">Hint: '+s.hint+'</p>'+
+        '<p style="color:#ccc;font-size:13px;margin:0;">Answer: ___________________</p>'+
+      '</div>';
+    });
+    body+='<div style="page-break-before:always;margin-top:40px;"><h2 style="color:#6d28d9;">Answer Key</h2>';
+    PZ_SCRAMBLES.forEach(function(s,i){
+      body+='<p><strong>'+(i+1)+'.</strong> '+s.word+'</p>';
+    });
+    body+='</div>';
+  } else {
+    title='Puzzle Activity Sampler';
+    body='<h1 style="color:#6d28d9;text-align:center;">&#129513; Puzzle Activity Sampler</h1>';
+    body+='<h2 style="color:#4c1d95;">&#128256; Word Scrambles</h2>';
+    PZ_SCRAMBLES.slice(0,5).forEach(function(s,i){
+      body+='<p>'+(i+1)+'. <strong>'+s.scrambled+'</strong> &nbsp; Hint: <em>'+s.hint+'</em></p>';
+    });
+    body+='<hr><h2 style="color:#4c1d95;">&#129300; Riddles</h2>';
+    PZ_RIDDLES.slice(0,5).forEach(function(r,i){
+      body+='<p>'+(i+1)+'. '+r.q+'</p>';
+    });
+    body+='<hr><h2 style="color:#4c1d95;">&#129504; Brain Teasers</h2>';
+    PZ_TEASERS.slice(0,4).forEach(function(t,i){
+      body+='<p>'+(i+1)+'. '+t.q+'</p>';
+    });
+    body+='<div style="page-break-before:always;margin-top:20px;"><h2 style="color:#6d28d9;">Answer Key</h2>';
+    body+='<p><strong>Scrambles:</strong> ';
+    body+=PZ_SCRAMBLES.slice(0,5).map(function(s,i){return (i+1)+'.'+s.word;}).join(', ')+'</p>';
+    body+='<p><strong>Riddles:</strong> ';
+    body+=PZ_RIDDLES.slice(0,5).map(function(r,i){return (i+1)+'.'+r.a;}).join(' | ')+'</p>';
+    body+='<p><strong>Teasers:</strong> ';
+    body+=PZ_TEASERS.slice(0,4).map(function(t,i){return (i+1)+'.'+t.a;}).join(' | ')+'</p>';
+    body+='</div>';
+  }
+  w.document.write('<!DOCTYPE html><html><head><title>'+title+'</title>'+
+    '<style>body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:32px;color:#333;}'+
+    'h1,h2,h3{font-family:Georgia,serif;}@media print{body{padding:0;}}</style></head>'+
+    '<body>'+body+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+(function(){
+  var _o=window.switchTab;
+  window.switchTab=function(n){_o&&_o(n);if(n==='puzzle')pzInit();};
+})();
+</script>
+
 </body>
