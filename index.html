@@ -1816,6 +1816,141 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .ep-print-name { font-size:13px; font-weight:800; color:#333; margin-bottom:3px; }
 .ep-print-desc { font-size:11px; color:#888; line-height:1.4; }
 
+
+/* ═══════════════════ RESIDENT SPOTLIGHT ═══════════════════ */
+#panel-spotlight { padding:0; background:#fdf8f0; }
+.sl-header { background:linear-gradient(135deg,#b8860b,#ff8c00); color:white; padding:22px 28px; }
+.sl-header h2 { font-size:26px; margin:0 0 5px; }
+.sl-header p { margin:0; opacity:.9; font-size:14px; }
+.sl-mode-bar { display:flex; gap:8px; padding:14px 20px; background:white; border-bottom:2px solid #f0d080; flex-wrap:wrap; }
+.sl-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #d4a020; background:white; color:#8b6000; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; }
+.sl-mode-btn.active,.sl-mode-btn:hover { background:#b8860b; color:white; border-color:#b8860b; }
+.sl-body { padding:20px; }
+.sl-gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+.sl-profile-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 3px 14px rgba(0,0,0,.1); transition:transform .2s,box-shadow .2s; }
+.sl-profile-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.15); }
+.sl-card-banner { height:80px; display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:800; color:white; }
+.sl-card-body { padding:14px; }
+.sl-card-name { font-size:16px; font-weight:800; color:#333; margin-bottom:3px; }
+.sl-card-sub { font-size:12px; color:#888; margin-bottom:8px; }
+.sl-card-quote { font-size:12px; color:#666; font-style:italic; border-left:3px solid #f0d080; padding-left:8px; margin-bottom:10px; line-height:1.4; }
+.sl-card-actions { display:flex; gap:7px; }
+.sl-view-btn,.sl-del-btn { padding:6px 12px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:none; }
+.sl-view-btn { background:#f0d080; color:#6b4400; }
+.sl-del-btn { background:#fde8e8; color:#c0392b; }
+.sl-empty { text-align:center; padding:50px 20px; color:#aaa; }
+.sl-builder { max-width:680px; }
+.sl-builder h3 { color:#b8860b; font-size:18px; margin:0 0 16px; }
+.sl-section-card { background:white; border-radius:14px; padding:18px; margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,.07); border:1.5px solid #f0d080; }
+.sl-section-card h4 { font-size:14px; font-weight:800; color:#8b6000; margin:0 0 13px; }
+.sl-field-row { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:10px; }
+.sl-field { margin-bottom:10px; }
+.sl-field label { display:block; font-size:11px; font-weight:800; color:#777; margin-bottom:3px; text-transform:uppercase; }
+.sl-field input,.sl-field textarea { width:100%; padding:7px 9px; border:1.5px solid #e8d080; border-radius:7px; font-size:13px; box-sizing:border-box; font-family:inherit; }
+.sl-field textarea { resize:vertical; min-height:60px; }
+.sl-save-btn { background:linear-gradient(135deg,#b8860b,#ff8c00); color:white; border:none; border-radius:10px; padding:11px 28px; font-size:14px; font-weight:800; cursor:pointer; margin-top:4px; }
+.sl-birth-fact { background:#fffbe6; border-radius:10px; padding:13px; margin-top:10px; border:1.5px solid #f0d080; display:none; }
+.sl-birth-fact h5 { color:#8b6000; margin:0 0 8px; font-size:13px; }
+.sl-birth-row { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:#555; margin-bottom:6px; }
+.sl-birth-item { display:flex; flex-direction:column; gap:2px; flex:1; min-width:140px; }
+.sl-birth-item strong { color:#b8860b; font-size:10px; text-transform:uppercase; }
+.sl-detail-banner { height:100px; display:flex; align-items:center; justify-content:center; font-size:52px; font-weight:800; color:white; }
+.sl-detail-name { padding:16px 22px 0; font-size:22px; font-weight:800; color:#333; }
+.sl-detail-sub { padding:3px 22px 14px; font-size:13px; color:#888; border-bottom:1px solid #f0e0a0; }
+.sl-detail-body { padding:16px 22px; }
+.sl-detail-section { margin-bottom:18px; }
+.sl-detail-section h4 { font-size:13px; font-weight:800; color:#b8860b; text-transform:uppercase; letter-spacing:.5px; margin:0 0 8px; }
+.sl-detail-section p { font-size:14px; color:#444; margin:0 0 6px; line-height:1.5; }
+.sl-fav-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; }
+.sl-fav-item { background:#fffbe6; border-radius:8px; padding:9px; border:1px solid #f0d080; }
+.sl-fav-label { font-size:10px; font-weight:800; color:#b8860b; text-transform:uppercase; margin-bottom:2px; }
+.sl-fav-val { font-size:13px; color:#444; }
+.sl-quote-box { background:linear-gradient(135deg,#fffbe6,#fff3c0); border-radius:12px; padding:16px 20px; margin-top:14px; border-left:5px solid #f0d000; }
+.sl-quote-box p { font-size:15px; font-style:italic; color:#5a3e00; margin:0; line-height:1.6; }
+.sl-back-btn { background:#f0d080; border:none; color:#6b4400; padding:7px 15px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:700; margin:14px 22px 0; display:inline-block; }
+.sl-q-category { margin-bottom:20px; }
+.sl-q-category h4 { font-size:14px; font-weight:800; color:#b8860b; margin:0 0 10px; }
+.sl-q-card { background:white; border-radius:10px; padding:12px 16px; margin-bottom:8px; box-shadow:0 2px 6px rgba(0,0,0,.06); border-left:4px solid #f0d000; font-size:14px; color:#333; }
+.sl-interview-intro { background:white; border-radius:12px; padding:16px 18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,.07); }
+.sl-print-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px; }
+.sl-print-card { background:white; border-radius:12px; padding:18px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.07); border:2px solid #f0d080; cursor:pointer; transition:all .2s; }
+.sl-print-card:hover { background:#fffbe6; border-color:#b8860b; transform:translateY(-2px); }
+.sl-print-icon { font-size:34px; margin-bottom:7px; }
+.sl-print-name { font-size:13px; font-weight:800; color:#333; margin-bottom:3px; }
+.sl-print-desc { font-size:11px; color:#888; line-height:1.4; }
+.sl-print-top { background:white; border-radius:12px; padding:14px 18px; margin-bottom:14px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; box-shadow:0 2px 8px rgba(0,0,0,.07); }
+.sl-print-top label { font-size:13px; font-weight:800; color:#555; }
+.sl-print-top select { padding:7px 10px; border:1.5px solid #f0d080; border-radius:8px; font-size:13px; min-width:200px; }
+
+
+/* ═══════════════════ MINI OLYMPICS ═══════════════════ */
+#panel-olympics { padding:0; background:#f0f4ff; }
+.ol-header { background:linear-gradient(135deg,#1565c0,#ffd600); color:white; padding:22px 28px; }
+.ol-header h2 { font-size:26px; margin:0 0 5px; }
+.ol-header p { margin:0; opacity:.9; font-size:14px; }
+.ol-mode-bar { display:flex; gap:8px; padding:14px 20px; background:white; border-bottom:2px solid #bbdefb; flex-wrap:wrap; }
+.ol-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #90caf9; background:white; color:#1565c0; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; }
+.ol-mode-btn.active,.ol-mode-btn:hover { background:#1565c0; color:white; border-color:#1565c0; }
+.ol-body { padding:20px; }
+/* Scoreboard */
+.ol-event-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.ol-event-btn { padding:6px 14px; border-radius:14px; border:1.5px solid #90caf9; background:white; font-size:12px; font-weight:700; cursor:pointer; color:#1565c0; transition:all .2s; }
+.ol-event-btn.active { background:#1565c0; color:white; }
+.ol-score-table { width:100%; border-collapse:collapse; background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+.ol-score-table th { background:#1565c0; color:white; padding:10px 14px; text-align:left; font-size:13px; }
+.ol-score-table td { padding:10px 14px; border-bottom:1px solid #e8f0fe; font-size:13px; }
+.ol-score-table tr:last-child td { border-bottom:none; }
+.ol-rank-1 { background:#fff8e1 !important; font-weight:800; }
+.ol-rank-2 { background:#f5f5f5 !important; font-weight:700; }
+.ol-rank-3 { background:#fff3e0 !important; font-weight:700; }
+.ol-medal { font-size:18px; }
+.ol-score-input { width:60px; padding:5px 7px; border:1.5px solid #90caf9; border-radius:6px; font-size:13px; text-align:center; }
+.ol-add-score-btn { background:#1565c0; color:white; border:none; border-radius:7px; padding:6px 14px; font-size:12px; font-weight:800; cursor:pointer; }
+/* Players */
+.ol-players-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:20px; }
+.ol-player-card { background:white; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); border:2px solid #bbdefb; }
+.ol-player-name { font-size:15px; font-weight:800; color:#333; margin-bottom:4px; }
+.ol-player-team { font-size:12px; color:#1565c0; font-weight:700; margin-bottom:6px; }
+.ol-player-medals { font-size:18px; }
+.ol-player-pts { font-size:12px; color:#666; }
+.ol-del-player { background:#fde8e8; color:#c0392b; border:none; border-radius:5px; padding:3px 8px; font-size:11px; font-weight:800; cursor:pointer; float:right; }
+.ol-add-form { background:white; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,.07); border:1.5px solid #bbdefb; }
+.ol-add-form h4 { color:#1565c0; margin:0 0 12px; font-size:15px; }
+.ol-add-row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+.ol-add-field { display:flex; flex-direction:column; gap:3px; }
+.ol-add-field label { font-size:11px; font-weight:800; color:#666; text-transform:uppercase; }
+.ol-add-field input,.ol-add-field select { padding:7px 10px; border:1.5px solid #90caf9; border-radius:7px; font-size:13px; min-width:140px; }
+.ol-add-btn { background:#1565c0; color:white; border:none; border-radius:8px; padding:8px 18px; font-size:13px; font-weight:800; cursor:pointer; height:34px; }
+/* Events */
+.ol-events-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:12px; margin-bottom:20px; }
+.ol-event-card { background:white; border-radius:12px; padding:14px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.08); border:2px solid #bbdefb; cursor:pointer; transition:all .2s; }
+.ol-event-card.active-ev { border-color:#1565c0; background:#e8f0fe; }
+.ol-event-card:hover { transform:translateY(-2px); }
+.ol-ev-icon { font-size:32px; margin-bottom:6px; }
+.ol-ev-name { font-size:13px; font-weight:800; color:#333; }
+.ol-ev-desc { font-size:11px; color:#888; margin-top:3px; }
+/* Leaderboard */
+.ol-podium { display:flex; align-items:flex-end; justify-content:center; gap:12px; margin:20px 0; }
+.ol-podium-spot { display:flex; flex-direction:column; align-items:center; width:120px; }
+.ol-podium-medal { font-size:36px; margin-bottom:6px; }
+.ol-podium-name { font-size:13px; font-weight:800; color:#333; text-align:center; }
+.ol-podium-pts { font-size:12px; color:#666; }
+.ol-podium-block { border-radius:8px 8px 0 0; width:100%; margin-top:8px; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; font-weight:800; }
+.ol-full-lb { background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+.ol-lb-row { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid #e8f0fe; font-size:13px; }
+.ol-lb-row:last-child { border-bottom:none; }
+.ol-lb-rank { font-size:18px; min-width:30px; }
+.ol-lb-name { font-weight:700; color:#333; flex:1; }
+.ol-lb-medals { font-size:16px; }
+.ol-lb-pts { font-size:12px; color:#666; min-width:60px; text-align:right; }
+/* Print */
+.ol-print-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px; }
+.ol-print-card { background:white; border-radius:12px; padding:18px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.07); border:2px solid #bbdefb; cursor:pointer; transition:all .2s; }
+.ol-print-card:hover { background:#e8f0fe; border-color:#1565c0; transform:translateY(-2px); }
+.ol-print-icon { font-size:34px; margin-bottom:7px; }
+.ol-print-name { font-size:13px; font-weight:800; color:#333; margin-bottom:3px; }
+.ol-print-desc { font-size:11px; color:#888; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1897,6 +2032,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="womens" id="womens-tab" onclick="switchTab('womens')">👩 Women's Groups</button>
       <button class="tab-btn" data-tab="spa" id="spa-tab" onclick="switchTab('spa')">💅 Spa & Beauty</button>
       <button class="tab-btn" data-tab="events" onclick="switchTab('events')">🎪 Event Planner</button>
+      <button class="tab-btn" data-tab="spotlight" onclick="switchTab('spotlight')">🌟 Resident Spotlight</button>
+      <button class="tab-btn" data-tab="olympics" onclick="switchTab('olympics')">🏆 Mini Olympics</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -5494,6 +5631,61 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <div class="ep-print-card" onclick="epPrint('volunteer')"><div class="ep-print-icon">🙋</div><div class="ep-print-name">Volunteer Sign-Up Sheet</div><div class="ep-print-desc">All needed roles with sign-up lines</div></div>
       <div class="ep-print-card" onclick="epPrint('budget')"><div class="ep-print-icon">💰</div><div class="ep-print-name">Budget Worksheet</div><div class="ep-print-desc">Itemized cost tracker &amp; totals</div></div>
       <div class="ep-print-card" onclick="epPrint('full')"><div class="ep-print-icon">📦</div><div class="ep-print-name">Full Event Package</div><div class="ep-print-desc">Complete planning guide in one doc</div></div>
+    </div>
+  </div>
+</section>
+<section class="tab-panel" id="panel-spotlight">
+  <div class="sl-header">
+    <h2>🌟 Resident Spotlight</h2>
+    <p>Life stories, birth year time capsules, interview guides &amp; print-ready features</p>
+  </div>
+  <div class="sl-mode-bar">
+    <button class="sl-mode-btn active" id="sl-btn-gallery" onclick="slSetMode('gallery')">📸 Gallery</button>
+    <button class="sl-mode-btn" id="sl-btn-builder" onclick="slSetMode('builder')">✏️ Create Profile</button>
+    <button class="sl-mode-btn" id="sl-btn-interview" onclick="slSetMode('interview')">🎙️ Interview Guide</button>
+    <button class="sl-mode-btn" id="sl-btn-print" onclick="slSetMode('print')">🖨️ Print Materials</button>
+  </div>
+  <div id="sl-gallery-mode" class="sl-body"><div id="sl-gallery"></div></div>
+  <div id="sl-detail-mode" style="display:none;"><div id="sl-detail-content"></div></div>
+  <div id="sl-builder-mode" class="sl-body" style="display:none;"><div id="sl-builder-content"></div></div>
+  <div id="sl-interview-mode" class="sl-body" style="display:none;"><div id="sl-interview-content"></div></div>
+  <div id="sl-print-mode" class="sl-body" style="display:none;">
+    <div class="sl-print-top">
+      <label>Select Resident:</label>
+      <select id="sl-print-sel"></select>
+    </div>
+    <div class="sl-print-grid">
+      <div class="sl-print-card" onclick="slPrint('bulletin')"><div class="sl-print-icon">📌</div><div class="sl-print-name">Bulletin Board Card</div><div class="sl-print-desc">Colorful spotlight card for display</div></div>
+      <div class="sl-print-card" onclick="slPrint('newsletter')"><div class="sl-print-icon">📰</div><div class="sl-print-name">Newsletter Feature</div><div class="sl-print-desc">Ready-to-paste newsletter bio</div></div>
+      <div class="sl-print-card" onclick="slPrint('full')"><div class="sl-print-icon">📄</div><div class="sl-print-name">Full Life Story</div><div class="sl-print-desc">Complete one-page profile</div></div>
+      <div class="sl-print-card" onclick="slPrint('qa')"><div class="sl-print-icon">💬</div><div class="sl-print-name">Q&amp;A Favorites Card</div><div class="sl-print-desc">Favorites &amp; wisdom highlight card</div></div>
+      <div class="sl-print-card" onclick="slPrint('birthday')"><div class="sl-print-icon">🎂</div><div class="sl-print-name">Birthday Spotlight</div><div class="sl-print-desc">Special birthday feature page</div></div>
+      <div class="sl-print-card" onclick="slPrint('timecapsule')"><div class="sl-print-icon">⏳</div><div class="sl-print-name">Birth Year Time Capsule</div><div class="sl-print-desc">The world when they were born</div></div>
+    </div>
+  </div>
+</section>
+<section class="tab-panel" id="panel-olympics">
+  <div class="ol-header">
+    <h2>🏆 Mini Olympics</h2>
+    <p>Track scores, crown champions &amp; celebrate every resident athlete!</p>
+  </div>
+  <div class="ol-mode-bar">
+    <button class="ol-mode-btn active" id="ol-btn-score" onclick="olSetMode('score')">📊 Live Scoreboard</button>
+    <button class="ol-mode-btn" id="ol-btn-players" onclick="olSetMode('players')">👥 Players &amp; Teams</button>
+    <button class="ol-mode-btn" id="ol-btn-events" onclick="olSetMode('events')">🎯 Events</button>
+    <button class="ol-mode-btn" id="ol-btn-leaderboard" onclick="olSetMode('leaderboard')">🥇 Leaderboard</button>
+    <button class="ol-mode-btn" id="ol-btn-print" onclick="olSetMode('print')">🖨️ Print</button>
+  </div>
+  <div id="ol-score-mode" class="ol-body"><div id="ol-score-content"></div></div>
+  <div id="ol-players-mode" class="ol-body" style="display:none;"><div id="ol-players-content"></div></div>
+  <div id="ol-events-mode" class="ol-body" style="display:none;"><div id="ol-events-content"></div></div>
+  <div id="ol-leaderboard-mode" class="ol-body" style="display:none;"><div id="ol-lb-content"></div></div>
+  <div id="ol-print-mode" class="ol-body" style="display:none;">
+    <div class="ol-print-grid">
+      <div class="ol-print-card" onclick="olPrint('leaderboard')"><div class="ol-print-icon">🏆</div><div class="ol-print-name">Full Leaderboard</div><div class="ol-print-desc">All scores & medal counts</div></div>
+      <div class="ol-print-card" onclick="olPrint('scorecard')"><div class="ol-print-icon">📋</div><div class="ol-print-name">Blank Scorecard</div><div class="ol-print-desc">Fill-in score sheet for any event</div></div>
+      <div class="ol-print-card" onclick="olPrint('certificate')"><div class="ol-print-icon">🎖️</div><div class="ol-print-name">Winner Certificates</div><div class="ol-print-desc">Gold, silver &amp; bronze certificates</div></div>
+      <div class="ol-print-card" onclick="olPrint('schedule')"><div class="ol-print-icon">📅</div><div class="ol-print-name">Event Schedule</div><div class="ol-print-desc">Tournament schedule sheet</div></div>
     </div>
   </div>
 </section>
@@ -39201,6 +39393,667 @@ function epPrintFromPlan(idx){
     _o&&_o(n);
     if(n==='events') epInit();
   };
+})();
+</script>
+<script>
+/* ═══════════════════ RESIDENT SPOTLIGHT ═══════════════════ */
+var SL_QUESTIONS={
+  childhood:['Where did you grow up? What was your hometown like?','What is your earliest happy childhood memory?','What games did you play as a child?','What was your family like growing up?','What was school like for you?','Who was your childhood hero?','What chores did you do as a kid?','What was your favorite holiday tradition as a child?'],
+  career:['What did you do for work during your life?','How did you choose your career?','What was your proudest professional achievement?','Who was your most memorable boss or coworker?','What job did you love the most and why?','Did you ever have an unusual or surprising job?','What lessons did your work teach you about life?'],
+  family:['Tell us about your spouse or partner.','How did you meet the love of your life?','What is your favorite memory with your children?','What family traditions did you create?','Who in your family influenced you the most?','What is the funniest family story you love to tell?','What do you most want your family to remember about you?'],
+  adventures:['Where is the most beautiful place you have ever been?','What was your greatest adventure?','Tell us about a time you were brave.','What is something unexpected that happened to change your life?','Have you ever done something that surprised even yourself?','What is the most memorable trip or journey you have taken?'],
+  favorites:['What is your all-time favorite meal?','What movie could you watch over and over?','What song always makes you smile?','What book changed your life?','What was your favorite decade to live through and why?','What hobby has brought you the most joy?','What TV show did you never miss?'],
+  wisdom:['What is the best advice you ever received?','What would you tell your 20-year-old self?','What is the secret to a happy life?','What are you most proud of?','What is the most important lesson life has taught you?','What does a good day look like for you?','What do you want people to remember about you?']
+};
+
+var SL_YEAR_FACTS={
+  1920:{event:'Women gain right to vote in the U.S.',song:'"Whispering" by Paul Whiteman',cost:'New car: $525 | Bread: $0.12 | Movie ticket: $0.15',pop:'106 million Americans',born:'Ray Bradbury, Charlie Parker'},
+  1921:{event:'First Miss America pageant held in Atlantic City',song:'"Ain\'t We Got Fun"',cost:'New car: $625 | Bread: $0.12',pop:'108 million Americans',born:'Donna Reed, Yogi Berra'},
+  1922:{event:'First insulin treatment saves lives; King Tut\'s tomb discovered',song:'"April Showers" by Al Jolson',cost:'Gas: $0.25/gallon | Bread: $0.09',pop:'110 million Americans',born:'Judy Garland, Charles Schulz'},
+  1923:{event:'First sound-on-film movies produced in Hollywood',song:'"Yes! We Have No Bananas"',cost:'New home: $6,296 | Bread: $0.10',pop:'112 million Americans',born:'Marcel Marceau, Hank Williams'},
+  1924:{event:'First Winter Olympics held in Chamonix, France',song:'"It Had to Be You"',cost:'New car: $495 | Milk: $0.28/gallon',pop:'114 million Americans',born:'Marlon Brando, Jimmy Carter'},
+  1925:{event:'First television publicly demonstrated by John Baird',song:'"Show Me the Way to Go Home"',cost:'New home: $6,296 | Bread: $0.09',pop:'116 million Americans',born:'Tony Curtis, Margaret Thatcher'},
+  1926:{event:'Route 66 established; first talking film shown publicly',song:'"Bye Bye Blackbird"',cost:'Gas: $0.22/gallon | Bread: $0.09',pop:'117 million Americans',born:'Chuck Berry, Marilyn Monroe'},
+  1927:{event:'Charles Lindbergh flies solo across the Atlantic Ocean',song:'"My Blue Heaven" by Gene Austin',cost:'New car: $425 | Milk: $0.28/gallon',pop:'119 million Americans',born:'Harry Belafonte, Cesar Chavez'},
+  1928:{event:'First animated film with sound — Steamboat Willie starring Mickey Mouse',song:'"Makin\' Whoopee"',cost:'New home: $7,265 | Bread: $0.09',pop:'120 million Americans',born:'Andy Warhol, Shirley Temple'},
+  1929:{event:'Stock market crash begins the Great Depression',song:'"Singin\' in the Rain"',cost:'New car: $1,200 | Gas: $0.21/gallon',pop:'122 million Americans',born:'Jacqueline Kennedy Onassis, Martin Luther King Jr.'},
+  1930:{event:'Pluto discovered; first FIFA World Cup held',song:'"Georgia on My Mind" by Hoagy Carmichael',cost:'New home: $7,145 | Bread: $0.09 | Gas: $0.20/gallon',pop:'123 million Americans',born:'Clint Eastwood, Neil Armstrong'},
+  1931:{event:'The Star-Spangled Banner becomes the U.S. national anthem',song:'"Dream a Little Dream of Me"',cost:'New car: $640 | Bread: $0.08 | Movie: $0.25',pop:'124 million Americans',born:'James Dean, Toni Morrison'},
+  1932:{event:'Franklin D. Roosevelt elected president; Amelia Earhart flies solo across Atlantic',song:'"Brother Can You Spare a Dime"',cost:'New home: $6,930 | Milk: $0.26/gallon',pop:'125 million Americans',born:'Johnny Cash, Elizabeth Taylor'},
+  1933:{event:'Prohibition ends; first drive-in movie theater opens in New Jersey',song:'"Stormy Weather" by Lena Horne',cost:'New car: $605 | Gas: $0.18/gallon | Bread: $0.07',pop:'126 million Americans',born:'Carol Burnett, Joan Rivers'},
+  1934:{event:'Dust Bowl devastates Great Plains; Bonnie and Clyde killed',song:'"Blue Moon"',cost:'New home: $5,970 | Bread: $0.08',pop:'126 million Americans',born:'Sophia Loren, Bill Cosby'},
+  1935:{event:'Social Security Act signed into law by FDR',song:'"Cheek to Cheek" by Fred Astaire',cost:'New car: $580 | Gas: $0.19/gallon | Movie: $0.25',pop:'127 million Americans',born:'Elvis Presley, Julie Andrews'},
+  1936:{event:'Jesse Owens wins 4 gold medals at Berlin Olympics',song:'"These Foolish Things"',cost:'New home: $4,925 | Bread: $0.08 | Milk: $0.26/gallon',pop:'128 million Americans',born:'Buddy Holly, Jim Henson'},
+  1937:{event:'Golden Gate Bridge opens; first Bugs Bunny cartoon released',song:'"Nice Work If You Can Get It"',cost:'New car: $755 | Gas: $0.20/gallon',pop:'129 million Americans',born:'Jack Nicholson, Dustin Hoffman'},
+  1938:{event:'Superman comics debut; Orson Welles War of the Worlds broadcast panics nation',song:'"You Must Have Been a Beautiful Baby"',cost:'New home: $3,900 | Bread: $0.08',pop:'130 million Americans',born:'Ted Turner, Natalie Wood'},
+  1939:{event:'World War II begins; Wizard of Oz and Gone with the Wind premiere',song:'"Over the Rainbow" by Judy Garland',cost:'New car: $750 | Gas: $0.19/gallon | Movie: $0.23',pop:'131 million Americans',born:'Tina Turner, Francis Ford Coppola'},
+  1940:{event:'Winston Churchill becomes UK Prime Minister; first McDonald\'s opens',song:'"When You Wish Upon a Star"',cost:'New home: $2,938 | Bread: $0.08 | Gas: $0.18/gallon',pop:'132 million Americans',born:'John Lennon, Raquel Welch'},
+  1941:{event:'Pearl Harbor attack; U.S. enters World War II',song:'"Chattanooga Choo Choo" by Glenn Miller',cost:'New car: $850 | Milk: $0.34/gallon | Movie: $0.25',pop:'133 million Americans',born:'Bob Dylan, Placido Domingo'},
+  1942:{event:'Battle of Midway turns war in Pacific; Casablanca filmed',song:'"White Christmas" by Bing Crosby',cost:'New home: $3,775 | Gas: $0.15/gallon | Bread: $0.09',pop:'134 million Americans',born:'Muhammad Ali, Paul McCartney'},
+  1943:{event:'D-Day planning begins; Oklahoma! opens on Broadway',song:'"That Old Black Magic"',cost:'New car: $900 | Gas: $0.21/gallon',pop:'136 million Americans',born:'Mick Jagger, George Harrison'},
+  1944:{event:'D-Day invasion of Normandy; GI Bill signed into law',song:'"I\'ll Be Seeing You" by Bing Crosby',cost:'New home: $4,600 | Bread: $0.09 | Movie: $0.31',pop:'138 million Americans',born:'Diana Ross, Angela Merkel'},
+  1945:{event:'World War II ends; United Nations founded',song:'"Till the End of Time" by Perry Como',cost:'New car: $1,020 | Gas: $0.21/gallon | Milk: $0.62/gallon',pop:'140 million Americans',born:'Bob Marley, Rod Stewart'},
+  1946:{event:'Baby Boom begins; first ENIAC computer unveiled',song:'"To Each His Own" by Eddy Howard',cost:'New home: $5,600 | Bread: $0.10 | Gas: $0.21/gallon',pop:'141 million Americans',born:'Steven Spielberg, Donald Trump'},
+  1947:{event:'Jackie Robinson breaks baseball color barrier; Cold War begins',song:'"Near You" by Francis Craig',cost:'New car: $1,300 | Milk: $0.80/gallon | Movie: $0.40',pop:'144 million Americans',born:'David Bowie, Elton John'},
+  1948:{event:'State of Israel founded; Berlin Airlift; first NASCAR race',song:'"Nature Boy" by Nat King Cole',cost:'New home: $7,700 | Gas: $0.26/gallon | Bread: $0.14',pop:'146 million Americans',born:'Stevie Nicks, James Taylor'},
+  1949:{event:'NATO founded; first Polaroid camera goes on sale',song:'"Riders in the Sky"',cost:'New car: $1,420 | Bread: $0.14 | Movie: $0.46',pop:'149 million Americans',born:'Meryl Streep, Billy Joel'},
+  1950:{event:'Korean War begins; first Peanuts strip published; color TV introduced',song:'"Goodnight, Irene" by Gordon Jenkins',cost:'New home: $8,450 | Gas: $0.27/gallon | Bread: $0.14',pop:'151 million Americans',born:'Jay Leno, Bill Murray'},
+  1951:{event:'First transcontinental TV broadcast; I Love Lucy premieres',song:'"Because of You" by Tony Bennett',cost:'New car: $1,500 | Gas: $0.27/gallon | Bread: $0.16',pop:'154 million Americans',born:'Sting, Phil Collins'},
+  1952:{event:'Queen Elizabeth II crowned; Jonas Salk tests polio vaccine',song:'"Wheel of Fortune" by Kay Starr',cost:'New home: $9,075 | Bread: $0.16 | Movie: $0.60',pop:'157 million Americans',born:'Dan Aykroyd, Mr. T'},
+  1953:{event:'Korean War ends; Everest summit reached; DNA structure discovered',song:'"Vaya Con Dios" by Les Paul & Mary Ford',cost:'New car: $1,650 | Gas: $0.29/gallon | Milk: $0.92/gallon',pop:'160 million Americans',born:'Tim Allen, Cyndi Lauper'},
+  1954:{event:'Brown v. Board ends school segregation; first Burger King opens',song:'"Little Things Mean a Lot" by Kitty Kallen',cost:'New home: $10,250 | Gas: $0.29/gallon | Bread: $0.17',pop:'163 million Americans',born:'Oprah Winfrey, Denzel Washington'},
+  1955:{event:'Rosa Parks refuses to give up seat; Disneyland opens; McDonald\'s franchises begin',song:'"Rock Around the Clock" by Bill Haley',cost:'New car: $1,910 | Gas: $0.29/gallon | Movie: $0.70',pop:'166 million Americans',born:'Steve Jobs, Bill Gates'},
+  1956:{event:'Elvis appears on Ed Sullivan; first transatlantic telephone cable',song:'"Don\'t Be Cruel" by Elvis Presley',cost:'New home: $11,700 | Gas: $0.30/gallon | Milk: $0.97/gallon',pop:'169 million Americans',born:'Tom Hanks, Carrie Fisher'},
+  1957:{event:'Sputnik launched — Space Age begins; Leave It to Beaver premieres',song:'"All Shook Up" by Elvis Presley',cost:'New car: $2,100 | Gas: $0.30/gallon | Bread: $0.19',pop:'172 million Americans',born:'Vanna White, Osama bin Laden'},
+  1958:{event:'NASA founded; first Grammy Awards; Hula Hoop craze sweeps nation',song:'"Volare" by Domenico Modugno',cost:'New home: $12,750 | Gas: $0.30/gallon | Movie: $0.68',pop:'175 million Americans',born:'Michael Jackson, Madonna'},
+  1959:{event:'Alaska and Hawaii become 49th and 50th states; Barbie doll debuts',song:'"Mack the Knife" by Bobby Darin',cost:'New car: $2,200 | Gas: $0.31/gallon | Milk: $1.01/gallon',pop:'178 million Americans',born:'Magic Johnson, Val Kilmer'}
+};
+
+var slInited=false,slMode='gallery';
+
+function slInit(){
+  if(slInited)return;
+  slInited=true;
+  slRenderGallery();
+  slBuildForm();
+  slRenderInterview();
+  slPopulatePrintSel();
+}
+
+function slSetMode(mode){
+  slMode=mode;
+  ['gallery','detail','builder','interview','print'].forEach(function(m){
+    var el=document.getElementById('sl-'+m+'-mode');
+    if(el) el.style.display=m===mode?'':'none';
+  });
+  ['gallery','builder','interview','print'].forEach(function(m){
+    var b=document.getElementById('sl-btn-'+m);
+    if(b) b.className='sl-mode-btn'+(m===mode?' active':'');
+  });
+  if(mode==='gallery') slRenderGallery();
+  if(mode==='print') slPopulatePrintSel();
+}
+
+var SL_COLORS=['linear-gradient(135deg,#667eea,#764ba2)','linear-gradient(135deg,#f093fb,#f5576c)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#43e97b,#38f9d7)','linear-gradient(135deg,#fa709a,#fee140)','linear-gradient(135deg,#a18cd1,#fbc2eb)','linear-gradient(135deg,#fccb90,#d57eeb)','linear-gradient(135deg,#a1c4fd,#c2e9fb)','linear-gradient(135deg,#fd7043,#ff8f00)','linear-gradient(135deg,#26c6da,#00897b)'];
+
+function slGetProfiles(){return JSON.parse(localStorage.getItem('el365_spotlights')||'[]');}
+function slSaveProfiles(arr){localStorage.setItem('el365_spotlights',JSON.stringify(arr));}
+
+function slRenderGallery(){
+  var el=document.getElementById('sl-gallery');
+  if(!el) return;
+  var profiles=slGetProfiles();
+  if(!profiles.length){
+    el.innerHTML='<div class="sl-empty"><div style="font-size:48px;margin-bottom:12px;">🌟</div><p style="font-size:16px;">No spotlights yet!<br>Click <strong>Create Profile</strong> to feature your first resident.</p>'
+      +'<button class="sl-mode-btn" onclick="slSetMode(\'builder\')" style="margin-top:12px;">&#9997;&#65039; Create First Profile</button></div>';
+    return;
+  }
+  el.innerHTML='<div class="sl-gallery">'+profiles.map(function(p,i){
+    var bg=SL_COLORS[i%SL_COLORS.length];
+    var initials=(p.firstName||'?').charAt(0).toUpperCase()+((p.lastName||'').charAt(0)||'').toUpperCase();
+    var quote=p.advice||'A life beautifully lived.';
+    if(quote.length>80) quote=quote.substring(0,77)+'...';
+    return '<div class="sl-profile-card">'
+      +'<div class="sl-card-banner" style="background:'+bg+'">'+initials+'</div>'
+      +'<div class="sl-card-body"><div class="sl-card-name">'+p.firstName+' '+(p.lastName||'')+'</div>'
+      +'<div class="sl-card-sub">'+[p.hometown,p.birthYear?'Born '+p.birthYear:''].filter(Boolean).join(' &bull; ')+'</div>'
+      +'<div class="sl-card-quote">&ldquo;'+quote+'&rdquo;</div>'
+      +'<div class="sl-card-actions"><button class="sl-view-btn" onclick="slOpenProfile('+i+')">View Story</button>'
+      +'<button class="sl-del-btn" onclick="slDeleteProfile('+i+')">Remove</button></div>'
+      +'</div></div>';
+  }).join('')+'</div>';
+}
+
+function slOpenProfile(idx){
+  var profiles=slGetProfiles();
+  var p=profiles[idx];
+  if(!p) return;
+  var bg=SL_COLORS[idx%SL_COLORS.length];
+  var initials=(p.firstName||'?').charAt(0).toUpperCase()+((p.lastName||'').charAt(0)||'').toUpperCase();
+  var el=document.getElementById('sl-detail-content');
+  var html='<button class="sl-back-btn" onclick="slSetMode(\'gallery\')">&#8592; Back to Gallery</button>'
+    +'<div class="sl-detail-banner" style="background:'+bg+'">'+initials+'</div>'
+    +'<div class="sl-detail-name">'+p.firstName+' '+(p.lastName||'')+'</div>'
+    +'<div class="sl-detail-sub">'
+    +[p.hometown?'Hometown: '+p.hometown:'',p.birthYear?'Born: '+p.birthYear:'',p.career?'Career: '+p.career:''].filter(Boolean).join(' &nbsp;&bull;&nbsp; ')
+    +'</div><div class="sl-detail-body">';
+  if(p.childhood) html+='<div class="sl-detail-section"><h4>&#127968; Childhood Memories</h4><p>'+p.childhood+'</p></div>';
+  if(p.careerStory) html+='<div class="sl-detail-section"><h4>&#128188; Life\'s Work</h4><p>'+p.careerStory+'</p></div>';
+  if(p.family) html+='<div class="sl-detail-section"><h4>&#10084; Family</h4><p>'+p.family+'</p></div>';
+  if(p.adventures) html+='<div class="sl-detail-section"><h4>&#127758; Adventures</h4><p>'+p.adventures+'</p></div>';
+  var favs=[{l:'Favorite Food',v:p.favFood},{l:'Favorite Movie',v:p.favMovie},{l:'Favorite Song',v:p.favSong},{l:'Favorite Hobby',v:p.favHobby},{l:'Favorite TV',v:p.favTV},{l:'Best Decade',v:p.favDecade}].filter(function(x){return x.v;});
+  if(favs.length){
+    html+='<div class="sl-detail-section"><h4>&#11088; Favorites</h4><div class="sl-fav-grid">'
+      +favs.map(function(f){return '<div class="sl-fav-item"><div class="sl-fav-label">'+f.l+'</div><div class="sl-fav-val">'+f.v+'</div></div>';}).join('')
+      +'</div></div>';
+  }
+  if(p.proud||p.secret){
+    html+='<div class="sl-detail-section"><h4>&#128172; Words of Wisdom</h4>'
+      +(p.proud?'<p><strong>Most proud of:</strong> '+p.proud+'</p>':'')
+      +(p.secret?'<p><strong>Surprising fact:</strong> '+p.secret+'</p>':'')
+      +'</div>';
+  }
+  if(p.advice) html+='<div class="sl-quote-box"><p>&ldquo;'+p.advice+'&rdquo;</p><div style="text-align:right;font-size:13px;color:#8b6000;font-weight:800;margin-top:8px;">&#8212; '+p.firstName+'</div></div>';
+  html+='</div>';
+  el.innerHTML=html;
+  ['gallery','builder','interview','print'].forEach(function(m){var b=document.getElementById('sl-btn-'+m);if(b)b.className='sl-mode-btn';});
+  ['gallery','builder','interview','print'].forEach(function(m){var el2=document.getElementById('sl-'+m+'-mode');if(el2)el2.style.display='none';});
+  document.getElementById('sl-detail-mode').style.display='';
+}
+
+function slDeleteProfile(idx){
+  if(!confirm('Remove this resident spotlight?')) return;
+  var profiles=slGetProfiles();
+  profiles.splice(idx,1);
+  slSaveProfiles(profiles);
+  slRenderGallery();
+}
+
+function slBuildForm(){
+  var el=document.getElementById('sl-builder-content');
+  if(!el) return;
+  el.innerHTML='<div class="sl-builder"><h3>&#9997;&#65039; Create a Resident Spotlight</h3>'
+    +'<div class="sl-section-card"><h4>&#128100; Basic Information</h4>'
+    +'<div class="sl-field-row"><div class="sl-field"><label>First Name *</label><input type="text" id="sl-firstName" placeholder="First name"></div>'
+    +'<div class="sl-field"><label>Last Name</label><input type="text" id="sl-lastName" placeholder="Last name"></div></div>'
+    +'<div class="sl-field-row"><div class="sl-field"><label>Hometown / Where They Grew Up</label><input type="text" id="sl-hometown" placeholder="e.g. Chicago, IL"></div>'
+    +'<div class="sl-field"><label>Birth Year</label><input type="number" id="sl-birthYear" placeholder="e.g. 1935" min="1900" max="1970" oninput="slCheckBirthYear()"></div></div>'
+    +'<div class="sl-field"><label>Career / Life\'s Work (short phrase)</label><input type="text" id="sl-career" placeholder="e.g. Schoolteacher, Farmer, Nurse, Homemaker"></div>'
+    +'<div id="sl-birth-fact-box" class="sl-birth-fact"></div></div>'
+    +'<div class="sl-section-card"><h4>&#128221; Life Story</h4>'
+    +'<div class="sl-field"><label>Childhood Memories</label><textarea id="sl-childhood" placeholder="Where they grew up, favorite memories, family life as a child..."></textarea></div>'
+    +'<div class="sl-field"><label>Career & Life\'s Work</label><textarea id="sl-careerStory" placeholder="What they did, proudest moments, most memorable jobs..."></textarea></div>'
+    +'<div class="sl-field"><label>Family</label><textarea id="sl-family" placeholder="Spouse, children, grandchildren, family traditions..."></textarea></div>'
+    +'<div class="sl-field"><label>Greatest Adventures & Travel</label><textarea id="sl-adventures" placeholder="Trips, brave moments, life-changing experiences..."></textarea></div></div>'
+    +'<div class="sl-section-card"><h4>&#11088; All-Time Favorites</h4>'
+    +'<div class="sl-field-row"><div class="sl-field"><label>Favorite Food</label><input type="text" id="sl-favFood" placeholder="e.g. Mom\'s apple pie"></div>'
+    +'<div class="sl-field"><label>Favorite Movie</label><input type="text" id="sl-favMovie" placeholder="e.g. Gone with the Wind"></div></div>'
+    +'<div class="sl-field-row"><div class="sl-field"><label>Favorite Song or Artist</label><input type="text" id="sl-favSong" placeholder="e.g. Frank Sinatra"></div>'
+    +'<div class="sl-field"><label>Favorite Hobby</label><input type="text" id="sl-favHobby" placeholder="e.g. Quilting, Fishing, Dancing"></div></div>'
+    +'<div class="sl-field-row"><div class="sl-field"><label>Favorite TV Show</label><input type="text" id="sl-favTV" placeholder="e.g. I Love Lucy"></div>'
+    +'<div class="sl-field"><label>Best Decade to Live Through</label><input type="text" id="sl-favDecade" placeholder="e.g. The 1950s"></div></div></div>'
+    +'<div class="sl-section-card"><h4>&#128172; Words of Wisdom</h4>'
+    +'<div class="sl-field"><label>Most Proud Of</label><textarea id="sl-proud" placeholder="Their greatest accomplishment or proudest moment..."></textarea></div>'
+    +'<div class="sl-field"><label>Something Surprising About Them (Fun Fact!)</label><input type="text" id="sl-secret" placeholder="A fun fact most people don\'t know!"></div>'
+    +'<div class="sl-field"><label>Best Life Advice / Favorite Saying &#10024;</label><textarea id="sl-advice" placeholder="Their words of wisdom to share with the world..."></textarea></div></div>'
+    +'<button class="sl-save-btn" onclick="slSaveProfile()">&#127775; Save Spotlight</button></div>';
+}
+
+function slCheckBirthYear(){
+  var yr=parseInt(document.getElementById('sl-birthYear').value);
+  var box=document.getElementById('sl-birth-fact-box');
+  if(!box) return;
+  var facts=SL_YEAR_FACTS[yr];
+  if(facts){
+    box.style.display='block';
+    box.innerHTML='<h5>&#8987; Birth Year Time Capsule: '+yr+'</h5>'
+      +'<div class="sl-birth-row"><div class="sl-birth-item"><strong>World Event</strong>'+facts.event+'</div></div>'
+      +'<div class="sl-birth-row"><div class="sl-birth-item"><strong>Top Song</strong>'+facts.song+'</div>'
+      +'<div class="sl-birth-item"><strong>Cost of Living</strong>'+facts.cost+'</div></div>'
+      +'<div class="sl-birth-row"><div class="sl-birth-item"><strong>Famous People Born This Year</strong>'+facts.born+'</div></div>';
+  } else {
+    box.style.display='none';
+  }
+}
+
+function slSaveProfile(){
+  var fn=document.getElementById('sl-firstName').value.trim();
+  if(!fn){alert('Please enter a first name.');return;}
+  var p={firstName:fn,lastName:document.getElementById('sl-lastName').value.trim(),
+    hometown:document.getElementById('sl-hometown').value.trim(),birthYear:document.getElementById('sl-birthYear').value.trim(),
+    career:document.getElementById('sl-career').value.trim(),childhood:document.getElementById('sl-childhood').value.trim(),
+    careerStory:document.getElementById('sl-careerStory').value.trim(),family:document.getElementById('sl-family').value.trim(),
+    adventures:document.getElementById('sl-adventures').value.trim(),favFood:document.getElementById('sl-favFood').value.trim(),
+    favMovie:document.getElementById('sl-favMovie').value.trim(),favSong:document.getElementById('sl-favSong').value.trim(),
+    favHobby:document.getElementById('sl-favHobby').value.trim(),favTV:document.getElementById('sl-favTV').value.trim(),
+    favDecade:document.getElementById('sl-favDecade').value.trim(),proud:document.getElementById('sl-proud').value.trim(),
+    secret:document.getElementById('sl-secret').value.trim(),advice:document.getElementById('sl-advice').value.trim(),
+    saved:new Date().toISOString()};
+  var profiles=slGetProfiles();
+  profiles.push(p);
+  slSaveProfiles(profiles);
+  slPopulatePrintSel();
+  slSetMode('gallery');
+}
+
+function slRenderInterview(){
+  var el=document.getElementById('sl-interview-content');
+  if(!el) return;
+  var cats=[{key:'childhood',label:'Childhood & Growing Up',emoji:'&#127968;'},{key:'career',label:'Career & Life\'s Work',emoji:'&#128188;'},
+    {key:'family',label:'Family & Love',emoji:'&#10084;'},{key:'adventures',label:'Adventures & Surprises',emoji:'&#127758;'},
+    {key:'favorites',label:'Favorites & Passions',emoji:'&#11088;'},{key:'wisdom',label:'Wisdom & Legacy',emoji:'&#128172;'}];
+  el.innerHTML='<div class="sl-interview-intro"><p style="font-size:14px;color:#555;margin:0 0 8px;">Use these conversation starters when conducting a resident spotlight interview. Let the resident guide the conversation at their own pace!</p>'
+    +'<p style="font-size:13px;color:#888;margin:0;">Tip: Start with easy favorites questions, then gently move to deeper life story topics.</p></div>'
+    +cats.map(function(cat){
+      return '<div class="sl-q-category"><h4>'+cat.emoji+' '+cat.label+'</h4>'
+        +SL_QUESTIONS[cat.key].map(function(q){return '<div class="sl-q-card">'+q+'</div>';}).join('')+'</div>';
+    }).join('');
+}
+
+function slPopulatePrintSel(){
+  var sel=document.getElementById('sl-print-sel');
+  if(!sel) return;
+  var profiles=slGetProfiles();
+  sel.innerHTML='<option value="">&#8212; Choose a resident &#8212;</option>'
+    +profiles.map(function(p,i){return '<option value="'+i+'">'+p.firstName+' '+(p.lastName||'')+'</option>';}).join('');
+}
+
+function slPrint(type){
+  var sel=document.getElementById('sl-print-sel');
+  if(!sel||sel.value===''){alert('Please select a resident first.');return;}
+  var idx=parseInt(sel.value);
+  var profiles=slGetProfiles();
+  var p=profiles[idx];
+  if(!p) return;
+  var bg=SL_COLORS[idx%SL_COLORS.length];
+  var initials=(p.firstName||'?').charAt(0).toUpperCase()+((p.lastName||'').charAt(0)||'').toUpperCase();
+  var fullName=p.firstName+' '+(p.lastName||'');
+  var yr=parseInt(p.birthYear);
+  var facts=SL_YEAR_FACTS[yr];
+  var base='<style>body{font-family:Georgia,serif;margin:0;padding:0;} .page{padding:30px;max-width:780px;margin:auto;} .banner{display:flex;align-items:center;justify-content:center;color:white;font-size:52px;font-weight:800;} .name-lg{font-size:26px;font-weight:800;color:#333;margin:14px 0 3px;} .sub{font-size:13px;color:#888;margin-bottom:14px;} .section{margin:16px 0;} .section h3{font-size:14px;font-weight:800;color:#b8860b;border-bottom:2px solid #f0d080;padding-bottom:4px;margin-bottom:8px;} .section p{font-size:13px;color:#444;line-height:1.6;margin:0 0 6px;} .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;} .fi{background:#fffbe6;border-radius:7px;padding:8px;border:1px solid #f0d080;} .fl{font-size:9px;font-weight:800;color:#b8860b;text-transform:uppercase;} .fv{font-size:12px;color:#444;} .qb{background:linear-gradient(135deg,#fffbe6,#fff3c0);border-radius:10px;padding:14px 18px;margin-top:14px;border-left:5px solid #f0d000;} .qb p{font-size:14px;font-style:italic;color:#5a3e00;margin:0;line-height:1.6;} .qa{text-align:right;font-size:12px;color:#8b6000;font-weight:800;margin-top:6px;} .ti{background:#fffbe6;border-radius:8px;padding:10px;border:1px solid #f0d080;margin-bottom:8px;} .tl{font-size:9px;font-weight:800;color:#b8860b;text-transform:uppercase;margin-bottom:3px;} .tv{font-size:12px;color:#444;line-height:1.4;} @media print{body{-webkit-print-color-adjust:exact;}}<\/style>';
+  var body='';
+
+  if(type==='bulletin'){
+    body='<div class="page" style="max-width:480px;text-align:center;">'
+      +'<div class="banner" style="background:'+bg+';height:90px;border-radius:12px;">'+initials+'</div>'
+      +'<div class="name-lg" style="text-align:center;">'+fullName+'</div>'
+      +'<div class="sub" style="text-align:center;">'+[p.hometown?'&#127968; '+p.hometown:'',p.birthYear?'Born '+p.birthYear:'',p.career?'&#128188; '+p.career:''].filter(Boolean).join(' &nbsp;|&nbsp; ')+'</div>'
+      +(p.advice?'<div class="qb"><p>&ldquo;'+p.advice+'&rdquo;</p><div class="qa">&#8212; '+p.firstName+'</div></div>':'')
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;text-align:left;">'
+      +[{l:'Favorite Food',v:p.favFood},{l:'Favorite Movie',v:p.favMovie},{l:'Favorite Song',v:p.favSong},{l:'Favorite Hobby',v:p.favHobby},{l:'Favorite TV',v:p.favTV},{l:'Best Decade',v:p.favDecade}].filter(function(x){return x.v;}).map(function(x){return '<div class="fi"><div class="fl">'+x.l+'</div><div class="fv">'+x.v+'</div></div>';}).join('')
+      +'</div>'+(p.secret?'<div style="background:#f0e8ff;border-radius:8px;padding:10px;margin-top:10px;text-align:left;"><strong style="color:#6a0dad;">&#128161; Did You Know?</strong> '+p.secret+'</div>':'')+'</div>';
+  } else if(type==='newsletter'){
+    var bio='Meet '+fullName;
+    if(p.hometown) bio+=', originally from '+p.hometown+'.';
+    if(p.career) bio+=' '+p.firstName+' spent a lifetime as a '+p.career.toLowerCase()+'.';
+    if(p.childhood) bio+=' '+p.childhood;
+    if(p.family) bio+=' '+p.family;
+    if(p.adventures) bio+=' '+p.adventures;
+    var fl=[p.favFood,p.favMovie,p.favSong].filter(Boolean);
+    if(fl.length) bio+=' When asked about favorites, '+p.firstName+' loves '+fl.join(', and ')+'.';
+    if(p.advice) bio+=' Best advice? &ldquo;'+p.advice+'&rdquo;';
+    body='<div class="page"><div style="font-size:20px;font-weight:800;color:#b8860b;margin-bottom:12px;">&#127775; Resident Spotlight: '+fullName+'</div>'
+      +'<div class="banner" style="background:'+bg+';height:65px;border-radius:9px;margin-bottom:14px;">'+initials+'</div>'
+      +'<p style="font-size:14px;color:#444;line-height:1.7;">'+bio+'</p>'
+      +(p.secret?'<p style="font-size:14px;color:#444;line-height:1.7;"><strong>Fun fact:</strong> '+p.secret+'</p>':'')
+      +'<p style="font-size:12px;color:#999;margin-top:18px;border-top:1px solid #eee;padding-top:9px;">Stop by and say hello to '+p.firstName+' &#8212; we are so grateful to have them in our community!</p></div>';
+  } else if(type==='full'){
+    body='<div class="banner" style="background:'+bg+';height:90px;">'+initials+'</div>'
+      +'<div class="page"><div class="name-lg">'+fullName+'</div>'
+      +'<div class="sub">'+[p.hometown?'Hometown: '+p.hometown:'',p.birthYear?'Born: '+p.birthYear:'',p.career?'Career: '+p.career:''].filter(Boolean).join(' &nbsp;|&nbsp; ')+'</div>'
+      +(p.childhood?'<div class="section"><h3>Childhood Memories</h3><p>'+p.childhood+'</p></div>':'')
+      +(p.careerStory?'<div class="section"><h3>Life\'s Work</h3><p>'+p.careerStory+'</p></div>':'')
+      +(p.family?'<div class="section"><h3>Family</h3><p>'+p.family+'</p></div>':'')
+      +(p.adventures?'<div class="section"><h3>Adventures & Travel</h3><p>'+p.adventures+'</p></div>':'')
+      +'<div class="section"><h3>Favorites</h3><div class="fg">'
+      +[{l:'Favorite Food',v:p.favFood},{l:'Favorite Movie',v:p.favMovie},{l:'Favorite Song',v:p.favSong},{l:'Favorite Hobby',v:p.favHobby},{l:'Favorite TV',v:p.favTV},{l:'Best Decade',v:p.favDecade}].filter(function(x){return x.v;}).map(function(x){return '<div class="fi"><div class="fl">'+x.l+'</div><div class="fv">'+x.v+'</div></div>';}).join('')
+      +'</div></div>'
+      +(p.proud||p.secret?'<div class="section"><h3>Words of Wisdom</h3>'+(p.proud?'<p><strong>Most proud of:</strong> '+p.proud+'</p>':'')+(p.secret?'<p><strong>Fun fact:</strong> '+p.secret+'</p>':'')+'</div>':'')
+      +(p.advice?'<div class="qb"><p>&ldquo;'+p.advice+'&rdquo;</p><div class="qa">&#8212; '+p.firstName+'</div></div>':'')+'</div>';
+  } else if(type==='qa'){
+    body='<div class="page" style="max-width:500px;">'
+      +'<div class="banner" style="background:'+bg+';height:80px;border-radius:10px;margin-bottom:12px;">'+initials+'</div>'
+      +'<div style="text-align:center;"><div class="name-lg">'+fullName+'</div>'
+      +'<div class="sub">'+[p.hometown,p.birthYear?'Born '+p.birthYear:''].filter(Boolean).join(' &bull; ')+'</div></div>'
+      +'<div class="fg">'
+      +[{l:'Favorite Food',v:p.favFood},{l:'Favorite Movie',v:p.favMovie},{l:'Favorite Song',v:p.favSong},{l:'Favorite Hobby',v:p.favHobby},{l:'Favorite TV Show',v:p.favTV},{l:'Best Decade',v:p.favDecade}].filter(function(x){return x.v;}).map(function(x){return '<div class="fi"><div class="fl">'+x.l+'</div><div class="fv">'+x.v+'</div></div>';}).join('')
+      +'</div>'+(p.proud?'<div style="margin-top:14px;"><strong style="color:#b8860b;">Most proud of:</strong><br><span style="font-size:13px;color:#444;">'+p.proud+'</span></div>':'')
+      +(p.secret?'<div style="margin-top:10px;background:#f0e8ff;border-radius:8px;padding:10px;"><strong style="color:#6a0dad;">Did you know?</strong> '+p.secret+'</div>':'')
+      +(p.advice?'<div class="qb" style="margin-top:14px;"><p>&ldquo;'+p.advice+'&rdquo;</p><div class="qa">&#8212; '+p.firstName+'</div></div>':'')+'</div>';
+  } else if(type==='birthday'){
+    body='<div class="page" style="text-align:center;max-width:500px;">'
+      +'<div style="font-size:56px;margin-bottom:8px;">&#127881;</div>'
+      +'<div style="font-size:13px;color:#b8860b;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">Happy Birthday</div>'
+      +'<div style="font-size:30px;font-weight:800;color:#333;margin-bottom:5px;">'+fullName+'</div>'
+      +(p.birthYear?'<div style="font-size:14px;color:#888;margin-bottom:18px;">Born in '+p.birthYear+' &bull; A life beautifully lived!</div>':'<div style="margin-bottom:18px;"></div>')
+      +'<div class="banner" style="background:'+bg+';height:90px;width:90px;border-radius:50%;margin:0 auto 18px;font-size:44px;">'+initials+'</div>'
+      +(p.advice?'<div class="qb"><p>&ldquo;'+p.advice+'&rdquo;</p><div class="qa">&#8212; '+p.firstName+'</div></div>':'')
+      +'<div style="margin-top:18px;font-size:14px;color:#666;font-style:italic;">We are so lucky to celebrate you! &#127775;</div></div>';
+  } else if(type==='timecapsule'){
+    if(!facts){alert('Birth year time capsule data is available for years 1920-1959. Please enter a birth year in that range.');return;}
+    body='<div class="banner" style="background:'+bg+';height:90px;">'+initials+'</div>'
+      +'<div class="page"><div style="text-align:center;font-size:20px;font-weight:800;color:#b8860b;margin-bottom:4px;">&#8987; Birth Year Time Capsule</div>'
+      +'<div style="text-align:center;font-size:30px;font-weight:800;color:#333;margin-bottom:3px;">'+p.birthYear+'</div>'
+      +'<div style="text-align:center;font-size:13px;color:#888;margin-bottom:20px;">The world the day '+fullName+' was born</div>'
+      +'<div class="ti"><div class="tl">&#127757; Major World Event</div><div class="tv">'+facts.event+'</div></div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+      +'<div class="ti"><div class="tl">&#127925; Top Song of the Year</div><div class="tv">'+facts.song+'</div></div>'
+      +'<div class="ti"><div class="tl">&#128176; Cost of Living</div><div class="tv">'+facts.cost+'</div></div></div>'
+      +'<div class="ti"><div class="tl">&#127968; U.S. Population in '+p.birthYear+'</div><div class="tv">'+facts.pop+'</div></div>'
+      +'<div class="ti"><div class="tl">&#11088; Famous People Also Born in '+p.birthYear+'</div><div class="tv">'+facts.born+'</div></div>'
+      +(p.advice?'<div class="qb" style="margin-top:16px;"><p>&ldquo;'+p.advice+'&rdquo;</p><div class="qa">&#8212; '+fullName+'</div></div>':'')+'</div>';
+  }
+
+  var w=window.open('','_blank','width=800,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>'+fullName+'</title>'+base+'</head><body>'+body+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+(function(){
+  var _o=window.switchTab;
+  window.switchTab=function(n){_o&&_o(n);if(n==='spotlight')slInit();};
+})();
+</script>
+<script>
+/* ═══════════════════ MINI OLYMPICS ═══════════════════ */
+var OL_EVENTS=[
+  {id:'bingo',name:'Bingo Championship',icon:'&#127183;',desc:'Speed bingo rounds'},
+  {id:'trivia',name:'Trivia Challenge',icon:'&#129504;',desc:'General knowledge'},
+  {id:'cards',name:'Card Games',icon:'&#127183;',desc:'Rummy, Go Fish, War'},
+  {id:'bocce',name:'Bocce Ball',icon:'&#127942;',desc:'Indoor or outdoor'},
+  {id:'horseshoes',name:'Horseshoes',icon:'&#129415;',desc:'Ring toss version'},
+  {id:'shuffle',name:'Shuffleboard',icon:'&#127936;',desc:'Classic tabletop'},
+  {id:'balloon',name:'Balloon Volleyball',icon:'&#127944;',desc:'Seated court game'},
+  {id:'cornhole',name:'Cornhole Toss',icon:'&#127919;',desc:'Beanbag toss game'},
+  {id:'bowling',name:'Bowling',icon:'&#127923;',desc:'Mini or regular lanes'},
+  {id:'checkers',name:'Checkers/Chess',icon:'&#9823;',desc:'Board game battle'},
+  {id:'darts',name:'Velcro Darts',icon:'&#127919;',desc:'Soft-tip or velcro'},
+  {id:'putput',name:'Mini Putt-Putt',icon:'&#9971;',desc:'Indoor mini golf'}
+];
+
+var OL_POINT_VALUES={gold:5,silver:3,bronze:1};
+
+function olGetData(){return JSON.parse(localStorage.getItem('el365_olympics')||'{"players":[],"scores":[],"activeEvents":[]}');}
+function olSaveData(d){localStorage.setItem('el365_olympics',JSON.stringify(d));}
+
+var olInited=false,olMode='score',olSelectedEvent='bingo';
+
+function olInit(){
+  if(olInited)return;
+  olInited=true;
+  olRenderScore();
+  olRenderPlayers();
+  olRenderEvents();
+  olRenderLeaderboard();
+}
+
+function olSetMode(mode){
+  olMode=mode;
+  ['score','players','events','leaderboard','print'].forEach(function(m){
+    var el=document.getElementById('ol-'+m+'-mode');
+    if(el) el.style.display=m===mode?'':'none';
+    var b=document.getElementById('ol-btn-'+m);
+    if(b) b.className='ol-mode-btn'+(m===mode?' active':'');
+  });
+  if(mode==='score') olRenderScore();
+  if(mode==='players') olRenderPlayers();
+  if(mode==='events') olRenderEvents();
+  if(mode==='leaderboard') olRenderLeaderboard();
+}
+
+function olRenderScore(){
+  var el=document.getElementById('ol-score-content');
+  if(!el) return;
+  var d=olGetData();
+  var activeEvs=OL_EVENTS.filter(function(e){return d.activeEvents.indexOf(e.id)>=0;});
+  if(!activeEvs.length) activeEvs=OL_EVENTS.slice(0,4);
+
+  var eventBar='<div class="ol-event-bar">'
+    +activeEvs.map(function(e){
+      return '<button class="ol-event-btn'+(e.id===olSelectedEvent?' active':'')+'" onclick="olSelectEvent(\''+e.id+'\')">'
+        +e.icon+' '+e.name+'</button>';
+    }).join('')+'</div>';
+
+  var evScores=d.scores.filter(function(s){return s.event===olSelectedEvent;});
+  var evName=(OL_EVENTS.find(function(e){return e.id===olSelectedEvent;})||{name:olSelectedEvent}).name;
+
+  var tableRows='';
+  if(d.players.length){
+    var rows=d.players.map(function(p){
+      var sc=evScores.find(function(s){return s.player===p.id;});
+      return {name:p.name,team:p.team,score:sc?sc.score:0,id:p.id};
+    }).sort(function(a,b){return b.score-a.score;});
+    tableRows=rows.map(function(r,i){
+      var medal=i===0?'&#127947;':i===1?'&#129352;':i===2?'&#129353;':'';
+      var cls=i===0?'ol-rank-1':i===1?'ol-rank-2':i===2?'ol-rank-3':'';
+      return '<tr class="'+cls+'"><td><span class="ol-medal">'+medal+(i+1)+'</span></td>'
+        +'<td><strong>'+r.name+'</strong>'+(r.team?'<br><span style="font-size:11px;color:#1565c0;">'+r.team+'</span>':'')+'</td>'
+        +'<td style="text-align:center;"><input class="ol-score-input" type="number" id="ol-sc-'+r.id+'" value="'+r.score+'" min="0"></td>'
+        +'<td><button class="ol-add-score-btn" onclick="olSaveScore(\''+r.id+'\')">Save</button></td></tr>';
+    }).join('');
+  } else {
+    tableRows='<tr><td colspan="4" style="text-align:center;padding:30px;color:#aaa;">No players yet — add players in the Players tab!</td></tr>';
+  }
+
+  el.innerHTML=eventBar
+    +'<h4 style="color:#1565c0;margin:0 0 12px;font-size:16px;">&#128203; Scores: '+evName+'</h4>'
+    +'<table class="ol-score-table"><thead><tr><th>Rank</th><th>Player</th><th style="text-align:center;">Score</th><th>Action</th></tr></thead>'
+    +'<tbody>'+tableRows+'</tbody></table>'
+    +'<div style="margin-top:12px;font-size:12px;color:#888;">After entering scores, use the Leaderboard tab to see medal standings.</div>';
+}
+
+function olSelectEvent(id){
+  olSelectedEvent=id;
+  olRenderScore();
+}
+
+function olSaveScore(playerId){
+  var inp=document.getElementById('ol-sc-'+playerId);
+  if(!inp) return;
+  var score=parseInt(inp.value)||0;
+  var d=olGetData();
+  var existing=d.scores.findIndex(function(s){return s.player===playerId&&s.event===olSelectedEvent;});
+  if(existing>=0) d.scores[existing].score=score;
+  else d.scores.push({player:playerId,event:olSelectedEvent,score:score});
+  olSaveData(d);
+  olComputeMedals();
+  inp.style.background='#e8f5e9';
+  setTimeout(function(){inp.style.background='';},800);
+}
+
+function olComputeMedals(){
+  var d=olGetData();
+  var activeEvs=OL_EVENTS.filter(function(e){return d.activeEvents.indexOf(e.id)>=0||d.activeEvents.length===0;});
+  d.players.forEach(function(p){p.gold=0;p.silver=0;p.bronze=0;p.totalPts=0;});
+  OL_EVENTS.forEach(function(ev){
+    var evScores=d.scores.filter(function(s){return s.event===ev.id&&s.score>0;});
+    if(!evScores.length) return;
+    evScores.sort(function(a,b){return b.score-a.score;});
+    [0,1,2].forEach(function(rank){
+      if(evScores[rank]){
+        var player=d.players.find(function(p){return p.id===evScores[rank].player;});
+        if(player){
+          if(rank===0){player.gold++;player.totalPts+=OL_POINT_VALUES.gold;}
+          else if(rank===1){player.silver++;player.totalPts+=OL_POINT_VALUES.silver;}
+          else if(rank===2){player.bronze++;player.totalPts+=OL_POINT_VALUES.bronze;}
+        }
+      }
+    });
+  });
+  olSaveData(d);
+}
+
+function olRenderPlayers(){
+  var el=document.getElementById('ol-players-content');
+  if(!el) return;
+  var d=olGetData();
+  var formHtml='<div class="ol-add-form"><h4>&#10133; Add Player or Team</h4>'
+    +'<div class="ol-add-row">'
+    +'<div class="ol-add-field"><label>Player Name *</label><input type="text" id="ol-new-name" placeholder="Full name"></div>'
+    +'<div class="ol-add-field"><label>Team (optional)</label><input type="text" id="ol-new-team" placeholder="e.g. Team Gold"></div>'
+    +'<button class="ol-add-btn" onclick="olAddPlayer()">&#10133; Add</button>'
+    +'</div></div>';
+
+  var grid='';
+  if(d.players.length){
+    olComputeMedals();
+    var updated=olGetData();
+    grid='<div class="ol-players-grid">'+updated.players.map(function(p){
+      var medals=(p.gold||0)>0?'&#127947;'.repeat(p.gold||0)+' ':'' ;
+      medals+=(p.silver||0)>0?'&#129352;'.repeat(p.silver||0)+' ':'';
+      medals+=(p.bronze||0)>0?'&#129353;'.repeat(p.bronze||0):'';
+      return '<div class="ol-player-card">'
+        +'<button class="ol-del-player" onclick="olDelPlayer(\''+p.id+'\')">&#10005;</button>'
+        +'<div class="ol-player-name">'+p.name+'</div>'
+        +(p.team?'<div class="ol-player-team">'+p.team+'</div>':'')
+        +'<div class="ol-player-medals">'+(medals||'—')+'</div>'
+        +'<div class="ol-player-pts">'+(p.totalPts||0)+' pts total</div>'
+        +'</div>';
+    }).join('')+'</div>';
+  } else {
+    grid='<div style="text-align:center;padding:30px;color:#aaa;">No players yet. Add your first competitor above!</div>';
+  }
+
+  el.innerHTML=formHtml+grid;
+}
+
+function olAddPlayer(){
+  var name=document.getElementById('ol-new-name').value.trim();
+  if(!name){alert('Please enter a player name.');return;}
+  var team=document.getElementById('ol-new-team').value.trim();
+  var d=olGetData();
+  d.players.push({id:'p'+Date.now(),name:name,team:team,gold:0,silver:0,bronze:0,totalPts:0});
+  olSaveData(d);
+  document.getElementById('ol-new-name').value='';
+  document.getElementById('ol-new-team').value='';
+  olRenderPlayers();
+  olRenderScore();
+}
+
+function olDelPlayer(id){
+  if(!confirm('Remove this player?')) return;
+  var d=olGetData();
+  d.players=d.players.filter(function(p){return p.id!==id;});
+  d.scores=d.scores.filter(function(s){return s.player!==id;});
+  olSaveData(d);
+  olRenderPlayers();
+  olRenderScore();
+}
+
+function olRenderEvents(){
+  var el=document.getElementById('ol-events-content');
+  if(!el) return;
+  var d=olGetData();
+  el.innerHTML='<p style="font-size:14px;color:#555;margin:0 0 14px;">Select which events are included in your Mini Olympics. Click to toggle on/off.</p>'
+    +'<div class="ol-events-grid">'+OL_EVENTS.map(function(ev){
+      var active=d.activeEvents.indexOf(ev.id)>=0||d.activeEvents.length===0;
+      return '<div class="ol-event-card'+(active?' active-ev':'')+'" onclick="olToggleEvent(\''+ev.id+'\')">'
+        +'<div class="ol-ev-icon">'+ev.icon+'</div>'
+        +'<div class="ol-ev-name">'+ev.name+'</div>'
+        +'<div class="ol-ev-desc">'+ev.desc+'</div>'
+        +'</div>';
+    }).join('')+'</div>'
+    +'<div style="margin-top:14px;background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);font-size:13px;color:#555;">'
+    +'<strong style="color:#1565c0;">&#128161; How Scoring Works:</strong><br>'
+    +'For each event: &#127947; Gold = 5 pts &nbsp;|&nbsp; &#129352; Silver = 3 pts &nbsp;|&nbsp; &#129353; Bronze = 1 pt<br>'
+    +'Enter scores in the Live Scoreboard tab. Medals are awarded automatically by score rank!</div>';
+}
+
+function olToggleEvent(id){
+  var d=olGetData();
+  if(!d.activeEvents.length){d.activeEvents=OL_EVENTS.map(function(e){return e.id;});}
+  var idx=d.activeEvents.indexOf(id);
+  if(idx>=0) d.activeEvents.splice(idx,1);
+  else d.activeEvents.push(id);
+  olSaveData(d);
+  olRenderEvents();
+  olRenderScore();
+}
+
+function olRenderLeaderboard(){
+  var el=document.getElementById('ol-lb-content');
+  if(!el) return;
+  olComputeMedals();
+  var d=olGetData();
+  if(!d.players.length){
+    el.innerHTML='<div style="text-align:center;padding:50px;color:#aaa;">No players yet. Add competitors in the Players tab!</div>';
+    return;
+  }
+  var sorted=d.players.slice().sort(function(a,b){return (b.totalPts||0)-(a.totalPts||0);});
+  var top3=sorted.slice(0,3);
+  var podiumOrder=[1,0,2];
+  var heights=[80,110,60];
+  var podiumHtml='<div class="ol-podium">'
+    +podiumOrder.map(function(rank){
+      var p=top3[rank];
+      if(!p) return '<div class="ol-podium-spot"></div>';
+      var medals=['&#127947;','&#129352;','&#129353;'];
+      var colors=['#ffd600','#9e9e9e','#ff8f00'];
+      return '<div class="ol-podium-spot">'
+        +'<div class="ol-podium-medal">'+medals[rank]+'</div>'
+        +'<div class="ol-podium-name">'+p.name+'</div>'
+        +'<div class="ol-podium-pts">'+(p.totalPts||0)+' pts</div>'
+        +'<div class="ol-podium-block" style="height:'+heights[rank]+'px;background:'+colors[rank]+'">'+(rank+1)+'</div>'
+        +'</div>';
+    }).join('')+'</div>';
+
+  var listHtml='<div class="ol-full-lb">'+sorted.map(function(p,i){
+    var medal=i===0?'&#127947;':i===1?'&#129352;':i===2?'&#129353;':'#'+(i+1);
+    var medals=(p.gold||0)>0?'&#127947;'.repeat(Math.min(p.gold,5))+' ':'' ;
+    medals+=(p.silver||0)>0?'&#129352;'.repeat(Math.min(p.silver,5))+' ':'';
+    medals+=(p.bronze||0)>0?'&#129353;'.repeat(Math.min(p.bronze,5)):'';
+    return '<div class="ol-lb-row"><div class="ol-lb-rank">'+medal+'</div>'
+      +'<div class="ol-lb-name">'+p.name+(p.team?'<br><span style="font-size:11px;color:#1565c0;">'+p.team+'</span>':'')+'</div>'
+      +'<div class="ol-lb-medals">'+(medals||'—')+'</div>'
+      +'<div class="ol-lb-pts"><strong>'+(p.totalPts||0)+'</strong> pts</div></div>';
+  }).join('')+'</div>';
+
+  el.innerHTML='<h4 style="color:#1565c0;margin:0 0 4px;font-size:16px;">&#127942; Medal Standings</h4>'
+    +'<p style="font-size:12px;color:#888;margin:0 0 16px;">Based on scores entered in the Scoreboard</p>'
+    +podiumHtml+listHtml;
+}
+
+function olPrint(type){
+  olComputeMedals();
+  var d=olGetData();
+  var base='<style>body{font-family:Arial,sans-serif;margin:0;padding:0;} .page{padding:30px;max-width:780px;margin:auto;} .hero{background:linear-gradient(135deg,#1565c0,#ffd600);color:white;padding:22px 28px;text-align:center;} .hero h1{font-size:28px;margin:0 0 5px;} .hero p{margin:0;opacity:.9;} table{width:100%;border-collapse:collapse;font-size:13px;} th{background:#1565c0;color:white;padding:8px 12px;text-align:left;} td{padding:8px 12px;border-bottom:1px solid #eee;} .rank-1{background:#fff8e1;font-weight:800;} .rank-2{background:#f5f5f5;font-weight:700;} .rank-3{background:#fff3e0;font-weight:700;} .cert{text-align:center;border:4px solid #ffd600;border-radius:16px;padding:36px;margin:20px;} .cert-medal{font-size:72px;margin-bottom:10px;} .cert-title{font-size:24px;font-weight:800;color:#1565c0;} .cert-name{font-size:32px;font-weight:800;color:#333;margin:10px 0;} @media print{body{-webkit-print-color-adjust:exact;}}<\/style>';
+  var body='';
+
+  if(type==='leaderboard'){
+    var sorted=d.players.slice().sort(function(a,b){return (b.totalPts||0)-(a.totalPts||0);});
+    body='<div class="hero"><h1>&#127942; Mini Olympics Leaderboard</h1><p>Final Standings & Medal Count</p></div>'
+      +'<div class="page"><table><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>&#127947; Gold</th><th>&#129352; Silver</th><th>&#129353; Bronze</th><th>Total Points</th></tr></thead>'
+      +'<tbody>'+sorted.map(function(p,i){
+        var cls=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
+        var medal=i===0?'&#127947;':i===1?'&#129352;':i===2?'&#129353;':'';
+        return '<tr class="'+cls+'"><td>'+medal+(i+1)+'</td><td><strong>'+p.name+'</strong></td><td>'+(p.team||'')+'</td><td style="text-align:center;">'+(p.gold||0)+'</td><td style="text-align:center;">'+(p.silver||0)+'</td><td style="text-align:center;">'+(p.bronze||0)+'</td><td style="text-align:center;font-weight:800;">'+(p.totalPts||0)+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  } else if(type==='scorecard'){
+    body='<div class="hero"><h1>&#128203; Event Scorecard</h1><p>Record scores for each round</p></div>'
+      +'<div class="page"><table><thead><tr><th>Player Name</th><th>Team</th>'
+      +['Round 1','Round 2','Round 3','Final Score'].map(function(r){return '<th style="text-align:center;">'+r+'</th>';}).join('')
+      +'</tr></thead><tbody>'
+      +(d.players.length?d.players.map(function(p){return '<tr><td>'+p.name+'</td><td>'+(p.team||'')+'</td><td></td><td></td><td></td><td></td></tr>';}).join(''):
+        Array(12).fill('<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>').join(''))
+      +'</tbody></table></div>';
+  } else if(type==='certificate'){
+    var top3=d.players.slice().sort(function(a,b){return (b.totalPts||0)-(a.totalPts||0);}).slice(0,3);
+    var certData=[
+      {medal:'&#127947;',title:'Gold Medal',color:'#ffd600',place:'1st Place'},
+      {medal:'&#129352;',title:'Silver Medal',color:'#9e9e9e',place:'2nd Place'},
+      {medal:'&#129353;',title:'Bronze Medal',color:'#ff8f00',place:'3rd Place'}
+    ];
+    body=certData.map(function(c,i){
+      var p=top3[i];
+      return '<div class="cert" style="border-color:'+c.color+';">'
+        +'<div class="cert-medal">'+c.medal+'</div>'
+        +'<div class="cert-title" style="color:'+c.color+';">'+c.title+'</div>'
+        +'<div style="font-size:14px;color:#888;margin:4px 0;">'+c.place+' Award</div>'
+        +'<div class="cert-name">'+(p?p.name:'_______________________')+'</div>'
+        +'<div style="font-size:14px;color:#666;margin-bottom:16px;">Mini Olympics Champion</div>'
+        +'<div style="display:flex;justify-content:space-around;font-size:12px;color:#999;margin-top:20px;border-top:1px solid #eee;padding-top:12px;">'
+        +'<div>Activity Director: _________________</div><div>Date: ___________</div></div>'
+        +'</div>';
+    }).join('');
+  } else if(type==='schedule'){
+    var activeEvs=OL_EVENTS.filter(function(e){return !d.activeEvents.length||d.activeEvents.indexOf(e.id)>=0;});
+    body='<div class="hero"><h1>&#128197; Mini Olympics Schedule</h1><p>Event Lineup & Tournament Plan</p></div>'
+      +'<div class="page"><table><thead><tr><th>Time</th><th>Event</th><th>Location</th><th>Facilitator</th><th>Notes</th></tr></thead>'
+      +'<tbody>'+activeEvs.map(function(ev){
+        return '<tr><td>_______</td><td>'+ev.icon+' '+ev.name+'</td><td>___________</td><td>___________</td><td>___________</td></tr>';
+      }).join('')+'</tbody></table>'
+      +'<div style="margin-top:20px;padding:14px;background:#f5f5f5;border-radius:8px;font-size:13px;">'
+      +'<strong>Scoring:</strong> Gold = 5 pts &nbsp;|&nbsp; Silver = 3 pts &nbsp;|&nbsp; Bronze = 1 pt</div></div>';
+  }
+
+  var w=window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Mini Olympics</title>'+base+'</head><body>'+body+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+(function(){
+  var _o=window.switchTab;
+  window.switchTab=function(n){_o&&_o(n);if(n==='olympics')olInit();};
 })();
 </script>
 </body>
