@@ -1331,6 +1331,68 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .hc-guide-body h4 { margin:0 0 4px; font-size:.95rem; color:#1f2937; }
 .hc-guide-body p  { margin:0; font-size:.83rem; color:#6b7280; line-height:1.5; }
 
+
+/* ===== POETRY MODE ===== */
+.po-filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.po-filter-btn { padding:5px 14px; border-radius:16px; border:1px solid #e5e7eb;
+  background:#f9fafb; color:#374151; cursor:pointer; font-size:.8rem; transition:all .2s; }
+.po-filter-btn.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+.po-poem-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-bottom:24px; }
+.po-poem-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  overflow:hidden; cursor:pointer; transition:all .2s; }
+.po-poem-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
+.po-poem-accent { height:5px; }
+.po-poem-body { padding:14px; }
+.po-poem-emoji { font-size:1.8rem; margin-bottom:6px; }
+.po-poem-title { font-size:.95rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
+.po-theme-badge { font-size:.72rem; font-weight:600; display:inline-block;
+  padding:2px 8px; border-radius:10px; margin-bottom:8px; }
+.po-poem-preview { font-size:.8rem; color:#6b7280; font-style:italic;
+  line-height:1.5; margin:0; white-space:pre-line; }
+
+/* Poem modal */
+.po-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
+  display:none; align-items:center; justify-content:center; padding:16px; }
+.po-modal-overlay.open { display:flex; }
+.po-modal { background:#fff; border-radius:16px; max-width:640px; width:100%;
+  max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.po-modal-header { color:#fff; padding:20px 24px 14px; border-radius:16px 16px 0 0;
+  position:sticky; top:0; z-index:1; }
+.po-modal-body { padding:20px 24px; }
+.po-poem-text { font-family:Georgia,serif; font-size:1.05rem; line-height:1.9;
+  color:#1f2937; white-space:pre-line; margin:0 0 20px;
+  background:#faf9ff; border-left:4px solid #7c3aed; padding:16px 18px; border-radius:0 8px 8px 0; }
+.po-disc-list { list-style:none; padding:0; margin:0; }
+.po-disc-list li { background:#f5f3ff; border-left:3px solid #7c3aed;
+  border-radius:0 8px 8px 0; padding:8px 12px; margin-bottom:6px; font-size:.88rem; color:#374151; }
+
+/* How-to guide cards */
+.po-guide-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+.po-guide-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  padding:16px; cursor:pointer; transition:all .2s; }
+.po-guide-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
+.po-guide-emoji { font-size:1.8rem; margin-bottom:8px; }
+.po-guide-name { font-size:.95rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
+.po-guide-tagline { font-size:.8rem; color:#6b7280; margin:0; }
+
+/* Guide modal */
+.po-gmodal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
+  display:none; align-items:center; justify-content:center; padding:16px; }
+.po-gmodal-overlay.open { display:flex; }
+.po-gmodal { background:#fff; border-radius:16px; max-width:660px; width:100%;
+  max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.po-structure-box { background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px;
+  padding:12px 14px; font-family:monospace; font-size:.88rem; color:#0c4a6e; margin:8px 0 12px; line-height:1.7; }
+.po-example-box { background:#faf9ff; border-left:4px solid #7c3aed; border-radius:0 8px 8px 0;
+  padding:12px 14px; font-family:Georgia,serif; font-size:.92rem; line-height:1.8;
+  color:#1f2937; margin:8px 0 12px; white-space:pre-line; }
+.po-step { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+.po-step-num { width:26px; height:26px; border-radius:50%; background:#7c3aed; color:#fff;
+  font-size:.8rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.po-step-text { font-size:.85rem; color:#374151; line-height:1.5; }
+.po-try-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px;
+  padding:12px 14px; font-size:.88rem; color:#14532d; margin-top:12px; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -3933,6 +3995,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <div class="sw-mode-tabs">
         <button class="sw-mode-btn active" id="sw-mode-read" onclick="swSetMode('read')">📚 Read Aloud Library</button>
         <button class="sw-mode-btn" id="sw-mode-write" onclick="swSetMode('write')">✍️ Writing Group</button>
+        <button class="sw-mode-btn" id="sw-mode-poetry" onclick="swSetMode('poetry')">🌸 Poetry</button>
       </div>
     </div>
     <div class="sw-body" id="sw-body">
@@ -3953,7 +4016,37 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         </div>
       </div>
     </div>
-    <!-- Writing modal -->
+    <!-- Poem modal -->
+    <div class="po-modal-overlay" id="po-modal">
+      <div class="po-modal">
+        <div class="po-modal-header" id="po-modal-header">
+          <button class="sw-modal-close" onclick="poClosePoem()">✕</button>
+          <div class="sw-modal-title" id="po-modal-title"></div>
+          <div class="sw-modal-sub"   id="po-modal-sub"></div>
+        </div>
+        <div class="po-modal-body" id="po-modal-body"></div>
+        <div class="sw-modal-actions">
+          <button class="sw-modal-btn sw-btn-purple" onclick="poPrintPoem()">🖨️ Print Poem</button>
+          <button class="sw-modal-btn sw-btn-outline" onclick="poClosePoem()">Close</button>
+        </div>
+      </div>
+    </div>
+    <!-- Guide modal -->
+    <div class="po-gmodal-overlay" id="po-gmodal">
+      <div class="po-gmodal">
+        <div class="po-modal-header" id="po-gmodal-header">
+          <button class="sw-modal-close" onclick="poCloseGuide()">✕</button>
+          <div class="sw-modal-title" id="po-gmodal-title"></div>
+          <div class="sw-modal-sub"   id="po-gmodal-sub"></div>
+        </div>
+        <div class="po-modal-body" id="po-gmodal-body"></div>
+        <div class="sw-modal-actions">
+          <button class="sw-modal-btn sw-btn-purple" onclick="poPrintGuide()">🖨️ Print Writing Guide</button>
+          <button class="sw-modal-btn sw-btn-outline" onclick="poCloseGuide()">Close</button>
+        </div>
+      </div>
+    </div>
+        <!-- Writing modal -->
     <div class="sw-wmodal-overlay" id="sw-wmodal">
       <div class="sw-wmodal">
         <div class="sw-wmodal-header" id="sw-wmodal-header">
@@ -32378,6 +32471,814 @@ function jeoPrintBoard() {
     _orig && _orig(id);
     var btn = document.getElementById('gm-launch-jeopardy');
     if (btn) btn.style.display = (id === 'jeopardy-game') ? '' : 'none';
+  };
+})();
+</script>
+
+
+<script>
+/* ===== POETRY MODE ===== */
+
+var PO_POEMS = [
+  { id:'spring-morning', theme:'nature', themeLabel:'Nature', color:'#16a34a', emoji:'🌿',
+    title:'Spring Morning',
+    preview:'The window holds the light\na little longer now.\nThe birds arrive without announcement,\nas though they never left.',
+    text:`The window holds the light
+a little longer now.
+The birds arrive without announcement,
+as though they never left.
+
+The yard is doing something
+I could not have predicted —
+green, and then more green,
+and then a bloom
+I planted once, forgot,
+and am surprised by every year.
+
+This is a good morning.
+It will not keep.
+But I am here for it,
+and that is everything.`,
+    questions:['What does spring feel like to you — is there a particular day when you first notice it has arrived?','Do you have a garden or plant that comes back every year and surprises you?','What is your favorite morning ritual?']
+  },
+  { id:'kitchen-table', theme:'memory', themeLabel:'Memory', color:'#b45309', emoji:'🪑',
+    title:'The Kitchen Table',
+    preview:'Every important thing\nhappened at that table —\nhomework and arguments,\nbirthday cakes and hard news.',
+    text:`Every important thing
+happened at that table —
+homework and arguments,
+birthday cakes and hard news,
+the silent suppers
+when we did not know
+what to say
+and sat together anyway.
+
+My father's chair.
+My mother's hands.
+The way the light came through
+at five o'clock in October
+and made everything glow
+like it meant something.
+
+It did.`,
+    questions:['Can you picture the kitchen table you grew up with? Describe it — color, size, where it sat in the room.','What is the most important conversation you ever had at a table?','What does gathering around a table mean to you?']
+  },
+  { id:'my-hands', theme:'reflection', themeLabel:'Reflection', color:'#7c3aed', emoji:'🤲',
+    title:'My Hands',
+    preview:`These hands have done
+everything.
+
+Held a newborn.
+Kneaded bread.`,
+    text:`These hands have done
+everything.
+
+Held a newborn.
+Kneaded bread.
+Gripped a wheel through rain.
+Planted seeds I never saw come up.
+Planted seeds I saw become trees.
+
+They are not the same hands
+I started with —
+more road in them now,
+more weather.
+
+But they remember
+everything they've touched.
+
+And that, I think,
+is what hands are for.`,
+    questions:['What is the most important thing your hands have ever made or built?','Look at your hands right now — what do they tell you about your life?','Who in your life had hands you remember distinctly — a parent, grandparent, partner?']
+  },
+  { id:'old-photograph', theme:'memory', themeLabel:'Memory', color:'#6b7280', emoji:'📷',
+    title:'The Old Photograph',
+    preview:`Someone I used to be
+is standing in a yard
+I can't quite place.
+
+The trees behind me
+are younger than I remember.`,
+    text:`Someone I used to be
+is standing in a yard
+I can't quite place.
+
+The trees behind me
+are younger than I remember.
+My hair is doing something
+I had completely forgotten.
+
+I am laughing —
+I cannot tell you why,
+but whoever I was laughing with
+must have been wonderful.
+
+Here is what I know:
+that person in the photograph
+had no idea
+how good it was going to get.`,
+    questions:['Do you have a photograph of yourself that surprises you — from an era you barely remember?','What would you say to the younger version of yourself in that photo?','What is one thing your younger self could not have imagined about your life today?']
+  },
+  { id:'november', theme:'seasons', themeLabel:'Seasons', color:'#0891b2', emoji:'🍂',
+    title:'November',
+    preview:`The trees let go
+without complaint.
+They've done this long enough
+to know that letting go
+is not the same as losing.`,
+    text:`The trees let go
+without complaint.
+They've done this long enough
+to know that letting go
+is not the same as losing.
+
+The light turns thin and golden
+in the afternoons.
+The cold arrives
+the way a good friend does —
+unannounced,
+but not unwelcome.
+
+I have always loved November.
+The quieting of things.
+The world getting ready
+for something.`,
+    questions:['Which season speaks to you most — and why?','What does November (or fall) remind you of from your past?','The poem says "letting go is not the same as losing." What does that mean to you?']
+  },
+  { id:'garden-july', theme:'nature', themeLabel:'Nature', color:'#15803d', emoji:'🌻',
+    title:'The Garden in July',
+    preview:`Everything is too much
+and exactly right —
+the tomatoes climbing past their stakes,
+the zucchini discovering it can become a boat.`,
+    text:`Everything is too much
+and exactly right —
+the tomatoes climbing past their stakes,
+the zucchini discovering
+it can become a boat.
+
+The bees have opinions.
+The butterflies are purely decorative
+and they know it.
+
+I stand in the middle of it all
+in my oldest shirt,
+dirt under my fingernails,
+sweating in a way
+that feels like accomplishment.
+
+This is the best I've felt all week.
+I'll be back tomorrow.`,
+    questions:['Did you ever have a garden? What grew in it?','What chore or task has always felt more like joy than work to you?','The poem says "sweating in a way that feels like accomplishment." What gives you that feeling?']
+  },
+  { id:'laughter-lunch', theme:'joy', themeLabel:'Joy & Humor', color:'#d97706', emoji:'😄',
+    title:'Laughter at Lunch',
+    preview:`Nobody can remember
+what Dot said exactly —
+only that the table shook
+and coffee went down wrong.`,
+    text:`Nobody can remember
+what Dot said exactly —
+only that the table shook
+and coffee went down wrong
+and someone had to catch their breath
+before they could speak.
+
+These are the moments
+that do not make the news,
+that no one photographs,
+that live only in the people
+who were there.
+
+It happened.
+We were there.
+Lucky us.`,
+    questions:['Can you think of a time you laughed so hard you couldn\'t stop — even if you can\'t remember why?','Who in your life has always been able to make you laugh?','What does this poem say about the moments that matter most?']
+  },
+  { id:'birds', theme:'nature', themeLabel:'Nature', color:'#0284c7', emoji:'🐦',
+    title:'What I Know About Birds',
+    preview:`They do not know about the economy.
+They have no opinion about the weather
+except to act accordingly.`,
+    text:`They do not know about the economy.
+They have no opinion about the weather
+except to act accordingly.
+They do not apologize
+for waking you.
+
+Every spring they come back
+as though nothing happened,
+or as if everything did —
+it's hard to tell the difference
+with birds.
+
+I have watched them my whole life
+and I still don't know
+what they're saying to each other.
+But they seem very certain.
+I admire that.`,
+    questions:['Do you have a favorite bird? Why that one?','The poem says birds "act accordingly" in any weather. What is something you admire about how creatures or people simply adapt?','Is there something in nature that has always fascinated you without you ever fully understanding it?']
+  },
+  { id:'good-day', theme:'joy', themeLabel:'Joy & Humor', color:'#ea580c', emoji:'☀️',
+    title:'Recipe for a Good Day',
+    preview:`Take one morning,
+preferably unhurried.
+Add coffee —
+this is not optional.`,
+    text:`Take one morning,
+preferably unhurried.
+Add coffee —
+this is not optional.
+
+Include something that makes you laugh
+before ten o'clock.
+A window.
+A brief argument with a crossword puzzle
+that you win.
+Someone who knows your name.
+
+Cook slowly.
+Do not watch the clock.
+
+Serve warm,
+with whatever you have,
+to whoever's there.
+
+Feeds everyone.`,
+    questions:['What does a truly good day look like to you — what are the ingredients?','The poem says "someone who knows your name" is an ingredient. What does it mean to be truly known by someone?','What small thing do you almost always have in your best days?']
+  },
+  { id:'long-marriage', theme:'love', themeLabel:'Love & Family', color:'#dc2626', emoji:'💍',
+    title:'The Long Marriage',
+    preview:`Forty-three years,
+and he still can't find the butter
+when it's right there.`,
+    text:`Forty-three years,
+and he still can't find the butter
+when it's right there.
+
+Forty-three years,
+and I still can't sleep
+on his side of the bed
+when he's away.
+
+There is something in this
+I have never been able
+to fully explain.
+The butter. The side of the bed.
+The way two lives become
+one inconvenient, indispensable thing.
+
+I would not change the butter.
+I would not change a thing.`,
+    questions:['What is a small, silly habit of someone you love that you would never actually change?','Can you describe a long relationship — any kind — in just two or three specific details like the poem does?','What does "inconvenient and indispensable" mean to you in the context of love?']
+  },
+  { id:'first-snow', theme:'seasons', themeLabel:'Seasons', color:'#7c3aed', emoji:'❄️',
+    title:'First Snow',
+    preview:`We do not expect it to be beautiful.
+We expect cold, and inconvenience,
+and the scraping of windshields.
+
+And then it comes down
+in the afternoon light…`,
+    text:`We do not expect it to be beautiful.
+We expect cold, and inconvenience,
+and the scraping of windshields.
+
+And then it comes down
+in the afternoon light,
+slow and sure,
+without asking permission,
+
+and we go to the window
+without deciding to,
+and we stand there
+the way we haven't stood
+since we were children —
+just watching,
+just grateful,
+just here.`,
+    questions:['What does the first snow of the year feel like to you — is it welcome or dreaded?','The poem says we stand at the window "without deciding to." What else in life stops you like that?','When did you last feel fully present the way a child might — completely absorbed in a single moment?']
+  },
+  { id:'things-last', theme:'reflection', themeLabel:'Reflection', color:'#0891b2', emoji:'💛',
+    title:'Things That Last',
+    preview:`Not the ones you'd guess.
+
+Not the expensive things,
+not the ones with proper frames.
+The photograph with the bent corner.`,
+    text:`Not the ones you'd guess.
+
+Not the expensive things,
+not the ones with proper frames.
+The photograph with the bent corner.
+The handwriting on a recipe card.
+The song you catch yourself humming
+in the kitchen and don't know why
+until you do.
+
+The laugh you recognize
+in your daughter's laugh.
+The way you square your shoulders
+the way your father did.
+
+These are the things that last.
+These are the things
+you didn't know you were keeping.`,
+    questions:['What is something you carry from someone who is gone — a habit, a phrase, a way of doing something?','What object in your life is worn or imperfect but irreplaceable?','The poem says "you didn\'t know you were keeping" these things. What have you kept without realizing it?']
+  },
+  { id:'afternoon-nap', theme:'joy', themeLabel:'Joy & Humor', color:'#16a34a', emoji:'😴',
+    title:'The Afternoon Nap',
+    preview:`I was not going to fall asleep.
+I was merely resting my eyes
+in a horizontal position
+with a blanket
+for warmth.`,
+    text:`I was not going to fall asleep.
+I was merely resting my eyes
+in a horizontal position
+with a blanket
+for warmth.
+
+That's my story
+and I've held it
+for sixty years.`,
+    questions:['Do you have a cherished habit you insist isn\'t really what everyone knows it is?','What is something you\'ve defended with complete commitment despite all evidence to the contrary?','Sometimes the funniest truths are the small ones. What small truth about yourself always gets a laugh?']
+  },
+  { id:'october-walk', theme:'seasons', themeLabel:'Seasons', color:'#b45309', emoji:'🍁',
+    title:'October Walk',
+    preview:`The leaves have turned to everything
+at once —
+amber, burgundy, the orange
+of no other month.`,
+    text:`The leaves have turned to everything
+at once —
+amber, burgundy, the orange
+of no other month.
+
+They come down
+one at a time
+and two at a time
+and then all at once
+in a gust
+that makes you feel
+briefly, wonderfully
+young.
+
+Walk slowly.
+There's no hurry today.
+The whole world is changing color
+just to show you it can.`,
+    questions:['What is your most vivid memory of autumn — a walk, a smell, a particular day?','The poem says the falling leaves make you feel "briefly, wonderfully young." What still gives you that feeling?','What does "walk slowly" mean as advice beyond just a stroll?']
+  },
+  { id:'mother-taught', theme:'love', themeLabel:'Love & Family', color:'#be185d', emoji:'💐',
+    title:'What My Mother Taught Me',
+    preview:`Make the bed. It matters.
+Write the thank-you note.
+The extra five minutes are worth it.
+Feed whoever comes to the door.`,
+    text:`Make the bed. It matters.
+Write the thank-you note.
+The extra five minutes are worth it.
+Feed whoever comes to the door.
+Know the difference between tired and done.
+Don't wait for things to be perfect
+to begin.
+
+She taught me this
+without sitting me down.
+She taught me this
+the way the best things are taught —
+by living it, in front of me,
+year after year,
+until I knew it
+by heart.`,
+    questions:['What is one thing a parent, grandparent, or mentor taught you without ever explicitly saying it?','The poem lists practical wisdom. What small daily habit from your upbringing do you still carry?','What have you taught others — children, friends, colleagues — simply by doing it in front of them?']
+  }
+];
+
+var PO_GUIDES = [
+  { id:'haiku', emoji:'🌸', name:'Haiku', tagline:'Three lines, one moment, forever',
+    color:'#16a34a', difficulty:'Beginner',
+    about:'A haiku is a Japanese poem with three lines: 5 syllables, 7 syllables, 5 syllables. It captures a single moment — usually in nature — with quiet precision. Haiku are often about change, seasons, or a sudden realization.',
+    structure:'Line 1: 5 syllables\nLine 2: 7 syllables\nLine 3: 5 syllables',
+    example:`Morning coffee steam (5)
+Rises past the window glass (7)
+Cat watches it go (5)`,
+    example2:`After the long rain (5)
+One robin on the wet fence (7)
+Shakes the water off (5)`,
+    steps:['Choose a single moment, image, or feeling to capture — nothing complicated.','Count syllables carefully (clap them out): MOR-ning COF-fee STEAM = 5.','Write line 2 (the longest) to expand or add detail.','Write line 3 to complete or pivot — often a small surprise.','Read it aloud. If it sounds right, it is right.'],
+    prompt:'Write a haiku about something you can see from where you\'re sitting right now.'
+  },
+  { id:'senryu', emoji:'😄', name:'Senryū', tagline:'Like a haiku — but funny and human',
+    color:'#d97706', difficulty:'Beginner',
+    about:'Senryū has the same 5-7-5 structure as haiku, but instead of nature, it focuses on human nature — often with humor, irony, or gentle self-deprecation. It is the more playful cousin of haiku.',
+    structure:'Line 1: 5 syllables\nLine 2: 7 syllables\nLine 3: 5 syllables\n(About people, not nature)',
+    example:`Remote on the couch (5)
+No one knows where it has gone (7)
+It was here last week (5)`,
+    example2:`Doctor says less salt (5)
+I understand completely (7)
+I will not comply (5)`,
+    steps:['Think of something funny, true, or slightly embarrassing about daily life.','Apply the 5-7-5 structure loosely (it\'s more forgiving than haiku).','The best senryū have a little sting of truth in the last line.','Read it aloud — if someone laughs or sighs knowingly, it works.'],
+    prompt:'Write a senryū about a daily habit, a small annoyance, or something absurd about getting older.'
+  },
+  { id:'limerick', emoji:'😂', name:'Limerick', tagline:'Bouncy, funny, five lines — AABBA',
+    color:'#ea580c', difficulty:'Beginner',
+    about:'A limerick is a five-line poem with a da-DUM-da-da-DUM rhythm and an AABBA rhyme scheme. Lines 1, 2, and 5 rhyme and are longer. Lines 3 and 4 rhyme and are shorter. They are almost always funny.',
+    structure:'Line 1 (long): A rhyme — da DUM da da DUM da da DUM\nLine 2 (long): A rhyme — same rhythm\nLine 3 (short): B rhyme — da DUM da da DUM\nLine 4 (short): B rhyme\nLine 5 (long): A rhyme — the punchline',
+    example:`A fellow named Bert had a cat (A)
+Who slept on his very best hat (A)
+    The hat was now flat (B)
+    No fixing that (B)
+And Bert had to live with all that (A)`,
+    example2:`There once was a woman named Rose (A)
+Who gardened in mismatched work clothes (A)
+    The neighbors would stare (B)
+    She didn't much care (B)
+She grew what she wanted — and those (A)`,
+    steps:['Start with a name or place for line 1 ("There once was a man from..." or "A woman I knew named...").','Find two rhyming words for A lines and two for B lines BEFORE writing.','Write the A lines first (lines 1 and 2).','Write the short B lines (3 and 4) — these set up the punchline.','Write line 5 as the payoff — the funniest line.'],
+    prompt:'Write a limerick about someone at your table — get their permission first and keep it kind!'
+  },
+  { id:'acrostic', emoji:'🔤', name:'Acrostic', tagline:'Your message hidden down the side',
+    color:'#7c3aed', difficulty:'Beginner',
+    about:'In an acrostic poem, the first letter of each line spells a word or name when read top to bottom. The poem can rhyme or not — it\'s entirely up to you. Acrostics are wonderful for celebrations, dedications, and gifts.',
+    structure:'Choose a word. Write it vertically.\nEach line starts with that letter\nand relates to the overall theme.',
+    example:`Home is the smell of bread in the oven
+Over the radio, a song from long ago
+Morning coffee and no particular hurry
+Every room holding something I love`,
+    example2:`S — She always knew what to say
+P — Proud of us before we deserved it
+R — Rose early, stayed up late for us
+I — In every room, she filled the silence
+N — Never asked for thanks
+G — Gone, but in everything growing`,
+    steps:['Choose your word — a name, a season, a place, or a value (LOVE, HOME, GRACE).','Write the word vertically on your paper.','For each letter, write a line that starts with it AND connects to your theme.','Don\'t worry about rhyme — let the lines be as long or short as they need.','Read it aloud. If it feels true, it is.'],
+    prompt:'Write an acrostic using your first name, or the name of someone you love.'
+  },
+  { id:'cinquain', emoji:'🌺', name:'Cinquain', tagline:'Five lines, growing and shrinking',
+    color:'#be185d', difficulty:'Beginner–Intermediate',
+    about:'A cinquain (sin-CANE) is a five-line poem with a specific syllable pattern: 2, 4, 6, 8, 2. It builds to the fourth line, then lands with a quiet, powerful two-syllable close. The effect is like a held breath followed by a sigh.',
+    structure:'Line 1: 2 syllables (topic)\nLine 2: 4 syllables (description)\nLine 3: 6 syllables (action or feeling)\nLine 4: 8 syllables (detail, emotion, expansion)\nLine 5: 2 syllables (conclusion or echo)',
+    example:`Roses (2)
+Red and alive (4)
+Climbing past the old fence post (6)
+Every year, whether I plant them or not (8) *approx
+Persist (2)`,
+    example2:`Winter (2)
+Cold and quiet (4)
+The whole world holding its breath (6)
+As if waiting for one good reason (8) *approx
+To thaw (2)`,
+    steps:['Choose a subject: one noun (a person, a season, an object, a feeling).','Write a two-syllable title for line 1 (the subject).','Add four syllables of description in line 2.','Build to six syllables of action or feeling in line 3.','Write eight syllables of fuller emotion in line 4.','Close with two syllables — an echo, a realization, a single word.'],
+    prompt:'Write a cinquain about a season, a flower, or a word that means something to you.'
+  },
+  { id:'tanka', emoji:'🌙', name:'Tanka', tagline:'Like haiku, but with two more lines',
+    color:'#4f46e5', difficulty:'Intermediate',
+    about:'Tanka (TAHN-ka) is an ancient Japanese form — one of the oldest poetic forms in the world. It has five lines: 5-7-5-7-7 syllables. The first three lines are often about the outer world; the last two lines turn inward, to personal feeling or reflection.',
+    structure:'Line 1: 5 syllables (image)\nLine 2: 7 syllables (detail)\nLine 3: 5 syllables (turn)\nLine 4: 7 syllables (personal feeling)\nLine 5: 7 syllables (conclusion)',
+    example:`Old cedar table (5)
+Scratched by years of family meals (7)
+We polished it smooth (5)
+But kept the marks we could find — (7)
+Every one a day I'd keep (7)`,
+    example2:`Geese cross the gray sky (5)
+In the direction of warm (7)
+I watch until gone (5)
+Something in me wants to follow (7)
+Something in me says: stay here (7)`,
+    steps:['Write a haiku (5-7-5) first — an image from nature or everyday life.','Now add two more lines (7-7) that turn inward: what does that image make you feel or remember?','The pivot between lines 3 and 4 is where the poem turns from outer to inner.','Tanka don\'t need to rhyme. Focus on the image and the feeling it opens.'],
+    prompt:'Start with something you observed today — outside, through a window, on a walk. Write a tanka about what it made you remember or feel.'
+  },
+  { id:'couplet', emoji:'🔗', name:'Rhyming Couplet', tagline:'Two lines, one rhyme, complete thought',
+    color:'#0891b2', difficulty:'Beginner',
+    about:'A couplet is two consecutive lines of poetry that rhyme. Couplets are self-contained — they say something complete in just two lines. They can be funny, wise, tender, or sharp. Many famous proverbs and sayings are couplets.',
+    structure:'Line 1: states an idea (ends with word A)\nLine 2: completes or responds to it (rhymes with A)',
+    example:`The older I get, the less I mind the rain —
+Some days a quiet window is the best refrain.`,
+    example2:`She saved her mother's recipe on a folded card,
+Proof that the most important things are never hard to guard.`,
+    steps:['Think of a single truth, observation, or feeling.','Write the first line — end it with a word that has good rhyming options (avoid words like "orange").','Find the best rhyme for that end word — then build line 2 around it.','Read aloud — if both lines have similar rhythm, it works perfectly.','String several couplets together for a longer poem.'],
+    prompt:'Write three couplets about three things you know to be true after a long life.'
+  },
+  { id:'quatrain', emoji:'📜', name:'Quatrain', tagline:'Four lines — the heart of most poems',
+    color:'#b45309', difficulty:'Beginner–Intermediate',
+    about:'A quatrain is a four-line stanza. It\'s the most common unit in English poetry — hymns, folk songs, ballads, and countless classic poems are built from quatrains. There are several rhyme schemes: ABAB (alternating), AABB (couplet pairs), or ABCB (only lines 2 and 4 rhyme — easiest).',
+    structure:'ABAB: Line 1 rhymes with Line 3, Line 2 rhymes with Line 4\nAABB: Lines 1-2 rhyme, Lines 3-4 rhyme\nABCB (easiest): Only Lines 2 and 4 rhyme',
+    example:`The porch light burned all through the night (A)
+For forty years, rain or snow (B)
+She said it helped him find his way (A)
+On roads she did not know (B)`,
+    example2:`October smells like apples now (A)
+And woodsmoke, and the cold (B)
+The way the light goes gold and thin (A)
+As if the year is old (B)`,
+    steps:['Choose the easiest scheme first: ABCB — only lines 2 and 4 need to rhyme.','Write line 1 freely — no rhyme required.','End line 2 with a word that has good rhymes.','Write line 3 freely again.','End line 4 with a word that rhymes with line 2.','Once comfortable, try ABAB for more musical effect.'],
+    prompt:'Write a quatrain about someone you loved, a place you miss, or a season that means something to you. Use ABCB — just rhyme lines 2 and 4.'
+  },
+  { id:'clerihew', emoji:'🎩', name:'Clerihew', tagline:'Funny four-line portraits of real people',
+    color:'#374151', difficulty:'Beginner',
+    about:'A clerihew (KLEH-ri-hyoo) is a humorous four-line poem about a real person, usually a famous one. It was invented by Edmund Clerihew Bentley as a schoolboy. The person\'s name forms the first (or second) line, and the rhyme scheme is AABB. Clerihews are always playful — never mean.',
+    structure:'Line 1: The person\'s name (ends with first A rhyme)\nLine 2: Something about them (rhymes with name)\nLine 3: A second observation (ends with B rhyme)\nLine 4: Completes or subverts it (rhymes with line 3)',
+    example:`Bing Crosby
+Was never in a hurry.
+He just opened his mouth and out poured
+Exactly the voice the whole world adored.`,
+    example2:`Lucille Ball
+Could do it all —
+Trip, scream, shove candy in her hat,
+And somehow we loved her for that.`,
+    steps:['Choose someone famous (or someone in the room — with their blessing!).','Write their name on line 1 and find a rhyme for it.','Make lines 1-2 rhyme (AABB).','Write a second funny or surprising observation in lines 3-4.','The goal is gentle absurdity — the person should be flattered, not mocked.'],
+    prompt:'Write a clerihew about a favorite president, singer, actor, or a willing member of the group.'
+  },
+  { id:'list-poem', emoji:'📝', name:'List Poem', tagline:'A poem made entirely of a list',
+    color:'#059669', difficulty:'Beginner',
+    about:'A list poem is exactly what it sounds like — a poem structured as a list. Each line adds to the picture. The list can be of objects, memories, sounds, feelings, or anything that belongs together. No rhyme required. The power is in the accumulation.',
+    structure:'Opening line: sets the theme ("Things I have kept:")\nBody lines: each adds one item to the list\nClosing line: optional — a summary, pivot, or quiet landing',
+    example:`Things I have kept:
+A ticket stub from a concert I can't quite place.
+My mother's handwriting on a recipe card.
+The sound of the screen door at the cottage.
+Summers that seemed to have no end.
+The smell of my grandmother's kitchen — coffee and something baking.
+Every word anyone ever said that was just right.`,
+    example2:`What a good morning contains:
+Light that arrives without announcement.
+Coffee that is still hot.
+Something outside worth looking at.
+No particular hurry.
+Someone who knows your name.`,
+    steps:['Choose a title that sets up the list: "Things I carry," "What I know for certain," "Sounds I would keep forever."','Write freely — don\'t edit as you list. Just add lines.','Aim for 6-10 items. Vary the length of lines.','Read it aloud. Remove anything that feels weak. Keep what surprises you.','Add an optional closing line that lands the poem — a summary, a reversal, or a quiet pause.'],
+    prompt:'Write a list poem titled "Things I\'ve Kept," "What My Hands Remember," or "What a Good Day Contains."'
+  },
+  { id:'free-verse', emoji:'🌊', name:'Free Verse', tagline:'No rules — just truth and rhythm',
+    color:'#0284c7', difficulty:'All levels',
+    about:'Free verse has no required rhyme scheme, no fixed meter, no set length. It follows the natural rhythm of thought and speech. Many of the greatest modern poems are free verse. The "rules" of free verse: be honest, be specific, choose every word on purpose.',
+    structure:'No fixed structure.\nLines break where you want the reader to pause.\nLength is determined by meaning, not meter.\nSpecificity is everything.',
+    example:`I still set two coffee cups out
+before I remember.
+
+The second one sits there a moment
+on the counter.
+Then I put it back.
+
+This is the whole of grief, really —
+the muscle memory
+of someone who is gone.`,
+    example2:`She had a way of walking into a room
+as if she'd already decided
+it was going to be a good room.
+
+We all learned to walk that way from her.
+Some of us still do.`,
+    steps:['Choose something true — a memory, a person, an observation you\'ve never quite said aloud.','Write it out in sentences first. Don\'t think about poetry yet.','Now break those sentences into lines — break where you naturally pause, where a word needs emphasis.','Remove anything that doesn\'t need to be there. Specifics beat generalities every time.','Read aloud. If a word or phrase doesn\'t earn its place, cut it.','There is no wrong answer in free verse — only more or less honest.'],
+    prompt:'Write a free verse poem about a moment from your life that you have never quite been able to explain to someone else — a moment that is somehow yours.'
+  },
+  { id:'letter-poem', emoji:'💌', name:'Letter Poem', tagline:'Write a poem as a letter — to anyone',
+    color:'#dc2626', difficulty:'Beginner',
+    about:'A letter poem is a poem written in the form of a letter — to a person (living or not), a place, a season, an object, a younger self, or anything you\'d like to address directly. The "Dear ___" opening immediately creates intimacy and gives the poem a clear emotional direction.',
+    structure:'Opening: "Dear [person/place/thing/season],..."\nBody: speak directly — say what you never said, notice what they meant\nClose: optional sign-off, or just let the poem end where it ends',
+    example:`Dear Front Porch,
+
+You held us all summer long
+without a single complaint —
+the rocking chairs, the stories,
+the way we dragged out every goodbye
+as if we could keep the evening
+just a little longer.
+
+We will be back in June.
+Save our seats.
+
+With love,
+Everyone who ever sat there`,
+    example2:`Dear Younger Me,
+
+The worry is mostly wasted.
+The things you are afraid of
+either won't happen
+or will happen and you'll survive.
+
+The things that matter
+you won't see coming.
+That's okay.
+That's actually okay.`,
+    steps:['Choose your recipient: a person, a place, a season ("Dear October"), an object ("Dear Old House"), or your younger self.','Start with "Dear _____," — then write naturally, as if speaking to them.','Say one thing you always meant to say. Then say one thing you\'ve noticed.','You may end with a sign-off or simply let the poem close.','Read it aloud. Letter poems often feel more personal than any other form.'],
+    prompt:'Write a letter poem to your childhood home, your hands, the month of your birth, someone you\'d like to thank, or your 20-year-old self.'
+  }
+];
+
+var poCurrentTheme = 'all';
+var poCurrentPoem = null;
+var poCurrentGuide = null;
+var poCurrentView = 'poems'; // 'poems' or 'guides'
+
+function poRender() {
+  var body = document.getElementById('sw-body');
+  if (!body) return;
+  if (poCurrentView === 'poems') {
+    poRenderPoems(body);
+  } else {
+    poRenderGuides(body);
+  }
+}
+
+function poRenderPoems(body) {
+  var themes = ['all','nature','memory','seasons','reflection','joy','love'];
+  var labels  = {all:'All Themes', nature:'🌿 Nature', memory:'📷 Memory',
+    seasons:'🍂 Seasons', reflection:'🤲 Reflection', joy:'😄 Joy & Humor', love:'💕 Love & Family'};
+
+  var html = '<div class="po-filter-bar">';
+  themes.forEach(function(t) {
+    html += '<button class="po-filter-btn'+(poCurrentTheme===t?' active':'')+
+      '" onclick="poSetTheme(\''+t+'\')">'+(labels[t]||t)+'</button>';
+  });
+  html += '</div>';
+  html += '<button class="sw-modal-btn sw-btn-outline" onclick="poCurrentView=\'guides\';poRender()" style="margin-bottom:14px;display:inline-block;">✍️ Switch to: How to Write Poetry →</button>';
+  html += '<div class="po-poem-grid">';
+
+  var poems = poCurrentTheme === 'all' ? PO_POEMS :
+    PO_POEMS.filter(function(p){ return p.theme === poCurrentTheme; });
+
+  poems.forEach(function(p) {
+    html += '<div class="po-poem-card" onclick="poOpenPoem(\''+p.id+'\')">' +
+      '<div class="po-poem-accent" style="background:'+p.color+'"></div>' +
+      '<div class="po-poem-body">' +
+      '<div class="po-poem-emoji">'+p.emoji+'</div>' +
+      '<div class="po-poem-title">'+p.title+'</div>' +
+      '<span class="po-theme-badge" style="background:'+p.color+'20;color:'+p.color+'">'+p.themeLabel+'</span>' +
+      '<p class="po-poem-preview">'+p.preview+'</p>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function poSetTheme(t) {
+  poCurrentTheme = t;
+  poRenderPoems(document.getElementById('sw-body'));
+}
+
+function poOpenPoem(id) {
+  var p = PO_POEMS.find(function(x){ return x.id===id; });
+  if (!p) return;
+  poCurrentPoem = p;
+  var hdr = document.getElementById('po-modal-header');
+  hdr.style.background = 'linear-gradient(135deg,'+p.color+','+p.color+'cc)';
+  document.getElementById('po-modal-title').textContent = p.emoji+' '+p.title;
+  document.getElementById('po-modal-sub').textContent = p.themeLabel+' · Original poem';
+  var body = document.getElementById('po-modal-body');
+  var qHtml = '<ul class="po-disc-list">'+
+    p.questions.map(function(q){ return '<li>'+q+'</li>'; }).join('') + '</ul>';
+  body.innerHTML =
+    '<div class="po-poem-text">'+p.text+'</div>' +
+    '<div class="sw-section-label">💬 Discussion Questions</div>' + qHtml;
+  document.getElementById('po-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function poClosePoem() {
+  document.getElementById('po-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function poPrintPoem() {
+  if (!poCurrentPoem) return;
+  var p = poCurrentPoem;
+  var qRows = p.questions.map(function(q,i) {
+    return '<div style="background:#f5f3ff;border-left:3px solid '+p.color+
+      ';border-radius:0 6px 6px 0;padding:8px 10px;margin-bottom:6px;font-size:13px;">'+(i+1)+'. '+q+'</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+p.title+'</title>'+
+    '<style>body{font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:30px;color:#1f2937;}'+
+    'h1{font-size:22px;color:'+p.color+';margin-bottom:2px;}'+
+    '.meta{font-size:12px;color:#9ca3af;margin-bottom:18px;}'+
+    '.poem{font-size:16px;line-height:2;white-space:pre-line;background:#faf9ff;'+
+    'border-left:4px solid '+p.color+';padding:16px 18px;border-radius:0 8px 8px 0;margin-bottom:20px;}'+
+    '.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:'+p.color+';margin:16px 0 8px;}'+
+    '.footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:10px;}'+
+    '@media print{body{padding:16px;}}'+
+    '</style></head><body>'+
+    '<h1>'+p.emoji+' '+p.title+'</h1>'+
+    '<div class="meta">'+p.themeLabel+' &nbsp;·&nbsp; Empower Life 365</div>'+
+    '<div class="poem">'+p.text+'</div>'+
+    '<div class="sec">💬 Discussion Questions</div>'+qRows+
+    '<div class="footer">Empower Life 365 · empowerlife365.app · Printed '+new Date().toLocaleDateString()+'</div>'+
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 400);
+}
+
+function poRenderGuides(body) {
+  var html = '<button class="sw-modal-btn sw-btn-outline" onclick="poCurrentView=\'poems\';poRender()" style="margin-bottom:14px;display:inline-block;">← Back to Poem Library</button>';
+  html += '<div style="background:#f0f9ff;border-left:4px solid #0891b2;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:16px;font-size:.88rem;color:#075985;">';
+  html += '<strong>12 poetry forms</strong> — from the easiest (couplet, limerick) to the more structured (tanka, cinquain). Each includes the rules, two original examples, step-by-step instructions, and a writing prompt.</div>';
+  html += '<div class="po-guide-grid">';
+  PO_GUIDES.forEach(function(g) {
+    html += '<div class="po-guide-card" onclick="poOpenGuide(\''+g.id+'\')">' +
+      '<div style="width:40px;height:4px;background:'+g.color+';border-radius:2px;margin-bottom:10px;"></div>'+
+      '<div class="po-guide-emoji">'+g.emoji+'</div>'+
+      '<div class="po-guide-name">'+g.name+'</div>'+
+      '<span style="font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:10px;background:'+g.color+'20;color:'+g.color+';display:inline-block;margin:4px 0 6px;">'+g.difficulty+'</span>'+
+      '<p class="po-guide-tagline">'+g.tagline+'</p>'+
+      '</div>';
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function poOpenGuide(id) {
+  var g = PO_GUIDES.find(function(x){ return x.id===id; });
+  if (!g) return;
+  poCurrentGuide = g;
+  var hdr = document.getElementById('po-gmodal-header');
+  hdr.style.background = 'linear-gradient(135deg,'+g.color+','+g.color+'cc)';
+  document.getElementById('po-gmodal-title').textContent = g.emoji+' '+g.name;
+  document.getElementById('po-gmodal-sub').textContent = g.tagline+' · '+g.difficulty;
+  var body = document.getElementById('po-gmodal-body');
+  var steps = g.steps.map(function(s,i) {
+    return '<div class="po-step"><div class="po-step-num">'+(i+1)+'</div><div class="po-step-text">'+s+'</div></div>';
+  }).join('');
+  body.innerHTML =
+    '<p style="color:#374151;font-size:.9rem;line-height:1.65;margin:0 0 14px;">'+g.about+'</p>'+
+    '<div class="sw-section-label">📐 Structure</div>'+
+    '<div class="po-structure-box">'+g.structure+'</div>'+
+    '<div class="sw-section-label">✍️ Example</div>'+
+    '<div class="po-example-box">'+g.example+'</div>'+
+    (g.example2 ? '<div class="po-example-box" style="margin-top:8px;">'+g.example2+'</div>' : '')+
+    '<div class="sw-section-label">📋 Step-by-Step</div>'+steps+
+    '<div class="po-try-box"><strong>✏️ Your Turn:</strong> '+g.prompt+'</div>';
+  document.getElementById('po-gmodal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function poCloseGuide() {
+  document.getElementById('po-gmodal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function poPrintGuide() {
+  if (!poCurrentGuide) return;
+  var g = poCurrentGuide;
+  var steps = g.steps.map(function(s,i) {
+    return '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:9px;">'+
+      '<div style="min-width:24px;height:24px;border-radius:50%;background:'+g.color+
+      ';color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;">'+(i+1)+'</div>'+
+      '<div style="font-size:13px;color:#374151;line-height:1.5;">'+s+'</div></div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>How to Write a '+g.name+'</title>'+
+    '<style>body{font-family:Arial,sans-serif;max-width:640px;margin:0 auto;padding:28px;color:#1f2937;}'+
+    'h1{font-size:20px;color:'+g.color+';margin-bottom:2px;}'+
+    '.sub{font-size:12px;color:#9ca3af;margin-bottom:14px;}'+
+    '.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:'+g.color+';margin:14px 0 6px;}'+
+    '.struct{background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:10px 12px;'+
+    'font-family:monospace;font-size:.85rem;color:#0c4a6e;white-space:pre-line;margin-bottom:8px;}'+
+    '.example{background:#faf9ff;border-left:4px solid '+g.color+';border-radius:0 6px 6px 0;'+
+    'padding:10px 14px;font-family:Georgia,serif;font-size:.92rem;line-height:1.8;white-space:pre-line;margin-bottom:8px;}'+
+    '.prompt{background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:10px 12px;'+
+    'font-size:.88rem;color:#14532d;margin-top:12px;}'+
+    '.footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:10px;}'+
+    '@media print{body{padding:14px;}}'+
+    '</style></head><body>'+
+    '<h1>'+g.emoji+' How to Write a '+g.name+'</h1>'+
+    '<div class="sub">'+g.tagline+' &nbsp;·&nbsp; '+g.difficulty+' &nbsp;·&nbsp; Empower Life 365</div>'+
+    '<p style="font-size:13px;line-height:1.6;">'+g.about+'</p>'+
+    '<div class="sec">📐 Structure</div><div class="struct">'+g.structure+'</div>'+
+    '<div class="sec">✍️ Example</div><div class="example">'+g.example+'</div>'+
+    (g.example2 ? '<div class="example">'+g.example2+'</div>' : '')+
+    '<div class="sec">📋 Step-by-Step</div>'+steps+
+    '<div class="prompt"><strong>✏️ Your Turn:</strong> '+g.prompt+'</div>'+
+    '<div class="footer">Empower Life 365 · empowerlife365.app · Printed '+new Date().toLocaleDateString()+'</div>'+
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 400);
+}
+
+/* Patch swSetMode to handle 'poetry' */
+(function(){
+  var _orig = window.swSetMode;
+  window.swSetMode = function(mode) {
+    if (mode === 'poetry') {
+      swCurrentMode = 'poetry';
+      document.getElementById('sw-mode-read').classList.remove('active');
+      document.getElementById('sw-mode-write').classList.remove('active');
+      var btn = document.getElementById('sw-mode-poetry');
+      if (btn) btn.classList.add('active');
+      poRender();
+    } else {
+      if (document.getElementById('sw-mode-poetry'))
+        document.getElementById('sw-mode-poetry').classList.remove('active');
+      _orig && _orig(mode);
+    }
+  };
+  /* Patch swRender so poetry mode works when tab re-opens */
+  var _origRender = window.swRender;
+  window.swRender = function() {
+    if (swCurrentMode === 'poetry') { poRender(); return; }
+    _origRender && _origRender();
   };
 })();
 </script>
