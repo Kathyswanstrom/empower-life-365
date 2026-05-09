@@ -1730,6 +1730,92 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .sp-tip-card { background:#FFF1F2; border:2px solid #FECDD3; border-radius:12px; padding:14px 16px; margin-bottom:10px; }
 .sp-tip-cat { font-weight:900; font-size:12px; color:#F43F5E; letter-spacing:.5px; text-transform:uppercase; margin-bottom:8px; }
 
+
+/* ═══════════════════ GRAND EVENT PLANNER ═══════════════════ */
+#panel-events { padding:0; background:#f8f4ff; }
+.ep-header { background:linear-gradient(135deg,#6a0dad,#ff6b9d); color:white; padding:22px 28px; }
+.ep-header h2 { font-size:26px; margin:0 0 5px; }
+.ep-header p { margin:0; opacity:.9; font-size:14px; }
+.ep-mode-bar { display:flex; gap:8px; padding:14px 20px; background:white; border-bottom:2px solid #e8d5f5; flex-wrap:wrap; }
+.ep-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #d4a0e8; background:white; color:#7b2d8b; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; }
+.ep-mode-btn.active,.ep-mode-btn:hover { background:#7b2d8b; color:white; border-color:#7b2d8b; }
+.ep-body { padding:20px; }
+.ep-filter-bar { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+.ep-filter-btn { padding:5px 13px; border-radius:14px; border:1.5px solid #ddd; background:white; font-size:12px; cursor:pointer; font-weight:700; color:#555; transition:all .2s; }
+.ep-filter-btn.active { background:#7b2d8b; color:white; border-color:#7b2d8b; }
+.ep-gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; }
+.ep-card { border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,.12); cursor:pointer; transition:transform .2s,box-shadow .2s; }
+.ep-card:hover { transform:translateY(-5px); box-shadow:0 10px 28px rgba(0,0,0,.2); }
+.ep-card-hero { padding:22px; display:flex; flex-direction:column; align-items:center; text-align:center; min-height:130px; justify-content:center; }
+.ep-card-emoji { font-size:54px; line-height:1; margin-bottom:8px; }
+.ep-card-name { color:white; font-size:15px; font-weight:700; text-shadow:0 1px 3px rgba(0,0,0,.35); }
+.ep-card-footer { background:white; padding:10px 14px; }
+.ep-card-tag { display:inline-block; padding:2px 9px; border-radius:10px; font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:5px; letter-spacing:.5px; }
+.ep-card-tagline { font-size:12px; color:#666; margin:0 0 8px; line-height:1.4; }
+.ep-card-btn { width:100%; padding:7px; border-radius:8px; border:none; font-size:12px; font-weight:700; cursor:pointer; background:#7b2d8b; color:white; transition:background .2s; }
+.ep-card-btn:hover { background:#5a1a6e; }
+.ep-back-btn { background:rgba(255,255,255,.2); border:1.5px solid rgba(255,255,255,.5); color:white; padding:5px 13px; border-radius:8px; cursor:pointer; font-size:13px; margin-bottom:10px; display:inline-block; }
+.ep-back-btn:hover { background:rgba(255,255,255,.3); }
+.ep-detail-hero { padding:24px 28px; color:white; }
+.ep-detail-hero-row { display:flex; align-items:center; gap:18px; }
+.ep-detail-hero-emoji { font-size:68px; line-height:1; }
+.ep-detail-hero-info h3 { font-size:24px; margin:0 0 5px; }
+.ep-detail-hero-info p { margin:0; opacity:.88; font-size:13px; }
+.ep-detail-tabs { display:flex; gap:0; background:#f0e8f8; border-bottom:2px solid #d4a0e8; overflow-x:auto; }
+.ep-dtab { padding:9px 15px; font-size:13px; font-weight:700; cursor:pointer; color:#7b2d8b; white-space:nowrap; border-bottom:3px solid transparent; transition:all .2s; }
+.ep-dtab.active { border-bottom-color:#7b2d8b; background:white; }
+.ep-detail-content { padding:20px; background:white; }
+.ep-sec-title { font-size:15px; font-weight:800; color:#6a0dad; margin:0 0 12px; }
+.ep-pill-list { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.ep-pill { background:#f0e0ff; color:#6a0dad; padding:5px 13px; border-radius:14px; font-size:13px; }
+.ep-tl-item { display:flex; gap:14px; margin-bottom:12px; align-items:flex-start; }
+.ep-tl-time { background:#7b2d8b; color:white; padding:4px 9px; border-radius:7px; font-size:11px; font-weight:800; white-space:nowrap; min-width:68px; text-align:center; }
+.ep-tl-act { font-size:13px; padding-top:3px; color:#333; line-height:1.4; }
+.ep-sup-table { width:100%; border-collapse:collapse; font-size:13px; }
+.ep-sup-table th { background:#f0e0ff; color:#6a0dad; padding:7px 11px; text-align:left; font-weight:800; }
+.ep-sup-table td { padding:7px 11px; border-bottom:1px solid #eee; }
+.ep-sup-total { font-weight:800; color:#6a0dad; padding:9px 11px; background:#f8f0ff; text-align:right; font-size:13px; }
+.ep-vol-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:9px; }
+.ep-vol-item { background:#f0e8f8; padding:11px; border-radius:9px; font-size:13px; color:#5a1a6e; }
+.ep-tips-list { list-style:none; padding:0; margin:0; }
+.ep-tips-list li { padding:9px 13px; margin-bottom:7px; background:#fffbf0; border-left:4px solid #ffb700; border-radius:0 8px 8px 0; font-size:13px; color:#555; }
+.ep-plan-btn { padding:11px 26px; background:linear-gradient(135deg,#6a0dad,#ff6b9d); color:white; border:none; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; margin:14px 0 0; transition:opacity .2s; }
+.ep-plan-btn:hover { opacity:.88; }
+.ep-plan-form { background:#fdf5ff; border-radius:14px; padding:18px; border:2px solid #d4a0e8; margin-top:14px; }
+.ep-plan-form h4 { color:#6a0dad; margin:0 0 14px; font-size:16px; }
+.ep-form-row { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:11px; }
+.ep-form-group label { display:block; font-size:11px; font-weight:800; color:#666; margin-bottom:3px; text-transform:uppercase; letter-spacing:.4px; }
+.ep-form-group input,.ep-form-group select { width:100%; padding:7px 9px; border:1.5px solid #d4a0e8; border-radius:7px; font-size:13px; box-sizing:border-box; }
+.ep-form-actions { display:flex; gap:9px; margin-top:12px; }
+.ep-save-btn { background:#7b2d8b; color:white; border:none; border-radius:8px; padding:9px 22px; font-size:13px; font-weight:800; cursor:pointer; }
+.ep-cancel-btn { background:#eee; color:#555; border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:700; cursor:pointer; }
+.ep-budget-preview { background:white; border-radius:9px; padding:12px; margin:11px 0 0; font-size:13px; border:1px solid #d4a0e8; }
+.ep-budget-preview strong { color:#6a0dad; }
+.ep-my-empty { text-align:center; padding:50px 20px; color:#aaa; }
+.ep-my-empty p { font-size:16px; }
+.ep-my-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:15px; }
+.ep-my-card { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.08); border:2px solid #e8d5f5; }
+.ep-my-card-top { padding:14px 16px; color:white; display:flex; gap:12px; align-items:center; }
+.ep-my-card-emoji { font-size:38px; }
+.ep-my-card-info h4 { margin:0 0 3px; font-size:15px; font-weight:800; }
+.ep-my-card-info p { margin:0; font-size:12px; opacity:.88; }
+.ep-my-card-body { padding:11px 15px; }
+.ep-my-meta { display:flex; gap:14px; margin-bottom:8px; font-size:12px; color:#666; flex-wrap:wrap; }
+.ep-countdown { font-size:12px; font-weight:800; color:#6a0dad; margin-bottom:8px; }
+.ep-my-actions { display:flex; gap:7px; }
+.ep-my-print-btn,.ep-my-del-btn { padding:6px 12px; border-radius:6px; font-size:12px; font-weight:800; cursor:pointer; border:none; }
+.ep-my-print-btn { background:#e8d5f5; color:#6a0dad; }
+.ep-my-del-btn { background:#fde8e8; color:#c0392b; }
+.ep-print-top { background:white; border-radius:12px; padding:16px 18px; margin-bottom:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; box-shadow:0 2px 8px rgba(0,0,0,.07); }
+.ep-print-top label { font-size:13px; font-weight:800; color:#555; }
+.ep-print-top select { padding:7px 11px; border:1.5px solid #d4a0e8; border-radius:8px; font-size:13px; min-width:220px; }
+.ep-print-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px; }
+.ep-print-card { background:white; border-radius:12px; padding:18px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.07); border:2px solid #e8d5f5; cursor:pointer; transition:all .2s; }
+.ep-print-card:hover { background:#f5e8ff; border-color:#7b2d8b; transform:translateY(-2px); }
+.ep-print-icon { font-size:34px; margin-bottom:7px; }
+.ep-print-name { font-size:13px; font-weight:800; color:#333; margin-bottom:3px; }
+.ep-print-desc { font-size:11px; color:#888; line-height:1.4; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1810,6 +1896,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="talent" id="talent-tab" onclick="switchTab('talent')">🎭 Talent Show</button>
       <button class="tab-btn" data-tab="womens" id="womens-tab" onclick="switchTab('womens')">👩 Women's Groups</button>
       <button class="tab-btn" data-tab="spa" id="spa-tab" onclick="switchTab('spa')">💅 Spa & Beauty</button>
+      <button class="tab-btn" data-tab="events" onclick="switchTab('events')">🎪 Event Planner</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -5372,6 +5459,44 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 </section>
 
+<section class="tab-panel" id="panel-events">
+  <div class="ep-header">
+    <h2>🎪 Grand Event Planner</h2>
+    <p>Complete party packages — decorations, food, activities, timelines &amp; print-ready materials</p>
+  </div>
+  <div class="ep-mode-bar">
+    <button class="ep-mode-btn active" id="ep-btn-gallery" onclick="epSetMode('gallery')">🎨 Event Gallery</button>
+    <button class="ep-mode-btn" id="ep-btn-mine" onclick="epSetMode('mine')">📋 My Planned Events</button>
+    <button class="ep-mode-btn" id="ep-btn-print" onclick="epSetMode('print')">🖨️ Print Materials</button>
+  </div>
+  <div id="ep-gallery-mode" class="ep-body">
+    <div class="ep-filter-bar">
+      <button class="ep-filter-btn active" onclick="epSetFilter('all',this)">✨ All Events</button>
+      <button class="ep-filter-btn" onclick="epSetFilter('holiday',this)">🎄 Holiday</button>
+      <button class="ep-filter-btn" onclick="epSetFilter('seasonal',this)">🌸 Seasonal</button>
+      <button class="ep-filter-btn" onclick="epSetFilter('social',this)">🎉 Social</button>
+      <button class="ep-filter-btn" onclick="epSetFilter('nostalgia',this)">🎵 Nostalgia</button>
+      <button class="ep-filter-btn" onclick="epSetFilter('cultural',this)">🌍 Cultural</button>
+    </div>
+    <div class="ep-gallery" id="ep-gallery"></div>
+  </div>
+  <div id="ep-detail-mode" style="display:none;"></div>
+  <div id="ep-mine-mode" class="ep-body" style="display:none;"><div id="ep-mine-content"></div></div>
+  <div id="ep-print-mode" class="ep-body" style="display:none;">
+    <div class="ep-print-top">
+      <label>Select Event:</label>
+      <select id="ep-print-sel"></select>
+    </div>
+    <div class="ep-print-grid">
+      <div class="ep-print-card" onclick="epPrint('invitation')"><div class="ep-print-icon">💌</div><div class="ep-print-name">Invitation Flyer</div><div class="ep-print-desc">Colorful invite to post &amp; distribute</div></div>
+      <div class="ep-print-card" onclick="epPrint('supplies')"><div class="ep-print-icon">🛒</div><div class="ep-print-name">Supply Shopping List</div><div class="ep-print-desc">Everything needed with estimated costs</div></div>
+      <div class="ep-print-card" onclick="epPrint('timeline')"><div class="ep-print-icon">⏰</div><div class="ep-print-name">Day-of Timeline</div><div class="ep-print-desc">Step-by-step event day schedule</div></div>
+      <div class="ep-print-card" onclick="epPrint('volunteer')"><div class="ep-print-icon">🙋</div><div class="ep-print-name">Volunteer Sign-Up Sheet</div><div class="ep-print-desc">All needed roles with sign-up lines</div></div>
+      <div class="ep-print-card" onclick="epPrint('budget')"><div class="ep-print-icon">💰</div><div class="ep-print-name">Budget Worksheet</div><div class="ep-print-desc">Itemized cost tracker &amp; totals</div></div>
+      <div class="ep-print-card" onclick="epPrint('full')"><div class="ep-print-icon">📦</div><div class="ep-print-name">Full Event Package</div><div class="ep-print-desc">Complete planning guide in one doc</div></div>
+    </div>
+  </div>
+</section>
 <section class="tab-panel" id="panel-family">
   <style>
     .fc-tab { background:var(--gray-100); border:none; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-600); transition:all 0.15s; }
@@ -38344,4 +38469,738 @@ function spPrintApptLog() {
 }
 </script>
 
+<script>
+/* ═══════════════════ GRAND EVENT PLANNER ═══════════════════ */
+var EP_EVENTS=[
+ {id:'halloween',name:'Halloween Spooktacular',emoji:'🎃',cat:'holiday',
+  color:'#e65100',bg:'linear-gradient(135deg,#bf360c,#e65100)',tagLabel:'Holiday',
+  tagline:'A hauntingly fun celebration for all!',
+  desc:'Transform your common area into a spooky — but friendly — Halloween haven. Costumes encouraged, candy guaranteed!',
+  decorations:['Jack-o-lantern centerpieces','Cobwebs & friendly spiders','Ghost and bat cutouts','Orange & black streamers','Flameless candles in mason jars','Witch hat table decorations'],
+  foods:['Caramel apple bites','Pumpkin spice cookies','Witch finger pretzel rods','Apple cider punch','Candy corn trail mix','Deviled egg eyeballs'],
+  activities:['Costume parade & judging contest','Pumpkin decorating with stickers & paint','Halloween Bingo (3 prize rounds)','Candy guessing jar contest'],
+  music:['Monster Mash','Thriller – Michael Jackson','Ghostbusters Theme','Purple People Eater','This Is Halloween'],
+  timeline:[
+    {time:'1:00 PM',act:'Welcome & doors open — residents arrive in costume'},
+    {time:'1:15 PM',act:'Costume parade — everyone shows off their look!'},
+    {time:'1:45 PM',act:'Halloween Bingo — 3 rounds with prizes'},
+    {time:'2:15 PM',act:'Pumpkin decorating with stickers & paint'},
+    {time:'3:00 PM',act:'Refreshments served — cider, cookies & treats'},
+    {time:'3:30 PM',act:'Costume contest judging & prize ceremony'},
+    {time:'4:00 PM',act:'Spooky story sharing circle'},
+    {time:'4:30 PM',act:'Thank you & cleanup'}
+  ],
+  supplies:[
+    {item:'Orange & black tablecloths',qty:'6',cost:14},
+    {item:'Fake cobweb decoration kits',qty:'3',cost:9},
+    {item:'Ghost/bat/pumpkin cutouts',qty:'12',cost:10},
+    {item:'Caramel apple supplies (20 servings)',qty:'1 set',cost:28},
+    {item:'Bingo cards & daubers',qty:'30 sets',cost:18},
+    {item:'Costume contest ribbons',qty:'5',cost:7},
+    {item:'Treat bags & candy assortment',qty:'30',cost:22}
+  ],
+  volunteers:['Decoration committee (2)','Food prep & serving (3)','Bingo caller / facilitator (1)','MC & costume judge (1)','Cleanup crew (2)'],
+  tips:['Order supplies 2 weeks in advance','Avoid masks — use face paint or hats','Have non-scary decor corner for sensitive residents','Offer sugar-free treats for dietary needs']
+ },
+ {id:'christmas',name:'Christmas Holiday Party',emoji:'🎄',cat:'holiday',
+  color:'#c62828',bg:'linear-gradient(135deg,#b71c1c,#1b5e20)',tagLabel:'Holiday',
+  tagline:'Deck the halls with joy and laughter!',
+  desc:'Celebrate the season with twinkling lights, caroling, cookie decorating, and warm memories shared with everyone you love.',
+  decorations:['Christmas tree centerpiece','Twinkling string lights','Poinsettia arrangements','Red & green tablecloths','Wreath on front door','Snowflake & ornament cutouts'],
+  foods:['Decorated sugar cookies','Hot cocoa bar with toppings','Cranberry punch','Holiday cheese & cracker board','Gingerbread bites','Peppermint bark pieces'],
+  activities:['Christmas carol singalong','Cookie decorating station','Christmas trivia game','Ornament craft making','Gift exchange drawing'],
+  music:['Jingle Bells','White Christmas – Bing Crosby','Let It Snow','Rudolph the Red-Nosed Reindeer','Silver Bells','Frosty the Snowman'],
+  timeline:[
+    {time:'2:00 PM',act:'Welcome & holiday music begins playing'},
+    {time:'2:15 PM',act:'Cookie decorating station open'},
+    {time:'2:45 PM',act:'Christmas carol singalong (group)'},
+    {time:'3:15 PM',act:'Christmas trivia game with prizes'},
+    {time:'3:45 PM',act:'Hot cocoa bar & holiday treats served'},
+    {time:'4:15 PM',act:'Ornament craft making'},
+    {time:'4:45 PM',act:'Gift exchange / drawing & photos'},
+    {time:'5:00 PM',act:'Closing song & goodnight'}
+  ],
+  supplies:[
+    {item:'Sugar cookie decorating kit',qty:'30 sets',cost:35},
+    {item:'Hot cocoa mix & toppings',qty:'30 servings',cost:22},
+    {item:'Holiday tablecloths & napkins',qty:'1 set',cost:16},
+    {item:'Christmas carol lyric sheets',qty:'30',cost:5},
+    {item:'Ornament craft supplies',qty:'30 sets',cost:28},
+    {item:'Christmas trivia prizes',qty:'5',cost:15},
+    {item:'String lights & decorations',qty:'1 set',cost:30}
+  ],
+  volunteers:['Decoration setup (3)','Cookie station helper (2)','Singalong leader (1)','Food & drinks (2)','Craft helper (2)'],
+  tips:['Ask a family member to play piano for carols','Prepare nut-free cookie options','Take lots of photos for the newsletter','Dollar store string lights save budget']
+ },
+ {id:'newyears',name:"New Year's Eve Gala",emoji:'🎆',cat:'holiday',
+  color:'#1a237e',bg:'linear-gradient(135deg,#1a237e,#4a148c)',tagLabel:'Holiday',
+  tagline:"Ring in the new year with glitter and glee!",
+  desc:"A glamorous evening celebration with party hats, countdown, sparkling cider toast, and dancing. Celebrate at 8 PM for an early midnight perfect for all!",
+  decorations:['Gold & silver balloon arch','Glittery tablecloths','Hanging star & moon cutouts','Noisemakers & party hats at each seat','Clock centerpiece set to midnight','Confetti streamers'],
+  foods:['Sparkling cider toast for all','Fancy cheese & charcuterie board','Shrimp cocktail cups','Champagne cupcakes','Stuffed mushrooms','Chocolate-dipped strawberries'],
+  activities:['New Year resolutions sharing circle','Year in review photo slideshow','Fancy hat decorating contest','Big Band & swing music dancing','8 PM countdown celebration!'],
+  music:["Auld Lang Syne","New York New York – Frank Sinatra","Celebration – Kool & the Gang","Happy – Pharrell Williams","Dancing Queen – ABBA"],
+  timeline:[
+    {time:'6:00 PM',act:'Doors open — dress your best! Music playing'},
+    {time:'6:30 PM',act:'Welcome toast & year in review slideshow'},
+    {time:'7:00 PM',act:'Party hat decorating contest'},
+    {time:'7:30 PM',act:'Dance floor open — Big Band & favorites'},
+    {time:'7:50 PM',act:'Resolutions sharing circle'},
+    {time:'7:58 PM',act:'10-second countdown begins!'},
+    {time:'8:00 PM',act:'Happy New Year! Confetti & sparkling toast'},
+    {time:'8:30 PM',act:'Dancing continues & dessert served'}
+  ],
+  supplies:[
+    {item:'Party hats & noisemakers',qty:'30 sets',cost:18},
+    {item:'Glittery gold/silver tablecloths',qty:'6',cost:20},
+    {item:'Balloon arch kit',qty:'1 set',cost:25},
+    {item:'Sparkling cider (non-alcoholic)',qty:'6 bottles',cost:24},
+    {item:'Plastic champagne flutes',qty:'30',cost:10},
+    {item:'Confetti & streamers',qty:'1 set',cost:12},
+    {item:'Year photo slideshow (printed)',qty:'30',cost:8}
+  ],
+  volunteers:['Decoration & balloon crew (3)','Food & drink service (3)','DJ / music (1)','Photography (1)','Countdown coordinator (1)'],
+  tips:["Use 8 PM as 'midnight' — perfect for all energy levels","Print photos from the past year for a slideshow","Gold, silver & purple are elegant and festive","Provide seated dancing options for mobility needs"]
+ },
+ {id:'valentines',name:"Valentine's Day Tea",emoji:'❤️',cat:'holiday',
+  color:'#c2185b',bg:'linear-gradient(135deg,#880e4f,#e91e63)',tagLabel:'Holiday',
+  tagline:'An afternoon of love, friendship & sweet treats!',
+  desc:"An elegant Valentine's afternoon tea with heart-shaped treats, love poetry sharing, flower arranging, and a heartfelt card-making station.",
+  decorations:['Red & pink heart garlands','Roses & carnation centerpieces','Lace tablecloths','Heart-shaped balloons','Love quote cards at each seat','Pink & red candle votives'],
+  foods:['Heart-shaped finger sandwiches','Strawberry scones with cream','Valentine sugar cookies','Assorted teas (hot & iced)','Chocolate truffles','Strawberry lemonade punch'],
+  activities:['Valentine card making station','Love poetry & song readings','Flower arrangement craft','Favorite love song sharing','Secret valentine drawing & delivery'],
+  music:['My Funny Valentine','Can t Help Falling in Love – Elvis','La Vie en Rose – Edith Piaf','What a Wonderful World','Somewhere Over the Rainbow'],
+  timeline:[
+    {time:'2:00 PM',act:'Welcome — guests seated, soft music playing'},
+    {time:'2:10 PM',act:'Valentine card making station open'},
+    {time:'2:45 PM',act:'Afternoon tea & treats served'},
+    {time:'3:00 PM',act:'Love poetry & favorite song sharing'},
+    {time:'3:30 PM',act:'Flower arrangement craft'},
+    {time:'4:00 PM',act:'Secret valentine delivery & reading'},
+    {time:'4:20 PM',act:'Group photo & closing with a love song'},
+    {time:'4:30 PM',act:'Thank you & goodnight!'}
+  ],
+  supplies:[
+    {item:'Cardstock & craft supplies for cards',qty:'30 sets',cost:22},
+    {item:'Roses & carnations (fresh)',qty:'40 stems',cost:30},
+    {item:'Heart garlands & balloon decor',qty:'1 set',cost:14},
+    {item:'Finger sandwich ingredients',qty:'30 servings',cost:35},
+    {item:'Assorted tea bags & cups',qty:'30 sets',cost:18},
+    {item:'Valentine sugar cookies',qty:'60 cookies',cost:20},
+    {item:'Lace tablecloths & napkins',qty:'1 set',cost:16}
+  ],
+  volunteers:['Card station helper (2)','Tea & food service (3)','Craft assistant (1)','Music / reading host (1)','Flower supply & cleanup (2)'],
+  tips:['Ask residents to bring a treasured love photo to share','Decorate tables the day before','Large-handled scissors help residents with limited grip','Print simple poem cards as sharing prompts']
+ },
+ {id:'spring',name:'Spring Garden Party',emoji:'🌸',cat:'seasonal',
+  color:'#2e7d32',bg:'linear-gradient(135deg,#1b5e20,#66bb6a)',tagLabel:'Seasonal',
+  tagline:'Celebrate new blooms, butterflies & sunshine!',
+  desc:'Welcome spring with a garden-themed celebration featuring flower crafts, nature bingo, potting seedlings to take home, and fresh outdoor-inspired refreshments.',
+  decorations:['Fresh flower centerpieces','Butterfly & bee cutouts','Green leaf garlands','Pastel tablecloths','Watering can centerpieces','Garden stakes & pinwheels'],
+  foods:['Cucumber sandwiches','Lemon bars','Fresh fruit skewers','Mint lemonade','Garden vegetable dip platter','Flower-shaped shortbread cookies'],
+  activities:['Pot a seedling to take home!','Spring Nature Bingo','Butterfly craft with coffee filters','Bird song identification game','Garden journaling prompts'],
+  music:['Here Comes the Sun – The Beatles','What a Wonderful World – Louis Armstrong','Somewhere Over the Rainbow','Spring Vivaldi – instrumental'],
+  timeline:[
+    {time:'10:00 AM',act:'Welcome — tables decorated, music playing'},
+    {time:'10:15 AM',act:'Nature Bingo (outdoor or window bingo)'},
+    {time:'10:45 AM',act:'Seedling potting station — take a plant home!'},
+    {time:'11:30 AM',act:'Butterfly craft with coffee filters & markers'},
+    {time:'12:00 PM',act:'Garden luncheon served'},
+    {time:'12:45 PM',act:'Bird song identification game'},
+    {time:'1:15 PM',act:'Garden journaling & reflection time'},
+    {time:'1:45 PM',act:'Photos & closing — happy spring!'}
+  ],
+  supplies:[
+    {item:'Small pots & potting soil',qty:'30 sets',cost:28},
+    {item:'Seed packets (marigold/herb)',qty:'30',cost:15},
+    {item:'Coffee filters & markers (butterflies)',qty:'30 sets',cost:12},
+    {item:'Fresh flowers for centerpieces',qty:'5 bunches',cost:25},
+    {item:'Pastel tablecloths & napkins',qty:'1 set',cost:14},
+    {item:'Lemon bar ingredients',qty:'30 servings',cost:20},
+    {item:'Nature Bingo cards',qty:'30',cost:8}
+  ],
+  volunteers:['Decor & flower setup (2)','Potting station helper (2)','Food prep & service (3)','Craft assistant (1)','Cleanup (2)'],
+  tips:['Ask residents about their favorite garden memories','Bring in fresh herbs to smell & identify','Marigold and basil seeds are easiest to grow indoors','Print bird song cards as visual prompts']
+ },
+ {id:'luau',name:'Summer Luau',emoji:'🌺',cat:'seasonal',
+  color:'#00838f',bg:'linear-gradient(135deg,#006064,#f57f17)',tagLabel:'Seasonal',
+  tagline:'Aloha! Bring the tropics to your community!',
+  desc:'A vibrant Hawaiian luau with leis, tropical music, a limbo contest, tropical fruit bar, and hula dancing demonstration or participation.',
+  decorations:['Tissue paper flower leis (one per guest)','Grass skirt table skirting','Inflatable palm trees','Tropical flower centerpieces','Tiki torch battery lights','Luau banner & coconut cutouts'],
+  foods:['Tropical fruit kabobs','Coconut shrimp bites','Pineapple & ham skewers','Mango lemonade punch','Coconut macaroons','Hawaiian sweet rolls with butter'],
+  activities:['Limbo contest (seated & standing)','Hula hooping & hula dancing demo','Make a paper lei craft','Tropical trivia game','Hawaiian shirt contest!'],
+  music:['Somewhere Over the Rainbow – Israel K.','Blue Hawaii – Elvis Presley','Kokomo – The Beach Boys','Tiny Bubbles','Little Grass Shack'],
+  timeline:[
+    {time:'12:00 PM',act:'Welcome — lei greeting for every guest!'},
+    {time:'12:15 PM',act:'Paper lei craft & Hawaiian shirt judging'},
+    {time:'12:45 PM',act:'Tropical lunch buffet served'},
+    {time:'1:30 PM',act:'Hula dancing demo & participation'},
+    {time:'2:00 PM',act:'Limbo contest — all abilities welcome!'},
+    {time:'2:30 PM',act:'Tropical trivia game with prizes'},
+    {time:'3:00 PM',act:'Coconut macaroon dessert & music'},
+    {time:'3:30 PM',act:'Aloha & photo time — mahalo!'}
+  ],
+  supplies:[
+    {item:'Plastic leis (bag of 50)',qty:'1 bag',cost:12},
+    {item:'Grass skirt table skirting',qty:'3 packs',cost:14},
+    {item:'Tropical flower centerpieces',qty:'5',cost:30},
+    {item:'Tropical fruit assortment',qty:'30 servings',cost:35},
+    {item:'Coconut macaroon ingredients',qty:'30 servings',cost:18},
+    {item:'Tiki/tropical decor pack',qty:'1',cost:20},
+    {item:'Limbo stick & prizes',qty:'1 set',cost:10}
+  ],
+  volunteers:['Lei greeting at door (1)','Decor team (2)','Food prep & service (3)','Hula demo leader (1)','Games & limbo host (1)'],
+  tips:['Find a local hula dancer or YouTube video demo','Seated limbo works great for all mobility levels','Serve all food skewered for easy eating','Print Hawaiian word cards for fun learning']
+ },
+ {id:'harvest',name:'Harvest Festival',emoji:'🍂',cat:'seasonal',
+  color:'#6d4c41',bg:'linear-gradient(135deg,#4e342e,#bf360c)',tagLabel:'Seasonal',
+  tagline:'Celebrate the season of gratitude & golden leaves!',
+  desc:'A warm autumnal gathering with apple cider, pumpkin crafts, hayride memories, scarecrow making, and a thankfulness sharing circle.',
+  decorations:['Hay bale centerpieces (foam)','Gourds & mini pumpkins','Fall leaf garlands','Plaid tablecloths','Sunflower arrangements','Scarecrow display at entrance'],
+  foods:['Warm spiced apple cider','Pumpkin bread slices','Caramel dip with apple slices','Corn chowder cups','Pumpkin cookies','Harvest nut & cranberry mix'],
+  activities:['Scarecrow making craft','Fall leaf painting','Gratitude sharing circle','Harvest trivia & farm history quiz','Painted pumpkin decorating'],
+  music:['Autumn Leaves','Harvest Moon – Neil Young','Turn Turn Turn – The Byrds','Blowin in the Wind – Bob Dylan','Country Roads – John Denver'],
+  timeline:[
+    {time:'1:00 PM',act:'Welcome with warm cider — harvest music playing'},
+    {time:'1:15 PM',act:'Scarecrow making station open'},
+    {time:'2:00 PM',act:'Harvest trivia game'},
+    {time:'2:30 PM',act:'Apple cider & pumpkin bread served'},
+    {time:'2:45 PM',act:'Fall leaf painting activity'},
+    {time:'3:15 PM',act:'Gratitude sharing circle — what are you thankful for?'},
+    {time:'3:45 PM',act:'Pumpkin decorating — painted style'},
+    {time:'4:30 PM',act:'Display artwork & cleanup'}
+  ],
+  supplies:[
+    {item:'Mini pumpkins & gourds',qty:'15',cost:20},
+    {item:'Fall leaf decor & garlands',qty:'2 sets',cost:14},
+    {item:'Scarecrow stuffing & supplies',qty:'1 set',cost:18},
+    {item:'Apple cider (gallon jugs)',qty:'3',cost:18},
+    {item:'Pumpkin bread mix + pans',qty:'3 batches',cost:22},
+    {item:'Paint & brushes for crafts',qty:'30 sets',cost:20},
+    {item:'Plaid tablecloths',qty:'4',cost:12}
+  ],
+  volunteers:['Decor & setup (2)','Scarecrow craft leader (2)','Cider & food service (3)','Trivia host (1)','Cleanup (2)'],
+  tips:['Ask residents to bring a favorite fall memory to share','Use small foam pumpkins for residents with limited grip','Print vintage harvest photos for decoration','Warm cider is soothing — make a big batch!']
+ },
+ {id:'casino',name:'Casino Night',emoji:'🎰',cat:'social',
+  color:'#1b5e20',bg:'linear-gradient(135deg,#1b5e20,#212121)',tagLabel:'Social',
+  tagline:'Roll the dice, place your bets — everyone wins!',
+  desc:'Las Vegas comes to you! A fun-money casino evening with blackjack, roulette, poker, and prizes for everyone. No real money — just chips and big smiles.',
+  decorations:['Red & black tablecloths','Oversized playing card centerpieces','Casino chip scatter decor','Dice-themed balloons','LED Casino sign or banner','Feather boa table runners'],
+  foods:['Mini sliders bar','Shrimp cocktail cups','Fancy mixed nuts','Sparkling punch bowl','Chocolate-covered candy chips','Dessert cart with mini treats'],
+  activities:['Blackjack tables','Roulette wheel','Easy poker (beginners welcome)','Horse racing dice game','Casino Bingo for newcomers'],
+  music:['Luck Be a Lady – Frank Sinatra','Viva Las Vegas – Elvis','Money Money Money – ABBA','Fly Me to the Moon','The Gambler – Kenny Rogers'],
+  timeline:[
+    {time:'6:00 PM',act:'Doors open — receive fun-money chips at door'},
+    {time:'6:15 PM',act:'Dealers explain games at each table'},
+    {time:'6:30 PM',act:'Casino floor open — games begin!'},
+    {time:'7:30 PM',act:'Snack buffet & drinks served'},
+    {time:'8:00 PM',act:'High-stakes final rounds'},
+    {time:'8:30 PM',act:'Count up chips — prize store opens'},
+    {time:'9:00 PM',act:'Grand prize raffle & photos'},
+    {time:'9:30 PM',act:'Goodnight & cleanup'}
+  ],
+  supplies:[
+    {item:'Casino chip set (500 chips)',qty:'1 set',cost:22},
+    {item:'Playing cards (12 decks)',qty:'12',cost:12},
+    {item:'Roulette wheel (plastic)',qty:'1',cost:28},
+    {item:'Casino-themed tablecloths',qty:'6',cost:18},
+    {item:'Prize bag items (candy, small gifts)',qty:'1 set',cost:40},
+    {item:'Fun money bills',qty:'1 pack',cost:8},
+    {item:'Casino banner & decorations',qty:'1 set',cost:15}
+  ],
+  volunteers:['Blackjack dealer (1)','Roulette host (1)','Poker table host (1)','Prize store manager (1)','Food & drinks (2)','General helpers (2)'],
+  tips:['YouTube tutorials make great dealer training','Use oversized cards for easy visibility','Have a beginners table for first-timers','Everyone gets a prize — chips redeem for candy or gifts']
+ },
+ {id:'sockhop',name:"50s Sock Hop",emoji:'🕺',cat:'nostalgia',
+  color:'#880e4f',bg:'linear-gradient(135deg,#880e4f,#e91e63)',tagLabel:'Nostalgia',
+  tagline:"Put on your poodle skirt and saddle shoes!",
+  desc:"Go back to the golden age of rock & roll! Bobby socks, poodle skirts, hula hoops, and the best jukebox hits from the 1950s.",
+  decorations:['50s diner checkered tablecloths','Jukebox centerpiece cutout','Records & 45s hung as decor','Poodle skirt & saddle shoe display','Neon-color balloons','Drive-in movie poster prints'],
+  foods:['Root beer floats','Mini hamburger sliders','Corn dogs & dipping sauce','French fry cups','Cherry cola punch','Milkshake cups (thick smoothies)'],
+  activities:['Sock Hop dance contest','Hula hoop challenge (seated version too)','Name That Tune — 50s edition','Lip sync battle to 50s hits','Photo booth with 50s props'],
+  music:['Rock Around the Clock – Bill Haley','Johnny B. Goode – Chuck Berry','Jailhouse Rock – Elvis Presley','Great Balls of Fire – Jerry Lee Lewis','Peggy Sue – Buddy Holly'],
+  timeline:[
+    {time:'2:00 PM',act:'Welcome — 50s playlist starts, root beer floats ready'},
+    {time:'2:15 PM',act:'Costume judging — best 50s look wins!'},
+    {time:'2:40 PM',act:'Name That Tune — 50s edition'},
+    {time:'3:10 PM',act:'Sock Hop dance lessons & contest'},
+    {time:'3:40 PM',act:'Hula hoop challenge'},
+    {time:'4:00 PM',act:'Milkshake & snack bar open'},
+    {time:'4:15 PM',act:'Lip sync battle — volunteers needed!'},
+    {time:'4:50 PM',act:'Group photo at the jukebox & prizes'}
+  ],
+  supplies:[
+    {item:'Checkered tablecloths (B&W)',qty:'6',cost:14},
+    {item:'Root beer & ice cream',qty:'30 servings',cost:30},
+    {item:'50s records & decor kit',qty:'1 set',cost:16},
+    {item:'Hula hoops',qty:'5',cost:20},
+    {item:'Poodle skirt craft supplies',qty:'15 sets',cost:22},
+    {item:'Photo booth props (glasses, mics)',qty:'1 set',cost:14},
+    {item:'Mini hamburger ingredients',qty:'30 servings',cost:38}
+  ],
+  volunteers:['50s costume judge (2)','Dance instructor / host (1)','Root beer float station (2)','Photo booth attendant (1)','Music & games (1)'],
+  tips:['Ask residents about their own sock hop memories!','Print lyrics for singalong moments','Checkered black & white is easy to source cheaply','Great for intergenerational visits — invite grandkids!']
+ },
+ {id:'hollywood',name:'Hollywood Awards Night',emoji:'🎬',cat:'social',
+  color:'#bf9000',bg:'linear-gradient(135deg,#1a1a1a,#bf9000)',tagLabel:'Social',
+  tagline:'Lights, camera, action — roll out the red carpet!',
+  desc:'Roll out the red carpet for your very own awards night. Residents receive personalized awards, walk the red carpet, and vote on favorite classic films.',
+  decorations:['Red carpet entrance runner','Gold star cutouts & table scatters','Clapperboard centerpieces','Hollywood Walk of Fame stars','Black & gold balloon arch','Movie reel garlands'],
+  foods:['Fancy appetizer platter','Popcorn bar with toppings','Sparkling cider in champagne flutes','Chocolate mousse cups','Caprese skewers','Mini cheesecakes'],
+  activities:['Red carpet arrival & photo op','Resident personalized awards ceremony','Movie trivia game','Best film voting & announcement','Favorite film scenes discussion'],
+  music:['Moon River – Audrey Hepburn','As Time Goes By (Casablanca)','Singin in the Rain','My Way – Frank Sinatra','Somewhere Over the Rainbow'],
+  timeline:[
+    {time:'5:30 PM',act:'Red carpet opens — grand entrance with photos!'},
+    {time:'6:00 PM',act:'Welcome & appetizers served'},
+    {time:'6:20 PM',act:'Movie trivia game'},
+    {time:'6:50 PM',act:'Best film voting (ballots at each table)'},
+    {time:'7:10 PM',act:'Personalized Resident Awards Ceremony'},
+    {time:'7:45 PM',act:'Best film announcement & acceptance speeches!'},
+    {time:'8:00 PM',act:'Dessert & favorite film scene discussions'},
+    {time:'8:30 PM',act:'Red carpet final photos & goodnight'}
+  ],
+  supplies:[
+    {item:'Red carpet runner (25 ft)',qty:'1',cost:28},
+    {item:'Gold star decorations',qty:'1 set',cost:12},
+    {item:'Award trophies or certificates',qty:'30',cost:25},
+    {item:'Movie trivia cards',qty:'1 set',cost:10},
+    {item:'Popcorn boxes & toppings bar',qty:'30 sets',cost:22},
+    {item:'Champagne flutes (plastic)',qty:'30',cost:10},
+    {item:'Photo booth with movie props',qty:'1 set',cost:16}
+  ],
+  volunteers:['Red carpet greeter & photographer (2)','Awards MC (1)','Food & drinks (2)','Trivia host (1)','Award design & prep (1)'],
+  tips:['Ask staff about favorite films ahead of time to personalize awards','Make awards funny & positive: Most Contagious Laugh, Best Storyteller','Print ballots with 10 classic films to vote on','Use battery candles for elegant glow']
+ },
+ {id:'mardigras',name:'Mardi Gras Celebration',emoji:'🎭',cat:'cultural',
+  color:'#4a148c',bg:'linear-gradient(135deg,#4a148c,#f57f17)',tagLabel:'Cultural',
+  tagline:'Laissez les bons temps rouler! Let the good times roll!',
+  desc:'A festive New Orleans Mardi Gras party with purple, green and gold beads, Cajun food, jazz music, mask decorating, and bead tossing fun.',
+  decorations:['Purple, gold & green streamers','Bead garland centerpieces','Venetian mask display','Fleur-de-lis cutouts','Feather boa table runners','Mardi Gras banner'],
+  foods:['King cake bites','Beignets with powdered sugar','Jambalaya cups','Red beans & rice','Bourbon street lemonade','Praline candies'],
+  activities:['Mask decorating craft','Bead tossing from a float table','Zydeco & jazz dancing intro','Mardi Gras history & trivia','Best mask contest judging'],
+  music:['When the Saints Go Marching In','Iko Iko','Second Line','La La Make Her Happy – Lee Dorsey','Jambalaya – Hank Williams'],
+  timeline:[
+    {time:'1:00 PM',act:'Welcome — bead necklaces for all!'},
+    {time:'1:15 PM',act:'Mask decorating craft station'},
+    {time:'2:00 PM',act:'Mardi Gras history & trivia'},
+    {time:'2:30 PM',act:'Cajun food tasting & feast'},
+    {time:'3:00 PM',act:'Bead tossing parade float fun!'},
+    {time:'3:30 PM',act:'Jazz & zydeco dancing (seated welcome)'},
+    {time:'4:00 PM',act:'Best mask contest & prizes'},
+    {time:'4:30 PM',act:'Laissez les bons temps rouler — closing!'}
+  ],
+  supplies:[
+    {item:'Bead necklaces assortment (144)',qty:'1 gross',cost:14},
+    {item:'Mask blanks & craft supplies',qty:'30 sets',cost:24},
+    {item:'Mardi Gras color streamers',qty:'2 sets',cost:10},
+    {item:'King cake (bakery order)',qty:'30 servings',cost:28},
+    {item:'Beignet mix',qty:'3 batches',cost:18},
+    {item:'Jambalaya ingredients',qty:'30 servings',cost:35},
+    {item:'Feather boa decor',qty:'3',cost:12}
+  ],
+  volunteers:['Mask craft station (2)','Food prep & serving (3)','Bead parade host (1)','Trivia & music host (1)','Cleanup crew (2)'],
+  tips:['Print a short history of Mardi Gras for discussion','Beignets are easy — just add water to the mix!','Make the float a decorated wheelchair or cart','Purple = justice, gold = power, green = faith']
+ },
+ {id:'beach',name:'Beach Boardwalk Party',emoji:'🏖️',cat:'seasonal',
+  color:'#01579b',bg:'linear-gradient(135deg,#01579b,#f9a825)',tagLabel:'Seasonal',
+  tagline:'Salty air, sunshine & boardwalk fun indoors!',
+  desc:'Bring the beach inside! Sand buckets, seashell crafts, a sunglasses station, beach volleyball balloon game, and the best summer food this side of the boardwalk.',
+  decorations:['Beach umbrella opened indoors','Sand buckets & seashells on tables','Blue & yellow streamers','Fish & starfish cutouts','Lei garlands & sunflower centerpieces','Inflatable beach balls throughout'],
+  foods:['Fish tacos in mini cups','Mini corn on the cob','Watermelon slices','Frozen lemonade slushies','Kettle corn popcorn bags','Ocean blue Jell-O cups'],
+  activities:['Seashell painting craft','Beach volleyball balloon game (seated)','Sunglasses decorating station','Beach trivia — oceans & marine life','Sandcastle building with kinetic sand'],
+  music:['Surfin USA – The Beach Boys','Good Vibrations','Sailing – Christopher Cross','Under the Sea','La Bamba'],
+  timeline:[
+    {time:'11:00 AM',act:'Welcome — sunglasses & lei for everyone!'},
+    {time:'11:15 AM',act:'Seashell painting station'},
+    {time:'11:50 AM',act:'Beach trivia game'},
+    {time:'12:15 PM',act:'Boardwalk lunch served'},
+    {time:'1:00 PM',act:'Balloon volleyball game (seated)'},
+    {time:'1:30 PM',act:'Sandcastle building with kinetic sand'},
+    {time:'2:00 PM',act:'Sunglasses decorating contest'},
+    {time:'2:30 PM',act:'Beach photo booth & closing'}
+  ],
+  supplies:[
+    {item:'Plastic leis & sunglasses',qty:'30 sets',cost:16},
+    {item:'Seashells & paint for craft',qty:'30 sets',cost:22},
+    {item:'Kinetic sand (for sandcastles)',qty:'2 boxes',cost:28},
+    {item:'Inflatable beach balls',qty:'10',cost:14},
+    {item:'Fish taco ingredients',qty:'30 servings',cost:40},
+    {item:'Watermelon (whole)',qty:'3',cost:18},
+    {item:'Beach umbrella & decor kit',qty:'1',cost:20}
+  ],
+  volunteers:['Craft station helper (2)','Food prep & service (3)','Games host (1)','Photo booth & welcome (2)','Cleanup (2)'],
+  tips:['Real seashells from a craft store are inexpensive','Play ocean sounds on a speaker for atmosphere','Blue tablecloths = instant ocean effect','Ask residents about favorite beach vacation memories']
+ },
+ {id:'musicdec',name:'Music Through the Decades',emoji:'🎵',cat:'nostalgia',
+  color:'#4a0072',bg:'linear-gradient(135deg,#4a0072,#c2185b)',tagLabel:'Nostalgia',
+  tagline:'A jukebox journey from the 40s to the 80s!',
+  desc:'Travel through the greatest musical eras with sing-alongs, trivia, and stories. Each table is a different decade — residents share the songs that shaped their lives.',
+  decorations:['Decade-themed table signs (40s–80s)','Vinyl record garlands','Music note & treble clef cutouts','Microphone centerpieces','Colorful streamers per decade','Old concert poster prints'],
+  foods:['40s — Spam sliders','50s — Root beer floats','60s — Fondue dip station','70s — Quiche bites','80s — Pigs in blankets','Assorted decade-era candy'],
+  activities:['Name That Tune — by decade (5 rounds)','Share your favorite song story','Guess the year — music clip game','Create a decade playlist vote','Lip sync battle by era'],
+  music:['In the Mood – Glenn Miller (40s)','Rock Around the Clock (50s)','Yesterday – The Beatles (60s)','Hotel California – Eagles (70s)','Don t Stop Believin – Journey (80s)'],
+  timeline:[
+    {time:'2:00 PM',act:'Welcome — each table represents a decade!'},
+    {time:'2:15 PM',act:'Rounds 1-2: Name That Tune (40s & 50s)'},
+    {time:'2:45 PM',act:'Song story sharing — what song defined your era?'},
+    {time:'3:10 PM',act:'Rounds 3-5: Name That Tune (60s, 70s, 80s)'},
+    {time:'3:40 PM',act:'Decade snack stations open'},
+    {time:'4:00 PM',act:'Lip sync battle — volunteers perform!'},
+    {time:'4:30 PM',act:'Decade playlist vote & winners announced'},
+    {time:'5:00 PM',act:'Closing medley singalong — favorites from all decades'}
+  ],
+  supplies:[
+    {item:'Decade table signs (printable)',qty:'5',cost:3},
+    {item:'Vinyl record decorations',qty:'20',cost:15},
+    {item:'Name That Tune playlist (streaming)',qty:'1',cost:0},
+    {item:'Decade-themed snack supplies',qty:'30 servings',cost:40},
+    {item:'Lyric sheets for singalong',qty:'30',cost:5},
+    {item:'Music note decorations',qty:'1 set',cost:10},
+    {item:'Microphone prop (toy)',qty:'2',cost:8}
+  ],
+  volunteers:['DJ / music player (1)','Name That Tune host (1)','Food station helpers (3)','Story circle facilitator (1)','Lip sync emcee (1)'],
+  tips:['Seat residents at their era\'s decade table','Use YouTube for free decade playlists','Encourage residents to bring a record or CD to display','Even residents with memory challenges light up with familiar songs']
+ },
+ {id:'birthday',name:'Grand Birthday Bash',emoji:'🎂',cat:'social',
+  color:'#6a1b9a',bg:'linear-gradient(135deg,#6a1b9a,#ff6f00)',tagLabel:'Social',
+  tagline:'Celebrate every resident birthday in grand style!',
+  desc:'A monthly all-birthday celebration honoring every resident with a birthday this month. Personalized crowns, a memory sharing circle, and the biggest cake on the floor!',
+  decorations:['Colorful balloon arch','Gold & silver streamers','Happy Birthday banner','Individual crowns for honorees','Confetti table scatters','Flower centerpieces per table'],
+  foods:['Decorated birthday sheet cake','Ice cream bar with toppings','Birthday sherbet punch','Mini cupcakes per honoree','Birthday cookie favors','Sparkling cider for toasts'],
+  activities:['Birthday honoree crown ceremony','Share your birthday memory story','Birthday trivia about birth year','Personalized birthday card making','Birthday Bingo with prizes for all'],
+  music:['Happy Birthday to You','Birthday – The Beatles','In My Life – The Beatles','Celebration – Kool & the Gang','You Are the Sunshine of My Life – Stevie Wonder'],
+  timeline:[
+    {time:'2:00 PM',act:'Welcome — birthday honorees crowned & seated at head table'},
+    {time:'2:15 PM',act:'Birthday Bingo — everyone plays!'},
+    {time:'2:45 PM',act:'Honorees share a memory from their birth year'},
+    {time:'3:15 PM',act:'Birthday trivia — what happened the year you were born?'},
+    {time:'3:45 PM',act:'Cake cutting & ice cream bar served'},
+    {time:'4:00 PM',act:'Card making — residents make cards for honorees'},
+    {time:'4:30 PM',act:'Group Happy Birthday song & photos!'},
+    {time:'5:00 PM',act:'Card delivery & goodnight celebration'}
+  ],
+  supplies:[
+    {item:'Birthday crowns',qty:'30',cost:12},
+    {item:'Sheet cake (bakery order)',qty:'1 full cake',cost:45},
+    {item:'Ice cream & toppings bar',qty:'30 servings',cost:30},
+    {item:'Balloon arch kit',qty:'1',cost:22},
+    {item:'Card-making craft supplies',qty:'30 sets',cost:18},
+    {item:'Birthday Bingo cards',qty:'30',cost:8},
+    {item:'Birthday favors for honorees',qty:'varies',cost:20}
+  ],
+  volunteers:['Crown ceremony host (1)','Cake & ice cream service (3)','Card-making station helper (2)','Trivia & games host (1)','Photography (1)'],
+  tips:['Get birth year trivia facts printed in advance','Coordinate with families to surprise honorees','Order cake at least 1 week ahead','Personalize crowns with each resident\'s name']
+ }
+];
+
+var epCurrentEvent=null,epCurrentDetailTab='overview',epCurrentFilter='all',epMode='gallery',epInited=false,epPlanOpen=false;
+
+function epInit(){
+  if(epInited)return;
+  epInited=true;
+  epRenderGallery();
+  epPopulatePrintSel();
+}
+
+function epSetMode(mode){
+  epMode=mode;
+  document.getElementById('ep-gallery-mode').style.display=mode==='gallery'?'':'none';
+  document.getElementById('ep-detail-mode').style.display=mode==='detail'?'':'none';
+  document.getElementById('ep-mine-mode').style.display=mode==='mine'?'':'none';
+  document.getElementById('ep-print-mode').style.display=mode==='print'?'':'none';
+  ['gallery','mine','print'].forEach(function(m){
+    var b=document.getElementById('ep-btn-'+m);
+    if(b) b.className='ep-mode-btn'+(m===mode?' active':'');
+  });
+  if(mode==='mine') epRenderMyEvents();
+}
+
+function epSetFilter(filter,btn){
+  epCurrentFilter=filter;
+  document.querySelectorAll('.ep-filter-btn').forEach(function(b){b.className='ep-filter-btn';});
+  if(btn) btn.className='ep-filter-btn active';
+  epRenderGallery();
+}
+
+var EP_CAT_COLORS={holiday:'#e53935',seasonal:'#43a047',social:'#1e88e5',nostalgia:'#8e24aa',cultural:'#fb8c00'};
+
+function epRenderGallery(){
+  var el=document.getElementById('ep-gallery');
+  if(!el) return;
+  var list=EP_EVENTS.filter(function(e){return epCurrentFilter==='all'||e.cat===epCurrentFilter;});
+  el.innerHTML=list.map(function(ev){
+    var tc=EP_CAT_COLORS[ev.cat]||'#666';
+    return '<div class="ep-card" onclick="epOpenEvent(\''+ev.id+'\')">'
+      +'<div class="ep-card-hero" style="background:'+ev.bg+'"><div class="ep-card-emoji">'+ev.emoji+'</div>'
+      +'<div class="ep-card-name">'+ev.name+'</div></div>'
+      +'<div class="ep-card-footer"><div class="ep-card-tag" style="background:'+tc+'22;color:'+tc+'">'+ev.tagLabel+'</div>'
+      +'<p class="ep-card-tagline">'+ev.tagline+'</p>'
+      +'<button class="ep-card-btn">View Full Package &#8594;</button></div></div>';
+  }).join('');
+}
+
+function epOpenEvent(id){
+  epCurrentEvent=EP_EVENTS.find(function(e){return e.id===id;});
+  if(!epCurrentEvent) return;
+  epCurrentDetailTab='overview';
+  epPlanOpen=false;
+  epRenderDetail();
+  epSetMode('detail');
+  var gb=document.getElementById('ep-btn-gallery');
+  if(gb) gb.className='ep-mode-btn';
+}
+
+function epRenderDetail(){
+  var ev=epCurrentEvent;
+  if(!ev) return;
+  var el=document.getElementById('ep-detail-mode');
+  var tabs=['overview','food','activities','timeline','supplies','volunteers'];
+  var tl={overview:'Overview',food:'Food & Drinks',activities:'Activities',timeline:'Timeline',supplies:'Supplies',volunteers:'Volunteers'};
+  el.innerHTML='<div style="background:'+ev.bg+';padding:18px 22px;">'
+    +'<button class="ep-back-btn" onclick="epSetMode(\'gallery\');epRenderGallery()">&#8592; Back to Gallery</button>'
+    +'<div class="ep-detail-hero-row"><div class="ep-detail-hero-emoji">'+ev.emoji+'</div>'
+    +'<div class="ep-detail-hero-info"><h3>'+ev.name+'</h3><p>'+ev.tagline+'</p></div></div></div>'
+    +'<div class="ep-detail-tabs">'+tabs.map(function(t){
+      return '<div class="ep-dtab'+(t===epCurrentDetailTab?' active':'')+'" onclick="epSetDetailTab(\''+t+'\')">'+tl[t]+'</div>';
+    }).join('')+'</div>'
+    +'<div class="ep-detail-content" id="ep-dtab-content"></div>'
+    +'<div style="padding:0 20px 20px;background:white;">'
+    +'<button class="ep-plan-btn" onclick="epTogglePlanForm()">&#128197; Plan This Event</button>'
+    +'<div id="ep-plan-form-wrap"></div></div>';
+  epRenderDetailTab();
+}
+
+function epSetDetailTab(tab){
+  epCurrentDetailTab=tab;
+  document.querySelectorAll('.ep-dtab').forEach(function(d,i){
+    var tabs=['overview','food','activities','timeline','supplies','volunteers'];
+    d.className='ep-dtab'+(tabs[i]===tab?' active':'');
+  });
+  epRenderDetailTab();
+}
+
+function epRenderDetailTab(){
+  var ev=epCurrentEvent,el=document.getElementById('ep-dtab-content');
+  if(!el||!ev) return;
+  var t=epCurrentDetailTab;
+  if(t==='overview'){
+    el.innerHTML='<p class="ep-sec-title">About This Event</p>'
+      +'<p style="font-size:14px;color:#444;margin-bottom:18px;">'+ev.desc+'</p>'
+      +'<p class="ep-sec-title">&#127880; Decorations</p>'
+      +'<div class="ep-pill-list">'+ev.decorations.map(function(d){return '<span class="ep-pill">'+d+'</span>';}).join('')+'</div>'
+      +'<p class="ep-sec-title">&#127925; Music Playlist</p>'
+      +'<div class="ep-pill-list">'+ev.music.map(function(m){return '<span class="ep-pill" style="background:#e0f0ff;color:#0050bf;">&#9835; '+m+'</span>';}).join('')+'</div>';
+  } else if(t==='food'){
+    el.innerHTML='<p class="ep-sec-title">Food & Drink Menu</p>'
+      +'<div class="ep-pill-list">'+ev.foods.map(function(f){return '<span class="ep-pill" style="background:#fff0e0;color:#bf5000;">'+f+'</span>';}).join('')+'</div>';
+  } else if(t==='activities'){
+    el.innerHTML='<p class="ep-sec-title">Activity Lineup</p>'
+      +'<div>'+ev.activities.map(function(a,i){
+        return '<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;">'
+          +'<span style="background:#7b2d8b;color:white;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">'+(i+1)+'</span>'
+          +'<span style="font-size:14px;color:#333;padding-top:4px;">'+a+'</span></div>';
+      }).join('')+'</div>';
+  } else if(t==='timeline'){
+    el.innerHTML='<p class="ep-sec-title">Event Day Timeline</p>'
+      +'<div>'+ev.timeline.map(function(tl){
+        return '<div class="ep-tl-item"><div class="ep-tl-time">'+tl.time+'</div><div class="ep-tl-act">'+tl.act+'</div></div>';
+      }).join('')+'</div>';
+  } else if(t==='supplies'){
+    var total=ev.supplies.reduce(function(s,x){return s+(x.cost||0);},0);
+    el.innerHTML='<p class="ep-sec-title">Supply List</p>'
+      +'<table class="ep-sup-table"><thead><tr><th>Item</th><th>Qty / Notes</th><th style="text-align:right;">Est. Cost</th></tr></thead>'
+      +'<tbody>'+ev.supplies.map(function(s){
+        return '<tr><td>'+s.item+'</td><td>'+s.qty+'</td><td style="text-align:right;">$'+s.cost+'</td></tr>';
+      }).join('')+'</tbody></table>'
+      +'<div class="ep-sup-total">Estimated Total: $'+total+' &nbsp;(for ~25&ndash;30 guests)</div>'
+      +'<p style="font-size:12px;color:#999;margin-top:6px;">* Costs are estimates. Prices vary by location & vendor.</p>';
+  } else if(t==='volunteers'){
+    el.innerHTML='<p class="ep-sec-title">Volunteer Roles Needed</p>'
+      +'<div class="ep-vol-grid">'+ev.volunteers.map(function(v){return '<div class="ep-vol-item">&#128100; '+v+'</div>';}).join('')+'</div>'
+      +'<p class="ep-sec-title" style="margin-top:18px;">&#128161; Pro Tips</p>'
+      +'<ul class="ep-tips-list">'+ev.tips.map(function(tip){return '<li>'+tip+'</li>';}).join('')+'</ul>';
+  }
+}
+
+function epTogglePlanForm(){
+  epPlanOpen=!epPlanOpen;
+  var wrap=document.getElementById('ep-plan-form-wrap');
+  if(!wrap) return;
+  if(!epPlanOpen){wrap.innerHTML='';return;}
+  var today=new Date(),dd=today.toISOString().slice(0,10);
+  wrap.innerHTML='<div class="ep-plan-form"><h4>&#128197; Plan: '+epCurrentEvent.name+'</h4>'
+    +'<div class="ep-form-row">'
+    +'<div class="ep-form-group"><label>Event Date</label><input type="date" id="ep-f-date" value="'+dd+'"></div>'
+    +'<div class="ep-form-group"><label>Start Time</label><input type="time" id="ep-f-time" value="14:00"></div>'
+    +'</div><div class="ep-form-row">'
+    +'<div class="ep-form-group"><label>Expected Guests</label><input type="number" id="ep-f-guests" value="25" min="5" max="200" oninput="epUpdateBudget()"></div>'
+    +'<div class="ep-form-group"><label>Location / Room</label><input type="text" id="ep-f-loc" placeholder="e.g. Main Dining Room"></div>'
+    +'</div><div id="ep-budget-preview" class="ep-budget-preview"></div>'
+    +'<div class="ep-form-actions">'
+    +'<button class="ep-save-btn" onclick="epSavePlan()">&#128190; Save to My Events</button>'
+    +'<button class="ep-cancel-btn" onclick="epTogglePlanForm()">Cancel</button>'
+    +'</div></div>';
+  epUpdateBudget();
+}
+
+function epUpdateBudget(){
+  var guests=parseInt(document.getElementById('ep-f-guests').value)||25;
+  var base=epCurrentEvent.supplies.reduce(function(s,x){return s+(x.cost||0);},0);
+  var scaled=Math.round(base*(guests/27));
+  document.getElementById('ep-budget-preview').innerHTML
+    ='<strong>&#128176; Estimated Budget for '+guests+' guests: $'+scaled+'</strong>'
+    +'<br><span style="color:#888;font-size:12px;">Based on base cost of $'+base+' for ~25-30 guests</span>';
+}
+
+function epSavePlan(){
+  var ev=epCurrentEvent;
+  var dateVal=document.getElementById('ep-f-date').value;
+  var timeVal=document.getElementById('ep-f-time').value;
+  var guests=document.getElementById('ep-f-guests').value;
+  var loc=document.getElementById('ep-f-loc').value;
+  if(!dateVal){alert('Please enter an event date.');return;}
+  var plans=JSON.parse(localStorage.getItem('el365_ep_plans')||'[]');
+  plans.push({id:ev.id,name:ev.name,emoji:ev.emoji,bg:ev.bg,date:dateVal,time:timeVal,guests:guests,location:loc,saved:new Date().toISOString()});
+  localStorage.setItem('el365_ep_plans',JSON.stringify(plans));
+  document.getElementById('ep-plan-form-wrap').innerHTML
+    ='<div style="background:#d4edda;border-radius:9px;padding:14px;margin-top:10px;color:#155724;font-weight:700;">&#10003; Saved to My Planned Events!</div>';
+  epPlanOpen=false;
+}
+
+function epRenderMyEvents(){
+  var el=document.getElementById('ep-mine-content');
+  if(!el) return;
+  var plans=JSON.parse(localStorage.getItem('el365_ep_plans')||'[]');
+  if(!plans.length){
+    el.innerHTML='<div class="ep-my-empty"><div style="font-size:48px;margin-bottom:12px;">&#128203;</div>'
+      +'<p>No events planned yet.<br>Browse the gallery and click <strong>Plan This Event</strong>!</p></div>';
+    return;
+  }
+  var now=new Date();
+  el.innerHTML='<div class="ep-my-grid">'+plans.map(function(p,i){
+    var evDate=new Date(p.date+'T'+p.time);
+    var diff=Math.ceil((evDate-now)/(1000*60*60*24));
+    var countdown=diff>0?'&#128197; '+diff+' day'+(diff===1?'':'s')+' away!':diff===0?'&#127881; Today!':'&#10003; Completed '+Math.abs(diff)+' days ago';
+    return '<div class="ep-my-card">'
+      +'<div class="ep-my-card-top" style="background:'+p.bg+'">'
+      +'<div class="ep-my-card-emoji">'+p.emoji+'</div>'
+      +'<div class="ep-my-card-info"><h4>'+p.name+'</h4><p>'+(p.location||'Location TBD')+'</p></div></div>'
+      +'<div class="ep-my-card-body">'
+      +'<div class="ep-my-meta"><span>&#128197; '+p.date+'</span><span>&#128336; '+p.time+'</span><span>&#128101; '+p.guests+' guests</span></div>'
+      +'<div class="ep-countdown">'+countdown+'</div>'
+      +'<div class="ep-my-actions">'
+      +'<button class="ep-my-print-btn" onclick="epPrintFromPlan('+i+')">&#128438; Print Package</button>'
+      +'<button class="ep-my-del-btn" onclick="epDeletePlan('+i+')">&#128465; Remove</button>'
+      +'</div></div></div>';
+  }).join('')+'</div>';
+}
+
+function epDeletePlan(idx){
+  if(!confirm('Remove this planned event?')) return;
+  var plans=JSON.parse(localStorage.getItem('el365_ep_plans')||'[]');
+  plans.splice(idx,1);
+  localStorage.setItem('el365_ep_plans',JSON.stringify(plans));
+  epRenderMyEvents();
+}
+
+function epPopulatePrintSel(){
+  var sel=document.getElementById('ep-print-sel');
+  if(!sel) return;
+  sel.innerHTML='<option value="">— Choose an event —</option>'
+    +EP_EVENTS.map(function(e){return '<option value="'+e.id+'">'+e.emoji+' '+e.name+'</option>';}).join('');
+}
+
+function epGetPrintEvent(){
+  var sel=document.getElementById('ep-print-sel');
+  if(!sel||!sel.value){alert('Please select an event first.');return null;}
+  return EP_EVENTS.find(function(e){return e.id===sel.value;});
+}
+
+function epPrint(type){
+  var ev=epGetPrintEvent();
+  if(!ev) return;
+  var totalCost=ev.supplies.reduce(function(s,x){return s+(x.cost||0);},0);
+  var base='<style>body{font-family:Arial,sans-serif;margin:0;padding:0;} .page{padding:30px;max-width:800px;margin:auto;} h1{margin:0;} .hero{padding:28px;color:white;text-align:center;} .hero h1{font-size:32px;margin-bottom:6px;} .hero p{opacity:.9;font-size:15px;margin:0;} .section{margin:18px 0;} .section h3{font-size:15px;border-bottom:2px solid #ddd;padding-bottom:5px;color:#6a0dad;margin-bottom:10px;} table{width:100%;border-collapse:collapse;font-size:13px;} th{background:#f0e0ff;padding:7px;text-align:left;color:#6a0dad;} td{padding:7px;border-bottom:1px solid #eee;} .total{font-weight:800;text-align:right;padding:8px;background:#f8f0ff;color:#6a0dad;} .pill{display:inline-block;background:#f0e0ff;color:#6a0dad;padding:4px 10px;border-radius:11px;font-size:12px;margin:3px;} .tl{display:flex;gap:11px;margin-bottom:9px;align-items:flex-start;} .tl-t{background:#7b2d8b;color:white;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;min-width:58px;text-align:center;} @media print{body{-webkit-print-color-adjust:exact;}}<\/style>';
+  var body='';
+  if(type==='invitation'){
+    body='<div class="hero" style="background:'+ev.bg+'"><div style="font-size:72px;">'+ev.emoji+'</div><h1>'+ev.name+'</h1><p>'+ev.tagline+'</p></div>'
+      +'<div class="page"><div style="text-align:center;font-size:20px;font-weight:800;color:#6a0dad;margin:18px 0;">You\'re Invited!</div>'
+      +'<table style="width:60%;margin:0 auto 18px;"><tr><td style="padding:8px;"><strong>Date:</strong></td><td>___________________________</td></tr>'
+      +'<tr><td style="padding:8px;"><strong>Time:</strong></td><td>___________________________</td></tr>'
+      +'<tr><td style="padding:8px;"><strong>Location:</strong></td><td>___________________________</td></tr></table>'
+      +'<div class="section"><h3>What to Expect</h3><p style="font-size:13px;color:#444;">'+ev.desc+'</p></div>'
+      +'<div class="section"><h3>Activities</h3>'+ev.activities.map(function(a){return '<p style="margin:6px 0;font-size:13px;">&#127881; '+a+'</p>';}).join('')+'</div>'
+      +'<div class="section"><h3>Refreshments</h3>'+ev.foods.map(function(f){return '<span class="pill" style="background:#fff0e0;color:#bf5000;">'+f+'</span>';}).join('')+'</div>'
+      +'<div style="text-align:center;margin-top:28px;font-size:17px;font-weight:800;color:#6a0dad;">We hope to see you there! &#127882;</div></div>';
+  } else if(type==='supplies'){
+    body='<div class="hero" style="background:'+ev.bg+'"><div style="font-size:56px;">'+ev.emoji+'</div><h1>'+ev.name+'</h1><p>Supply Shopping List</p></div>'
+      +'<div class="page"><table><thead><tr><th style="width:30px;">Done</th><th>Item</th><th>Quantity</th><th style="text-align:right;">Est. Cost</th></tr></thead>'
+      +'<tbody>'+ev.supplies.map(function(s){return '<tr><td style="text-align:center;">&#9744;</td><td>'+s.item+'</td><td>'+s.qty+'</td><td style="text-align:right;">$'+s.cost+'</td></tr>';}).join('')+'</tbody></table>'
+      +'<div class="total">Estimated Total: $'+totalCost+'</div>'
+      +'<div class="section" style="margin-top:18px;"><h3>Additional Items & Notes</h3>'
+      +'<div style="border:1px solid #ddd;border-radius:8px;padding:14px;min-height:70px;"></div></div></div>';
+  } else if(type==='timeline'){
+    body='<div class="hero" style="background:'+ev.bg+'"><div style="font-size:56px;">'+ev.emoji+'</div><h1>'+ev.name+'</h1><p>Day-of Timeline & Schedule</p></div>'
+      +'<div class="page">'+ev.timeline.map(function(tl){return '<div class="tl"><div class="tl-t">'+tl.time+'</div><div style="font-size:13px;padding-top:3px;">'+tl.act+'</div></div>';}).join('')
+      +'<div class="section" style="margin-top:22px;"><h3>Emergency Contacts</h3>'
+      +'<table><tr><td><strong>Activity Director:</strong></td><td>_________________________</td></tr>'
+      +'<tr><td><strong>Backup Contact:</strong></td><td>_________________________</td></tr>'
+      +'<tr><td><strong>Kitchen / Catering:</strong></td><td>_________________________</td></tr></table></div></div>';
+  } else if(type==='volunteer'){
+    body='<div class="hero" style="background:'+ev.bg+'"><div style="font-size:56px;">'+ev.emoji+'</div><h1>'+ev.name+'</h1><p>Volunteer Sign-Up Sheet</p></div>'
+      +'<div class="page"><p style="font-size:13px;margin-bottom:14px;">We need your help making this event amazing! Please sign up for a role below.</p>'
+      +'<table><thead><tr><th>Role</th><th>Your Name</th><th>Phone / Email</th></tr></thead>'
+      +'<tbody>'+ev.volunteers.map(function(v){return '<tr><td>'+v+'</td><td>________________________</td><td>________________________</td></tr>';}).join('')+'</tbody></table>'
+      +'<div class="section" style="margin-top:18px;"><h3>Volunteer Notes</h3>'
+      +'<div style="border:1px solid #ddd;border-radius:8px;padding:14px;min-height:55px;"></div></div></div>';
+  } else if(type==='budget'){
+    body='<div class="hero" style="background:'+ev.bg+'"><div style="font-size:56px;">'+ev.emoji+'</div><h1>'+ev.name+'</h1><p>Budget Worksheet</p></div>'
+      +'<div class="page"><table><thead><tr><th>Item</th><th>Est. Cost</th><th>Actual Cost</th><th>Notes</th></tr></thead>'
+      +'<tbody>'+ev.supplies.map(function(s){return '<tr><td>'+s.item+'</td><td>$'+s.cost+'</td><td>$__________</td><td>_______________</td></tr>';}).join('')+'</tbody></table>'
+      +'<div class="total">Estimated Total: $'+totalCost+' &nbsp;|&nbsp; Actual Total: $__________</div>'
+      +'<div class="section" style="margin-top:18px;"><h3>Additional Budget Items</h3>'
+      +'<table><thead><tr><th>Item</th><th>Est. Cost</th><th>Actual Cost</th><th>Notes</th></tr></thead>'
+      +'<tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr>'
+      +'<tr><td></td><td></td><td></td><td></td></tr></tbody></table></div></div>';
+  } else if(type==='full'){
+    body='<div class="hero" style="background:'+ev.bg+'"><div style="font-size:72px;">'+ev.emoji+'</div><h1>'+ev.name+'</h1><p>'+ev.tagline+'</p></div>'
+      +'<div class="page">'
+      +'<div class="section"><h3>About This Event</h3><p style="font-size:13px;color:#444;">'+ev.desc+'</p></div>'
+      +'<div class="section"><h3>Decorations</h3>'+ev.decorations.map(function(d){return '<span class="pill">'+d+'</span>';}).join('')+'</div>'
+      +'<div class="section"><h3>Food & Drinks</h3>'+ev.foods.map(function(f){return '<span class="pill" style="background:#fff0e0;color:#bf5000;">'+f+'</span>';}).join('')+'</div>'
+      +'<div class="section"><h3>Activities</h3>'+ev.activities.map(function(a,i){return '<p style="margin:6px 0;font-size:13px;">'+(i+1)+'. '+a+'</p>';}).join('')+'</div>'
+      +'<div class="section"><h3>Music Playlist</h3>'+ev.music.map(function(m){return '<span class="pill" style="background:#e0f0ff;color:#0050bf;">'+m+'</span>';}).join('')+'</div>'
+      +'<div class="section"><h3>Timeline</h3>'+ev.timeline.map(function(tl){return '<div class="tl"><div class="tl-t">'+tl.time+'</div><div style="font-size:13px;padding-top:3px;">'+tl.act+'</div></div>';}).join('')+'</div>'
+      +'<div class="section"><h3>Supplies & Budget</h3><table><thead><tr><th>Item</th><th>Qty</th><th style="text-align:right;">Est. Cost</th></tr></thead>'
+      +'<tbody>'+ev.supplies.map(function(s){return '<tr><td>'+s.item+'</td><td>'+s.qty+'</td><td style="text-align:right;">$'+s.cost+'</td></tr>';}).join('')+'</tbody></table>'
+      +'<div class="total">Estimated Total: $'+totalCost+'</div></div>'
+      +'<div class="section"><h3>Volunteers Needed</h3>'+ev.volunteers.map(function(v){return '<p style="margin:5px 0;font-size:13px;">• '+v+'</p>';}).join('')+'</div>'
+      +'<div class="section"><h3>Pro Tips</h3><ul>'+ev.tips.map(function(t){return '<li style="font-size:13px;margin-bottom:5px;">'+t+'</li>';}).join('')+'</ul></div></div>';
+  }
+  var w=window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>'+ev.name+'</title>'+base+'</head><body>'+body+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt></body></html>');
+  w.document.close();
+}
+
+function epPrintFromPlan(idx){
+  var plans=JSON.parse(localStorage.getItem('el365_ep_plans')||'[]');
+  var p=plans[idx];
+  if(!p) return;
+  epCurrentEvent=EP_EVENTS.find(function(e){return e.id===p.id;});
+  if(!epCurrentEvent) return;
+  var sel=document.getElementById('ep-print-sel');
+  if(sel) sel.value=p.id;
+  epSetMode('print');
+  setTimeout(function(){epPrint('full');},200);
+}
+
+(function(){
+  var _o=window.switchTab;
+  window.switchTab=function(n){
+    _o&&_o(n);
+    if(n==='events') epInit();
+  };
+})();
+</script>
 </body>
