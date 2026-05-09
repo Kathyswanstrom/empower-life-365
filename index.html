@@ -1478,6 +1478,46 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   padding:40px; text-align:center; }
 #kr-fullscreen.open { display:flex; }
 
+
+/* ═══════════════ ARTS & CRAFTS ═══════════════ */
+.ac-header { background:linear-gradient(135deg,#F472B6,#EC4899); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.ac-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#FDF2F8; border-bottom:1px solid #FBCFE8; flex-wrap:wrap; }
+.ac-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #EC4899; background:#fff; color:#BE185D; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.ac-mode-btn.active, .ac-mode-btn:hover { background:#EC4899; color:#fff; }
+.ac-body { padding:20px; }
+.ac-filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
+.ac-filter-btn { padding:5px 14px; border-radius:16px; border:2px solid #FBCFE8; background:#fff; color:#9D174D; font-size:12px; font-weight:700; cursor:pointer; transition:all .2s; }
+.ac-filter-btn.active, .ac-filter-btn:hover { background:#EC4899; color:#fff; border-color:#EC4899; }
+.ac-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+.ac-card { background:#fff; border:2px solid #FBCFE8; border-radius:14px; overflow:hidden; transition:box-shadow .2s; cursor:pointer; }
+.ac-card:hover { box-shadow:0 6px 20px rgba(236,72,153,.18); border-color:#EC4899; }
+.ac-card-top { padding:14px 16px 10px; }
+.ac-card-emoji { font-size:36px; margin-bottom:6px; }
+.ac-card-title { font-weight:800; font-size:15px; color:#831843; margin-bottom:4px; }
+.ac-card-meta { font-size:12px; color:#9D174D; display:flex; gap:10px; flex-wrap:wrap; }
+.ac-card-bottom { background:#FDF2F8; padding:10px 16px; font-size:12px; color:#BE185D; }
+.ac-diff-easy { color:#16A34A; font-weight:700; }
+.ac-diff-medium { color:#D97706; font-weight:700; }
+.ac-diff-advanced { color:#DC2626; font-weight:700; }
+.ac-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+.ac-modal-overlay.open { display:flex; }
+.ac-modal { background:#fff; border-radius:18px; max-width:660px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.ac-modal-header { background:linear-gradient(135deg,#F472B6,#EC4899); color:#fff; padding:20px 24px; border-radius:18px 18px 0 0; display:flex; justify-content:space-between; align-items:start; }
+.ac-modal-body { padding:22px 24px; }
+.ac-step { display:flex; gap:12px; margin-bottom:14px; }
+.ac-step-num { width:28px; height:28px; border-radius:50%; background:#EC4899; color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+.ac-supply-tag { display:inline-block; background:#FDF2F8; border:1px solid #FBCFE8; border-radius:12px; padding:3px 10px; font-size:12px; color:#BE185D; margin:3px; font-weight:600; }
+.ac-gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.ac-gallery-card { background:#fff; border:2px solid #FBCFE8; border-radius:12px; padding:14px; }
+.ac-gallery-card .title { font-weight:800; font-size:14px; color:#831843; }
+.ac-gallery-card .resident { font-size:12px; color:#9D174D; margin:3px 0; }
+.ac-gallery-card .note { font-size:13px; color:#374151; font-style:italic; }
+.ac-log-form { background:#FDF2F8; border:2px solid #FBCFE8; border-radius:14px; padding:18px 20px; margin-bottom:20px; }
+.ac-log-form input, .ac-log-form select, .ac-log-form textarea { width:100%; padding:8px 12px; border:1px solid #FBCFE8; border-radius:8px; font-size:14px; margin-bottom:10px; box-sizing:border-box; }
+.ac-calendar-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.ac-cal-card { background:#fff; border:2px solid #FBCFE8; border-radius:10px; padding:12px 14px; }
+.ac-cal-month { font-weight:900; font-size:13px; color:#EC4899; margin-bottom:6px; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1551,6 +1591,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="reminiscing" id="reminiscing-tab" onclick="switchTab('reminiscing')">💭 Reminiscing</button>
       <button class="tab-btn" data-tab="stories" id="stories-tab" onclick="switchTab('stories')">📖 Stories & Writing</button>
       <button class="tab-btn" data-tab="clubs" id="clubs-tab" onclick="switchTab('clubs')">🎯 Hobby Clubs</button>
+      <button class="tab-btn" data-tab="arts" id="arts-tab" onclick="switchTab('arts')">🎨 Arts & Crafts</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -4211,6 +4252,133 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       </div>
     </div>
   </section>
+
+
+<section class="tab-panel" id="panel-arts">
+  <!-- HEADER -->
+  <div class="ac-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">🎨 Arts &amp; Crafts</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">25 projects · supply tracker · resident gallery · print guides</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="acPrintGuide()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+    </div>
+  </div>
+  <!-- MODE BAR -->
+  <div class="ac-mode-bar">
+    <button class="ac-mode-btn active" id="acmode-projects" onclick="acSetMode('projects')">🖼️ Projects</button>
+    <button class="ac-mode-btn" id="acmode-supplies" onclick="acSetMode('supplies')">🛒 Supplies</button>
+    <button class="ac-mode-btn" id="acmode-gallery" onclick="acSetMode('gallery')">🖼️ Gallery</button>
+    <button class="ac-mode-btn" id="acmode-calendar" onclick="acSetMode('calendar')">📅 Year Planner</button>
+  </div>
+
+  <!-- PROJECTS MODE -->
+  <div id="ac-view-projects" class="ac-body">
+    <div class="ac-filter-bar">
+      <span style="font-weight:700;font-size:13px;color:#831843;margin-right:4px;">Filter:</span>
+      <button class="ac-filter-btn active" id="acf-all" onclick="acFilter('all')">All</button>
+      <button class="ac-filter-btn" id="acf-painting" onclick="acFilter('painting')">🖌️ Painting</button>
+      <button class="ac-filter-btn" id="acf-paper" onclick="acFilter('paper')">📄 Paper</button>
+      <button class="ac-filter-btn" id="acf-fiber" onclick="acFilter('fiber')">🧶 Fiber</button>
+      <button class="ac-filter-btn" id="acf-nature" onclick="acFilter('nature')">🌿 Nature</button>
+      <button class="ac-filter-btn" id="acf-seasonal" onclick="acFilter('seasonal')">🎃 Seasonal</button>
+      <button class="ac-filter-btn" id="acf-no-mess" onclick="acFilter('no-mess')">✨ No Mess</button>
+      <button class="ac-filter-btn" id="acf-sensory" onclick="acFilter('sensory')">🤲 Sensory</button>
+      <select id="ac-diff-filter" onchange="acFilter(document.querySelector('.ac-filter-btn.active')?.id.replace('acf-',''))" style="padding:5px 12px;border-radius:16px;border:2px solid #FBCFE8;font-size:12px;font-weight:700;color:#9D174D;background:#fff;margin-left:auto;">
+        <option value="">All Difficulties</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="advanced">Advanced</option>
+      </select>
+    </div>
+    <div class="ac-grid" id="ac-project-grid"></div>
+  </div>
+
+  <!-- SUPPLIES MODE -->
+  <div id="ac-view-supplies" class="ac-body" style="display:none;">
+    <div style="max-width:700px;">
+      <div style="font-weight:800;font-size:16px;color:#831843;margin-bottom:12px;">🛒 Supply Checklist — What to Keep on Hand</div>
+      <div id="ac-supply-checklist"></div>
+      <div style="margin-top:24px;">
+        <div style="font-weight:800;font-size:15px;color:#831843;margin-bottom:10px;">📋 Project Supply Lists</div>
+        <select id="ac-supply-project-sel" onchange="acRenderProjectSupplies()" style="width:100%;padding:9px 12px;border:2px solid #FBCFE8;border-radius:10px;font-size:14px;color:#831843;background:#fff;font-weight:700;margin-bottom:14px;box-sizing:border-box;"></select>
+        <div id="ac-project-supply-detail"></div>
+        <button onclick="acPrintSupplyList()" class="btn" style="background:#EC4899;color:#fff;margin-top:12px;">🖨️ Print Supply List</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY MODE -->
+  <div id="ac-view-gallery" class="ac-body" style="display:none;">
+    <div class="ac-log-form">
+      <div style="font-weight:800;font-size:15px;color:#831843;margin-bottom:12px;">📸 Log a Completed Project</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#9D174D;">Resident Name</label>
+          <input type="text" id="ac-gal-resident" placeholder="Resident name" />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#9D174D;">Project</label>
+          <select id="ac-gal-project"></select>
+        </div>
+      </div>
+      <label style="font-size:12px;font-weight:700;color:#9D174D;">Date Completed</label>
+      <input type="date" id="ac-gal-date" />
+      <label style="font-size:12px;font-weight:700;color:#9D174D;">Notes / Resident Comments</label>
+      <textarea id="ac-gal-note" rows="2" placeholder="How did it go? What did they enjoy?"></textarea>
+      <button onclick="acSaveGallery()" class="btn" style="background:#EC4899;color:#fff;">✅ Save to Gallery</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:15px;color:#831843;" id="ac-gal-count">Gallery</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="acPrintGallery()" class="btn" style="background:#FDF2F8;color:#BE185D;border:2px solid #FBCFE8;font-size:13px;">🖨️ Print Gallery</button>
+        <button onclick="acPrintCertificates()" class="btn" style="background:#FDF2F8;color:#BE185D;border:2px solid #FBCFE8;font-size:13px;">🏅 Print Certificates</button>
+      </div>
+    </div>
+    <div id="ac-gallery-empty" style="text-align:center;padding:40px;color:#9D174D;font-size:15px;">No projects logged yet. Complete a project and add it above!</div>
+    <div class="ac-gallery-grid" id="ac-gallery-grid"></div>
+  </div>
+
+  <!-- YEAR PLANNER MODE -->
+  <div id="ac-view-calendar" class="ac-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#831843;margin-bottom:14px;">📅 Annual Arts &amp; Crafts Calendar — Suggested Monthly Themes</div>
+    <div class="ac-calendar-grid" id="ac-calendar-grid"></div>
+    <button onclick="acPrintCalendar()" class="btn" style="background:#EC4899;color:#fff;margin-top:20px;">🖨️ Print Year Planner</button>
+  </div>
+
+  <!-- PROJECT MODAL -->
+  <div class="ac-modal-overlay" id="ac-modal" onclick="if(event.target===this)acCloseModal()">
+    <div class="ac-modal">
+      <div class="ac-modal-header">
+        <div>
+          <div id="ac-modal-emoji" style="font-size:32px;"></div>
+          <div id="ac-modal-title" style="font-size:20px;font-weight:900;margin-top:4px;"></div>
+          <div id="ac-modal-meta" style="font-size:13px;opacity:.85;margin-top:3px;"></div>
+        </div>
+        <button onclick="acCloseModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:22px;cursor:pointer;border-radius:50%;width:36px;height:36px;">✕</button>
+      </div>
+      <div class="ac-modal-body">
+        <div style="margin-bottom:16px;">
+          <div style="font-weight:800;font-size:13px;color:#9D174D;margin-bottom:6px;">🛒 SUPPLIES NEEDED</div>
+          <div id="ac-modal-supplies"></div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div style="font-weight:800;font-size:13px;color:#9D174D;margin-bottom:8px;">📋 STEPS</div>
+          <div id="ac-modal-steps"></div>
+        </div>
+        <div id="ac-modal-tips-wrap" style="background:#FDF2F8;border-radius:10px;padding:12px 16px;">
+          <div style="font-weight:800;font-size:13px;color:#9D174D;margin-bottom:4px;">💡 TIPS FOR SENIORS</div>
+          <div id="ac-modal-tips" style="font-size:14px;color:#374151;"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+          <button onclick="acPrintProject(acActiveProject)" class="btn" style="background:#EC4899;color:#fff;">🖨️ Print Instructions</button>
+          <button onclick="acCloseModal()" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-family">
   <style>
@@ -33875,6 +34043,418 @@ function krPrintHostGuide() {
     if (name === 'karaoke') krInit();
   };
 })();
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ARTS & CRAFTS  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var AC_GALLERY_KEY = 'el365_ac_gallery';
+var acActiveProject = null;
+var acCurrentFilter = 'all';
+
+var AC_PROJECTS = [
+  /* PAINTING */
+  { id:'wp1', emoji:'🌅', title:'Watercolor Sunset', cat:'painting', diff:'easy', time:30,
+    supplies:['Watercolor paints','Watercolor paper (heavy)','2–3 brushes (flat & round)','Water cup','Paper towels','Masking tape'],
+    steps:['Tape paper to a flat surface to prevent buckling.','Wet the entire paper with a flat brush and clean water.','While wet, brush horizontal stripes of orange, yellow, and pink across the upper two-thirds.','Add purple or dark blue along the top edge.','Let dry 5 minutes, then paint a dark silhouette of trees or hills along the bottom.','Add a large circle for the sun using yellow or white paint.','Let fully dry before removing tape.'],
+    tips:'Large brushes are easier to hold. Pre-mix colors in small cups. Tape makes edges crisp and keeps paper flat. This project is very forgiving — no two sunsets look alike!',
+    seasonal:false },
+  { id:'wp2', emoji:'🎨', title:'Sponge Painting on Canvas', cat:'painting', diff:'easy', time:25,
+    supplies:['Acrylic paints (3 colors)','Small canvas or card stock','Kitchen sponges cut into squares','Paper plate palette','Old newspaper'],
+    steps:['Cover table with newspaper.','Squirt 3 colors of paint onto paper plate.','Dampen sponge slightly, then dab into first color.','Press and dab sponge onto canvas — no brushing needed.','Overlap colors to create a blended, textured look.','Allow to dry 15 minutes between color layers.','Optionally, add a simple shape (heart, star) with a stencil on top.'],
+    tips:'Sponge painting requires very little hand strength. No brushes needed. Pre-cut sponges into manageable sizes. Great for residents with limited dexterity.',
+    seasonal:false },
+  { id:'wp3', emoji:'🌸', title:'Flower Watercolor Cards', cat:'painting', diff:'easy', time:35,
+    supplies:['Watercolor paints','Blank greeting cards or folded cardstock','Round brushes','Water cup','Black fine-point marker (optional)'],
+    steps:['Fold cardstock in half to make a card.','Paint large simple flowers: dab a circle of color for the center, then add 5–6 petal dabs around it.','Use green to paint stems and leaves with simple strokes.','Try layering a darker shade on outer petals while wet.','Let dry completely (10–15 min).','Optionally outline with black marker for definition.','Write a message inside.'],
+    tips:'Encourage residents to send cards to family or friends — adds purpose to the project. Use pre-made blank cards to save prep time.',
+    seasonal:false },
+  { id:'wp4', emoji:'🪨', title:'Painted Rocks', cat:'painting', diff:'easy', time:40,
+    supplies:['Smooth river rocks (cleaned and dried)','Acrylic paints','Small paintbrushes','Clear acrylic sealer spray','Pencil for sketching'],
+    steps:['Wash and dry rocks thoroughly.','Lightly sketch a simple design in pencil: ladybug, sunflower, smiley face.','Apply a base coat of white or light color. Let dry.','Paint the main design on top.','Add details with a fine brush or toothpick.','Let dry 20 minutes.','In a ventilated area, spray with clear sealer.'],
+    tips:'Use larger, flatter rocks for easier painting. Acrylic paints dry quickly. Residents can paint inspirational words instead of images. Finished rocks make great gifts or garden decorations.',
+    seasonal:false },
+  /* PAPER */
+  { id:'pp1', emoji:'🌸', title:'Tissue Paper Flowers', cat:'paper', diff:'easy', time:20,
+    supplies:['Tissue paper (multiple colors)','Pipe cleaners or floral wire','Scissors','Green floral tape (optional)'],
+    steps:['Stack 6–8 sheets of tissue paper (5"×7" each).','Accordion-fold the stack along the long side, making folds about 1 inch wide.','Wrap a pipe cleaner tightly around the center.','Round or notch the ends of the folded paper with scissors.','Gently pull each tissue paper layer upward toward the center, one at a time.','Fluff and shape into a full flower.','Arrange in a vase or attach to a card.'],
+    tips:'Pre-cut tissue paper ahead of time. Easier than it looks! Great for table centerpieces. Use soft, easy-grip scissors. Residents can choose their own color combinations.',
+    seasonal:false },
+  { id:'pp2', emoji:'📄', title:'Decoupage Memory Frames', cat:'paper', diff:'medium', time:45,
+    supplies:['Wooden picture frame (plain)','Old magazines or patterned paper','Mod Podge (or white glue thinned with water)','Foam brush','Scissors'],
+    steps:['Tear or cut colorful pieces of paper or magazine pages into irregular shapes (1–2 inches).','Apply a thin layer of Mod Podge to a small section of the frame.','Press paper pieces onto the wet frame, overlapping slightly.','Apply Mod Podge over the top of each piece to seal.','Continue until the entire frame is covered.','Let dry 30 minutes.','Apply a final coat of Mod Podge over the entire frame for a glossy finish.'],
+    tips:'Tearing paper (rather than cutting) gives a softer, more artistic look. Perfect for residents who have old magazines to use. Finished frames make wonderful gifts.',
+    seasonal:false },
+  { id:'pp3', emoji:'🎀', title:'Paper Fan Flower Wreath', cat:'paper', diff:'medium', time:50,
+    supplies:['Colored cardstock or scrapbook paper','Styrofoam or cardboard wreath ring','Hot glue gun (staff handles)','Scissors','Ruler'],
+    steps:['Cut paper into 8"×4" rectangles — about 30 pieces per wreath.','Accordion-fold each piece into a fan.','Bend each fan in half and glue the two halves together to form a flower petal.','When glue dries, glue 5–6 petals together to form one flower.','Make 6–8 flowers total.','Glue flowers onto wreath ring, filling the entire circle.','Add a ribbon hanger at the back.'],
+    tips:'Staff should manage the hot glue gun while residents fold and position pieces. This is a great group project — each person makes flowers and the group assembles together.',
+    seasonal:false },
+  { id:'pp4', emoji:'📚', title:'Pressed Flower Bookmarks', cat:'paper', diff:'easy', time:20,
+    supplies:['Cardstock strips (2"×8")','Pressed flowers or leaves (or silk flowers)','Mod Podge','Foam brush','Hole punch','Ribbon or yarn','Laminator (optional)'],
+    steps:['Cut cardstock into bookmark-sized strips.','Arrange pressed flowers or petals on the bookmark as desired.','Apply a thin layer of Mod Podge over the entire bookmark to seal flowers in place.','Let dry completely (15–20 min).','If laminating, run through laminator.','Punch a hole at the top and thread a ribbon through.'],
+    tips:'Press flowers ahead of time (2 weeks in a heavy book). Silk flower petals also work beautifully. Laminating makes them much more durable.',
+    seasonal:false },
+  { id:'pp5', emoji:'🃏', title:'Greeting Card Making', cat:'paper', diff:'easy', time:35,
+    supplies:['Blank folded cards or cardstock','Rubber stamps and ink pads','Stickers and die-cuts','Markers and colored pencils','Glue sticks','Decorative scissors','Ribbon scraps'],
+    steps:['Choose a blank card or fold cardstock in half.','Decide on a theme: birthday, thank you, get well, holiday.','Stamp a main image on the front or use stickers.','Layer with decorative paper, ribbon, or die-cuts for depth.','Color any stamped images with markers.','Write a sentiment on the front ("Happy Birthday" etc).','Write a personal message inside.'],
+    tips:'Pre-organize supplies in small trays per person. Residents love making cards for family — it gives the activity real purpose. Keep designs simple and focus on personal touches.',
+    seasonal:false },
+  /* FIBER */
+  { id:'fb1', emoji:'🧶', title:'Yarn-Wrapped Letters', cat:'fiber', diff:'easy', time:40,
+    supplies:['Cardboard letters (from craft store)','Colorful yarn (bulky weight)','Craft glue or tape','Scissors'],
+    steps:['Cut a long piece of yarn (arm\'s length) to start.','Apply a small amount of glue to the back of the letter where yarn will start.','Press yarn end into glue and hold 30 seconds.','Wind yarn tightly around the letter, keeping rows close together.','When yarn runs out, tuck end under previous wraps or glue down.','Start new color for a striped effect.','Continue until entire letter is covered.'],
+    tips:'Bulky yarn covers faster and is easier to handle with arthritic hands. Pre-attach yarn starting point with tape for residents who struggle with glue. Residents can choose letters from their name.',
+    seasonal:false },
+  { id:'fb2', emoji:'🎗️', title:'Simple Cardboard Loom Weaving', cat:'fiber', diff:'medium', time:50,
+    supplies:['Heavy cardboard (6"×8")','Yarn in 3–4 colors','Tapestry needle or large plastic needle','Scissors','Ruler','Pencil'],
+    steps:['Cut notches every half-inch along the top and bottom of cardboard.','Thread warp yarn (vertical lines) through notches from top to bottom.','Thread a contrasting color onto the needle.','Weave over and under warp threads from left to right.','Push each row down tightly with your fingers.','Alternate colors every few rows.','When done, slip off notches and tie or tuck in ends.'],
+    tips:'Pre-warp the loom before the session to save time. Large plastic needles are easier to thread. Weaving is very meditative and calming for residents with anxiety.',
+    seasonal:false },
+  { id:'fb3', emoji:'📖', title:'Fabric Bookmark', cat:'fiber', diff:'easy', time:20,
+    supplies:['Felt sheets (2 colors)','Fabric scissors','Fabric glue','Decorative buttons or stickers','Ruler','Pen'],
+    steps:['Cut a 2"×8" strip from one felt color for the bookmark base.','Cut a slightly smaller strip (1.5"×7") from a second color.','Glue smaller strip centered on top of the larger strip.','Trim the bottom end into a point or wave shape.','Decorate with buttons, stickers, or fabric paint.','Let dry completely before using.'],
+    tips:'Felt doesn\'t fray so no sewing needed. Fabric glue dries firmly. Residents can personalize with initials or favorite colors. Takes only 20 minutes — great filler activity.',
+    seasonal:false },
+  /* NATURE */
+  { id:'na1', emoji:'🦜', title:'Pine Cone Bird Feeder', cat:'nature', diff:'easy', time:25,
+    supplies:['Large pine cones','Peanut butter or suet','Birdseed','String or twine','Wax paper','Spoon or popsicle stick'],
+    steps:['Tie a piece of twine around the top of the pine cone.','Place pine cone on wax paper.','Use a spoon or stick to spread peanut butter all over the pine cone, pushing into crevices.','Roll the coated pine cone in birdseed.','Press seed firmly into the peanut butter.','Hang outside on a tree branch.'],
+    tips:'Great for residents who love nature and birds. Works as a group activity. Pre-tie the twine before the session. Use suet for a peanut-free option.',
+    seasonal:false },
+  { id:'na2', emoji:'🌿', title:'Pressed Leaf Art', cat:'nature', diff:'easy', time:30,
+    supplies:['Leaves (collected and dried, or silk leaves)','White or colored paper','Crayons or oil pastels (paper removed)','Tape'],
+    steps:['Tape leaf face-down onto the table.','Place white paper on top of the leaf.','Hold paper steady and rub the side of a crayon over the paper above the leaf.','The leaf veins and shape will appear as you rub.','Peel back paper to reveal the print.','Make several leaves in different colors.','Arrange on a larger paper as an autumn scene.'],
+    tips:'Remove crayon wrappers before the session. This works best with textured leaves that have raised veins. Works with both fresh and silk leaves.',
+    seasonal:false },
+  { id:'na3', emoji:'🌼', title:'Dried Flower Arrangement', cat:'nature', diff:'easy', time:35,
+    supplies:['Dried flowers and grasses (pre-dried or from craft store)','Small vase or mason jar','Floral foam (optional)','Ribbon','Scissors'],
+    steps:['If using floral foam, cut to fit inside the jar/vase.','Choose flowers and plan a color scheme.','Trim stems to varying lengths with scissors.','Insert tallest stems first into the center-back.','Add medium stems around them.','Fill in gaps with small flowers or grasses.','Tie a ribbon around the vase neck.'],
+    tips:'Dried flowers require no water and last for months. Pre-cut some stems to save time. Lavender bundles add a lovely scent. Great gift for family visits.',
+    seasonal:false },
+  /* SEASONAL */
+  { id:'se1', emoji:'🍂', title:'Autumn Leaf Wreath', cat:'seasonal', diff:'medium', time:55,
+    supplies:['Foam or grapevine wreath ring','Silk autumn leaves (assorted)','Hot glue (staff)','Ribbon','Wire or pipe cleaner for hanger'],
+    steps:['Sort leaves by color: red, orange, yellow, brown.','Start at one section of the wreath and glue leaves in a layered pattern.','Overlap leaves slightly so no ring shows through.','Work around the entire ring, varying colors.','Add clusters of berries or pinecones for texture.','Attach ribbon bow at the top.','Add wire loop at back for hanging.'],
+    tips:'Staff should handle all hot glue. Residents can arrange and position leaves. This makes a beautiful seasonal decoration for doors or walls.',
+    seasonal:true },
+  { id:'se2', emoji:'❄️', title:'Snowflake Window Clings', cat:'seasonal', diff:'easy', time:25,
+    supplies:['White dimensional fabric paint','Wax paper','Scissors','Snowflake pattern printout','Tape'],
+    steps:['Tape a snowflake pattern under a sheet of wax paper.','Squeeze dimensional paint directly over the pattern lines.','Fill in the design tracing the snowflake shape.','Let dry completely overnight (8–12 hours).','Carefully peel the dried snowflake off the wax paper.','Press onto a clean window — static clings without tape.'],
+    tips:'Do this project a day ahead! The dimensional paint must dry overnight. Multiple coats make it sturdier. Great winter activity that residents can display in their rooms.',
+    seasonal:true },
+  { id:'se3', emoji:'🎃', title:'Pumpkin Decorating', cat:'seasonal', diff:'easy', time:30,
+    supplies:['Small craft pumpkins (foam or real)','Acrylic paints','Foam brushes','Stickers','Mod Podge','Markers'],
+    steps:['Set pumpkin on a paper plate to catch drips.','Apply a base color over the pumpkin and let dry.','Add patterns, faces, or designs with markers or paint.','Decorate with stickers.','Seal with Mod Podge for shine and protection.','Let dry completely.'],
+    tips:'Foam craft pumpkins work great — no carving, no mess, residents can keep them. Perfect October activity. Residents can take home to display.',
+    seasonal:true },
+  { id:'se4', emoji:'🌸', title:'Paper Plate Spring Flowers', cat:'seasonal', diff:'easy', time:20,
+    supplies:['Paper plates','Tissue paper (bright colors)','Green construction paper','Glue sticks','Scissors','Markers'],
+    steps:['Cut tissue paper into small squares or circles.','Crumple each piece slightly.','Glue tissue paper pieces all over the paper plate in a flower pattern.','Cut leaf shapes from green construction paper.','Glue leaves around the edge of the plate.','Draw or paint a stem on a separate strip and attach.','Display on a bulletin board.'],
+    tips:'Very simple and quick. Great for residents with limited mobility. Makes a colorful spring bulletin board display. Works well as a group mural project.',
+    seasonal:true },
+  /* NO-MESS */
+  { id:'nm1', emoji:'🖼️', title:'Collage Making', cat:'no-mess', diff:'easy', time:40,
+    supplies:['Old magazines and catalogs','Cardstock or poster board','Glue sticks','Scissors (optional)','Markers'],
+    steps:['Choose a theme: nature, travel, favorite things, colors.','Look through magazines and tear out appealing images.','Arrange images on the cardstock without gluing first.','Once satisfied with the layout, glue each piece down.','Overlap images to fill the entire background.','Add words or phrases cut from headlines.','Optionally, write a title with marker.'],
+    tips:'Tearing instead of cutting is completely fine and reduces the need for scissors. Great for residents who enjoy looking at beautiful images. Very meditative activity.',
+    seasonal:false },
+  { id:'nm2', emoji:'✏️', title:'Zentangle Doodling', cat:'no-mess', diff:'easy', time:35,
+    supplies:['Heavy white cardstock (3"×3" squares)','Black fine-point pens','Pencil','Optional: colored pencils'],
+    steps:['Draw a light pencil border around the square.','Draw 2–3 curved lines through the square to create sections.','In each section, fill with a repeated pattern: dots, wavy lines, crosshatch, spirals.','Focus on one section at a time.','Fill each section completely before moving to the next.','Optionally color sections lightly with colored pencil.','Outline border in black pen.'],
+    tips:'There are no mistakes in Zentangle — every mark is intentional. Very calming and meditative. Even residents who say they "can\'t draw" can do this beautifully. Finished tiles can be framed.',
+    seasonal:false },
+  { id:'nm3', emoji:'🪆', title:'Button Art', cat:'no-mess', diff:'easy', time:30,
+    supplies:['Assorted buttons (various sizes)','Canvas or cardstock','Craft glue','Pencil','Optional: paint for background'],
+    steps:['Lightly sketch a simple design in pencil: heart, tree, butterfly, initial.','Optionally, paint background in a solid color and let dry.','Sort buttons by size and color.','Apply craft glue to a small section of the design.','Press buttons into the glue, filling the shape.','Fill outline first, then fill in the center.','Let dry completely (1–2 hours) before moving.'],
+    tips:'Pre-sort buttons by color in muffin tins. Large buttons are easiest to handle. Residents can design their own patterns. Finished pieces make beautiful framed artwork.',
+    seasonal:false },
+  /* SENSORY */
+  { id:'sy1', emoji:'🌈', title:'Sensory Sand Art Bottles', cat:'sensory', diff:'easy', time:25,
+    supplies:['Clear plastic bottles with lids','Colored sand (craft store)','Funnel','Spoon','Tape for lid'],
+    steps:['Choose 3–4 sand colors.','Insert funnel into bottle opening.','Spoon first color of sand to desired depth.','Gently tilt bottle to angle the sand layer.','Add next color.','Continue alternating colors and angles.','When full, seal lid with tape or glue.'],
+    tips:'Very soothing sensory activity. Tilting the bottle between layers creates interesting diagonal layers. Residents with dementia often enjoy the tactile and visual aspects.',
+    seasonal:false },
+  { id:'sy2', emoji:'🧁', title:'Decorate Foam Shapes', cat:'sensory', diff:'easy', time:20,
+    supplies:['Foam shapes (hearts, stars, circles from craft store)','Foam stickers','Peel-and-stick gems','Glitter glue (squeeze bottles)','Markers'],
+    steps:['Choose a foam shape.','Decorate with stickers, gems, and glitter glue.','Draw patterns or designs with markers.','Layer different textures for a tactile effect.','Let glitter glue dry before stacking.'],
+    tips:'Excellent for residents with cognitive impairment — completely self-directed, no right or wrong. Peel-and-stick materials require no glue or scissors. Very low frustration activity.',
+    seasonal:false }
+];
+
+var AC_SUPPLY_MASTER = [
+  { cat:'Paint & Color', items:['Acrylic paints (basic 12-color set)','Watercolor paint sets','Foam brushes (assorted)','Round paintbrushes (assorted)','Flat paintbrushes (assorted)','Paper plates (palette use)','Water cups'] },
+  { cat:'Paper & Cardstock', items:['Watercolor paper (9"×12")','White cardstock (various sizes)','Blank greeting cards','Construction paper (assorted colors)','Tissue paper (assorted)','Old magazines and catalogs'] },
+  { cat:'Adhesives', items:['Glue sticks','Craft glue (white)','Mod Podge','Hot glue sticks (staff only)','Double-sided tape','Masking tape'] },
+  { cat:'Scissors & Cutting', items:['Easy-grip scissors (adult)','Decorative-edge scissors','Craft knife (staff only)'] },
+  { cat:'Fiber & Yarn', items:['Bulky yarn (assorted colors)','Tapestry needles (large eye)','Felt sheets (assorted)','Fabric glue'] },
+  { cat:'Seasonal & Specialty', items:['Silk leaves (autumn colors)','Silk flowers (assorted)','Foam craft pumpkins (fall)','Pine cones (cleaned)','Pressed flowers or dried botanicals'] },
+  { cat:'Embellishments', items:['Assorted buttons','Craft gems and rhinestones','Foam stickers (assorted)','Ribbon scraps','Pom poms'] },
+  { cat:'Writing & Drawing', items:['Black fine-point markers','Colored markers','Colored pencils','Oil pastels','Pencils'] }
+];
+
+var AC_CALENDAR = [
+  { month:'January', theme:'Winter Wonderland', projects:['Snowflake Window Clings','Zentangle Doodling','Watercolor Sunset'], color:'#BFDBFE' },
+  { month:'February', theme:'Love & Friendship', projects:['Flower Watercolor Cards','Greeting Card Making','Button Art (hearts)'], color:'#FBCFE8' },
+  { month:'March', theme:'Signs of Spring', projects:['Paper Plate Spring Flowers','Tissue Paper Flowers','Pressed Leaf Art'], color:'#A7F3D0' },
+  { month:'April', theme:'Garden in Bloom', projects:['Dried Flower Arrangement','Pressed Flower Bookmarks','Watercolor Sunset'], color:'#DDD6FE' },
+  { month:'May', theme:'Mother\'s Day Gifts', projects:['Decoupage Memory Frames','Flower Watercolor Cards','Fabric Bookmark'], color:'#FDE68A' },
+  { month:'June', theme:'Outdoor & Nature', projects:['Pine Cone Bird Feeder','Pressed Leaf Art','Painted Rocks'], color:'#BBF7D0' },
+  { month:'July', theme:'Red, White & Blue', projects:['Sponge Painting on Canvas','Collage Making','Sensory Sand Art Bottles'], color:'#BFDBFE' },
+  { month:'August', theme:'Dog Days of Summer', projects:['Painted Rocks','Button Art','Zentangle Doodling'], color:'#FED7AA' },
+  { month:'September', theme:'Back to School', projects:['Fabric Bookmark','Greeting Card Making','Collage Making'], color:'#FEF9C3' },
+  { month:'October', theme:'Autumn Harvest', projects:['Autumn Leaf Wreath','Pumpkin Decorating','Yarn-Wrapped Letters'], color:'#FED7AA' },
+  { month:'November', theme:'Gratitude & Giving', projects:['Decoupage Memory Frames','Greeting Card Making','Dried Flower Arrangement'], color:'#D6B99A' },
+  { month:'December', theme:'Holiday Cheer', projects:['Paper Fan Flower Wreath','Snowflake Window Clings','Tissue Paper Flowers'], color:'#FBCFE8' }
+];
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'arts') acInit();
+  };
+})();
+
+function acInit() {
+  acRenderProjects('all');
+  acRenderSupplyChecklist();
+  populateAcGalleryProjectSel();
+  acRenderProjectSupplies();
+  acRenderGallery();
+  acRenderCalendar();
+}
+
+/* ── MODE SWITCHING ── */
+function acSetMode(mode) {
+  ['projects','supplies','gallery','calendar'].forEach(function(m) {
+    document.getElementById('ac-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('acmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+}
+
+/* ── PROJECTS ── */
+function acFilter(cat) {
+  acCurrentFilter = cat || 'all';
+  document.querySelectorAll('.ac-filter-btn').forEach(function(b) {
+    b.classList.toggle('active', b.id === 'acf-' + acCurrentFilter);
+  });
+  acRenderProjects(acCurrentFilter);
+}
+
+function acRenderProjects(cat) {
+  var diffFilter = (document.getElementById('ac-diff-filter') || {}).value || '';
+  var projects = AC_PROJECTS.filter(function(p) {
+    var catMatch = !cat || cat === 'all' || p.cat === cat;
+    var diffMatch = !diffFilter || p.diff === diffFilter;
+    return catMatch && diffMatch;
+  });
+  var grid = document.getElementById('ac-project-grid');
+  if (!grid) return;
+  if (!projects.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9D174D;">No projects match your filters.</div>'; return; }
+  var diffLabel = { easy:'<span class="ac-diff-easy">● Easy</span>', medium:'<span class="ac-diff-medium">● Medium</span>', advanced:'<span class="ac-diff-advanced">● Advanced</span>' };
+  grid.innerHTML = projects.map(function(p) {
+    return '<div class="ac-card" onclick="acOpenModal(\'' + p.id + '\')">'
+      + '<div class="ac-card-top">'
+      + '<div class="ac-card-emoji">' + p.emoji + '</div>'
+      + '<div class="ac-card-title">' + p.title + '</div>'
+      + '<div class="ac-card-meta">' + diffLabel[p.diff] + '<span>⏱ ' + p.time + ' min</span></div>'
+      + '</div>'
+      + '<div class="ac-card-bottom">' + p.supplies.slice(0,3).join(' · ') + (p.supplies.length > 3 ? ' +' + (p.supplies.length-3) + ' more' : '') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── MODAL ── */
+function acOpenModal(id) {
+  var p = AC_PROJECTS.find(function(x){ return x.id === id; });
+  if (!p) return;
+  acActiveProject = p;
+  document.getElementById('ac-modal-emoji').textContent = p.emoji;
+  document.getElementById('ac-modal-title').textContent = p.title;
+  var diffLabel = { easy:'Easy', medium:'Medium', advanced:'Advanced' };
+  document.getElementById('ac-modal-meta').textContent = diffLabel[p.diff] + ' · ⏱ ' + p.time + ' min · ' + p.cat;
+  document.getElementById('ac-modal-supplies').innerHTML = p.supplies.map(function(s){ return '<span class="ac-supply-tag">' + s + '</span>'; }).join('');
+  document.getElementById('ac-modal-steps').innerHTML = p.steps.map(function(s,i){
+    return '<div class="ac-step"><div class="ac-step-num">' + (i+1) + '</div><div style="font-size:14px;color:#374151;line-height:1.6;">' + s + '</div></div>';
+  }).join('');
+  document.getElementById('ac-modal-tips').textContent = p.tips;
+  document.getElementById('ac-modal').classList.add('open');
+}
+function acCloseModal() { document.getElementById('ac-modal').classList.remove('open'); acActiveProject = null; }
+
+/* ── SUPPLY CHECKLIST ── */
+function acRenderSupplyChecklist() {
+  var el = document.getElementById('ac-supply-checklist');
+  if (!el) return;
+  el.innerHTML = AC_SUPPLY_MASTER.map(function(cat) {
+    return '<div style="margin-bottom:16px;">'
+      + '<div style="font-weight:800;font-size:13px;color:#831843;margin-bottom:6px;">' + cat.cat + '</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:6px;">'
+      + cat.items.map(function(item){ return '<label style="display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #FBCFE8;border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer;"><input type="checkbox" style="accent-color:#EC4899;"> ' + item + '</label>'; }).join('')
+      + '</div></div>';
+  }).join('');
+}
+
+function populateAcGalleryProjectSel() {
+  var sel = document.getElementById('ac-supply-project-sel');
+  var sel2 = document.getElementById('ac-gal-project');
+  var opts = AC_PROJECTS.map(function(p){ return '<option value="' + p.id + '">' + p.emoji + ' ' + p.title + '</option>'; }).join('');
+  if (sel) sel.innerHTML = opts;
+  if (sel2) sel2.innerHTML = opts;
+}
+
+function acRenderProjectSupplies() {
+  var sel = document.getElementById('ac-supply-project-sel');
+  if (!sel) return;
+  var p = AC_PROJECTS.find(function(x){ return x.id === sel.value; });
+  var el = document.getElementById('ac-project-supply-detail');
+  if (!el || !p) return;
+  el.innerHTML = '<div style="background:#fff;border:2px solid #FBCFE8;border-radius:10px;padding:14px 16px;">'
+    + '<div style="font-weight:800;font-size:14px;color:#831843;margin-bottom:8px;">' + p.emoji + ' ' + p.title + ' — Supplies</div>'
+    + p.supplies.map(function(s){ return '<div style="padding:5px 0;border-bottom:1px solid #FDF2F8;font-size:14px;display:flex;gap:8px;align-items:center;">☐ ' + s + '</div>'; }).join('')
+    + '</div>';
+}
+
+/* ── GALLERY ── */
+function acGetGallery() { try { return JSON.parse(localStorage.getItem(AC_GALLERY_KEY)) || []; } catch(e) { return []; } }
+function acSaveGalleryData(d) { localStorage.setItem(AC_GALLERY_KEY, JSON.stringify(d)); }
+
+function acSaveGallery() {
+  var resident = document.getElementById('ac-gal-resident').value.trim();
+  var projId = document.getElementById('ac-gal-project').value;
+  var date = document.getElementById('ac-gal-date').value;
+  var note = document.getElementById('ac-gal-note').value.trim();
+  if (!resident) return alert('Please enter a resident name.');
+  var proj = AC_PROJECTS.find(function(p){ return p.id === projId; });
+  var entry = { id: Date.now(), resident: resident, projId: projId, projTitle: proj ? proj.title : projId, projEmoji: proj ? proj.emoji : '🎨', date: date, note: note };
+  var gallery = acGetGallery();
+  gallery.unshift(entry);
+  acSaveGalleryData(gallery);
+  document.getElementById('ac-gal-resident').value = '';
+  document.getElementById('ac-gal-note').value = '';
+  document.getElementById('ac-gal-date').value = '';
+  acRenderGallery();
+}
+
+function acDeleteGallery(id) {
+  if (!confirm('Remove this entry?')) return;
+  acSaveGalleryData(acGetGallery().filter(function(e){ return e.id !== id; }));
+  acRenderGallery();
+}
+
+function acRenderGallery() {
+  var entries = acGetGallery();
+  var grid = document.getElementById('ac-gallery-grid');
+  var empty = document.getElementById('ac-gallery-empty');
+  var count = document.getElementById('ac-gal-count');
+  if (count) count.textContent = 'Gallery (' + entries.length + ' entries)';
+  if (!grid) return;
+  if (!entries.length) { grid.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = entries.map(function(e) {
+    return '<div class="ac-gallery-card">'
+      + '<div style="font-size:28px;margin-bottom:6px;">' + e.projEmoji + '</div>'
+      + '<div class="title">' + e.projTitle + '</div>'
+      + '<div class="resident">👤 ' + e.resident + (e.date ? ' · 📅 ' + e.date : '') + '</div>'
+      + (e.note ? '<div class="note">"' + e.note + '"</div>' : '')
+      + '<button onclick="acDeleteGallery(' + e.id + ')" style="margin-top:8px;background:none;border:none;color:#EF4444;font-size:12px;cursor:pointer;">✕ Remove</button>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── YEAR PLANNER ── */
+function acRenderCalendar() {
+  var el = document.getElementById('ac-calendar-grid');
+  if (!el) return;
+  el.innerHTML = AC_CALENDAR.map(function(m) {
+    return '<div class="ac-cal-card" style="border-left:4px solid ' + m.color + ';">'
+      + '<div class="ac-cal-month">' + m.month + '</div>'
+      + '<div style="font-weight:700;font-size:13px;color:#374151;margin-bottom:6px;">' + m.theme + '</div>'
+      + m.projects.map(function(p){ return '<div style="font-size:12px;color:#6B7280;padding:2px 0;">• ' + p + '</div>'; }).join('')
+      + '</div>';
+  }).join('');
+}
+
+/* ── PRINT FUNCTIONS ── */
+function acPrintProject(p) {
+  if (!p) return;
+  var stepsHtml = p.steps.map(function(s,i){ return '<div style="display:flex;gap:12px;margin-bottom:12px;"><div style="width:26px;height:26px;border-radius:50%;background:#EC4899;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + (i+1) + '</div><div style="font-size:14px;line-height:1.6;">' + s + '</div></div>'; }).join('');
+  var suppliesHtml = p.supplies.map(function(s){ return '<li>' + s + '</li>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + p.title + '</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#831843;font-size:26px}h2{color:#BE185D;font-size:16px;border-bottom:2px solid #FBCFE8;padding-bottom:6px;margin-top:24px}ul{line-height:2}.tip{background:#FDF2F8;padding:14px;border-radius:8px;font-size:13px;margin-top:20px;}</style></head><body><h1>' + p.emoji + ' ' + p.title + '</h1><p style="color:#888;font-size:13px;">' + ({easy:'Easy',medium:'Medium',advanced:'Advanced'}[p.diff]) + ' · ⏱ ' + p.time + ' minutes · Empower Life 365</p><h2>🛒 Supplies Needed</h2><ul>' + suppliesHtml + '</ul><h2>📋 Step-by-Step Instructions</h2>' + stepsHtml + '<div class="tip"><b>💡 Tips for Seniors:</b><br>' + p.tips + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function acPrintGuide() {
+  var mode = document.querySelector('.ac-mode-btn.active');
+  var m = mode ? mode.id.replace('acmode-','') : 'projects';
+  if (m === 'projects') {
+    var p = AC_PROJECTS[Math.floor(Math.random() * AC_PROJECTS.length)];
+    acPrintProject(p);
+  } else if (m === 'supplies') {
+    acPrintSupplyList();
+  } else if (m === 'gallery') {
+    acPrintGallery();
+  } else if (m === 'calendar') {
+    acPrintCalendar();
+  }
+}
+
+function acPrintSupplyList() {
+  var sel = document.getElementById('ac-supply-project-sel');
+  var p = AC_PROJECTS.find(function(x){ return x.id === (sel ? sel.value : ''); });
+  if (!p) return;
+  var rows = p.supplies.map(function(s){ return '<tr><td style="padding:8px;border-bottom:1px solid #eee;">☐</td><td style="padding:8px;border-bottom:1px solid #eee;">' + s + '</td><td style="padding:8px;border-bottom:1px solid #eee;">Qty: _____</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Supply List</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:600px}h1{color:#831843}table{width:100%;border-collapse:collapse;}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>' + p.emoji + ' ' + p.title + ' — Supply List</h1><p style="color:#888;font-size:13px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th></th><th>Item</th><th>Quantity</th></tr>' + rows + '</table><p style="margin-top:30px;font-size:13px;color:#888;">Notes: _____________________________________________________</p><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function acPrintGallery() {
+  var entries = acGetGallery();
+  if (!entries.length) return alert('No gallery entries yet!');
+  var rows = entries.map(function(e){ return '<tr><td style="padding:8px;border-bottom:1px solid #eee;">' + e.projEmoji + ' ' + e.projTitle + '</td><td style="padding:8px;border-bottom:1px solid #eee;">' + e.resident + '</td><td style="padding:8px;border-bottom:1px solid #eee;">' + (e.date || '') + '</td><td style="padding:8px;border-bottom:1px solid #eee;font-style:italic;">' + (e.note || '') + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Craft Gallery</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#831843;text-align:center}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>🎨 Arts & Crafts Gallery</h1><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>Project</th><th>Resident</th><th>Date</th><th>Notes</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function acPrintCertificates() {
+  var entries = acGetGallery();
+  if (!entries.length) return alert('No gallery entries yet!');
+  var certs = entries.map(function(e){
+    return '<div style="page-break-after:always;text-align:center;padding:60px 40px;border:8px double #EC4899;margin:20px;">'
+      + '<div style="font-size:60px;margin-bottom:16px;">' + e.projEmoji + '</div>'
+      + '<div style="font-size:14px;font-weight:700;color:#9D174D;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Certificate of Creativity</div>'
+      + '<div style="font-size:13px;color:#888;margin-bottom:24px;">This certifies that</div>'
+      + '<div style="font-size:32px;font-weight:900;color:#831843;border-bottom:3px solid #EC4899;padding-bottom:8px;margin:0 40px 16px;">' + e.resident + '</div>'
+      + '<div style="font-size:14px;color:#374151;margin-bottom:8px;">has completed the art project</div>'
+      + '<div style="font-size:22px;font-weight:800;color:#BE185D;margin-bottom:24px;">' + e.projTitle + '</div>'
+      + (e.date ? '<div style="font-size:13px;color:#888;">Completed: ' + e.date + '</div>' : '')
+      + '<div style="margin-top:40px;font-size:12px;color:#EC4899;">✨ Empower Life 365 ✨</div>'
+      + '</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Certificates</title><style>body{font-family:Georgia,serif;}@media print{.cert{page-break-after:always;}}</style></head><body>' + certs + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function acPrintCalendar() {
+  var rows = AC_CALENDAR.map(function(m){
+    return '<tr><td style="padding:10px;border-bottom:1px solid #eee;font-weight:700;color:#831843;">' + m.month + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">' + m.theme + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;font-size:13px;">' + m.projects.join(', ') + '</td></tr>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Arts & Crafts Calendar</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#831843;text-align:center}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>🎨 Arts & Crafts Year Planner</h1><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 · ' + new Date().getFullYear() + '</p><table><tr><th>Month</th><th>Theme</th><th>Suggested Projects</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
 </script>
 
 </body>
