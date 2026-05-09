@@ -1167,6 +1167,12 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .ar-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;cursor:pointer;transition:box-shadow .15s;}
 .ar-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);}
 .oil-badge{display:inline-block;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;margin:2px;}
+/* panel-reminiscing */
+.rem-filter-btn{background:#fffbeb;color:#92400e;border:2px solid #fde68a;border-radius:20px;padding:6px 16px;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;}
+.rem-filter-btn.active{background:#d97706;color:#fff;border-color:#d97706;}
+.rem-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;cursor:pointer;transition:box-shadow .15s;}
+.rem-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.rem-level-badge{display:inline-block;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:4px;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1237,6 +1243,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="pettherapy" id="pettherapy-tab" onclick="switchTab('pettherapy')">🐾 Pet Therapy</button>
       <button class="tab-btn" data-tab="roomservice" id="roomservice-tab" onclick="switchTab('roomservice')">🚪 Room Service</button>
       <button class="tab-btn" data-tab="aromatherapy" id="aromatherapy-tab" onclick="switchTab('aromatherapy')">🌸 Aromatherapy</button>
+      <button class="tab-btn" data-tab="reminiscing" id="reminiscing-tab" onclick="switchTab('reminiscing')">💭 Reminiscing</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3692,6 +3699,38 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
   <div id="ar-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)arCloseModal()">
     <div style="background:#fff;max-width:680px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="ar-modal-body"></div>
+  </div>
+</section>
+
+<section class="tab-panel" id="panel-reminiscing">
+  <div style="padding:18px 20px 0;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+      <h2 style="margin:0;">💭 Reminiscing</h2>
+      <span style="font-size:13px;color:#6b7280;">20 activities · Level 1 (General) &amp; Level 2 (Memory Care)</span>
+    </div>
+    <!-- Level legend -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="background:#dbeafe;color:#1d4ed8;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700;">🔵 Level 1 — General / Higher Cognition</span>
+      <span style="background:#fce7f3;color:#9d174d;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700;">🌸 Level 2 — Memory Care Adapted</span>
+    </div>
+    <!-- Filters -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="rem-filter-btn active" data-f="all"   onclick="remFilter('all')">💭 All Activities</button>
+      <button class="rem-filter-btn" data-f="l1"    onclick="remFilter('l1')">🔵 Level 1 Focus</button>
+      <button class="rem-filter-btn" data-f="l2"    onclick="remFilter('l2')">🌸 Level 2 Focus</button>
+      <button class="rem-filter-btn" data-f="sensory" onclick="remFilter('sensory')">👃 Sensory-Based</button>
+      <button class="rem-filter-btn" data-f="creative" onclick="remFilter('creative')">🎨 Creative</button>
+      <button class="rem-filter-btn" data-f="social" onclick="remFilter('social')">🗣️ Social/Group</button>
+      <button class="rem-filter-btn" data-f="media" onclick="remFilter('media')">📺 Photo/Media</button>
+    </div>
+    <div id="rem-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <button onclick="remPrintAll()" style="background:#d97706;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print Visible Plans</button>
+      <button onclick="remPrintConvoStarters()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">💬 Print Conversation Starter Cards</button>
+    </div>
+  </div>
+  <div id="rem-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)remCloseModal()">
+    <div style="background:#fff;max-width:700px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="rem-modal-body"></div>
   </div>
 </section>
 
@@ -29325,6 +29364,546 @@ function arPrintSafetyGuide() {
   window.switchTab = function(name) {
     _arOrig && _arOrig(name);
     if (name === 'aromatherapy') initAromatherapy();
+  };
+})();
+</script>
+
+<script>
+/* ===== REMINISCING ===== */
+var REM_FILTER = 'all';
+
+var REM_ACTIVITIES = [
+{ id:'memory-box', emoji:'📦', title:'Memory Box / Treasure Trove',
+  tags:['sensory','social'], bestLevel:'both',
+  cat:'Sensory · Social', color:'#d97706',
+  desc:'Residents bring or receive a box of meaningful objects — photos, trinkets, letters — and share the stories behind each one.',
+  duration:'45–60 min', groupSize:'1–8 residents', cost:'Free',
+  supplies:['Shoebox or decorative box per resident','Personal items from home (ask families to contribute)','Table coverings','Camera to photograph items'],
+  l1:{
+    title:'Memory Box Showcase',
+    steps:['Ask families to help fill a box with 5–8 meaningful items (photo, recipe card, small object, postcard)','Each resident takes a turn presenting their items to the group','Facilitator asks open questions: "Tell us about this photo — where was it taken?"','Group listens and responds; cross-connections often emerge ("I had one of those too!")','Document stories in resident\'s life story file','Display boxes on a table for residents to browse between sessions'],
+    starters:['What is the oldest item in your box?','Which item has the best story behind it?','Is there something here that belonged to someone you loved?','What would you add to this box if you could?']
+  },
+  l2:{
+    title:'Sensory Touch & Tell',
+    steps:['Pre-select 3–4 safe, textured objects familiar to the resident (a comb, a key, a small cloth, a coin)','Present ONE object at a time in the resident\'s hands','Describe it with them: "This is heavy — what does it feel like to you?"','Use feeling words, not quiz questions: "Smooth, cold — does this remind you of anything?"','Celebrate any response: a smile, eye contact, or single word is a success','Sit quietly together with the object — presence matters as much as words'],
+    starters:['Feel this — what does it remind you of?','Is this something you\'ve held before?','Heavy or light? Soft or rough?']
+  }
+},
+
+{ id:'then-now-photos', emoji:'📸', title:'Then & Now Photo Journey',
+  tags:['media','social'], bestLevel:'both',
+  cat:'Photo · Media', color:'#0369a1',
+  desc:'Compare photos of places, fashions, and life from the past with today — sparks rich discussion about how the world has changed and what has stayed the same.',
+  duration:'45–60 min', groupSize:'4–20 residents', cost:'Free–$',
+  supplies:['Printed or projected "then" photos (local town, fashions, kitchens, cars, shops)','Matching "now" photos of same places','Projector or printed photo sets','Discussion prompt cards'],
+  l1:{
+    title:'Then & Now Discussion Group',
+    steps:['Project or pass around paired photos: same street corner in 1955 vs today','Invite reactions: "Does anyone recognise this place?"','Move through 8–10 paired images at a leisurely pace','Ask about personal connections: "Did you ever shop there? Live nearby?"','Compare fashion, transport, food — encourage opinions: "Which do you prefer?"','Close with: "What do you miss most? What are you glad changed?"'],
+    starters:['Do you recognise this place?','What was life like when things looked like this?','What\'s the biggest change you\'ve seen in your lifetime?','What do you wish had stayed the same?']
+  },
+  l2:{
+    title:'Familiar Photo Moment',
+    steps:['Select 4–6 very clear, simple photos of familiar things: a steam train, a telephone, a milk bottle, a school classroom','Show ONE photo at a time — large print format','Name it gently: "This is an old telephone. Did you ever have one like this?"','Pause — allow time for processing','Respond warmly to any reaction, word, or expression','No wrong answers; no pressure to recall'],
+    starters:['Look at this — have you seen one before?','This was in many homes — do you remember it?','Was this in your house?']
+  }
+},
+
+{ id:'childhood-games', emoji:'🎮', title:'Childhood Games Revival',
+  tags:['social','sensory'], bestLevel:'both',
+  cat:'Social · Active', color:'#16a34a',
+  desc:'Revisit the games of childhood — from marbles and jacks to card games and singing games — connecting residents to their most joyful early memories.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'$',
+  supplies:['Classic game items: marbles, jacks, playing cards, dominoes, draughts/checkers','Printed instructions for games residents might not recall','Music: children\'s rhymes and playground songs from their era','Prize ribbons for "best player"'],
+  l1:{
+    title:'Classic Games Tournament',
+    steps:['Offer 3–4 game stations: marbles on a carpet, card games (snap, pairs, rummy), draughts, dominoes','Let residents gravitate to their favourite','Play informally for 20 minutes then gather to share stories: "What games did you play as a child?"','Ask: "Who taught you? Where did you play?"','Round up with a group singing game (Ring Around the Rosie, or a singing clapping game from their era)','Award everyone a "Master of Play" ribbon'],
+    starters:['What was your favourite game growing up?','Did you play outdoors most of the time?','Who was the most competitive person in your family?','What game do children today not know that they\'re missing?']
+  },
+  l2:{
+    title:'Simple Sensory Play',
+    steps:['Offer one simple game at a time: pass marbles one by one for handling, line up dominoes to knock down','Focus on the tactile joy — the sound of dominoes falling, the weight of a marble','Sing a simple rhyme together: "Pat-a-cake" or another relevant to their childhood region','Clapping rhythms are deeply retained even in advanced dementia','Celebrate every interaction — touching, looking, smiling'],
+    starters:['Feel this marble — cool and smooth, isn\'t it?','Shall we knock these down together?','Do you remember this game?']
+  }
+},
+
+{ id:'recipe-memories', emoji:'🍲', title:'Recipe Memory & Cooking Stories',
+  tags:['sensory','social'], bestLevel:'both',
+  cat:'Food · Sensory', color:'#dc2626',
+  desc:'Food memories are among the most powerful. Residents share their most beloved recipes, cooking traditions, and the people behind them.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'Free–$',
+  supplies:['Recipe cards (blank ones for residents to fill)','Sample of a simple food item (freshly baked bread, a biscuit, cup of tea)','Old cookbooks or cooking magazine pages from their era','Pen/pencil','Optional: simple ingredients for a recipe demonstration'],
+  l1:{
+    title:'Family Recipe Sharing Circle',
+    steps:['Pass around a warm biscuit or piece of fresh bread — let the smell open the memory door','Each resident shares their most cherished recipe or family dish','Prompt: "Who made it? When did you make it? Any secret ingredients?"','Scribe volunteers write recipes on cards if residents dictate','Compile into a "Resident Recipe Collection" booklet to print and share','Close: "If you could cook one meal for your family right now, what would it be?"'],
+    starters:['What dish says "home" to you more than any other?','Who was the best cook in your family?','Was there a secret ingredient in anything you made?','What did Sunday dinner look like in your home?']
+  },
+  l2:{
+    title:'Scent & Taste Memory Moment',
+    steps:['Bring one very familiar food item: warm toast, a biscuit, a piece of apple, or a hot cup of tea','Offer it slowly, naming it as you go: "This is warm bread — fresh from the oven"','Allow resident to hold, smell, and taste at their own pace','Ask gently: "Does this remind you of home?"','Sit together — share a cup of tea, one-on-one or in a small group','No agenda beyond being present with the scent and taste'],
+    starters:['Can you smell that? What does it remind you of?','Did someone at home make this?','Does this taste familiar?']
+  }
+},
+
+{ id:'school-days', emoji:'🏫', title:'School Days Reminiscence',
+  tags:['social','media'], bestLevel:'both',
+  cat:'Social · Storytelling', color:'#7c3aed',
+  desc:'School memories are vivid and universal — the teacher\'s names, the classrooms, the subjects loved and loathed, and the friends made.',
+  duration:'45–60 min', groupSize:'4–20 residents', cost:'Free',
+  supplies:['Old school photos (generic vintage classroom images printed from internet)','School-era objects: slate board, ink pen, old textbook, ruler','Chalkboard or whiteboard for writing names and memories','Report card template for fun activity'],
+  l1:{
+    title:'Back to School Memory Discussion',
+    steps:['Open with a vintage classroom photo — "Does this look familiar?"','Share discussion rounds: teacher names, favourite subjects, least favourite, school meals, getting in trouble','Hand out a mock "report card" — residents grade themselves in school subjects as they remember them','Ask about the walk to school, school friends, and what they wanted to be when they grew up','Bring in a slate board or old ink pen for handling','Close with: "What did school teach you that no textbook could?"'],
+    starters:['What was the name of your favourite teacher? What made them special?','What subject were you best at? Worst at?','Did you ever get in trouble at school?','What was the most important thing school taught you?']
+  },
+  l2:{
+    title:'Familiar School Objects',
+    steps:['Present one school object at a time: a wooden ruler, a pencil, a slate, a bell','Name it clearly: "This is a ruler — used in every classroom"','Invite touch and response: "Did you use one of these?"','Write large letters on a whiteboard together — ABCs','Sing a counting or alphabet song from their era','Keep it playful and pressure-free'],
+    starters:['This was in every school — have you seen one?','Can you write your name? Here\'s a pen','Shall we sing the alphabet together?']
+  }
+},
+
+{ id:'music-memory', emoji:'🎵', title:'Music Memory Journey',
+  tags:['sensory','social','media'], bestLevel:'both',
+  cat:'Music · Sensory', color:'#be185d',
+  desc:'Music is the most reliable gateway to memory — residents recognise songs from their youth even when other memories have faded.',
+  duration:'45–60 min', groupSize:'Any size', cost:'Free',
+  supplies:['Curated playlist from residents\' era (1930s–1970s depending on ages)','Bluetooth speaker or music player','Song title cards for sing-along','Lyric sheets (large print)','Optional: simple instruments (tambourine, shakers)'],
+  l1:{
+    title:'Music Memory Sing-Along & Discussion',
+    steps:['Play 10–12 songs from residents\' young adult years (peak music memory is ages 12–25)','Between songs, ask: "Where does this song take you?"','Encourage singing, clapping, chair dancing','Share: "What was playing at your wedding? On the radio when you drove to work?"','Have residents rank their top 3 songs of all time','Create a group "Greatest Hits" playlist from their choices'],
+    starters:['What song always takes you back to a specific moment?','What song did you dance to at your wedding?','What was the first record/album you ever bought?','Was there a song that defined your teenage years?']
+  },
+  l2:{
+    title:'Familiar Song Comfort Session',
+    steps:['Play one very familiar song at a time — start with universally known songs (their national anthem, a hymn, a folk song)','Sit close; make eye contact; sing gently alongside','Offer a shaker or tambourine to hold and move with','Watch for physical responses: foot tapping, humming, mouthing words — celebrate each one','Repeat a favourite song 2–3 times — repetition is comforting, not boring, for memory care','End with a lullaby or gentle hymn for calm'],
+    starters:['Do you know this song? Shall we sing it together?','Feel this — tap along with me','Hum it if you know it']
+  }
+},
+
+{ id:'old-adverts', emoji:'📺', title:'Old Advertisements & Brand Nostalgia',
+  tags:['media','social'], bestLevel:'both',
+  cat:'Media · Social', color:'#0891b2',
+  desc:'Old adverts from their era are hilarious, nostalgic, and irresistible — brands they grew up with, slogans they still remember word for word.',
+  duration:'30–45 min', groupSize:'4–20 residents', cost:'Free',
+  supplies:['Printed or projected vintage adverts (search "vintage ads 1950s" etc.)','Brand logo quiz sheet','Blank cards for residents to write their own taglines','Optional: actual vintage product if available (old tin of soup, vintage packaging)'],
+  l1:{
+    title:'Vintage Ads Quiz & Discussion',
+    steps:['Show a series of vintage brand logos — "Can anyone name this brand?"','Display 10–12 vintage advertisements; discuss each one','Slogans quiz: show partial slogan, residents complete it — "Just Do ___" / "Have a break, have a ___"','Share memories: "Did your family use this product? What do you remember about buying it?"','Residents write their own funny modern slogan for a vintage product','Award "Best Advertising Mind" ribbon'],
+    starters:['What brand do you still trust from your childhood?','Was there a jingle you still can\'t get out of your head?','What product do you wish still existed?','What was the first TV advertisement you remember seeing?']
+  },
+  l2:{
+    title:'Familiar Brand Recognition',
+    steps:['Show 4–6 large, simple brand logos in their original classic design (Heinz, Kelloggs, Coca-Cola, Cadbury)','Name each clearly: "This is Heinz — they make soup and ketchup"','Show the actual product or packaging if available','Ask gently: "Did you buy this? Do you still like it?"','Offer a taste if appropriate (small biscuit, cracker)','Focus on recognition and warmth — no pressure to recall details'],
+    starters:['Do you recognise this? It\'s very famous','Have you tasted this before?','Does this look familiar?']
+  }
+},
+
+{ id:'life-timeline', emoji:'📅', title:'My Life Timeline',
+  tags:['creative','social'], bestLevel:'l1',
+  cat:'Creative · Personal', color:'#7c3aed',
+  desc:'Residents create a visual timeline of their own life — key events, places, people, and milestones from birth to present.',
+  duration:'60–90 min', groupSize:'2–12 residents', cost:'$',
+  supplies:['Long roll of paper or printed timeline template','Photos (printed from family or facility)','Markers, stickers, glue sticks','Milestone prompt cards (birth, school, first job, marriage, children, retirement, etc.)','Frames or display backing'],
+  l1:{
+    title:'Personal Life Timeline Creation',
+    steps:['Give each resident a long strip of paper (or use a printed template)','Mark decade intervals across the strip','Residents fill in key life events with words, dates, drawings, or small photos','Facilitator circulates to support memory and celebrate discoveries','Share in the group: "Tell us about the most important moment on your timeline"','Display on hallway wall with resident permission'],
+    starters:['What was the most important decision you ever made?','What year changed your life the most?','What event on this timeline surprised you most to look back on?','What would you add that isn\'t on here yet?']
+  },
+  l2:{
+    title:'Milestone Photo Moment',
+    steps:['Use 3–4 photos from different life stages of this resident (sourced from family)','Lay them out in order in front of resident','Name them gently: "This is you when you were young — look how beautiful you are"','Point to one photo at a time; share what you know about it','Allow resident to hold the photos; observe their reactions','Place photos in a simple frame or album together as a keepsake activity'],
+    starters:['Look — this is you! Isn\'t that wonderful?','I wonder what you were thinking in this photo','Do you see someone you love in this picture?']
+  }
+},
+
+{ id:'storytelling-circle', emoji:'🗣️', title:'"I Remember When…" Storytelling Circle',
+  tags:['social'], bestLevel:'both',
+  cat:'Social · Storytelling', color:'#d97706',
+  desc:'A warm, open storytelling circle where residents take turns completing the phrase "I remember when…" — the simplest and most powerful reminiscing format.',
+  duration:'30–45 min', groupSize:'4–16 residents', cost:'Free',
+  supplies:['Comfortable seating in a circle','Talking stick or symbolic object to pass','Prompt cards with story starters','Optional: soft music before to set the mood'],
+  l1:{
+    title:'Storytelling Circle — Full Conversation',
+    steps:['Sit in a comfortable circle; explain: "We\'re going to share our memories — there are no wrong answers"','Pass a "talking stick" (any object) around the circle','Each person completes: "I remember when…" — no minimum or maximum length','Facilitator responds warmly and builds connections between stories','Encourage gentle questions from listeners: "Did that really happen?"','Close with: "What\'s the memory you\'re most grateful to have?"'],
+    starters:['I remember when summers felt endless…','I remember when my mother used to…','I remember my first job — it was…','I remember when the whole family would gather for…']
+  },
+  l2:{
+    title:'Gentle Story Prompts — One to One',
+    steps:['Sit beside the resident (not across — less confrontational)','Use a simple, warm prompt: "Tell me about your mum — what was she like?"','Listen without filling silences — allow long pauses','If they drift off-topic, follow their lead — the topic shift often leads somewhere meaningful','Accept repetition warmly — hearing the same memory 10 times means it matters deeply to them','End with a affirming comment: "That sounds like a wonderful woman"'],
+    starters:['Tell me about your mum','Tell me about where you grew up','What did home smell like?','Was there someone who was very kind to you?']
+  }
+},
+
+{ id:'newspaper-front-pages', emoji:'📰', title:'Historical Headlines & Newspaper Moments',
+  tags:['media','social'], bestLevel:'l1',
+  cat:'Media · Social', color:'#374151',
+  desc:'Show front pages, headlines, and news events from key years in residents\' lives — their birth year, wedding year, the year they started work.',
+  duration:'45–60 min', groupSize:'4–20 residents', cost:'Free',
+  supplies:['Printed newspaper front pages from significant years (download from newspaper archives)','World events timeline printout','Quiz sheets: "What year did this happen?"','Pens'],
+  l1:{
+    title:'Where Were You When…? Current Events Retrospective',
+    steps:['Introduce one headline at a time, projected or printed large','Ask: "Where were you when this happened?"','Moon landing, coronations, major sporting events, VE Day, assassinations — choose events relevant to residents\' ages','Residents share personal memories of the events','Create a "resident memories" version alongside the official news report','Close: "What news story from your lifetime affected you the most?"'],
+    starters:['Where were you when you heard this news?','How old were you when this happened?','What do you remember most vividly about that day?','What was life like in the weeks and months after this?']
+  },
+  l2:{
+    title:'Simple World Events Recognition',
+    steps:['Choose 3–4 very clear, famous images: the moon landing photo, a royal wedding photo, a famous sporting celebration','Show one image at a time — large format','Name it: "This is the moon landing — 1969. Astronauts walked on the moon"','Ask simply: "Do you remember this?"','Share the story briefly in simple, warm language','Focus on their emotional response, not fact recall'],
+    starters:['This was a very famous day — do you remember it?','People all over the world were watching this','This made everyone smile']
+  }
+},
+
+{ id:'occupation-show-tell', emoji:'💼', title:'Career & Occupation Show & Tell',
+  tags:['social','sensory'], bestLevel:'both',
+  cat:'Social · Storytelling', color:'#15803d',
+  desc:'Residents share about their working lives — the jobs they held, the skills they mastered, the colleagues they loved, and the work that defined them.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'Free',
+  supplies:['Work-related objects or photos (residents can bring)','Generic tool/work items: old telephone, typewriter photo, ledger book, nurse\'s cap','Career prompt cards','Optional: uniforms, hats, tools from their profession'],
+  l1:{
+    title:'Working Life Showcase',
+    steps:['Ask residents: "What work are you most proud of in your life?"','Each resident shares their career story — including the jobs they DIDN\'T enjoy','Pass relevant objects: "Did you ever use a typewriter? A cash register? A wrench?"','Discuss: the colleagues, the bosses good and bad, the most memorable day at work','Ask: "If you could go back to work for one day, what would you do?"','Close with: "What skill from your working life do you still use every day?"'],
+    starters:['What was your first job? How much were you paid?','Who was the best colleague you ever had?','What was the hardest day at work you can remember?','What did your work teach you about people?']
+  },
+  l2:{
+    title:'What Did You Do? Simple Skills Exploration',
+    steps:['Identify resident\'s profession from their file or family input before the session','Bring one relevant object: a hammer for a carpenter, a spoon for a cook, a needle for a seamstress','Place in resident\'s hands: "You know how to use one of these, don\'t you?"','Watch for implicit memory response — hands may move in familiar patterns','Ask simply: "Did you work with this?"','Affirm: "You were very good at your job"'],
+    starters:['This might be familiar to you — can you show me what it does?','Your family tells me you were wonderful at this','Your hands remember, even if the words don\'t come']
+  }
+},
+
+{ id:'wedding-family-circle', emoji:'💍', title:'Wedding & Family Photo Circle',
+  tags:['media','social'], bestLevel:'both',
+  cat:'Photo · Social', color:'#ec4899',
+  desc:'Wedding photos, family portraits, and images of children and grandchildren — the most emotionally rich subject for reminiscence.',
+  duration:'45–60 min', groupSize:'4–12 residents', cost:'Free',
+  supplies:['Residents\' personal wedding/family photos (request from families)','Generic vintage wedding images to share if personal ones not available','Photo albums or display board','Scrapbooking materials for a wedding memory page'],
+  l1:{
+    title:'Love Stories & Family Portraits',
+    steps:['Each resident shares one wedding or family photo','Tell the love story: "How did you meet? What was the proposal like? Describe your wedding day"','Share wedding details: the dress, the flowers, the food, the first dance','Discuss family: how many children, grandchildren — their personalities and proudest moments','Group shares what "family" means to each person','Close: "What\'s the best thing about the family you built?"'],
+    starters:['How did you meet your partner?','Describe your wedding day in three words','What was your best wedding gift?','What quality of yours do you see most in your children?']
+  },
+  l2:{
+    title:'Family Face Recognition',
+    steps:['Use 2–3 photos the family has specifically sent of loved ones (child, grandchild, partner)','Show one photo at a time — "This is your daughter, Sarah — she loves you very much"','Allow resident to hold the photo','Watch for recognition response — a smile, a sound, reaching out to the photo','Name the person again warmly; share a positive anecdote from the family','Place photo where resident can see it easily'],
+    starters:['Look — this is someone who loves you very much','Do you know who this is?','She has your eyes, doesn\'t she?']
+  }
+},
+
+{ id:'holiday-traditions', emoji:'🎄', title:'Holiday & Seasonal Traditions',
+  tags:['social','sensory'], bestLevel:'both',
+  cat:'Seasonal · Social', color:'#dc2626',
+  desc:'Christmas mornings, summer holidays, Easter traditions, and family rituals — the heartbeat of childhood and adult life.',
+  duration:'45–60 min', groupSize:'4–20 residents', cost:'Free–$',
+  supplies:['Seasonal prop box: small decoration, Christmas cracker, Easter egg wrapper, summer postcard','Seasonal music playlist','Holiday recipe cards','Holiday-themed discussion prompt cards'],
+  l1:{
+    title:'Holiday Traditions Sharing Group',
+    steps:['Choose a season or holiday focus (Christmas is the richest for most)','Share: Christmas morning routines, the tree, stockings, favourite gifts ever given or received','Discuss food traditions: what was always on the table? Who cooked?','Talk about other holidays: summer vacations, Easter egg hunts, bonfire nights','Create a group "Holiday Recipe Collection" of traditional family dishes','Close: "What holiday tradition do you most hope carries on?"'],
+    starters:['Describe your best Christmas morning','What was the best holiday gift you ever gave someone?','What holiday food could you never live without?','Was there a family tradition that only YOUR family did?']
+  },
+  l2:{
+    title:'Seasonal Sensory Moment',
+    steps:['Bring one strong seasonal sensory item: a cinnamon stick, a small decorated ornament, a Christmas cracker, a wrapped sweet','Name it clearly: "This is a Christmas ornament — it hangs on the tree"','Hand it to the resident; describe its texture, colour, smell','Sing one line of a carol or holiday song softly','Watch for emotional response: humming, touching, smiling','Say: "Christmas was special, wasn\'t it? You remember Christmas"'],
+    starters:['Smell this — Christmas, isn\'t it?','This goes on the Christmas tree — shall we hang it somewhere?','Shall we sing one little carol?']
+  }
+},
+
+{ id:'fashion-decades', emoji:'👗', title:'Fashion Through the Decades',
+  tags:['media','social','creative'], bestLevel:'both',
+  cat:'Visual · Social', color:'#a855f7',
+  desc:'Hairstyles, hemlines, hats, and handbags — fashion is a joyful, opinionated topic that gets everyone talking.',
+  duration:'45–60 min', groupSize:'4–20 residents', cost:'Free',
+  supplies:['Fashion images from each decade: 1940s, 50s, 60s, 70s, 80s','Vintage accessories to pass around (hat, glove, scarf)','"Best dressed" voting cards','Optional: old fashion magazines'],
+  l1:{
+    title:'Fashion Decades Show & Tell',
+    steps:['Display a series of fashion images decade by decade','Residents react and discuss: "Did you ever wear anything like this?"','Pass around vintage accessories for handling','Ask for personal fashion memories: "What\'s the most stylish outfit you ever wore?"','Vote on best decade for fashion','Create a group "Fashion Hall of Fame" — each resident nominates their style icon'],
+    starters:['What decade do you think had the best fashion?','What\'s the most stylish outfit you ever owned?','Did you ever follow a fashion trend you later regretted?','Who was your style icon?']
+  },
+  l2:{
+    title:'Texture & Colour Fashion Sensory',
+    steps:['Bring 2–3 fabric items in different textures: velvet, lace, a silk scarf, a soft wool hat','Place each item in resident\'s hands one at a time','Describe: "This is velvet — so soft. Did you ever wear velvet?"','Try a hat on the resident gently — offer a mirror','Comment warmly on their appearance: "You look so elegant"','Focus on the tactile pleasure and the dignity of being admired'],
+    starters:['Feel how soft this is — have you worn something like this?','Shall we try this on? You\'d look wonderful in it','This colour suits you beautifully']
+  }
+},
+
+{ id:'famous-faces', emoji:'⭐', title:'Famous Faces from Their Era',
+  tags:['media','social'], bestLevel:'l1',
+  cat:'Media · Trivia', color:'#0369a1',
+  desc:'Celebrities, musicians, politicians, and sports stars from their youth — "famous faces" trivia brings out competitive delight and vivid memories.',
+  duration:'30–45 min', groupSize:'4–20 residents', cost:'Free',
+  supplies:['Printed celebrity photos from their era (actors, singers, royals, sports stars)','Numbered answer sheets','Score tracker','Prize ribbons'],
+  l1:{
+    title:'Famous Faces Quiz Show',
+    steps:['Project or pass 20 celebrity photos, numbered','Residents write or call out names','After quiz: discuss each person — "Who liked Frank Sinatra? What do you remember about him?"','Include a mix: royals, movie stars, pop stars, athletes from different decades','Share personal connections: "I saw this person perform / I met them once / I had a poster of them"','Award: Best Memory, Most Enthusiastic, Funniest Story'],
+    starters:['Did you have a favourite film star you were devoted to?','Was there a celebrity you met or saw in person?','Who was the most famous person from your generation?','Which celebrity do you think has aged the best?']
+  },
+  l2:{
+    title:'One Famous Face Moment',
+    steps:['Choose ONE celebrity deeply familiar to this resident based on their life history','Use a large, clear photo','Name the person clearly: "This is the Queen — Queen Elizabeth. You\'ve seen her all your life"','Show a simple fact or story about them','Ask warmly: "Do you know who this is?"','Accept any response — pointing, smiling, saying a fragment of a name — all count'],
+    starters:['Do you know this famous face?','This person was very well known — they were on television a lot','I think you might like this person']
+  }
+},
+
+{ id:'dear-younger-me', emoji:'✉️', title:'Letter to My Younger Self',
+  tags:['creative'], bestLevel:'l1',
+  cat:'Creative · Reflective', color:'#15803d',
+  desc:'Residents compose a letter — spoken or written — to their younger selves. Profound, moving, and often surprisingly funny.',
+  duration:'45–60 min', groupSize:'2–12 residents', cost:'Free',
+  supplies:['Beautiful letter-writing paper','Envelopes','Pens','Optional: recording device for dictated letters','Printed letter template with prompts'],
+  l1:{
+    title:'Letter to My Younger Self',
+    steps:['Explain the concept: "If you could send a letter back to yourself at age 20, what would you say?"','Give residents 10 minutes to write freely OR dictate to a scribe','Prompt structure: What would you warn? What would you celebrate? What would you say NOT to worry about?','Volunteers read their letters aloud to the group','Listen without comment until the resident finishes','Celebrate each letter: "That is so wise. That is beautiful."'],
+    starters:['What would you tell yourself NOT to worry about?','What do you know now that you wish you\'d known then?','What would you do differently?','What\'s the one thing you got absolutely right?']
+  },
+  l2:{
+    title:'What I Know Now — Simple Wisdom',
+    steps:['Sit with resident and ask: "What\'s the most important thing life has taught you?"','Listen and write their words verbatim on a card','Read them back to the resident: "You said: ___"','Frame it as a wisdom card or meaningful quote','Read it aloud again: "This is your wisdom"','Give the card to the resident or display it with their name'],
+    starters:['What\'s the most important thing you know?','What do you want people to remember about you?','What made your life a good life?']
+  }
+},
+
+{ id:'first-memories', emoji:'🌱', title:'"My First…" Story Starters',
+  tags:['social'], bestLevel:'both',
+  cat:'Social · Storytelling', color:'#d97706',
+  desc:'"My first job. My first car. My first kiss." — the "first" prompt is one of the most reliable memory triggers, producing stories rich with detail and laughter.',
+  duration:'30–45 min', groupSize:'4–16 residents', cost:'Free',
+  supplies:['"My First" prompt card set (printed)','Group talking circle arrangement','Score card for silly awards (funniest first, most surprising, etc.)','Optional: buzzer for quiz-style version'],
+  l1:{
+    title:'"My First…" Storytelling Game',
+    steps:['Go around the circle; draw a "My First" card and respond','Cards include: first job, first car, first home, first kiss, first flight, first phone, first day at school, first time abroad','No topic is off-limits — set a warm, jovial tone early','Encourage follow-up questions from the group','Award silly prizes: funniest first, most adventurous first, most relatable first','Close: "What first are you most proud of?"'],
+    starters:['My first job was…','My first car was…','The first time I ever flew I…','My first home of my own was…','My first phone was…']
+  },
+  l2:{
+    title:'Simple First Memories Prompt',
+    steps:['Use just ONE "first" prompt based on what you know of the resident\'s history','Example: if they were a nurse, "Tell me about your first day at work"','If they loved cars: show a photo of the model they drove, "Did you ever drive one of these?"','Keep questions warm and specific: "Where did you live first? Was it warm or cold?"','Accept any response — even a nod or a gesture is a memory surfacing','Record what they share and add to their life story notes'],
+    starters:['Tell me about where you first lived','Did you have a bicycle when you were young?','What did your first home smell like?']
+  }
+},
+
+{ id:'memory-quilt', emoji:'🧵', title:'Memory Quilt / Collage',
+  tags:['creative','social'], bestLevel:'both',
+  cat:'Creative · Art', color:'#ec4899',
+  desc:'Residents create a personal or group memory collage using photos, fabric scraps, magazine images, and written words that represent their life.',
+  duration:'60–90 min', groupSize:'4–16 residents', cost:'$',
+  supplies:['Large backing paper or canvas','Old magazines, fabric scraps, photos','Scissors (safety)','Glue sticks','Markers','Display board'],
+  l1:{
+    title:'Personal Memory Collage',
+    steps:['Each resident gets a piece of backing paper divided into sections: childhood, young adult, work, family, today','Residents cut and glue images, words, and small items that represent each phase','Write names, dates, places on the collage as they work','Share each section with the group: "This is the street I grew up on"','Mount collages on a display wall: "Gallery of Lives"','Host a small gallery opening — invite families to view'],
+    starters:['What image best represents your childhood?','If your life were a picture, what colours would dominate?','What object would you put in the centre of this page?','What part of your life do you most want people to remember?']
+  },
+  l2:{
+    title:'Tactile Texture Collage',
+    steps:['Pre-cut a selection of fabric swatches, soft papers, foil, velvet, lace','Resident selects pieces by touch and colour preference','Staff glue items in place as resident directs or places them','Name each texture together: "soft, crinkly, shiny"','Add resident\'s name and date — frame it','Display prominently with their name as "artist"'],
+    starters:['Which of these feels nicest to you?','What colour makes you happy?','Shall we put this one here? You choose']
+  }
+},
+
+{ id:'postcard-journey', emoji:'🗺️', title:'Postcard & Place Memory Journey',
+  tags:['media','social','creative'], bestLevel:'both',
+  cat:'Travel · Creative', color:'#0891b2',
+  desc:'Vintage postcards from places residents have lived, visited, or dreamed of — a geographical journey through their life\'s travels and longings.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'$',
+  supplies:['Collection of vintage postcards (buy cheap at markets/charity shops or print from internet)','Map of the world or UK/local region','Push pins or stickers to mark places','Postcard writing paper + pens','Stamps (real or decorative)'],
+  l1:{
+    title:'Postcard World Map Journey',
+    steps:['Spread postcards on a table — residents browse and pick ones that resonate','Pin chosen places on a large map: "Places I\'ve been / Places I wished I\'d gone"','Share travel stories: best holiday, honeymoon, the trip that changed everything','Write a postcard from a memorable place as if they\'re there now','Share postcards aloud; group responds','Display "Travels of Our Residents" map on the wall'],
+    starters:['What\'s the best place you\'ve ever travelled to?','Was there somewhere you always wanted to go but never made it?','What\'s a place that completely surprised you?','Where did you feel most at home that wasn\'t actually your home?']
+  },
+  l2:{
+    title:'Simple Postcard Sorting & Touch',
+    steps:['Select 4–6 postcards of familiar UK locations or the resident\'s known holiday destinations','Show one card at a time: "This is the seaside — Brighton beach"','Describe the image warmly: "Sand, waves, people paddling"','Ask: "Have you been to the seaside?"','Allow resident to handle the postcard, look at it, respond however they choose','Move slowly — a postcard per 3–4 minutes is enough'],
+    starters:['Look at this lovely place — have you been anywhere near the sea?','This looks warm and sunny, doesn\'t it?','Does this place look familiar?']
+  }
+},
+
+{ id:'scent-reminisce', emoji:'👃', title:'Scent Memory Reminiscence Walk',
+  tags:['sensory'], bestLevel:'both',
+  cat:'Sensory · Aromatherapy', color:'#a78bfa',
+  desc:'A guided sensory journey using familiar scents to unlock deeply stored memories — one of the most science-backed and powerful reminiscing tools available.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'$',
+  supplies:['Scent collection: coffee, fresh bread/toast, lavender, rose, cut grass, cinnamon, baby powder, TCP/antiseptic, a specific cologne/perfume, pine, sea salt','Cotton balls or small scent jars','Blindfolds (optional)','Memory recording cards'],
+  l1:{
+    title:'Scent Journey & Story Sharing',
+    steps:['Explain: "Smell is the strongest memory sense — let\'s go on a journey"','Pass each scent around; residents inhale and sit with it before speaking','Ask: "Where does this take you? What year? Who is with you?"','Allow long silences — scent memories often surface slowly','Record stories: some will be the most vivid narratives of the whole programme','Close with lavender — a calming, positive note'],
+    starters:['Where does this smell take you?','What memory does this unlock?','Who does this remind you of?','What year does this smell belong to?']
+  },
+  l2:{
+    title:'One Scent, One Moment',
+    steps:['Choose ONE scent known to be meaningful for this resident (ask family: "What scent was always in your home?")','Prepare it on a cotton ball','Hold it near the resident\'s face briefly — do not force inhalation','Describe warmly: "This is lavender — your daughter says you always had lavender in the garden"','Observe the response — any reaction is meaningful','After a long pause, offer a gentle affirming comment'],
+    starters:['Can you smell this? It\'s very gentle','Your family says this was special to you','Just breathe it in — take your time']
+  }
+}
+];
+
+function initReminiscing() {
+  REM_FILTER = 'all';
+  document.querySelectorAll('.rem-filter-btn').forEach(function(b){b.classList.toggle('active', b.dataset.f==='all');});
+  remRenderGrid();
+}
+
+function remFilter(f) {
+  REM_FILTER = f;
+  document.querySelectorAll('.rem-filter-btn').forEach(function(b){b.classList.toggle('active', b.dataset.f===f);});
+  remRenderGrid();
+}
+
+function remVisible() {
+  return REM_ACTIVITIES.filter(function(a) {
+    if (REM_FILTER === 'all') return true;
+    if (REM_FILTER === 'l1') return a.bestLevel === 'l1' || a.bestLevel === 'both';
+    if (REM_FILTER === 'l2') return a.bestLevel === 'l2' || a.bestLevel === 'both';
+    return a.tags.indexOf(REM_FILTER) > -1;
+  });
+}
+
+function remRenderGrid() {
+  var grid = document.getElementById('rem-grid');
+  if (!grid) return;
+  var items = remVisible();
+  if (!items.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9ca3af;">No activities match this filter.</div>';
+    return;
+  }
+  grid.innerHTML = items.map(function(a) {
+    var col = a.color || '#d97706';
+    var l1badge = (a.bestLevel==='l1'||a.bestLevel==='both') ? '<span class="rem-level-badge" style="background:#dbeafe;color:#1d4ed8;">🔵 Level 1</span>' : '';
+    var l2badge = (a.bestLevel==='l2'||a.bestLevel==='both') ? '<span class="rem-level-badge" style="background:#fce7f3;color:#9d174d;">🌸 Level 2</span>' : '';
+    return '<div class="rem-card" onclick="remShowDetail(\'' + a.id + '\')">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+      + '<span style="font-size:28px;">' + a.emoji + '</span>'
+      + '<div><div style="font-weight:800;font-size:14px;color:#1e293b;">' + a.title + '</div>'
+      + '<div style="font-size:11px;color:#9ca3af;">' + a.cat + '</div></div></div>'
+      + '<div style="margin-bottom:8px;">' + l1badge + l2badge + '</div>'
+      + '<div style="font-size:12px;color:#6b7280;">' + a.desc.substring(0,90) + '…</div>'
+      + '</div>';
+  }).join('');
+}
+
+function remShowDetail(id) {
+  var a = REM_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var col = a.color || '#d97706';
+  var body = document.getElementById('rem-modal-body');
+  var html = '<button onclick="remCloseModal()" style="position:absolute;top:16px;right:16px;background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;line-height:32px;">×</button>'
+    + '<div style="font-size:36px;margin-bottom:8px;">' + a.emoji + '</div>'
+    + '<h2 style="margin:0 0 6px;">' + a.title + '</h2>'
+    + '<div style="margin-bottom:10px;color:#6b7280;font-size:13px;">' + a.cat
+    + ' &nbsp;·&nbsp; ⏱ ' + a.duration + ' &nbsp;·&nbsp; 👥 ' + a.groupSize + '</div>'
+    + '<p style="color:#374151;margin-bottom:20px;">' + a.desc + '</p>'
+    + '<div style="display:flex;gap:8px;margin-bottom:20px;">'
+    + ((a.bestLevel==='l1'||a.bestLevel==='both') ? '<span class="rem-level-badge" style="background:#dbeafe;color:#1d4ed8;padding:4px 14px;font-size:12px;">🔵 Level 1</span>' : '')
+    + ((a.bestLevel==='l2'||a.bestLevel==='both') ? '<span class="rem-level-badge" style="background:#fce7f3;color:#9d174d;padding:4px 14px;font-size:12px;">🌸 Level 2</span>' : '')
+    + '</div>'
+    + '<div style="margin-bottom:12px;"><strong>🛒 Supplies</strong><ul style="margin:6px 0 0 18px;">' + a.supplies.map(function(s){return '<li style="margin-bottom:3px;">'+s+'</li>';}).join('') + '</ul></div>';
+
+  // Level 1 section
+  if (a.l1) {
+    html += '<div style="background:#eff6ff;border:2px solid #bfdbfe;border-radius:12px;padding:16px;margin-bottom:14px;">'
+      + '<div style="font-weight:800;color:#1d4ed8;margin-bottom:10px;font-size:14px;">🔵 Level 1 — ' + a.l1.title + '</div>'
+      + '<div style="margin-bottom:10px;"><strong>📋 Steps</strong><ol style="margin:6px 0 0 18px;">' + a.l1.steps.map(function(s){return '<li style="margin-bottom:4px;">'+s+'</li>';}).join('') + '</ol></div>'
+      + '<div><strong>💬 Conversation Starters</strong><ul style="margin:6px 0 0 18px;">' + a.l1.starters.map(function(s){return '<li style="margin-bottom:3px;font-style:italic;">"' + s + '"</li>';}).join('') + '</ul></div>'
+      + '</div>';
+  }
+
+  // Level 2 section
+  if (a.l2) {
+    html += '<div style="background:#fdf2f8;border:2px solid #f9a8d4;border-radius:12px;padding:16px;margin-bottom:14px;">'
+      + '<div style="font-weight:800;color:#9d174d;margin-bottom:10px;font-size:14px;">🌸 Level 2 Memory Care — ' + a.l2.title + '</div>'
+      + '<div style="margin-bottom:10px;"><strong>📋 Adapted Steps</strong><ol style="margin:6px 0 0 18px;">' + a.l2.steps.map(function(s){return '<li style="margin-bottom:4px;">'+s+'</li>';}).join('') + '</ol></div>'
+      + '<div><strong>💬 Gentle Prompts</strong><ul style="margin:6px 0 0 18px;">' + a.l2.starters.map(function(s){return '<li style="margin-bottom:3px;font-style:italic;">"' + s + '"</li>';}).join('') + '</ul></div>'
+      + '</div>';
+  }
+
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">'
+    + '<button onclick="remDoPrint(\'' + a.id + '\')" style="background:#d97706;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print Full Plan</button>'
+    + '<button onclick="remCloseModal()" style="background:#f3f4f6;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">Close</button>'
+    + '</div>';
+
+  body.innerHTML = html;
+  document.getElementById('rem-modal').style.display = 'block';
+}
+
+function remCloseModal() { document.getElementById('rem-modal').style.display = 'none'; }
+
+function remDoPrint(id) {
+  var a = REM_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var col = a.color || '#d97706';
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>' + a.title + '</title>'
+    + '<style>body{font-family:Georgia,serif;max-width:720px;margin:36px auto;color:#111;} h1{color:' + col + ';} h3{margin:12px 0 6px;} .l1-box{background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:14px;margin-bottom:14px;} .l2-box{background:#fdf2f8;border:2px solid #f9a8d4;border-radius:10px;padding:14px;margin-bottom:14px;} ul,ol{margin-left:18px;line-height:1.8;} em{color:#6b7280;} @media print{body{margin:16px;}}<\/style>'
+    + '<\/head><body>'
+    + '<div style="text-align:center;border-bottom:3px solid ' + col + ';padding-bottom:12px;margin-bottom:20px;">'
+    + '<div style="font-size:44px;">' + a.emoji + '</div>'
+    + '<h1 style="margin:8px 0;">' + a.title + '</h1>'
+    + '<div style="color:#9ca3af;font-size:12px;">' + a.cat + ' · ' + a.duration + ' · ' + a.groupSize + '</div>'
+    + '<div style="margin-top:8px;"><span style="background:#dbeafe;color:#1d4ed8;border-radius:8px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:6px;">🔵 Level 1</span><span style="background:#fce7f3;color:#9d174d;border-radius:8px;padding:2px 10px;font-size:11px;font-weight:700;">🌸 Level 2</span></div>'
+    + '</div>'
+    + '<p>' + a.desc + '</p>'
+    + '<h3>🛒 Supplies</h3><ul>' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul>'
+    + (a.l1 ? '<div class="l1-box"><strong>🔵 Level 1 — ' + a.l1.title + '</strong>'
+        + '<ol style="margin-top:8px;">' + a.l1.steps.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ol>'
+        + '<h3 style="margin-top:10px;">💬 Conversation Starters</h3><ul>' + a.l1.starters.map(function(s){return '<li><em>"' + s + '"</em></li>';}).join('') + '</ul>'
+        + '</div>' : '')
+    + (a.l2 ? '<div class="l2-box"><strong>🌸 Level 2 Memory Care — ' + a.l2.title + '</strong>'
+        + '<ol style="margin-top:8px;">' + a.l2.steps.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ol>'
+        + '<h3 style="margin-top:10px;">💬 Gentle Prompts</h3><ul>' + a.l2.starters.map(function(s){return '<li><em>"' + s + '"</em></li>';}).join('') + '</ul>'
+        + '</div>' : '')
+    + '<div style="text-align:center;margin-top:28px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Reminiscing</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function remPrintAll() {
+  var acts = remVisible();
+  if (!acts.length) { alert('No activities to print.'); return; }
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Reminiscing Activities</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:800px;margin:36px auto;} h1{color:#d97706;} table{width:100%;border-collapse:collapse;} th{background:#d97706;color:#fff;padding:9px;text-align:left;} td{padding:8px;border-bottom:1px solid #e5e7eb;vertical-align:top;font-size:13px;} tr:nth-child(even){background:#fffbeb;} @media print{body{margin:16px;}}<\/style>'
+    + '<\/head><body><h1>💭 Reminiscing Activities</h1>'
+    + '<table><tr><th>Activity</th><th>Category</th><th>Level</th><th>Duration</th><th>Group</th></tr>'
+    + acts.map(function(a){
+        var lvl = (a.bestLevel==='both'?'🔵 L1 · 🌸 L2':a.bestLevel==='l1'?'🔵 L1':'🌸 L2');
+        return '<tr><td><strong>' + a.emoji + ' ' + a.title + '</strong><br><span style="color:#9ca3af;">' + a.desc.substring(0,70) + '…</span></td>'
+          + '<td>' + a.cat + '</td><td>' + lvl + '</td><td>' + a.duration + '</td><td>' + a.groupSize + '</td></tr>';
+      }).join('')
+    + '</table><div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function remPrintConvoStarters() {
+  var acts = REM_ACTIVITIES;
+  var w = window.open('','_blank','width=900,height=700');
+  var cards = acts.map(function(a) {
+    var col = a.color || '#d97706';
+    var l1s = a.l1 ? a.l1.starters : [];
+    var l2s = a.l2 ? a.l2.starters : [];
+    return '<div style="border:2px solid ' + col + ';border-radius:10px;padding:14px;margin-bottom:12px;break-inside:avoid;">'
+      + '<div style="font-weight:800;font-size:14px;color:' + col + ';margin-bottom:8px;">' + a.emoji + ' ' + a.title + '</div>'
+      + (l1s.length ? '<div style="margin-bottom:6px;"><span style="background:#dbeafe;color:#1d4ed8;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700;">🔵 Level 1</span>'
+          + '<ul style="margin:4px 0 0 16px;">' + l1s.map(function(s){return '<li style="font-style:italic;font-size:12px;">"'+s+'"</li>';}).join('') + '</ul></div>' : '')
+      + (l2s.length ? '<div><span style="background:#fce7f3;color:#9d174d;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700;">🌸 Level 2</span>'
+          + '<ul style="margin:4px 0 0 16px;">' + l2s.map(function(s){return '<li style="font-style:italic;font-size:12px;">"'+s+'"</li>';}).join('') + '</ul></div>' : '')
+      + '</div>';
+  }).join('');
+  w.document.write('<!DOCTYPE html><html><head><title>Reminiscing Conversation Starters</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:760px;margin:28px auto;} h1{color:#d97706;} @media print{body{margin:14px;}-webkit-print-color-adjust:exact;print-color-adjust:exact;}<\/style>'
+    + '<\/head><body><h1>💬 Reminiscing Conversation Starter Cards</h1>'
+    + '<p style="font-size:13px;color:#6b7280;">Print, cut, and keep handy for every reminiscing session. 🔵 Level 1 = general group. 🌸 Level 2 = memory care / one-to-one.</p>'
+    + cards
+    + '<div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Reminiscing</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},600);
+}
+
+(function(){
+  var _remOrig = window.switchTab;
+  window.switchTab = function(name) {
+    _remOrig && _remOrig(name);
+    if (name === 'reminiscing') initReminiscing();
   };
 })();
 </script>
