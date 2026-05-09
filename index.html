@@ -2285,6 +2285,21 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .pr-mode-btn.active{background:#922b4a!important;border-color:#922b4a!important;color:#fff}
 .pr-print-card:hover{border-color:#922b4a}
 
+
+/* ===== THE WALLET & THE MAKEUP BAG ===== */
+/* Wallet — deep green */
+.grp-lvl-btn.wl-l1.active{background:#1b5e20}
+.grp-lvl-btn.wl-l2.active{background:#388e3c}
+.grp-lvl-btn.wl-l3.active{background:#81c784;color:#333}
+.wl-mode-btn.active{background:#1b5e20!important;border-color:#1b5e20!important;color:#fff}
+.wl-print-card:hover{border-color:#1b5e20}
+/* Makeup Bag — purple */
+.grp-lvl-btn.mb-l1.active{background:#6a1b9a}
+.grp-lvl-btn.mb-l2.active{background:#9c27b0}
+.grp-lvl-btn.mb-l3.active{background:#ce93d8;color:#333}
+.mb-mode-btn.active{background:#6a1b9a!important;border-color:#6a1b9a!important;color:#fff}
+.mb-print-card:hover{border-color:#6a1b9a}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -2374,6 +2389,8 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <button class="tab-btn" data-tab="sipnpaint" onclick="switchTab('sipnpaint')">🍷 Sip &amp; Paint</button>
         <button class="tab-btn" data-tab="toolbox" onclick="switchTab('toolbox')">🔧 The Toolbox</button>
     <button class="tab-btn" data-tab="purse" onclick="switchTab('purse')">👜 The Purse</button>
+    <button class="tab-btn" data-tab="wallet" onclick="switchTab('wallet')">🪙 The Wallet</button>
+    <button class="tab-btn" data-tab="makeup" onclick="switchTab('makeup')">💄 The Makeup Bag</button>
     <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -6539,6 +6556,50 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="grp-mode-btn pr-mode-btn" onclick="grpSetMode('pr','print')">🖨️ Print</button>
     </div>
     <div class="grp-content" id="pr-content"></div>
+  </div>
+</section>
+
+<section class="tab-panel" id="panel-wallet">
+  <div class="grp-panel">
+    <div class="grp-header">
+      <h2>🪙 The Wallet</h2>
+      <p>A men's group celebrating deals, careers, business wisdom &amp; financial stories</p>
+    </div>
+    <div class="grp-level-bar">
+      <button class="grp-lvl-btn wl-l1" onclick="wlLv(1)">⭐ Level 1 — Full Engagement</button>
+      <button class="grp-lvl-btn wl-l2" onclick="wlLv(2)">🤝 Level 2 — Supported</button>
+      <button class="grp-lvl-btn wl-l3" onclick="wlLv(3)">🌸 Level 3 — Sensory &amp; Familiar</button>
+    </div>
+    <div class="grp-lvl-desc" id="wl-lvl-desc"></div>
+    <div class="grp-mode-bar">
+      <button class="grp-mode-btn wl-mode-btn" onclick="wlMode('activities')">🪙 Activities</button>
+      <button class="grp-mode-btn wl-mode-btn" onclick="wlMode('discussion')">💬 Discussion Starters</button>
+      <button class="grp-mode-btn wl-mode-btn" onclick="wlMode('meetings')">📅 Meeting Planner</button>
+      <button class="grp-mode-btn wl-mode-btn" onclick="wlMode('print')">🖨️ Print</button>
+    </div>
+    <div class="grp-content" id="wl-content"></div>
+  </div>
+</section>
+
+<section class="tab-panel" id="panel-makeup">
+  <div class="grp-panel">
+    <div class="grp-header">
+      <h2>💄 The Makeup Bag</h2>
+      <p>A women's group celebrating beauty, glamour, fashion &amp; the art of feeling wonderful</p>
+    </div>
+    <div class="grp-level-bar">
+      <button class="grp-lvl-btn mb-l1" onclick="mbLv(1)">⭐ Level 1 — Full Engagement</button>
+      <button class="grp-lvl-btn mb-l2" onclick="mbLv(2)">🤝 Level 2 — Supported</button>
+      <button class="grp-lvl-btn mb-l3" onclick="mbLv(3)">🌸 Level 3 — Sensory &amp; Familiar</button>
+    </div>
+    <div class="grp-lvl-desc" id="mb-lvl-desc"></div>
+    <div class="grp-mode-bar">
+      <button class="grp-mode-btn mb-mode-btn" onclick="mbMode('activities')">💄 Activities</button>
+      <button class="grp-mode-btn mb-mode-btn" onclick="mbMode('discussion')">💬 Discussion Starters</button>
+      <button class="grp-mode-btn mb-mode-btn" onclick="mbMode('meetings')">📅 Meeting Planner</button>
+      <button class="grp-mode-btn mb-mode-btn" onclick="mbMode('print')">🖨️ Print</button>
+    </div>
+    <div class="grp-content" id="mb-content"></div>
   </div>
 </section>
 <section class="tab-panel" id="panel-family">
@@ -43325,6 +43386,526 @@ function grpDoPrint(gid, type) {
     if (_orig) _orig(n);
     if (n === 'toolbox') grpInit('tb');
     if (n === 'purse')   grpInit('pr');
+  };
+})();
+</script>
+
+<script>
+// ============================================================
+// 🪙 THE WALLET & 💄 THE MAKEUP BAG — Group Activity Tabs
+// ============================================================
+
+var WL_DATA = {
+  levels: {
+    1: {
+      label: 'Level 1 — Full Engagement',
+      desc: 'Independent residents · 60–90 min sessions · Business, finance & career stories',
+      activities: [
+        {name:'Best Deal Ever',emoji:'🤝',time:'60 min',supplies:'Notepads, whiteboard',
+         desc:'Share your greatest bargain, shrewdest negotiation, or business deal that everyone still talks about.',
+         tags:['Stories','Business','Competitive']},
+        {name:'Entrepreneur Circle',emoji:'💼',time:'75 min',supplies:'Business cards display, photos',
+         desc:'Businesses started, side hustles run, routes driven — share the entrepreneurial stories of your life.',
+         tags:['Career','Stories','Inspiring']},
+        {name:'Then & Now Prices',emoji:'💰',time:'60 min',supplies:'Price comparison cards, whiteboard',
+         desc:'Gas was 25 cents! A house cost $12,000! Compare prices from the past to jaw-dropping prices today.',
+         tags:['Fun','Nostalgic','Discussion']},
+        {name:'Stock Market Legends',emoji:'📈',time:'60 min',supplies:'Financial history print-outs',
+         desc:'Famous investments, market crashes, and the stocks that made or broke fortunes. What would you have bought?',
+         tags:['Finance','History','Debate']},
+        {name:'Career Hall of Fame',emoji:'🏆',time:'75 min',supplies:'Certificates or work photos to share',
+         desc:'Share your proudest career milestone — a promotion earned, a project completed, a record set.',
+         tags:['Career','Pride','Social']},
+        {name:'Monopoly Tournament',emoji:'🎩',time:'90 min',supplies:'Monopoly board game set',
+         desc:'Classic competitive Monopoly with real stakes — bragging rights and the coveted top hat trophy.',
+         tags:['Game','Competitive','Fun']},
+        {name:'Business Advice Council',emoji:'🧠',time:'60 min',supplies:'Index cards for notes',
+         desc:'What advice would you give a young person starting out in business or life? Share the hard-won wisdom.',
+         tags:['Wisdom','Mentoring','Discussion']},
+        {name:'Greatest Splurge',emoji:'🎰',time:'60 min',supplies:'Photos welcome',
+         desc:'What is the most you ever spent on something — and was it worth every penny? Big stories only.',
+         tags:['Stories','Fun','Social']}
+      ],
+      discussion: [
+        'What was the best deal or negotiation you ever pulled off in business or life?',
+        'What is the most valuable financial lesson you ever learned — often the hard way?',
+        'If you could go back and invest in one company or piece of land, what would it be?',
+        'Tell us about your most successful business venture, side hustle, or entrepreneurial move.',
+        'Who taught you the most about money and how to handle it?',
+        'What is the biggest financial risk you ever took — and did it pay off?'
+      ]
+    },
+    2: {
+      label: 'Level 2 — Supported Participation',
+      desc: 'Some assistance needed · 45–60 min sessions · Simplified with staff support',
+      activities: [
+        {name:'The Price Is Right',emoji:'📺',time:'45 min',supplies:'Price cards for old & new items',
+         desc:'Guess the original price of everyday items — bread, gas, a new car. Who is closest wins a round.',
+         tags:['Game','Nostalgic','Fun']},
+        {name:'Coin Collection Show',emoji:'🪙',time:'45 min',supplies:'Coins for display and handling',
+         desc:'Display and discuss coin collections — the rarest find, the oldest coin, and the one worth the most.',
+         tags:['Hobby','Display','Social']},
+        {name:'Vintage Advertising',emoji:'📰',time:'45 min',supplies:'Old magazine ads, print-outs',
+         desc:'Look at iconic old advertisements and their prices. What was a new Ford? What did a Coke cost?',
+         tags:['Nostalgic','Visual','Discussion']},
+        {name:'Famous Founders Trivia',emoji:'💡',time:'45 min',supplies:'Trivia cards with company logos',
+         desc:'Match famous companies to the men who built them — Ford, Carnegie, Rockefeller, and beyond.',
+         tags:['Trivia','History','Business']},
+        {name:'Lottery Dream Round',emoji:'🎰',time:'45 min',supplies:'Lottery ticket props optional',
+         desc:'If you won a million dollars tomorrow, what would you do first? Round-robin stories — no wrong answers.',
+         tags:['Fun','Imagination','Social']},
+        {name:'Penny Jar Challenge',emoji:'💰',time:'45 min',supplies:'Jars of coins, counting trays',
+         desc:'Sort coins by type, estimate totals, and count them out. Tactile, engaging, and surprisingly fun.',
+         tags:['Hands-On','Cognitive','Fun']},
+        {name:'Great Depression Stories',emoji:'📖',time:'45 min',supplies:'Historical photos from the era',
+         desc:'Share family stories of making do, saving everything, and the values that came from lean years.',
+         tags:['History','Stories','Meaningful']},
+        {name:'Coupon Cutter Social',emoji:'✂️',time:'45 min',supplies:'Store flyers, scissors, coupons',
+         desc:'Clip coupons from ads and see who can find the best deals. A classic skill and a great time.',
+         tags:['Practical','Social','Nostalgic']}
+      ],
+      discussion: [
+        'What did a gallon of gas cost when you first started driving?',
+        'What is the best thing you ever bought for just a dollar or two?',
+        'Did you collect coins, stamps, baseball cards, or anything of value growing up?',
+        'What did your first paycheck feel like to hold in your hands?',
+        'What was the most you ever saved up for and finally bought?',
+        'Did you have a piggy bank or a special savings habit when you were a kid?'
+      ]
+    },
+    3: {
+      label: 'Level 3 — Sensory & Familiar',
+      desc: 'Memory care friendly · 20–30 min sessions · Tactile, familiar, comforting',
+      activities: [
+        {name:'Coin Sorting',emoji:'🪙',time:'20 min',supplies:'Mixed coins in a bowl, sorting tray',
+         desc:'Sort coins by type — pennies, nickels, dimes, quarters. Tactile, calming, and familiar.',
+         tags:['Sensory','Tactile','Familiar']},
+        {name:'Wallet Exploration',emoji:'👛',time:'20 min',supplies:'Wallet with familiar items inside',
+         desc:'Feel and identify familiar wallet contents by touch — coins, cards, folded bills, a photo.',
+         tags:['Sensory','Tactile','Familiar']},
+        {name:'Famous Faces on Money',emoji:'💵',time:'20 min',supplies:'Dollar bills of various denominations',
+         desc:'Look at bills and name the presidents — Washington, Lincoln, Hamilton. Simple and familiar.',
+         tags:['Visual','Cognitive','Familiar']},
+        {name:'Old Store Photos',emoji:'🏪',time:'20 min',supplies:'Photos of general stores, diners, shops',
+         desc:'Look at photos of old general stores, five-and-dimes, and hardware shops. What do you remember?',
+         tags:['Visual','Reminisce','Calm']},
+        {name:'Coin Rubbing Art',emoji:'🎨',time:'25 min',supplies:'Coins, thin paper, crayons',
+         desc:'Place a coin under paper and rub with a crayon to reveal the design. Simple, sensory, satisfying.',
+         tags:['Sensory','Creative','Calm']},
+        {name:'Count with Me',emoji:'🔢',time:'20 min',supplies:'Simple counting coins or chips',
+         desc:'Count coins together slowly and clearly — 1, 2, 3. Gentle cognitive engagement with rhythm.',
+         tags:['Cognitive','Gentle','Familiar']},
+        {name:'Piggy Bank Shake',emoji:'🐷',time:'20 min',supplies:'Coin-filled containers',
+         desc:'Shake jars of coins, guess how many, pour them out together. Sound, touch, and simple fun.',
+         tags:['Sensory','Fun','Light']},
+        {name:'Shopping List Game',emoji:'📋',time:'20 min',supplies:'Simple picture grocery cards',
+         desc:'Look at simple pictures of grocery items and name them. Milk, bread, eggs — what did you always buy?',
+         tags:['Visual','Familiar','Calm']}
+      ],
+      discussion: [
+        'Did you get an allowance when you were growing up?',
+        'What did a piece of candy cost when you were young?',
+        'Did you save money in a piggy bank as a child?',
+        'What was your favorite store to shop at?',
+        'Did you ever find money somewhere unexpected?',
+        'What was the first big thing you ever bought with your own money?'
+      ]
+    }
+  }
+};
+
+var MB_DATA = {
+  levels: {
+    1: {
+      label: 'Level 1 — Full Engagement',
+      desc: 'Independent residents · 60–90 min sessions · Beauty, glamour & self-expression',
+      activities: [
+        {name:'Vintage Beauty Secrets',emoji:'✨',time:'75 min',supplies:'Old beauty product packaging, photos',
+         desc:'Share old-fashioned beauty tips, grandmother\'s tricks, and the homemade remedies that actually worked.',
+         tags:['Nostalgic','Stories','Beauty']},
+        {name:'Perfume Bar',emoji:'🌸',time:'60 min',supplies:'Classic fragrance bottles or strips',
+         desc:'Smell and identify iconic fragrances — Chanel No. 5, White Shoulders, Shalimar. Share the memories each brings.',
+         tags:['Sensory','Nostalgic','Discussion']},
+        {name:'Fashion Through the Ages',emoji:'👗',time:'60 min',supplies:'Decade fashion photos, magazines',
+         desc:'How did makeup and beauty evolve from the 1920s finger waves to the big-hair 80s to minimalist today?',
+         tags:['History','Fashion','Discussion']},
+        {name:'Glamour Photo Session',emoji:'📸',time:'90 min',supplies:'Makeup, accessories, camera or phone',
+         desc:'Get dolled up with lipstick, pearls, and your favorite look for a beautiful portrait session.',
+         tags:['Fun','Glamour','Self-Care']},
+        {name:'Natural Beauty Remedies',emoji:'🌿',time:'75 min',supplies:'Ingredients, recipe cards',
+         desc:'Share homemade beauty treatments — egg white masks, lemon for nails, olive oil for hair.',
+         tags:['Creative','Practical','Stories']},
+        {name:'Scarf Styling Workshop',emoji:'🎀',time:'75 min',supplies:'A collection of scarves and silk squares',
+         desc:'Learn and share ten different ways to wear a silk scarf — head wrap, neck tie, belt, bag charm.',
+         tags:['Fashion','Creative','Fun']},
+        {name:'Color Analysis Circle',emoji:'🎨',time:'60 min',supplies:'Color swatches, draping fabric',
+         desc:'Discover which colors make you glow — warm vs. cool tones, seasons, and what flatters everyone.',
+         tags:['Beauty','Discussion','Creative']},
+        {name:'Hollywood Glamour Night',emoji:'🌟',time:'75 min',supplies:'Classic movie star photos',
+         desc:'Who was the most glamorous woman ever — Audrey, Marilyn, Grace Kelly? Make your case and share stories.',
+         tags:['Discussion','Movies','Glamour']}
+      ],
+      discussion: [
+        'What was your signature beauty look in your twenties or thirties — the one that was all you?',
+        'What beauty tip or secret did your mother or grandmother pass down to you?',
+        'What perfume or scent reminds you most of someone you loved — and what is that memory?',
+        'What was your most glamorous moment — the event, the dress, the hair, the entire look?',
+        'If you could only keep one beauty product for the rest of your life, what would it be?',
+        'What beauty or fashion trend do you wish had never gone away?'
+      ]
+    },
+    2: {
+      label: 'Level 2 — Supported Participation',
+      desc: 'Some assistance needed · 45–60 min sessions · Simplified with staff support',
+      activities: [
+        {name:'Lipstick Shades Vote',emoji:'💄',time:'45 min',supplies:'Lipstick shade swatches or testers',
+         desc:'Vote on favorite lipstick shades — classic red, soft pink, coral, nude. What was your go-to shade?',
+         tags:['Beauty','Social','Fun']},
+        {name:'Beauty Brand Trivia',emoji:'🏆',time:'45 min',supplies:'Brand logo cards, product images',
+         desc:'Match famous brands to their products — Revlon, Estee Lauder, Max Factor, Cover Girl. Who knows them all?',
+         tags:['Trivia','Nostalgic','Beauty']},
+        {name:'Hollywood Stars',emoji:'🌟',time:'45 min',supplies:'Classic movie star portrait photos',
+         desc:'Identify iconic stars from their photographs — Audrey Hepburn, Elizabeth Taylor, Doris Day.',
+         tags:['Movies','Visual','Discussion']},
+        {name:'Mirror Moment',emoji:'🪞',time:'45 min',supplies:'Mirrors, lip gloss, powder, brushes',
+         desc:'A little touch-up together — lip gloss, powder, blush. Feeling put-together and pretty.',
+         tags:['Beauty','Self-Care','Dignified']},
+        {name:'Jewelry Show & Tell',emoji:'💍',time:'45 min',supplies:'Jewelry collection for display',
+         desc:'Display beautiful jewelry pieces and share the stories — anniversary gifts, heirlooms, first purchases.',
+         tags:['Stories','Social','Beautiful']},
+        {name:'Magazine Dreams',emoji:'📖',time:'45 min',supplies:'Fashion and beauty magazines',
+         desc:'Browse fashion spreads together and point out what you love — the dress, the hair, the whole mood.',
+         tags:['Visual','Fashion','Relaxing']},
+        {name:'Hat & Scarf Fashion Show',emoji:'👒',time:'45 min',supplies:'Collection of hats and scarves',
+         desc:'Try on a parade of hats and scarves and vote for the best look. Full fashion-show energy.',
+         tags:['Fun','Fashion','Social']},
+        {name:'Nail Polish Rainbow',emoji:'💅',time:'60 min',supplies:'Nail polish collection, cotton, remover',
+         desc:'Paint nails together or choose from a rainbow of colors. A favorite pampering tradition.',
+         tags:['Beauty','Self-Care','Tactile']}
+      ],
+      discussion: [
+        'What was your favorite dress or outfit you ever owned — and where did you wear it?',
+        'Who was the most glamorous or stylish woman you ever knew personally?',
+        'What beauty routine did you do every single morning without fail?',
+        'Which movie star\'s style did you admire most growing up?',
+        'What is your favorite way to feel pampered and special today?',
+        'What was the very first makeup item you ever owned — and how old were you?'
+      ]
+    },
+    3: {
+      label: 'Level 3 — Sensory & Familiar',
+      desc: 'Memory care friendly · 20–30 min sessions · Gentle, sensory-rich, comforting',
+      activities: [
+        {name:'Lotion & Scent',emoji:'🤲',time:'20 min',supplies:'Scented hand lotion — rose or lavender',
+         desc:'Apply a beautifully scented lotion together — smell, feel, breathe in the familiar fragrance.',
+         tags:['Sensory','Gentle','Calming']},
+        {name:'Lipstick Moment',emoji:'💄',time:'20 min',supplies:'Soft lipstick or tinted lip balm',
+         desc:'Apply a favorite lip color with gentle assistance. Simple, dignifying, and genuinely uplifting.',
+         tags:['Beauty','Dignified','Familiar']},
+        {name:'Powder Brush Sensation',emoji:'✨',time:'20 min',supplies:'Soft makeup brushes, translucent powder',
+         desc:'A soft powder brush on the hands and face — the gentle sensation is soothing and familiar.',
+         tags:['Sensory','Gentle','Familiar']},
+        {name:'Mirror & Brush',emoji:'🪞',time:'20 min',supplies:'Hand mirror, soft brush or comb',
+         desc:'Look in a hand mirror while hair is gently brushed. Familiar, comforting, and dignity-affirming.',
+         tags:['Routine','Dignified','Calming']},
+        {name:'Perfume Dabbing',emoji:'🌸',time:'20 min',supplies:'Familiar perfume on a cotton pad',
+         desc:'Dab a little perfume on the wrist and breathe it in — familiar scents unlock powerful memories.',
+         tags:['Sensory','Memory','Calming']},
+        {name:'Pretty Colors',emoji:'🎨',time:'20 min',supplies:'Nail polish bottles as color display',
+         desc:'Look at and hold beautiful nail polish bottles. Name the colors, choose a favorite, feel the cool glass.',
+         tags:['Visual','Sensory','Fun']},
+        {name:'Silk & Softness',emoji:'🎀',time:'20 min',supplies:'Silk scarves and soft fabric swatches',
+         desc:'Feel the luxurious softness of silk, velvet, and satin scarves. Drape, stroke, enjoy the sensation.',
+         tags:['Sensory','Tactile','Calming']},
+        {name:'Makeup Bag Surprise',emoji:'👜',time:'25 min',supplies:'Makeup bag with familiar beauty items',
+         desc:'Reach in and pull out familiar beauty items — compact, lipstick, brush, mirror. Name each one.',
+         tags:['Tactile','Familiar','Fun']}
+      ],
+      discussion: [
+        'What was your favorite perfume or scent?',
+        'What color lipstick did you like to wear for special occasions?',
+        'Did you love getting your hair done at the salon?',
+        'What made you feel most beautiful?',
+        'Did you have a special compact or hand mirror you loved?',
+        'What did your getting-ready routine look like on a special day?'
+      ]
+    }
+  }
+};
+
+// ── Shared Level Descriptions (already defined in grp script, but safe to reference) ──
+// GRP_LEVEL_DESC is already loaded from The Toolbox/Purse script
+
+// ── Wallet state & functions ──────────────────────────────────────────────
+var wlSt = { lv: 1, mode: 'activities' };
+
+function wlInit() { wlLv(1); }
+
+function wlLv(n) {
+  wlSt.lv = n;
+  [1,2,3].forEach(function(i) {
+    document.querySelectorAll('.grp-lvl-btn.wl-l' + i).forEach(function(b) {
+      b.classList.toggle('active', i === n);
+    });
+  });
+  var d = document.getElementById('wl-lvl-desc');
+  if (d) d.textContent = typeof GRP_LEVEL_DESC !== 'undefined' ? GRP_LEVEL_DESC[n] : '';
+  wlMode(wlSt.mode);
+}
+
+function wlMode(mode) {
+  wlSt.mode = mode;
+  document.querySelectorAll('.wl-mode-btn').forEach(function(b) {
+    var m = (b.getAttribute('onclick') || '').match(/wlMode\('([^']+)'\)/);
+    if (m) b.classList.toggle('active', m[1] === mode);
+  });
+  var el = document.getElementById('wl-content');
+  if (!el) return;
+  var ld = WL_DATA.levels[wlSt.lv];
+  if (mode === 'activities') { el.innerHTML = xActHtml('#1b5e20', ld); }
+  else if (mode === 'discussion') { el.innerHTML = xDiscHtml('#1b5e20', ld); }
+  else if (mode === 'meetings') { el.innerHTML = xMtgHtml('wl', '#1b5e20', 'Wallet'); }
+  else if (mode === 'print') { el.innerHTML = xPrintHtml('wl', 'wl'); }
+}
+
+// ── Makeup Bag state & functions ──────────────────────────────────────────
+var mbSt = { lv: 1, mode: 'activities' };
+
+function mbInit() { mbLv(1); }
+
+function mbLv(n) {
+  mbSt.lv = n;
+  [1,2,3].forEach(function(i) {
+    document.querySelectorAll('.grp-lvl-btn.mb-l' + i).forEach(function(b) {
+      b.classList.toggle('active', i === n);
+    });
+  });
+  var d = document.getElementById('mb-lvl-desc');
+  if (d) d.textContent = typeof GRP_LEVEL_DESC !== 'undefined' ? GRP_LEVEL_DESC[n] : '';
+  mbMode(mbSt.mode);
+}
+
+function mbMode(mode) {
+  mbSt.mode = mode;
+  document.querySelectorAll('.mb-mode-btn').forEach(function(b) {
+    var m = (b.getAttribute('onclick') || '').match(/mbMode\('([^']+)'\)/);
+    if (m) b.classList.toggle('active', m[1] === mode);
+  });
+  var el = document.getElementById('mb-content');
+  if (!el) return;
+  var ld = MB_DATA.levels[mbSt.lv];
+  if (mode === 'activities') { el.innerHTML = xActHtml('#6a1b9a', ld); }
+  else if (mode === 'discussion') { el.innerHTML = xDiscHtml('#6a1b9a', ld); }
+  else if (mode === 'meetings') { el.innerHTML = xMtgHtml('mb', '#6a1b9a', 'Makeup Bag'); }
+  else if (mode === 'print') { el.innerHTML = xPrintHtml('mb', 'mb'); }
+}
+
+// ── Shared render helpers (new versions that accept color param) ──────────
+
+function xActHtml(c, ld) {
+  var h = '<div class="grp-act-grid">';
+  ld.activities.forEach(function(a) {
+    h += '<div class="grp-act-card"><h4>' + a.emoji + ' ' + a.name + '</h4>'
+      + '<div class="grp-act-meta">⏱️ ' + a.time + ' &nbsp;|&nbsp; 📦 ' + a.supplies + '</div>'
+      + '<p>' + a.desc + '</p><div class="grp-act-tags">'
+      + a.tags.map(function(t) {
+          return '<span style="background:' + c + '22;color:' + c + '">' + t + '</span>';
+        }).join('')
+      + '</div></div>';
+  });
+  return h + '</div>';
+}
+
+function xDiscHtml(c, ld) {
+  var h = '<p style="text-align:center;color:#666;margin:0 0 14px;font-size:.9rem">Use these prompts to spark great conversation during your group session.</p>'
+    + '<ul class="grp-disc-list">';
+  ld.discussion.forEach(function(q) {
+    h += '<li style="border-left-color:' + c + '">' + q + '</li>';
+  });
+  return h + '</ul>';
+}
+
+function xMtgHtml(gid, c, shortName) {
+  var saved = xLoadMtgs(gid);
+  var h = '<div class="grp-mtg-form"><h4>📅 Schedule a ' + shortName + ' Meeting</h4>'
+    + '<div class="grp-mtg-row">'
+    + '<input id="x' + gid + '-d" type="date">'
+    + '<input id="x' + gid + '-t" type="time">'
+    + '</div><div class="grp-mtg-row">'
+    + '<input id="x' + gid + '-title" type="text" placeholder="Session title or theme...">'
+    + '<select id="x' + gid + '-lv">'
+    + '<option value="1">Level 1 — Full Engagement</option>'
+    + '<option value="2">Level 2 — Supported</option>'
+    + '<option value="3">Level 3 — Sensory & Familiar</option>'
+    + '</select></div>'
+    + '<div class="grp-mtg-row" style="grid-template-columns:1fr">'
+    + '<textarea id="x' + gid + '-n" rows="2" placeholder="Notes, supplies needed, special requests..."></textarea>'
+    + '</div>'
+    + '<button class="grp-save-btn" style="background:' + c + '" onclick="xSaveMtg(\'' + gid + '\',\'' + c + '\',\'' + shortName + '\')">💾 Save Meeting</button>'
+    + '</div>';
+  if (!saved.length) {
+    h += '<p style="text-align:center;color:#aaa;padding:20px">No meetings scheduled yet.</p>';
+  } else {
+    var lvLbl = {1:'Level 1',2:'Level 2',3:'Level 3'};
+    h += '<div class="grp-mtg-list">';
+    saved.forEach(function(m) {
+      var away = '';
+      if (m.date) {
+        var d = Math.ceil((new Date(m.date + 'T12:00:00') - new Date()) / 86400000);
+        away = d === 0 ? '🟢 Today!' : d > 0 ? d + ' day' + (d===1?'':'s') + ' away' : Math.abs(d) + ' day' + (Math.abs(d)===1?'':'s') + ' ago';
+      }
+      h += '<div class="grp-mtg-card">'
+        + '<div class="grp-mtg-info"><h5>' + (m.title || 'Meeting') + '</h5>'
+        + '<p>' + [m.date, m.time, m.notes].filter(Boolean).join(' · ') + '</p></div>'
+        + '<div style="text-align:right"><span class="grp-mtg-badge" style="background:' + c + '22;color:' + c + '">'
+        + (lvLbl[m.level] || 'Level 1') + '</span>'
+        + (away ? '<br><small style="color:#888;font-size:.73rem">' + away + '</small>' : '')
+        + '</div></div>';
+    });
+    h += '</div>';
+  }
+  return h;
+}
+
+function xSaveMtg(gid, c, shortName) {
+  var date  = (document.getElementById('x' + gid + '-d') || {}).value || '';
+  var time  = (document.getElementById('x' + gid + '-t') || {}).value || '';
+  var title = (document.getElementById('x' + gid + '-title') || {}).value || '';
+  var level = parseInt(((document.getElementById('x' + gid + '-lv') || {}).value) || '1');
+  var notes = (document.getElementById('x' + gid + '-n') || {}).value || '';
+  if (!date && !title) { alert('Please add a date or title.'); return; }
+  var saved = xLoadMtgs(gid);
+  saved.push({ date:date, time:time, title:title, level:level, notes:notes });
+  saved.sort(function(a,b) { return (a.date||'').localeCompare(b.date||''); });
+  try { localStorage.setItem('el365_x' + gid + '_mtgs', JSON.stringify(saved)); } catch(e) {}
+  if (gid === 'wl') wlMode('meetings');
+  else if (gid === 'mb') mbMode('meetings');
+}
+
+function xLoadMtgs(gid) {
+  try { return JSON.parse(localStorage.getItem('el365_x' + gid + '_mtgs')) || []; } catch(e) { return []; }
+}
+
+function xPrintHtml(gid, pfx) {
+  var prints = [
+    {t:'activity_list', i:'📋', lbl:'Activity List',    sub:'Full activity list for selected level'},
+    {t:'discussion',    i:'💬', lbl:'Discussion Cards',  sub:'Discussion starters to cut and use'},
+    {t:'agenda',        i:'📅', lbl:'Meeting Agenda',    sub:'Blank agenda template for your session'},
+    {t:'signup',        i:'📝', lbl:'Sign-Up Sheet',     sub:'Attendance sheet for group members'},
+    {t:'certificate',   i:'🏅', lbl:'Certificate',       sub:'Participation award for group members'}
+  ];
+  var h = '<div class="grp-print-grid">';
+  prints.forEach(function(p) {
+    h += '<div class="grp-print-card ' + pfx + '-print-card" onclick="xDoPrint(\'' + gid + '\',\'' + p.t + '\')">'
+      + '<div class="grp-print-icon">' + p.i + '</div><h4>' + p.lbl + '</h4><p>' + p.sub + '</p></div>';
+  });
+  return h + '</div>';
+}
+
+function xDoPrint(gid, type) {
+  var isWl   = gid === 'wl';
+  var data   = isWl ? WL_DATA : MB_DATA;
+  var lv     = isWl ? wlSt.lv : mbSt.lv;
+  var ld     = data.levels[lv];
+  var c      = isWl ? '#1b5e20' : '#6a1b9a';
+  var nm     = isWl ? '🪙 The Wallet' : '💄 The Makeup Bag';
+  var emo    = isWl ? '🪙' : '💄';
+  var w      = window.open('', '_blank', 'width=820,height=640');
+  var body   = '';
+
+  if (type === 'activity_list') {
+    body = '<h2>' + nm + ' — ' + ld.label + '</h2>'
+      + '<table border="0" cellpadding="8" style="width:100%;border-collapse:collapse">'
+      + '<tr style="background:' + c + ';color:#fff"><th>Activity</th><th>Time</th><th>Supplies</th><th>Description</th></tr>';
+    ld.activities.forEach(function(a, i) {
+      body += '<tr style="background:' + (i%2===0?'#f9f9f9':'#fff') + '">'
+        + '<td><strong>' + a.emoji + ' ' + a.name + '</strong></td>'
+        + '<td nowrap>' + a.time + '</td><td>' + a.supplies + '</td><td>' + a.desc + '</td></tr>';
+    });
+    body += '</table>';
+  } else if (type === 'discussion') {
+    body = '<h2>' + nm + ' — Discussion Starters</h2>'
+      + '<p style="color:#666;font-size:.9rem">' + ld.label + ' &nbsp;·&nbsp; Cut out and use as conversation cards</p>';
+    ld.discussion.forEach(function(q, i) {
+      body += '<div style="border:2px solid ' + c + ';border-radius:10px;padding:14px 18px;margin:10px 0">'
+        + '<strong style="color:' + c + '">' + (i+1) + '.</strong> &ldquo;' + q + '&rdquo;</div>';
+    });
+  } else if (type === 'agenda') {
+    body = '<h2>' + nm + ' — Meeting Agenda</h2>'
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:16px">'
+      + '<tr><td style="padding:6px;width:80px"><strong>Date:</strong></td>'
+      + '<td style="border-bottom:1px solid #ccc;padding:6px;min-width:140px">&nbsp;</td>'
+      + '<td style="padding:6px;width:60px"><strong>Time:</strong></td>'
+      + '<td style="border-bottom:1px solid #ccc;padding:6px">&nbsp;</td></tr>'
+      + '<tr><td style="padding:6px"><strong>Location:</strong></td>'
+      + '<td colspan="3" style="border-bottom:1px solid #ccc;padding:6px">&nbsp;</td></tr>'
+      + '<tr><td style="padding:6px"><strong>Level:</strong></td>'
+      + '<td colspan="3" style="border-bottom:1px solid #ccc;padding:6px">' + ld.label + '</td></tr>'
+      + '</table>'
+      + '<h3 style="color:' + c + ';border-bottom:2px solid ' + c + ';padding-bottom:4px">Session Outline</h3>'
+      + '<ul style="line-height:2.4;font-size:.95rem">'
+      + '<li>Welcome &amp; Attendance (5 min)</li>'
+      + '<li>Warm-Up / Icebreaker (10 min)</li>'
+      + '<li>Main Activity: ___________________________ (_____ min)</li>'
+      + '<li>Discussion / Sharing (10–15 min)</li>'
+      + '<li>Closing / Announcements (5 min)</li></ul>'
+      + '<h3 style="color:' + c + ';border-bottom:2px solid ' + c + ';padding-bottom:4px">Supplies Needed</h3>'
+      + '<div style="min-height:60px;border:1px solid #ddd;border-radius:6px;padding:10px;margin-bottom:14px">&nbsp;</div>'
+      + '<h3 style="color:' + c + ';border-bottom:2px solid ' + c + ';padding-bottom:4px">Notes</h3>'
+      + '<div style="min-height:80px;border:1px solid #ddd;border-radius:6px;padding:10px">&nbsp;</div>';
+  } else if (type === 'signup') {
+    body = '<h2>' + nm + ' — Attendance Sheet</h2>'
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:16px">'
+      + '<tr><td style="padding:6px"><strong>Date:</strong></td>'
+      + '<td style="border-bottom:1px solid #ccc;padding:6px;width:180px">&nbsp;</td>'
+      + '<td style="padding:6px"><strong>Activity / Theme:</strong></td>'
+      + '<td style="border-bottom:1px solid #ccc;padding:6px">&nbsp;</td></tr></table>'
+      + '<table border="1" style="width:100%;border-collapse:collapse">'
+      + '<tr style="background:' + c + ';color:#fff">'
+      + '<th style="padding:8px;width:30px">#</th><th>Resident Name</th>'
+      + '<th style="width:70px">Room</th><th>Initial</th><th>Notes</th></tr>';
+    for (var i = 1; i <= 22; i++) {
+      body += '<tr style="height:28px"><td style="padding:4px;text-align:center;font-size:.85rem">' + i + '</td>'
+        + '<td></td><td></td><td></td><td></td></tr>';
+    }
+    body += '</table>';
+  } else if (type === 'certificate') {
+    body = '<div style="border:8px double ' + c + ';border-radius:20px;padding:40px 50px;text-align:center">'
+      + '<div style="font-size:3.5rem">' + emo + '</div>'
+      + '<h1 style="color:' + c + ';margin:8px 0 2px;font-size:1.8rem">' + nm + '</h1>'
+      + '<p style="color:#666;font-size:1rem;margin:0 0 20px">Certificate of Participation</p>'
+      + '<div style="border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:20px;margin:0 0 20px">'
+      + '<p style="font-size:1.1rem;margin:0 0 8px">This certificate is proudly awarded to</p>'
+      + '<div style="font-size:2rem;font-weight:bold;color:' + c + ';border-bottom:3px solid ' + c
+      + ';display:inline-block;min-width:320px;padding-bottom:6px;margin-bottom:12px">&nbsp;</div>'
+      + '<p style="font-size:1rem;margin:0 0 6px">for outstanding participation in</p>'
+      + '<p style="font-size:1.3rem;font-weight:bold;color:#333">' + ld.label + '</p>'
+      + '</div>'
+      + '<table style="width:100%"><tr>'
+      + '<td style="text-align:center;padding-top:30px">'
+      + '<div style="border-top:2px solid #aaa;display:inline-block;min-width:200px;padding-top:6px">Date</div></td>'
+      + '<td style="text-align:center;padding-top:30px">'
+      + '<div style="border-top:2px solid #aaa;display:inline-block;min-width:200px;padding-top:6px">Activity Director</div>'
+      + '</td></tr></table></div>';
+  }
+
+  w.document.write('<!DOCTYPE html><html><head><title>' + nm + ' Print</title>'
+    + '<style>body{font-family:Arial,sans-serif;padding:28px;max-width:800px;margin:0 auto}'
+    + 'h1,h2{color:' + c + '}@media print{body{padding:10px}}</style></head><body>'
+    + body
+    + '<p style="text-align:center;color:#bbb;font-size:.75rem;margin-top:28px">Empower Life 365 &mdash; empowerlife365.app</p>'
+    + '</body></html>');
+  w.document.close();
+  setTimeout(function() { w.print(); }, 400);
+}
+
+// ── IIFE hook: extend switchTab for both new tabs ──
+(function() {
+  var _orig = window.switchTab;
+  window.switchTab = function(n) {
+    if (_orig) _orig(n);
+    if (n === 'wallet') wlInit();
+    if (n === 'makeup') mbInit();
   };
 })();
 </script>
