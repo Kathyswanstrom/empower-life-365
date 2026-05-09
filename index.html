@@ -1617,6 +1617,42 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .mt-print-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
 .mt-print-card { background:#fff; border:2px solid #FDE68A; border-radius:12px; padding:16px; text-align:center; }
 
+
+/* ═══════════════ TALENT SHOW ═══════════════ */
+.ts-header { background:linear-gradient(135deg,#A855F7,#7C3AED); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.ts-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#FAF5FF; border-bottom:1px solid #E9D5FF; flex-wrap:wrap; }
+.ts-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #7C3AED; background:#fff; color:#5B21B6; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.ts-mode-btn.active, .ts-mode-btn:hover { background:#7C3AED; color:#fff; }
+.ts-body { padding:20px; max-width:900px; }
+.ts-form-box { background:#FAF5FF; border:2px solid #E9D5FF; border-radius:14px; padding:18px 20px; margin-bottom:20px; }
+.ts-form-box input, .ts-form-box select, .ts-form-box textarea { width:100%; padding:8px 12px; border:1px solid #E9D5FF; border-radius:8px; font-size:14px; margin-bottom:10px; box-sizing:border-box; }
+.ts-act-row { background:#fff; border:2px solid #E9D5FF; border-radius:12px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:12px; }
+.ts-act-num { width:32px; height:32px; border-radius:50%; background:#7C3AED; color:#fff; font-weight:900; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ts-act-info { flex:1; min-width:0; }
+.ts-act-title { font-weight:800; font-size:14px; color:#4C1D95; }
+.ts-act-meta { font-size:12px; color:#7C3AED; margin-top:2px; }
+.ts-act-desc { font-size:13px; color:#374151; margin-top:4px; font-style:italic; }
+.ts-act-btns { display:flex; gap:6px; flex-shrink:0; }
+.ts-vote-card { background:#fff; border:2px solid #E9D5FF; border-radius:14px; padding:16px 18px; margin-bottom:12px; }
+.ts-vote-category { font-weight:900; font-size:14px; color:#4C1D95; margin-bottom:10px; }
+.ts-vote-option { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:2px solid #E9D5FF; margin-bottom:6px; cursor:pointer; transition:all .2s; }
+.ts-vote-option:hover { background:#FAF5FF; border-color:#7C3AED; }
+.ts-vote-option.voted { background:#7C3AED; color:#fff; border-color:#7C3AED; }
+.ts-vote-option.voted .ts-vote-name { color:#fff; }
+.ts-vote-name { font-weight:700; font-size:14px; color:#374151; flex:1; }
+.ts-vote-bar { height:8px; border-radius:4px; background:#E9D5FF; flex:1; overflow:hidden; }
+.ts-vote-fill { height:100%; background:#7C3AED; border-radius:4px; transition:width .4s; }
+.ts-vote-count { font-size:12px; font-weight:700; color:#7C3AED; width:30px; text-align:right; }
+.ts-mc-block { background:#fff; border:2px solid #E9D5FF; border-radius:12px; padding:16px 18px; margin-bottom:12px; }
+.ts-mc-label { font-size:11px; font-weight:900; color:#7C3AED; text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px; }
+.ts-mc-text { font-size:14px; color:#1F2937; line-height:1.7; font-style:italic; }
+.ts-idea-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+.ts-idea-card { background:#FAF5FF; border:2px solid #E9D5FF; border-radius:10px; padding:12px 14px; cursor:pointer; transition:all .2s; }
+.ts-idea-card:hover { background:#EDE9FE; border-color:#7C3AED; }
+.ts-idea-emoji { font-size:28px; margin-bottom:6px; }
+.ts-idea-name { font-weight:800; font-size:13px; color:#4C1D95; }
+.ts-idea-desc { font-size:11px; color:#6B7280; margin-top:3px; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1694,6 +1730,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="garden" id="garden-tab" onclick="switchTab('garden')">🌱 Gardening</button>
       <button class="tab-btn" data-tab="brain" id="brain-tab" onclick="switchTab('brain')">🧩 Brain Games</button>
       <button class="tab-btn" data-tab="monthly" id="monthly-tab" onclick="switchTab('monthly')">📅 Monthly Themes</button>
+      <button class="tab-btn" data-tab="talent" id="talent-tab" onclick="switchTab('talent')">🎭 Talent Show</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -4783,6 +4820,194 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">💬</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Discussion Guide</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Conversation starters &amp; prompts</div><button onclick="mtPrintDiscussionGuide()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
       <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">🎵</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Song &amp; Trivia List</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Themed songs &amp; trivia topics</div><button onclick="mtPrintSongTrivia()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
       <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">📦</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Full Theme Package</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">All materials in one print</div><button onclick="mtPrintFullPackage()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print All</button></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-talent">
+  <div class="ts-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">🎭 Talent Show &amp; Open Mic</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">Sign-ups · show order · MC scripts · audience voting · print programs</div>
+    </div>
+    <button onclick="tsPrint()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+  </div>
+  <div class="ts-mode-bar">
+    <button class="ts-mode-btn active" id="tsmode-signup" onclick="tsSetMode('signup')">📝 Sign-Ups</button>
+    <button class="ts-mode-btn" id="tsmode-show" onclick="tsSetMode('show')">🎬 Show Order</button>
+    <button class="ts-mode-btn" id="tsmode-mc" onclick="tsSetMode('mc')">🎤 MC Script</button>
+    <button class="ts-mode-btn" id="tsmode-vote" onclick="tsSetMode('vote')">🗳️ Voting</button>
+    <button class="ts-mode-btn" id="tsmode-ideas" onclick="tsSetMode('ideas')">💡 Act Ideas</button>
+    <button class="ts-mode-btn" id="tsmode-print" onclick="tsSetMode('print')">🖨️ Print Materials</button>
+  </div>
+
+  <!-- SIGN-UPS -->
+  <div id="ts-view-signup" class="ts-body">
+    <div class="ts-form-box">
+      <div style="font-weight:800;font-size:15px;color:#4C1D95;margin-bottom:14px;">➕ Add a Performer</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">Resident / Performer Name</label>
+          <input type="text" id="ts-name" placeholder="Full name or first name..." />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">Act Type</label>
+          <select id="ts-type">
+            <option value="🎤 Singing">🎤 Singing</option>
+            <option value="💃 Dancing">💃 Dancing</option>
+            <option value="📜 Poetry / Spoken Word">📜 Poetry / Spoken Word</option>
+            <option value="🎸 Instrument">🎸 Instrument</option>
+            <option value="😂 Comedy / Jokes">😂 Comedy / Jokes</option>
+            <option value="🪄 Magic Trick">🪄 Magic Trick</option>
+            <option value="📖 Story / Reading">📖 Story / Reading</option>
+            <option value="🌟 Talent Demo">🌟 Talent Demo</option>
+            <option value="👥 Group Act">👥 Group Act</option>
+            <option value="🎵 Sing-Along Lead">🎵 Sing-Along Lead</option>
+            <option value="🎭 Skit / Drama">🎭 Skit / Drama</option>
+          </select>
+        </div>
+      </div>
+      <label style="font-size:12px;font-weight:700;color:#5B21B6;">Act Title / Song / Description</label>
+      <input type="text" id="ts-title" placeholder="e.g. Singing 'You Are My Sunshine', or 'Poem about summer'..." />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">Estimated Duration (minutes)</label>
+          <select id="ts-duration">
+            <option value="1">1 minute</option>
+            <option value="2" selected>2 minutes</option>
+            <option value="3">3 minutes</option>
+            <option value="4">4 minutes</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">Special Needs / Notes</label>
+          <input type="text" id="ts-notes" placeholder="Microphone, chair, music playback..." />
+        </div>
+      </div>
+      <button onclick="tsAddAct()" class="btn" style="background:#7C3AED;color:#fff;">✅ Add to Show</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:15px;color:#4C1D95;" id="ts-signup-count">Performers (0)</div>
+      <div style="display:flex;gap:8px;">
+        <span id="ts-total-time" style="background:#EDE9FE;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:700;color:#5B21B6;"></span>
+        <button onclick="tsClearAll()" class="btn btn-secondary" style="font-size:12px;">🗑️ Clear All</button>
+      </div>
+    </div>
+    <div id="ts-act-empty" style="text-align:center;padding:40px;color:#7C3AED;font-size:15px;">No performers yet. Add the first act above!</div>
+    <div id="ts-act-list"></div>
+  </div>
+
+  <!-- SHOW ORDER -->
+  <div id="ts-view-show" class="ts-body" style="display:none;">
+    <div class="ts-form-box">
+      <div style="font-weight:800;font-size:15px;color:#4C1D95;margin-bottom:12px;">🎬 Show Settings</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">Show Title</label>
+          <input type="text" id="ts-show-title" placeholder="e.g. Spring Talent Showcase" />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">Date</label>
+          <input type="date" id="ts-show-date" />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#5B21B6;">MC Name</label>
+          <input type="text" id="ts-mc-name" placeholder="Activity director name..." />
+        </div>
+      </div>
+    </div>
+    <div style="font-weight:800;font-size:15px;color:#4C1D95;margin-bottom:10px;">📋 Show Lineup — Click arrows to reorder</div>
+    <div id="ts-show-empty" style="text-align:center;padding:30px;color:#7C3AED;">Add performers in the Sign-Ups tab first.</div>
+    <div id="ts-show-list"></div>
+    <div id="ts-show-summary" style="margin-top:16px;background:#EDE9FE;border-radius:10px;padding:14px 16px;display:none;">
+      <span style="font-weight:700;color:#4C1D95;" id="ts-show-summary-text"></span>
+    </div>
+  </div>
+
+  <!-- MC SCRIPT -->
+  <div id="ts-view-mc" class="ts-body" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:16px;color:#4C1D95;">🎤 MC Script</div>
+      <button onclick="tsPrintMCScript()" class="btn" style="background:#7C3AED;color:#fff;font-size:13px;">🖨️ Print Script</button>
+    </div>
+    <div id="ts-mc-script-body"></div>
+  </div>
+
+  <!-- VOTING -->
+  <div id="ts-view-vote" class="ts-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#4C1D95;margin-bottom:6px;">🗳️ Audience Voting</div>
+    <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Tap an act to cast a vote in each category. Results update live.</div>
+    <div id="ts-vote-empty" style="text-align:center;padding:30px;color:#7C3AED;">Add performers in the Sign-Ups tab first.</div>
+    <div id="ts-vote-categories"></div>
+    <div style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="tsResetVotes()" class="btn btn-secondary" style="font-size:13px;">🔄 Reset Votes</button>
+      <button onclick="tsPrintBallots()" class="btn" style="background:#7C3AED;color:#fff;font-size:13px;">🖨️ Print Paper Ballots</button>
+      <button onclick="tsPrintWinners()" class="btn" style="background:#7C3AED;color:#fff;font-size:13px;">🏆 Print Winner Certificates</button>
+    </div>
+  </div>
+
+  <!-- ACT IDEAS -->
+  <div id="ts-view-ideas" class="ts-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#4C1D95;margin-bottom:6px;">💡 Act Ideas for Residents</div>
+    <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Click any idea to pre-fill the sign-up form.</div>
+    <div class="ts-idea-grid" id="ts-idea-grid"></div>
+    <div style="margin-top:24px;background:#EDE9FE;border:2px solid #E9D5FF;border-radius:12px;padding:16px 18px;">
+      <div style="font-weight:900;font-size:14px;color:#4C1D95;margin-bottom:10px;">🌟 Tips for a Great Talent Show</div>
+      <div style="font-size:13px;color:#374151;line-height:1.9;">
+        <b>Encourage everyone</b> — there are no bad acts. Every participant is a star.<br>
+        <b>Keep it moving</b> — aim for 2–3 minutes per act to maintain energy.<br>
+        <b>MC bridges</b> — the MC's enthusiasm between acts sets the whole mood.<br>
+        <b>Group acts</b> — residents who are shy can participate in a group song or skit.<br>
+        <b>Practice run</b> — a quick rehearsal the day before builds confidence.<br>
+        <b>Family welcome</b> — invite families to watch; it makes performers feel extra special.<br>
+        <b>Celebrate all</b> — every performer gets a certificate. There are no losers.
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINT MATERIALS -->
+  <div id="ts-view-print" class="ts-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#4C1D95;margin-bottom:14px;">🖨️ Print Materials</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+      <div style="background:#fff;border:2px solid #E9D5FF;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📄</div>
+        <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">Show Program</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Full lineup with act titles</div>
+        <button onclick="tsPrintProgram()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #E9D5FF;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🗳️</div>
+        <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">Voting Ballots</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Paper ballots for audience</div>
+        <button onclick="tsPrintBallots()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #E9D5FF;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🎤</div>
+        <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">MC Script</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Full script with intros</div>
+        <button onclick="tsPrintMCScript()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #E9D5FF;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🏆</div>
+        <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">Participant Certificates</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">One certificate per performer</div>
+        <button onclick="tsPrintCertificates()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #E9D5FF;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📣</div>
+        <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">Event Poster</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Announcement flyer</div>
+        <button onclick="tsPrintPoster()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
+      <div style="background:#fff;border:2px solid #E9D5FF;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🏅</div>
+        <div style="font-weight:800;color:#4C1D95;margin-bottom:6px;">Winner Certificates</div>
+        <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Category award certificates</div>
+        <button onclick="tsPrintWinners()" class="btn" style="background:#7C3AED;color:#fff;width:100%;font-size:13px;">🖨️ Print</button>
+      </div>
     </div>
   </div>
 </section>
@@ -36338,6 +36563,483 @@ function mtPrintFullPackage(id) {
   var prompts = m.discussions.map(function(d, i){ return '<div style="margin-bottom:10px;padding:10px 14px;background:' + m.color + ';border-radius:8px;"><b>' + (i+1) + '.</b> ' + d + '</div>'; }).join('');
   var w = window.open('','_blank');
   w.document.write('<html><head><title>' + m.name + ' Full Package</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:700px}h1{color:' + m.textColor + ';text-align:center;font-size:28px}h2{color:' + m.darkColor + ';font-size:17px;border-bottom:2px solid ' + m.color + ';padding-bottom:6px;margin-top:28px}ul{line-height:2}li{font-size:14px;}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' — ' + m.theme + '</h1><p style="text-align:center;font-style:italic;color:#888;">' + m.tagline + ' · Empower Life 365</p><h2>📅 4-Week Activity Plan</h2>' + weeks + '<h2>🎨 Decorations Checklist</h2><ul>' + decoList + '</ul><h2>🍽️ Food Ideas</h2><ul>' + foodList + '</ul><h2>🎯 Game Ideas</h2><ul>' + gameList + '</ul><h2>💬 Discussion Prompts</h2>' + prompts + '<h2>🎵 Featured Songs</h2><ul>' + m.songs.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ul><h2>🧠 Trivia Topics</h2><p>' + m.trivia + '</p><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   TALENT SHOW  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var TS_ACTS_KEY   = 'el365_ts_acts';
+var TS_ORDER_KEY  = 'el365_ts_order';
+var TS_VOTES_KEY  = 'el365_ts_votes';
+var TS_SHOW_KEY   = 'el365_ts_show';
+
+var TS_ACT_IDEAS = [
+  {emoji:'🎤',name:'Favorite Song Solo',type:'🎤 Singing',title:'Singing a favorite song',dur:3,notes:'Needs microphone if available'},
+  {emoji:'🎵',name:'Lead a Sing-Along',type:'🎵 Sing-Along Lead',title:'Leading group in a familiar song',dur:4,notes:''},
+  {emoji:'💃',name:'Dance Performance',type:'💃 Dancing',title:'Dancing to a favorite song',dur:2,notes:'Clear floor space needed'},
+  {emoji:'📜',name:'Original Poem',type:'📜 Poetry / Spoken Word',title:'Reading an original poem',dur:2,notes:''},
+  {emoji:'📖',name:'Favorite Poem',type:'📜 Poetry / Spoken Word',title:'Reciting a beloved poem from memory',dur:2,notes:''},
+  {emoji:'😂',name:'Joke Telling',type:'😂 Comedy / Jokes',title:'Telling their best jokes',dur:2,notes:''},
+  {emoji:'🎸',name:'Play an Instrument',type:'🎸 Instrument',title:'Playing piano, guitar, harmonica, or other instrument',dur:3,notes:'Instrument needed'},
+  {emoji:'🪄',name:'Magic Trick',type:'🪄 Magic Trick',title:'Performing a magic trick for the audience',dur:3,notes:'May need a helper from audience'},
+  {emoji:'📖',name:'Share a Story',type:'📖 Story / Reading',title:'Telling a memorable life story',dur:4,notes:''},
+  {emoji:'🎭',name:'Short Skit',type:'🎭 Skit / Drama',title:'Performing a short funny skit',dur:3,notes:'May need a partner'},
+  {emoji:'🌟',name:'Hidden Talent Demo',type:'🌟 Talent Demo',title:'Demonstrating a unique skill or hobby',dur:3,notes:''},
+  {emoji:'👥',name:'Duet Song',type:'👥 Group Act',title:'Singing a duet with another resident',dur:3,notes:'Two performers, one microphone'},
+  {emoji:'🎨',name:'Live Art Demo',type:'🌟 Talent Demo',title:'Drawing or painting live on stage',dur:5,notes:'Easel and supplies needed'},
+  {emoji:'🤸',name:'Chair Exercise Routine',type:'💃 Dancing',title:'Leading a seated movement routine',dur:3,notes:'Chair on stage'},
+  {emoji:'📚',name:'Read Aloud',type:'📖 Story / Reading',title:'Reading a favorite poem or passage from a book',dur:3,notes:'Book or printed page needed'},
+  {emoji:'🎙️',name:'Impersonation',type:'😂 Comedy / Jokes',title:'Impersonating a famous voice or character',dur:2,notes:''}
+];
+
+var TS_VOTE_CATEGORIES = [
+  {id:'favorite',label:'⭐ Crowd Favorite'},
+  {id:'funniest',label:'😂 Funniest Act'},
+  {id:'talented',label:'🌟 Most Talented'},
+  {id:'heartfelt',label:'💕 Most Heartfelt'},
+  {id:'entertaining',label:'🎉 Most Entertaining'}
+];
+
+var TS_MC_INTROS = {
+  '🎤 Singing': ['Please give a warm welcome to our next performer, who will be singing for us tonight!','Up next, we have a wonderful vocalist — please put your hands together!','Get ready to enjoy some beautiful music from our next star!'],
+  '💃 Dancing': ['Our next performer is going to dazzle us with some amazing moves — here we go!','Time to get on your feet — well, at least in spirit — for our next dancing star!','Watch closely because our next act is going to move us all!'],
+  '📜 Poetry / Spoken Word': ['Our next performer has something very special to share — words from the heart.','Prepare to be moved. Our next star will be sharing a poem just for us.','The written word is powerful, and our next performer is about to prove it!'],
+  '🎸 Instrument': ['We are so lucky — our next performer is going to play live music for us right now!','Please sit back and enjoy as our next star serenades us with beautiful music.','Here comes some live music — give it up for our next performer!'],
+  '😂 Comedy / Jokes': ['Time to smile! Our next performer is going to have us all laughing!','Brace yourselves — we have a comedian in our midst! Please welcome our next act!','Laughter is the best medicine, and our next star is the doctor!'],
+  '🪄 Magic Trick': ['Can you keep a secret? Because our next performer is about to show you something you won\'t believe!','Get ready to be amazed — our next act involves a little bit of magic!','Watch closely... and you still won\'t believe what you see from our next performer!'],
+  '📖 Story / Reading': ['Our next performer has a story to share — and I have a feeling it\'s going to be unforgettable.','Every life is a story worth telling. Please welcome our next performer to share theirs.','Settle in and listen closely as our next star takes us on a journey with words.'],
+  '🌟 Talent Demo': ['We are about to see something truly special. Please welcome our next talented performer!','Get ready to be impressed — our next star has a talent you have to see to believe!','Ladies and gentlemen, you asked for it — here is our next amazing act!'],
+  '👥 Group Act': ['This next act is extra special — it takes two! Please welcome our next performers!','Everything is better together, and our next group act is proof of that!','Put your hands together for not one, but multiple stars taking the stage!'],
+  '🎵 Sing-Along Lead': ['Get ready to sing along, everyone! Our next performer is going to lead us all!','You\'ll want to join in for this one — here comes our sing-along leader!','Everyone gets to be a star for this next act — our performer is going to lead us all in song!'],
+  '🎭 Skit / Drama': ['Lights, camera, action! Our next performers are about to put on a show within our show!','Get ready for some drama — the good kind! Please welcome our next skit performers!','Our next act is going to take us to another place and time. Enjoy the show!']
+};
+
+/* ── STORAGE ── */
+function tsGetActs() { try { return JSON.parse(localStorage.getItem(TS_ACTS_KEY)) || []; } catch(e) { return []; } }
+function tsSetActs(a) { localStorage.setItem(TS_ACTS_KEY, JSON.stringify(a)); }
+function tsGetOrder() { try { return JSON.parse(localStorage.getItem(TS_ORDER_KEY)) || null; } catch(e) { return null; } }
+function tsSetOrder(o) { localStorage.setItem(TS_ORDER_KEY, JSON.stringify(o)); }
+function tsGetVotes() { try { return JSON.parse(localStorage.getItem(TS_VOTES_KEY)) || {}; } catch(e) { return {}; } }
+function tsSetVotes(v) { localStorage.setItem(TS_VOTES_KEY, JSON.stringify(v)); }
+function tsGetShow() { try { return JSON.parse(localStorage.getItem(TS_SHOW_KEY)) || {}; } catch(e) { return {}; } }
+function tsSetShow(s) { localStorage.setItem(TS_SHOW_KEY, JSON.stringify(s)); }
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'talent') tsInit();
+  };
+})();
+
+function tsInit() {
+  tsRenderSignups();
+  tsRenderShowOrder();
+  tsRenderMCScript();
+  tsRenderVoting();
+  tsRenderIdeas();
+  var show = tsGetShow();
+  var sd = document.getElementById('ts-show-date');
+  var st = document.getElementById('ts-show-title');
+  var sm = document.getElementById('ts-mc-name');
+  if (sd && show.date) sd.value = show.date;
+  if (st && show.title) st.value = show.title;
+  if (sm && show.mc) sm.value = show.mc;
+  if (sd && !sd.value) sd.value = new Date().toISOString().split('T')[0];
+}
+
+/* ── MODE ── */
+function tsSetMode(mode) {
+  ['signup','show','mc','vote','ideas','print'].forEach(function(m) {
+    document.getElementById('ts-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('tsmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+  if (mode === 'show') tsRenderShowOrder();
+  if (mode === 'mc') tsRenderMCScript();
+  if (mode === 'vote') tsRenderVoting();
+}
+
+/* ── SIGN-UPS ── */
+function tsAddAct() {
+  var name = document.getElementById('ts-name').value.trim();
+  var type = document.getElementById('ts-type').value;
+  var title = document.getElementById('ts-title').value.trim();
+  var dur = parseInt(document.getElementById('ts-duration').value, 10);
+  var notes = document.getElementById('ts-notes').value.trim();
+  if (!name) return alert('Please enter a performer name.');
+  var acts = tsGetActs();
+  acts.push({ id: Date.now(), name: name, type: type, title: title, dur: dur, notes: notes });
+  tsSetActs(acts);
+  document.getElementById('ts-name').value = '';
+  document.getElementById('ts-title').value = '';
+  document.getElementById('ts-notes').value = '';
+  tsRenderSignups();
+  tsRenderShowOrder();
+  tsRenderVoting();
+  tsRenderMCScript();
+}
+
+function tsDeleteAct(id) {
+  if (!confirm('Remove this performer?')) return;
+  var acts = tsGetActs().filter(function(a){ return a.id !== id; });
+  tsSetActs(acts);
+  tsRenderSignups();
+  tsRenderShowOrder();
+  tsRenderVoting();
+  tsRenderMCScript();
+}
+
+function tsClearAll() {
+  if (!confirm('Remove ALL performers? This cannot be undone.')) return;
+  tsSetActs([]);
+  tsSetOrder(null);
+  tsSetVotes({});
+  tsRenderSignups();
+  tsRenderShowOrder();
+  tsRenderVoting();
+  tsRenderMCScript();
+}
+
+function tsRenderSignups() {
+  var acts = tsGetActs();
+  var list = document.getElementById('ts-act-list');
+  var empty = document.getElementById('ts-act-empty');
+  var count = document.getElementById('ts-signup-count');
+  var timeEl = document.getElementById('ts-total-time');
+  var totalMin = acts.reduce(function(s, a){ return s + (a.dur || 2); }, 0);
+  if (count) count.textContent = 'Performers (' + acts.length + ')';
+  if (timeEl) timeEl.textContent = totalMin > 0 ? '⏱ ~' + totalMin + ' min total' : '';
+  if (!list) return;
+  if (!acts.length) { list.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = acts.map(function(a, i) {
+    return '<div class="ts-act-row">'
+      + '<div class="ts-act-num">' + (i+1) + '</div>'
+      + '<div class="ts-act-info">'
+      + '<div class="ts-act-title">' + a.name + '</div>'
+      + '<div class="ts-act-meta">' + a.type + ' · ⏱ ' + a.dur + ' min' + (a.notes ? ' · ' + a.notes : '') + '</div>'
+      + (a.title ? '<div class="ts-act-desc">"' + a.title + '"</div>' : '')
+      + '</div>'
+      + '<div class="ts-act-btns">'
+      + '<button onclick="tsDeleteAct(' + a.id + ')" style="background:none;border:1px solid #EF4444;color:#EF4444;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;">✕ Remove</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+/* ── SHOW ORDER ── */
+function tsGetOrderedActs() {
+  var acts = tsGetActs();
+  var order = tsGetOrder();
+  if (!order) return acts;
+  var mapped = {};
+  acts.forEach(function(a){ mapped[a.id] = a; });
+  var ordered = order.filter(function(id){ return mapped[id]; }).map(function(id){ return mapped[id]; });
+  acts.forEach(function(a){ if (!mapped[a.id] || order.indexOf(a.id) === -1) ordered.push(a); });
+  return ordered;
+}
+
+function tsSaveShowSettings() {
+  var show = {
+    title: (document.getElementById('ts-show-title') || {}).value || '',
+    date: (document.getElementById('ts-show-date') || {}).value || '',
+    mc: (document.getElementById('ts-mc-name') || {}).value || ''
+  };
+  tsSetShow(show);
+}
+
+function tsMoveAct(idx, dir) {
+  var acts = tsGetOrderedActs();
+  var newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= acts.length) return;
+  var tmp = acts[idx];
+  acts[idx] = acts[newIdx];
+  acts[newIdx] = tmp;
+  tsSetOrder(acts.map(function(a){ return a.id; }));
+  tsRenderShowOrder();
+  tsRenderMCScript();
+}
+
+function tsRenderShowOrder() {
+  var acts = tsGetOrderedActs();
+  var list = document.getElementById('ts-show-list');
+  var empty = document.getElementById('ts-show-empty');
+  var summary = document.getElementById('ts-show-summary');
+  var summaryText = document.getElementById('ts-show-summary-text');
+  if (!list) return;
+  if (!acts.length) { list.innerHTML = ''; if (empty) empty.style.display = ''; if (summary) summary.style.display = 'none'; return; }
+  if (empty) empty.style.display = 'none';
+  var totalMin = acts.reduce(function(s,a){ return s + (a.dur||2); }, 0);
+  if (summary) summary.style.display = '';
+  if (summaryText) summaryText.textContent = acts.length + ' acts · Estimated runtime: ~' + totalMin + ' minutes (not including breaks or applause)';
+  list.innerHTML = acts.map(function(a, i) {
+    return '<div class="ts-act-row" style="margin-bottom:8px;">'
+      + '<div class="ts-act-num" style="background:#7C3AED;">' + (i+1) + '</div>'
+      + '<div class="ts-act-info">'
+      + '<div class="ts-act-title">' + a.name + '</div>'
+      + '<div class="ts-act-meta">' + a.type + ' · ⏱ ' + a.dur + ' min</div>'
+      + (a.title ? '<div class="ts-act-desc">"' + a.title + '"</div>' : '')
+      + '</div>'
+      + '<div class="ts-act-btns">'
+      + (i > 0 ? '<button onclick="tsMoveAct(' + i + ',-1)" style="background:#EDE9FE;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px;" title="Move up">▲</button>' : '<span style="width:38px;display:inline-block;"></span>')
+      + (i < acts.length-1 ? '<button onclick="tsMoveAct(' + i + ',1)" style="background:#EDE9FE;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px;" title="Move down">▼</button>' : '<span style="width:38px;display:inline-block;"></span>')
+      + '</div></div>';
+  }).join('');
+}
+
+/* ── MC SCRIPT ── */
+function tsRenderMCScript() {
+  var acts = tsGetOrderedActs();
+  var body = document.getElementById('ts-mc-script-body');
+  if (!body) return;
+  if (!acts.length) { body.innerHTML = '<div style="text-align:center;padding:30px;color:#7C3AED;">Add performers first, then your MC script will appear here.</div>'; return; }
+  var show = tsGetShow();
+  var showTitle = show.title || 'Our Talent Show';
+  var showDate = show.date ? new Date(show.date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'}) : 'Today';
+  var mcName = show.mc || 'the Activity Director';
+  var html = '';
+
+  // Opening
+  html += '<div class="ts-mc-block"><div class="ts-mc-label">🎤 OPENING — ' + mcName + '</div>'
+    + '<div class="ts-mc-text">"Good [morning/afternoon/evening], everyone! Welcome, welcome, welcome to ' + showTitle + '! '
+    + 'I am so excited to be your host today. My name is ' + mcName + ', and I have to tell you — we have an absolutely incredible lineup of talented performers for you today. '
+    + 'Every single person on our program today worked up the courage to stand up here and share something special with you, so please show them all the love they deserve. '
+    + 'Now sit back, relax, and get ready to be amazed. Let\'s get this show started!"</div></div>';
+
+  acts.forEach(function(a, i) {
+    var intros = TS_MC_INTROS[a.type] || TS_MC_INTROS['🌟 Talent Demo'];
+    var intro = intros[i % intros.length];
+    html += '<div class="ts-mc-block"><div class="ts-mc-label">🎭 ACT ' + (i+1) + ' — INTRODUCE: ' + a.name.toUpperCase() + '</div>'
+      + '<div class="ts-mc-text">"' + intro + ' Please put your hands together for ' + a.name + '!'
+      + (a.title ? ' ' + a.name + ' will be performing: ' + a.title + '.' : '')
+      + ' ' + a.name + ', the stage is yours!"</div></div>';
+    if (i < acts.length - 1) {
+      html += '<div class="ts-mc-block" style="background:#FAF5FF;"><div class="ts-mc-label">👏 BETWEEN ACTS — APPLAUSE BRIDGE</div>'
+        + '<div class="ts-mc-text">"Wasn\'t that wonderful? Let\'s hear it one more time for ' + a.name + '! [lead applause] '
+        + 'What a treat. Okay everyone, we\'re keeping this party going — we have more incredible talent coming right up!"</div></div>';
+    }
+  });
+
+  // Closing
+  html += '<div class="ts-mc-block" style="border-color:#7C3AED;"><div class="ts-mc-label">🎉 CLOSING — ' + mcName + '</div>'
+    + '<div class="ts-mc-text">"That is our show for today, folks! Can we have one final, enormous round of applause for ALL of our incredible performers? '
+    + '[lead standing ovation or big applause] Every single one of these stars had the courage and the heart to share something special with all of us today, and we are so grateful. '
+    + 'I\'m so proud of every one of you. '
+    + 'Thank you all so much for being here. Until next time — keep shining! This has been ' + showTitle + ', and I\'ve been your host, ' + mcName + '. Good night everyone!"</div></div>';
+
+  body.innerHTML = html;
+}
+
+/* ── VOTING ── */
+function tsRenderVoting() {
+  var acts = tsGetOrderedActs();
+  var cats = document.getElementById('ts-vote-categories');
+  var empty = document.getElementById('ts-vote-empty');
+  if (!cats) return;
+  if (!acts.length) { cats.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  var votes = tsGetVotes();
+  cats.innerHTML = TS_VOTE_CATEGORIES.map(function(cat) {
+    var catVotes = votes[cat.id] || {};
+    var total = Object.values(catVotes).reduce(function(s, v){ return s + v; }, 0);
+    return '<div class="ts-vote-card">'
+      + '<div class="ts-vote-category">' + cat.label + '</div>'
+      + acts.map(function(a) {
+        var vCount = catVotes[a.id] || 0;
+        var pct = total > 0 ? Math.round(vCount / total * 100) : 0;
+        var hasVoted = catVotes[a.id] > 0;
+        return '<div class="ts-vote-option" onclick="tsCastVote(\'' + cat.id + '\',' + a.id + ')">'
+          + '<div class="ts-vote-name">' + a.name + '<span style="font-size:11px;font-weight:400;opacity:.7;"> — ' + a.type.split(' ').slice(1).join(' ') + '</span></div>'
+          + '<div class="ts-vote-bar"><div class="ts-vote-fill" style="width:' + pct + '%;"></div></div>'
+          + '<div class="ts-vote-count">' + (vCount > 0 ? vCount : '') + '</div>'
+          + '</div>';
+      }).join('')
+      + '</div>';
+  }).join('');
+}
+
+function tsCastVote(catId, actId) {
+  var votes = tsGetVotes();
+  if (!votes[catId]) votes[catId] = {};
+  votes[catId][actId] = (votes[catId][actId] || 0) + 1;
+  tsSetVotes(votes);
+  tsRenderVoting();
+}
+
+function tsResetVotes() {
+  if (!confirm('Reset all votes?')) return;
+  tsSetVotes({});
+  tsRenderVoting();
+}
+
+/* ── IDEAS ── */
+function tsRenderIdeas() {
+  var grid = document.getElementById('ts-idea-grid');
+  if (!grid) return;
+  grid.innerHTML = TS_ACT_IDEAS.map(function(idea) {
+    return '<div class="ts-idea-card" onclick="tsFillFromIdea(' + TS_ACT_IDEAS.indexOf(idea) + ')">'
+      + '<div class="ts-idea-emoji">' + idea.emoji + '</div>'
+      + '<div class="ts-idea-name">' + idea.name + '</div>'
+      + '<div class="ts-idea-desc">' + idea.type + ' · ' + idea.dur + ' min</div>'
+      + '</div>';
+  }).join('');
+}
+
+function tsFillFromIdea(idx) {
+  var idea = TS_ACT_IDEAS[idx];
+  var typeEl = document.getElementById('ts-type');
+  var titleEl = document.getElementById('ts-title');
+  var durEl = document.getElementById('ts-duration');
+  var notesEl = document.getElementById('ts-notes');
+  if (typeEl) typeEl.value = idea.type;
+  if (titleEl) titleEl.value = idea.title;
+  if (durEl) durEl.value = idea.dur;
+  if (notesEl) notesEl.value = idea.notes;
+  tsSetMode('signup');
+  var nameEl = document.getElementById('ts-name');
+  if (nameEl) nameEl.focus();
+}
+
+/* ── PRINT ── */
+function tsPrint() {
+  var active = document.querySelector('.ts-mode-btn.active');
+  var m = active ? active.id.replace('tsmode-','') : 'signup';
+  if (m === 'signup' || m === 'show') tsPrintProgram();
+  else if (m === 'mc') tsPrintMCScript();
+  else if (m === 'vote') tsPrintBallots();
+  else tsPrintProgram();
+}
+
+function tsGetShowInfo() {
+  var show = tsGetShow();
+  tsSaveShowSettings();
+  show = tsGetShow();
+  return {
+    title: show.title || 'Talent Show',
+    date: show.date ? new Date(show.date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'}) : new Date().toLocaleDateString(),
+    mc: show.mc || 'Activity Director'
+  };
+}
+
+function tsPrintProgram() {
+  var acts = tsGetOrderedActs();
+  var info = tsGetShowInfo();
+  if (!acts.length) return alert('No performers yet! Add some acts first.');
+  var rows = acts.map(function(a, i) {
+    return '<tr><td style="padding:10px;border-bottom:1px solid #eee;text-align:center;font-weight:900;color:#7C3AED;font-size:16px;">' + (i+1) + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;"><div style="font-weight:800;font-size:15px;">' + a.name + '</div>'
+      + '<div style="font-size:13px;color:#888;">' + a.type + '</div>'
+      + (a.title ? '<div style="font-size:13px;font-style:italic;color:#555;">"' + a.title + '"</div>' : '') + '</td>'
+      + '<td style="padding:10px;border-bottom:1px solid #eee;text-align:center;color:#888;font-size:13px;">~' + a.dur + ' min</td></tr>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Show Program</title><style>body{font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:0 auto;}h1{color:#4C1D95;text-align:center;font-size:30px;}h3{text-align:center;color:#7C3AED;font-style:italic;}table{width:100%;border-collapse:collapse;}th{background:#7C3AED;color:#fff;padding:10px;text-align:left;}.footer{text-align:center;margin-top:30px;font-size:13px;color:#888;}</style></head><body><h1>🎭 ' + info.title + '</h1><h3>' + info.date + '</h3><p style="text-align:center;font-size:13px;color:#888;">Hosted by ' + info.mc + ' · Empower Life 365</p><hr style="border-color:#E9D5FF;margin:20px 0;"><table><tr><th>#</th><th>Performer</th><th>Time</th></tr>' + rows + '</table><div class="footer">Please hold your applause until each act is complete. Thank you for your enthusiasm and support!</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function tsPrintBallots() {
+  var acts = tsGetOrderedActs();
+  var info = tsGetShowInfo();
+  if (!acts.length) return alert('No performers yet!');
+  var actList = acts.map(function(a, i){ return '<div style="margin:4px 0;">☐ ' + (i+1) + '. ' + a.name + '</div>'; }).join('');
+  var cats = TS_VOTE_CATEGORIES.map(function(cat){
+    return '<div style="margin-bottom:14px;"><div style="font-weight:700;font-size:14px;color:#4C1D95;margin-bottom:6px;">' + cat.label + '</div>' + actList + '</div>';
+  }).join('');
+  var ballot = '<div style="border:2px solid #7C3AED;border-radius:12px;padding:20px;margin-bottom:20px;page-break-inside:avoid;">'
+    + '<div style="font-size:18px;font-weight:900;color:#4C1D95;text-align:center;margin-bottom:4px;">🗳️ ' + info.title + ' — Ballot</div>'
+    + '<div style="text-align:center;font-size:12px;color:#888;margin-bottom:14px;">' + info.date + '</div>'
+    + cats
+    + '<div style="font-size:11px;color:#aaa;text-align:center;margin-top:10px;">Circle or check one performer per category</div></div>';
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Voting Ballots</title><style>body{font-family:Arial,sans-serif;padding:20px;max-width:680px;}@media print{.ballot{page-break-after:always;}}</style></head><body>' + ballot + ballot + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function tsPrintMCScript() {
+  var body = document.getElementById('ts-mc-script-body');
+  if (!body || !body.innerHTML.trim()) return alert('No performers added yet!');
+  var info = tsGetShowInfo();
+  var scriptHtml = body.innerHTML
+    .replace(/class="ts-mc-block"/g,'style="margin-bottom:16px;padding:12px 16px;border:1px solid #eee;border-radius:8px;"')
+    .replace(/class="ts-mc-label"/g,'style="font-size:11px;font-weight:900;color:#7C3AED;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;"')
+    .replace(/class="ts-mc-text"/g,'style="font-size:14px;color:#1F2937;line-height:1.8;font-style:italic;"');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>MC Script</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px;}h1{color:#4C1D95;}</style></head><body><h1>🎤 MC Script — ' + info.title + '</h1><p style="color:#888;font-size:12px;">Hosted by ' + info.mc + ' · ' + info.date + ' · Empower Life 365</p><hr style="border-color:#E9D5FF;margin:16px 0;">' + scriptHtml + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function tsPrintCertificates() {
+  var acts = tsGetActs();
+  var info = tsGetShowInfo();
+  if (!acts.length) return alert('No performers yet!');
+  var certs = acts.map(function(a) {
+    return '<div style="page-break-after:always;text-align:center;padding:60px 50px;border:8px double #7C3AED;margin:20px;">'
+      + '<div style="font-size:60px;margin-bottom:12px;">🎭</div>'
+      + '<div style="font-size:13px;font-weight:700;color:#7C3AED;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;">Certificate of Performance</div>'
+      + '<div style="font-size:13px;color:#888;margin-bottom:20px;">This certificate is proudly presented to</div>'
+      + '<div style="font-size:34px;font-weight:900;color:#4C1D95;border-bottom:3px solid #7C3AED;padding-bottom:8px;margin:0 40px 16px;">' + a.name + '</div>'
+      + '<div style="font-size:14px;color:#374151;margin-bottom:6px;">for their outstanding performance in</div>'
+      + '<div style="font-size:20px;font-weight:800;color:#7C3AED;margin-bottom:20px;">' + a.type + (a.title ? '<br><span style="font-size:15px;font-style:italic;">"' + a.title + '"</span>' : '') + '</div>'
+      + '<div style="font-size:14px;color:#888;">at</div>'
+      + '<div style="font-size:18px;font-weight:800;color:#4C1D95;margin:6px 0;">' + info.title + '</div>'
+      + '<div style="font-size:13px;color:#888;margin-bottom:40px;">' + info.date + '</div>'
+      + '<div style="display:flex;justify-content:space-around;margin-top:20px;">'
+      + '<div style="text-align:center;"><div style="border-top:2px solid #7C3AED;padding-top:8px;width:160px;font-size:12px;color:#888;">' + info.mc + ', Host</div></div>'
+      + '</div>'
+      + '<div style="margin-top:24px;font-size:13px;color:#A855F7;">✨ Empower Life 365 ✨</div>'
+      + '</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Certificates</title><style>body{font-family:Georgia,serif;}</style></head><body>' + certs + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function tsPrintWinners() {
+  var votes = tsGetVotes();
+  var acts = tsGetOrderedActs();
+  var info = tsGetShowInfo();
+  if (!acts.length) return alert('No performers yet!');
+  var actMap = {};
+  acts.forEach(function(a){ actMap[a.id] = a; });
+  var certs = TS_VOTE_CATEGORIES.map(function(cat) {
+    var catVotes = votes[cat.id] || {};
+    var winnerId = null;
+    var winCount = 0;
+    Object.keys(catVotes).forEach(function(id) {
+      if (catVotes[id] > winCount) { winCount = catVotes[id]; winnerId = id; }
+    });
+    var winner = winnerId ? actMap[parseInt(winnerId)] : null;
+    if (!winner) return '';
+    return '<div style="page-break-after:always;text-align:center;padding:60px 50px;border:8px double #D97706;margin:20px;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);">'
+      + '<div style="font-size:60px;margin-bottom:12px;">🏆</div>'
+      + '<div style="font-size:13px;font-weight:700;color:#D97706;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;">Award Certificate</div>'
+      + '<div style="font-size:22px;font-weight:900;color:#92400E;margin-bottom:16px;">' + cat.label + '</div>'
+      + '<div style="font-size:13px;color:#888;margin-bottom:16px;">Awarded to</div>'
+      + '<div style="font-size:34px;font-weight:900;color:#4C1D95;border-bottom:3px solid #D97706;padding-bottom:8px;margin:0 40px 16px;">' + winner.name + '</div>'
+      + '<div style="font-size:16px;color:#374151;margin-bottom:6px;">' + winner.type + '</div>'
+      + (winner.title ? '<div style="font-size:14px;font-style:italic;color:#888;margin-bottom:16px;">"' + winner.title + '"</div>' : '')
+      + '<div style="font-size:14px;color:#888;">' + info.title + ' · ' + info.date + '</div>'
+      + '<div style="margin-top:30px;font-size:13px;color:#D97706;">⭐ Empower Life 365 ⭐</div>'
+      + '</div>';
+  }).filter(Boolean).join('');
+  if (!certs) return alert('No votes recorded yet! Cast some votes first.');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Winner Certificates</title><style>body{font-family:Georgia,serif;}</style></head><body>' + certs + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function tsPrintPoster() {
+  var info = tsGetShowInfo();
+  var acts = tsGetOrderedActs();
+  var performers = acts.length ? '<div style="margin-top:20px;font-size:16px;"><b>Featuring:</b><br>' + acts.map(function(a){ return a.name; }).join(' · ') + '</div>' : '';
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Event Poster</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:60px 40px;max-width:600px;margin:0 auto;background:linear-gradient(135deg,#FAF5FF,#EDE9FE);}h1{font-size:52px;color:#4C1D95;margin-bottom:0;}h2{font-size:24px;color:#7C3AED;font-style:italic;}p{font-size:18px;color:#374151;line-height:1.9;}.star{font-size:40px;margin:10px;}.line{border:3px solid #7C3AED;margin:20px 0;}</style></head><body><div class="star">🎭</div><h1>' + info.title + '</h1><div class="line"></div><h2>A Live Performance Event</h2><p style="font-size:22px;font-weight:700;color:#4C1D95;">' + info.date + '</p><p>Hosted by ' + info.mc + '</p>' + performers + '<div class="line"></div><p style="font-size:16px;color:#7C3AED;">All are welcome · Refreshments to follow</p><p style="font-size:14px;color:#aaa;margin-top:30px;">Empower Life 365</p><script>window.onload=function(){window.print()};<\/script></body></html>');
   w.document.close();
 }
 </script>
