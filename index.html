@@ -3363,6 +3363,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
     <button id="gcat-group"  onclick="filterGames('group')"  class="gm-cat">👥 Group</button>
     <button id="gcat-other"  onclick="filterGames('other')"  class="gm-cat">💡 Other</button>
     <button id="gcat-themed" onclick="filterGames('themed')" class="gm-cat">🌍 Themed</button>
+    <button id="gcat-tv" onclick="filterGames('tv')" class="gm-cat">📺 TV Shows</button>
   </div>
 
   <!-- Player count filter -->
@@ -3403,9 +3404,38 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <button id="gm-print-instructions" onclick="printGameInstructions()" class="btn btn-primary">🖨️ Print Instructions</button>
         <button id="gm-print-score"        onclick="printGameScore()"        class="btn btn-secondary">📄 Print Score Sheet</button>
         <button id="gm-print-cards"        onclick="printGameCards()"        class="btn btn-secondary" id="gm-cards-btn">🃏 Print Game Cards</button>
+        <button id="gm-launch-jeopardy" onclick="jeoLaunch()" class="btn btn-primary" style="display:none;background:#060042;">🎮 Launch Jeopardy Board</button>
       </div>
     </div>
   </div>
+
+  <!-- ===== JEOPARDY BOARD OVERLAY ===== -->
+  <div id="jeo-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:#060042;overflow-y:auto;font-family:Arial,sans-serif;">
+    <!-- Top bar -->
+    <div style="background:#03003a;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:2px solid #FFD700;">
+      <span style="color:#FFD700;font-size:1.3rem;font-weight:900;">📺 JEOPARDY!</span>
+      <select id="jeo-set-select" onchange="jeoLoadSet(this.value)" style="padding:5px 10px;border-radius:6px;font-size:.85rem;font-weight:700;background:#1a1a6e;color:#FFD700;border:1px solid #FFD700;cursor:pointer;"></select>
+      <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;" id="jeo-team-scores"></div>
+      <button onclick="jeoClose()" style="background:#dc2626;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-weight:700;cursor:pointer;font-size:.85rem;">✕ Close</button>
+    </div>
+    <!-- Board -->
+    <div style="padding:12px;">
+      <div id="jeo-board" style="display:grid;gap:4px;"></div>
+    </div>
+    <!-- Question popup -->
+    <div id="jeo-q-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:10001;display:none;align-items:center;justify-content:center;padding:20px;">
+      <div style="background:#060060;border:3px solid #FFD700;border-radius:16px;max-width:680px;width:100%;padding:28px;text-align:center;">
+        <div id="jeo-q-pts" style="color:#FFD700;font-size:1rem;font-weight:700;margin-bottom:10px;"></div>
+        <div id="jeo-q-cat" style="color:#aaa;font-size:.9rem;margin-bottom:14px;"></div>
+        <div id="jeo-q-text" style="color:#fff;font-size:1.4rem;font-weight:700;line-height:1.5;margin-bottom:20px;"></div>
+        <button id="jeo-reveal-btn" onclick="jeoReveal()" style="background:#FFD700;color:#060042;border:none;border-radius:8px;padding:10px 28px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:16px;">Reveal Answer</button>
+        <div id="jeo-q-answer" style="display:none;background:#1a1a6e;border-radius:8px;padding:14px;color:#FFD700;font-size:1.3rem;font-weight:700;margin-bottom:18px;"></div>
+        <div id="jeo-award-btns" style="display:none;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px;"></div>
+        <button onclick="jeoCloseQ()" style="background:transparent;color:#aaa;border:1px solid #555;border-radius:6px;padding:7px 20px;cursor:pointer;font-size:.85rem;">Skip / No Points</button>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <section class="tab-panel" id="panel-travel">
@@ -15654,7 +15684,55 @@ const GAMES_DATA = [
     rules:`<b>Teams:</b> Divide into 2 teams.<br><b>Round 1 — Easy:</b> Capitals and flags (5 questions per team).<br><b>Round 2 — Medium:</b> Landmarks and foods (5 questions).<br><b>Round 3 — Lightning:</b> 60-second rapid fire — team shouts answers together.<br><b>Win:</b> Most points after 3 rounds wins!`,
     tips:'Use the Travel Trivia questions from the Travel Hub tab as your question bank for this game.',
     printCards: true, scoreType:'points',
-    cardDeck:['What is the capital of France? → Paris','What country has a maple leaf on its flag? → Canada','What is the tallest mountain? → Mt. Everest','What ocean is the largest? → Pacific','Where is the Eiffel Tower? → Paris','What country is the Amazon in? → Brazil','Where are the pyramids? → Egypt','What is the longest river? → The Nile','What continent is Australia on? → Australia','What country has Big Ben? → England','Where is Machu Picchu? → Peru','What country gave us the Statue of Liberty? → France'] }
+    cardDeck:['What is the capital of France? → Paris','What country has a maple leaf on its flag? → Canada','What is the tallest mountain? → Mt. Everest','What ocean is the largest? → Pacific','Where is the Eiffel Tower? → Paris','What country is the Amazon in? → Brazil','Where are the pyramids? → Egypt','What is the longest river? → The Nile','What continent is Australia on? → Australia','What country has Big Ben? → England','Where is Machu Picchu? → Peru','What country gave us the Statue of Liberty? → France'] },
+  // -- TV GAME SHOWS ------------------------------------------
+  { id:'letsmakedeal', cat:'tv', players:'group', difficulty:'easy', emoji:'🚪',
+    name:"Let's Make a Deal",
+    tagline:'Pick a door, take a trade — or risk it all for the Big Deal!',
+    need:`3 large envelopes or boxes labeled DOOR 1, DOOR 2, DOOR 3 (or Curtain A/B/C). Prizes: a mix of real small prizes (candy, a flower, a gift card) and "Zonk" prizes (silly items like a rubber duck, old sponge, gag gift). 1 host (staff). 6–20 residents.`,
+    rules:`<b>Setup:</b> Before the session, place prizes inside or behind three doors/boxes: one GOOD prize, one OK prize, one ZONK (booby prize). Keep contents secret.<br><br>
+<b>Pick a Contestant:</b> Choose a willing resident. They must be "dressed up" — anyone wearing something colorful, a hat, or something funny gets bonus entry chances!<br><br>
+<b>Round 1 — Choose a Door:</b> The contestant picks Door 1, 2, or 3. The host reveals what's inside. They may KEEP it or TRADE for the hidden contents of another door.<br><br>
+<b>The Trade:</b> Host offers to trade their prize for what's behind another door OR for a mystery envelope. Build excitement: "Are you sure? It could be much better — or much worse!"<br><br>
+<b>The Zonk:</b> If they trade into a Zonk (gag prize), the audience reacts with theatrical horror. The Zonk winner still gets a small consolation treat.<br><br>
+<b>The Big Deal of the Day:</b> At the end, one "finalist" picks from 3 large curtains/boxes for the day's best prize. All finalists who took the Zonk get a second chance.<br><br>
+<b>Costume Bonus:</b> Residents who dressed up, wore a themed item, or made a funny sign get extra chances to be called. This encourages fun participation all day.`,
+    tips:`Plan a set of 5–6 rounds with different contestants. Recruit 2–3 "Zonk items" from staff donations — the funnier the better (a singing fish, novelty glasses, a bag of coal). The costume element can be announced 24 hours before for residents who love to prepare. Keep prizes modest: candy bars, small plants, gift certificates work perfectly. The HOST'S energy makes the game — big reactions, dramatic pauses, and audience involvement are everything.`,
+    printCards: true, scoreType:'none',
+    cardDeck:['🎁 Wonderful Prize!','🎉 Great Gift!','🌹 Beautiful Flower!','🍬 Sweet Treats!','☕ Coffee Gift Card!','📚 New Book!','🧦 Fun Socks — ZONK!','🐟 Rubber Duck — ZONK!','🪣 Empty Bucket — ZONK!','😂 Whoopee Cushion — ZONK!','🧻 Roll of Toilet Paper — ZONK!','🎈 One Balloon — ZONK!'] },
+
+  { id:'priceisright', cat:'tv', players:'group', difficulty:'easy', emoji:'💰',
+    name:'The Price Is Right',
+    tagline:"Come on down! Guess the price and win the showcase!",
+    need:`Prop items with price tags (bring 10–15 everyday items: canned goods, toiletries, candy, kitchen tools). Index cards to write prices. A whiteboard or flip chart. Small prizes for winners. 1 host + 1 helper. 8–20 residents.`,
+    rules:`<b>Opening — "Come On Down!":</b> Call 4 residents to be contestants by name. Encourage them to come up front with excitement.<br><br>
+<b>GAME 1 — Higher or Lower:</b> Host holds up an item and states its actual price. A contestant guesses if the NEXT item costs MORE or LESS. Get 3 in a row right to win a prize!<br><br>
+<b>GAME 2 — Contestant's Row:</b> Show an item. All 4 contestants write down (or shout) a price guess. Whoever is closest without going over wins the item and advances.<br><br>
+<b>GAME 3 — The Grocery Game:</b> Show 5 grocery items. Contestants arrange them in order from cheapest to most expensive. Closest overall order wins!<br><br>
+<b>GAME 4 — Plinko (DIY):</b> Earn chips by guessing the price of small items (within $1 = 1 chip, exactly right = 2 chips). Drop chips down a peg board (use a folded cardboard box with slots marked $0, $5, $10, $25) to win prize money or tokens.<br><br>
+<b>SHOWCASE SHOWDOWN (Grand Finale):</b> Final 2 contestants each receive a "Showcase Package" description read aloud (a pretend trip, a car, luxury items — make it funny with community-specific twists: "A private dinner with your favorite staff member! A week without laundry duties!"). Each bids on their package. Closest without going over wins the real day's prize.`,
+    tips:`Bring real grocery items from the kitchen — residents LOVE guessing prices of actual food they eat. The more theatrical the host, the better. Use a bell or buzzer sound on a phone for correct answers. For Plinko, a DIY board made from a cardboard box with labeled landing zones works perfectly. Make the Showcase Showdown prizes silly and community-specific — residents find personalized humor deeply funny. Award small treats (candy, stickers) to all 4 contestants at the end so everyone wins something.`,
+    printCards: true, scoreType:'none',
+    cardDeck:['Can of soup — $1.49','Box of cereal — $4.29','Tube of toothpaste — $3.99','Bar of soap — $2.19','Box of crackers — $3.49','Bottle of shampoo — $5.79','Package of cookies — $3.99','Can of coffee — $8.99','Bottle of juice — $3.29','Package of paper towels — $7.49','Bottle of lotion — $6.99','Box of tea bags — $4.19','Can of beans — $1.09','Bag of chips — $4.29','Box of pasta — $1.89'] },
+
+  { id:'jeopardy-game', cat:'tv', players:'group', difficulty:'medium', emoji:'📺',
+    name:'Jeopardy!',
+    tagline:'5 complete game boards — from easy to genius level — with live scoring!',
+    need:`Nothing needed — the interactive board is built in! Tap "Launch Jeopardy Board" below. Supports up to 4 teams. Choose from 5 difficulty levels: Simple & Sweet (⭐) through Genius Round (⭐⭐⭐⭐⭐).`,
+    rules:`<b>How to Play:</b><br>
+Teams take turns selecting a category and dollar amount from the board. Click the square to reveal the clue. Jeopardy answers are given as clues — contestants respond in the form of a question ("What is...?" / "Who is...?").<br><br>
+<b>Scoring:</b> Correct answer = team earns that dollar amount. Wrong answer = no deduction (optional: deduct for harder difficulty). Click the winning team's name to award points.<br><br>
+<b>Daily Double:</b> Designated squares let the selecting team wager before hearing the clue — any amount up to their current total.<br><br>
+<b>Final Jeopardy:</b> All teams see a category, wager an amount, write their answer, then reveal simultaneously. All correct answers earn their wager; wrong answers lose it.<br><br>
+<b>5 Game Sets:</b><br>
+• ⭐ Simple & Sweet — Very easy, everyday topics<br>
+• ⭐⭐ Good Memories — Golden era nostalgia<br>
+• ⭐⭐⭐ All American — History, sports, culture<br>
+• ⭐⭐⭐⭐ Brain Power — Science, literature, world<br>
+• ⭐⭐⭐⭐⭐ Genius Round — Dates, arts, hard trivia`,
+    tips:`Divide residents into 2–4 teams of 2–5 people so everyone participates together. The team format reduces individual pressure. Read clues slowly and clearly — once for reading, then pause. For residents with hearing difficulties, display the clue text on a tablet or printed sheet. Award small candies or tokens for correct answers in addition to points. The "Simple & Sweet" set works beautifully for mixed cognitive levels — everyone can answer something and feel successful.`,
+    printCards: false, scoreType:'jeopardy' }
+
 ];
 
 let gmState = { cat: 'all', players: 'all', activeGame: null };
@@ -31955,6 +32033,351 @@ function hcPrintAll() {
   window.switchTab = function(name) {
     _hcOrig && _hcOrig(name);
     if (name === 'clubs') hcInit();
+  };
+})();
+</script>
+
+
+<script>
+/* ===== JEOPARDY BOARD ===== */
+
+var JEO_SETS = [
+  { id:'s1', name:'Simple & Sweet', stars:'⭐',
+    cats:[
+      { name:'Holidays', qs:[
+        {q:'What holiday do we celebrate on July 4th?', a:'Independence Day'},
+        {q:'In what season do leaves change colors and fall from trees?', a:'Fall / Autumn'},
+        {q:'What holiday involves trick-or-treating and costumes?', a:'Halloween'},
+        {q:'What is the first month of the year?', a:'January'},
+        {q:'What holiday is celebrated on December 25th?', a:'Christmas'}
+      ]},
+      { name:'Famous Animals', qs:[
+        {q:'What animal is known as "man\'s best friend"?', a:'Dog'},
+        {q:'What large gray animal has a long trunk?', a:'Elephant'},
+        {q:'What black-and-white bird cannot fly and lives in the Antarctic?', a:'Penguin'},
+        {q:'What animal is the national symbol of the United States?', a:'Bald Eagle'},
+        {q:'What large cat has orange fur with black stripes?', a:'Tiger'}
+      ]},
+      { name:'Food & Treats', qs:[
+        {q:'What red fruit grows on trees and "keeps the doctor away"?', a:'Apple'},
+        {q:'What yellow fruit comes in bunches and monkeys love?', a:'Banana'},
+        {q:'What breakfast food comes from hens and can be scrambled or fried?', a:'Eggs'},
+        {q:'What cold, sweet treat comes in flavors like chocolate and vanilla?', a:'Ice cream'},
+        {q:'What Italian dish comes in long strings and is topped with tomato sauce?', a:'Spaghetti / Pasta'}
+      ]},
+      { name:'Simple Facts', qs:[
+        {q:'How many days are in a week?', a:'Seven (7)'},
+        {q:'What color do you get when you mix red and white paint?', a:'Pink'},
+        {q:'How many months are in a year?', a:'Twelve (12)'},
+        {q:'If you have 10 apples and give away 3, how many are left?', a:'Seven (7)'},
+        {q:'What season comes right after winter?', a:'Spring'}
+      ]},
+      { name:'Around the House', qs:[
+        {q:'What room do you sleep in?', a:'Bedroom'},
+        {q:'What tool do you use to sweep the floor?', a:'Broom'},
+        {q:'What is the morning meal called?', a:'Breakfast'},
+        {q:'What keeps food cold so it doesn\'t spoil?', a:'Refrigerator'},
+        {q:'What do you call the person who delivers your mail?', a:'Mail carrier / Mailman'}
+      ]}
+    ]
+  },
+  { id:'s2', name:'Good Memories', stars:'⭐⭐',
+    cats:[
+      { name:'Classic TV', qs:[
+        {q:'What show starred Lucy Ricardo and her husband Ricky?', a:'I Love Lucy'},
+        {q:'Name the show about Sheriff Andy in Mayberry.', a:'The Andy Griffith Show'},
+        {q:'What western featured Marshal Matt Dillon in Dodge City?', a:'Gunsmoke'},
+        {q:'Who played "The Fonz" on Happy Days?', a:'Henry Winkler'},
+        {q:'What show followed the Clampett family who struck oil and moved to Beverly Hills?', a:'The Beverly Hillbillies'}
+      ]},
+      { name:'Music Magic', qs:[
+        {q:'Who is known as the King of Rock and Roll?', a:'Elvis Presley'},
+        {q:'"You are my _____, my only _____." Complete the lyric.', a:'Sunshine'},
+        {q:'Who sang "White Christmas" — the best-selling holiday single of all time?', a:'Bing Crosby'},
+        {q:'What female country singer recorded "Crazy" and "I Fall to Pieces"?', a:'Patsy Cline'},
+        {q:'What legendary jazz trumpeter was nicknamed "Satchmo"?', a:'Louis Armstrong'}
+      ]},
+      { name:'American Life', qs:[
+        {q:'What building in Washington D.C. does the President live in?', a:'The White House'},
+        {q:'What holiday in November is about giving thanks with family?', a:'Thanksgiving'},
+        {q:'What famous cracked bell is in Philadelphia?', a:'The Liberty Bell'},
+        {q:'In what year did Neil Armstrong first walk on the moon?', a:'1969'},
+        {q:'What vehicle carries children to and from school?', a:'School bus'}
+      ]},
+      { name:'Famous First Names', qs:[
+        {q:'President Lincoln\'s first name.', a:'Abraham'},
+        {q:'First name of FDR, the president who served four terms.', a:'Franklin'},
+        {q:'First name of the woman who first flew solo across the Atlantic — last name Earhart.', a:'Amelia'},
+        {q:'First name of Dr. King, who gave the "I Have a Dream" speech.', a:'Martin'},
+        {q:'First name of the first astronaut to walk on the moon — last name Armstrong.', a:'Neil'}
+      ]},
+      { name:'Fill in the Blank', qs:[
+        {q:'"Row, row, row your _____, gently down the stream."', a:'Boat'},
+        {q:'"You can\'t judge a book by its _____."', a:'Cover'},
+        {q:'"A penny saved is a penny _____."', a:'Earned'},
+        {q:'"Home is where the _____ is."', a:'Heart'},
+        {q:'"Early to bed and early to rise makes a man healthy, wealthy, and _____."', a:'Wise'}
+      ]}
+    ]
+  },
+  { id:'s3', name:'All American', stars:'⭐⭐⭐',
+    cats:[
+      { name:'US Presidents', qs:[
+        {q:'Who was the first President of the United States?', a:'George Washington'},
+        {q:'Which president is on both the penny and the $5 bill?', a:'Abraham Lincoln'},
+        {q:'Which president launched the New Deal during the Great Depression?', a:'Franklin D. Roosevelt'},
+        {q:'Who was the youngest person ever elected president of the US?', a:'John F. Kennedy (age 43)'},
+        {q:'Which president ordered the atomic bomb dropped on Japan to end WWII?', a:'Harry S. Truman'}
+      ]},
+      { name:'American History', qs:[
+        {q:'In what year did the United States declare independence?', a:'1776'},
+        {q:'What war was fought between the Union and Confederacy from 1861–1865?', a:'The Civil War'},
+        {q:'What famous speech did Lincoln give at the dedication of a Pennsylvania cemetery?', a:'The Gettysburg Address'},
+        {q:'What year did Japan bomb Pearl Harbor, drawing the US into WWII?', a:'1941'},
+        {q:'What law passed in 1964 banned racial discrimination in public places?', a:'The Civil Rights Act'}
+      ]},
+      { name:'Sports Greats', qs:[
+        {q:'Which player was known as "The Sultan of Swat" and hit 714 home runs?', a:'Babe Ruth'},
+        {q:'What heavyweight boxing champion called himself "The Greatest"?', a:'Muhammad Ali'},
+        {q:'What golfer won 18 major championships and is considered the GOAT of golf?', a:'Jack Nicklaus'},
+        {q:'What basketball player scored 100 points in a single NBA game in 1962?', a:'Wilt Chamberlain'},
+        {q:'What legendary football coach led the Green Bay Packers to 5 NFL titles in 7 years?', a:'Vince Lombardi'}
+      ]},
+      { name:'States & Places', qs:[
+        {q:'What is the capital of the United States?', a:'Washington D.C.'},
+        {q:'What state is known as the Lone Star State?', a:'Texas'},
+        {q:'In what state is the Grand Canyon located?', a:'Arizona'},
+        {q:'What city is nicknamed "The Windy City"?', a:'Chicago'},
+        {q:'What is the smallest US state by area?', a:'Rhode Island'}
+      ]},
+      { name:'Famous Americans', qs:[
+        {q:'Who invented the telephone?', a:'Alexander Graham Bell'},
+        {q:'Who wrote the Declaration of Independence?', a:'Thomas Jefferson'},
+        {q:'What inventor created the light bulb and the phonograph?', a:'Thomas Edison'},
+        {q:'Who refused to give up her bus seat in Montgomery, Alabama in 1955?', a:'Rosa Parks'},
+        {q:'What American nurse became famous for modernizing nursing during wartime — known as "The Lady with the Lamp"?', a:'Florence Nightingale (British) — US answer: Clara Barton, who founded the Red Cross'}
+      ]}
+    ]
+  },
+  { id:'s4', name:'Brain Power', stars:'⭐⭐⭐⭐',
+    cats:[
+      { name:'Science & Nature', qs:[
+        {q:'What planet is known as the Red Planet?', a:'Mars'},
+        {q:'How many bones are in the adult human body?', a:'206'},
+        {q:'What is the chemical symbol for gold?', a:'Au'},
+        {q:'What force keeps us on the ground?', a:'Gravity'},
+        {q:'What gas makes up approximately 78% of Earth\'s atmosphere?', a:'Nitrogen'}
+      ]},
+      { name:'Books & Literature', qs:[
+        {q:'Who wrote "The Adventures of Tom Sawyer"?', a:'Mark Twain'},
+        {q:'What famous American poet wrote "The Road Not Taken"?', a:'Robert Frost'},
+        {q:'What Dickens novel begins "It was the best of times, it was the worst of times"?', a:'A Tale of Two Cities'},
+        {q:'Who wrote "Gone with the Wind"?', a:'Margaret Mitchell'},
+        {q:'What Pulitzer Prize novel about racial injustice is set in Maycomb, Alabama?', a:'To Kill a Mockingbird (Harper Lee)'}
+      ]},
+      { name:'World Geography', qs:[
+        {q:'What is the largest continent?', a:'Asia'},
+        {q:'What river flows through Egypt and is the world\'s longest?', a:'The Nile'},
+        {q:'What is the capital city of Australia?', a:'Canberra'},
+        {q:'What ocean lies between North America and Europe?', a:'Atlantic Ocean'},
+        {q:'What country has the most land area in the world?', a:'Russia'}
+      ]},
+      { name:'Famous Inventions', qs:[
+        {q:'Henry Ford is famous for making what form of transportation affordable?', a:'The automobile / car'},
+        {q:'In what decade did television become common in American homes?', a:'The 1950s'},
+        {q:'What year did Lindbergh complete the first solo transatlantic flight?', a:'1927'},
+        {q:'What two brothers invented the airplane at Kitty Hawk in 1903?', a:'Orville and Wilbur Wright'},
+        {q:'What device, invented by Marconi in the early 1900s, allowed voice transmission over long distances?', a:'Radio'}
+      ]},
+      { name:'Word Wise', qs:[
+        {q:'What do you call a word that means the opposite of another word?', a:'Antonym'},
+        {q:'What do you call a word that sounds like another word but has different meaning (e.g., bear/bare)?', a:'Homophone'},
+        {q:'What word means both a fruit and a computer company?', a:'Apple'},
+        {q:'What word means both a type of punch and a party drink?', a:'Punch'},
+        {q:'What 9-letter word means "extremely large" and contains the word "monstrous"?', a:'Monstrous — or the answer is: "Humongous"'}
+      ]}
+    ]
+  },
+  { id:'s5', name:'Genius Round', stars:'⭐⭐⭐⭐⭐',
+    cats:[
+      { name:'History Dates', qs:[
+        {q:'In what year did the Titanic sink?', a:'1912'},
+        {q:'What year did World War I begin?', a:'1914'},
+        {q:'In what year did women in the US gain the right to vote?', a:'1920'},
+        {q:'What year did the Berlin Wall fall?', a:'1989'},
+        {q:'In what year was the US Constitution ratified?', a:'1788'}
+      ]},
+      { name:'Classical Arts', qs:[
+        {q:'Who painted the Mona Lisa?', a:'Leonardo da Vinci'},
+        {q:'What composer wrote the "Moonlight Sonata"?', a:'Ludwig van Beethoven'},
+        {q:'What Shakespeare play features "To be or not to be"?', a:'Hamlet'},
+        {q:'What Grant Wood painting shows a farmer and woman with a pitchfork in front of a white house?', a:'American Gothic'},
+        {q:'What Tchaikovsky ballet features a Sugar Plum Fairy and a Nutcracker Prince?', a:'The Nutcracker'}
+      ]},
+      { name:'Hard Science', qs:[
+        {q:'What is the chemical formula for water?', a:'H₂O'},
+        {q:'What doctor developed the first successful polio vaccine in the 1950s?', a:'Jonas Salk'},
+        {q:'What is the only planet in our solar system that rotates on its side?', a:'Uranus'},
+        {q:'In what organ of the body does digestion begin?', a:'The mouth'},
+        {q:'What molecule, shaped like a double helix, carries genetic information?', a:'DNA'}
+      ]},
+      { name:'World Leaders', qs:[
+        {q:'Who was Britain\'s Prime Minister during most of World War II?', a:'Winston Churchill'},
+        {q:'What general commanded the Allied forces on D-Day, June 6, 1944?', a:'Dwight D. Eisenhower'},
+        {q:'Who became the first President of post-apartheid South Africa?', a:'Nelson Mandela'},
+        {q:'What Roman leader was assassinated on the Ides of March?', a:'Julius Caesar'},
+        {q:'Who wrote the 95 Theses that sparked the Protestant Reformation in 1517?', a:'Martin Luther'}
+      ]},
+      { name:'Tricky Trivia', qs:[
+        {q:'How many stripes are on the American flag?', a:'13'},
+        {q:'What fruit is sometimes called a "love apple"?', a:'Tomato'},
+        {q:'How many amendments does the US Constitution currently have?', a:'27'},
+        {q:'What is the only mammal that cannot jump?', a:'Elephant'},
+        {q:'In the NATO phonetic alphabet, what word represents the letter "A"?', a:'Alpha'}
+      ]}
+    ]
+  }
+];
+
+var jeoState = { setIdx:0, teams:[], qCell:null };
+var JEO_PTS = [100,200,300,400,500];
+var jeoUsed = {};
+
+function jeoLaunch() {
+  jeoState.teams = [{name:'Team 1',score:0},{name:'Team 2',score:0},{name:'Team 3',score:0},{name:'Team 4',score:0}];
+  jeoUsed = {};
+  document.getElementById('jeo-overlay').style.display = '';
+  document.body.style.overflow = 'hidden';
+  // populate set selector
+  var sel = document.getElementById('jeo-set-select');
+  sel.innerHTML = JEO_SETS.map(function(s,i){
+    return '<option value="'+i+'">'+s.stars+' '+s.name+'</option>';
+  }).join('');
+  jeoLoadSet(0);
+}
+
+function jeoClose() {
+  document.getElementById('jeo-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function jeoLoadSet(idx) {
+  jeoState.setIdx = parseInt(idx);
+  jeoUsed[idx] = jeoUsed[idx] || {};
+  jeoRenderBoard();
+  jeoRenderTeams();
+}
+
+function jeoRenderTeams() {
+  var html = '';
+  jeoState.teams.forEach(function(t,i) {
+    html += '<div style="background:#1a1a6e;border:2px solid #FFD700;border-radius:8px;padding:5px 12px;color:#FFD700;font-weight:700;font-size:.85rem;cursor:pointer;" onclick="jeoRenameTeam('+i+')">' +
+      '<div style="font-size:.7rem;color:#aaa;">'+t.name+'</div>' +
+      '<div style="font-size:1.1rem;">${'+t.score.toLocaleString()+'}</div></div>';
+  });
+  document.getElementById('jeo-team-scores').innerHTML = html;
+}
+
+function jeoRenameTeam(i) {
+  var name = prompt('Team name:', jeoState.teams[i].name);
+  if (name) { jeoState.teams[i].name = name; jeoRenderTeams(); }
+}
+
+function jeoRenderBoard() {
+  var set = JEO_SETS[jeoState.setIdx];
+  var used = jeoUsed[jeoState.setIdx] || {};
+  var cols = set.cats.length;
+  var board = document.getElementById('jeo-board');
+  board.style.gridTemplateColumns = 'repeat('+cols+',1fr)';
+  var html = '';
+  // headers
+  set.cats.forEach(function(cat) {
+    html += '<div style="background:#1a1a6e;border:2px solid #060042;border-radius:6px;padding:12px 6px;text-align:center;color:#FFD700;font-weight:800;font-size:clamp(.7rem,1.5vw,.95rem);min-height:50px;display:flex;align-items:center;justify-content:center;">'+cat.name+'</div>';
+  });
+  // rows
+  JEO_PTS.forEach(function(pts, ri) {
+    set.cats.forEach(function(cat, ci) {
+      var key = ci+'-'+ri;
+      var done = used[key];
+      html += '<div style="background:'+(done?'#111':'#060060')+';border:2px solid #1a1a6e;border-radius:6px;min-height:60px;display:flex;align-items:center;justify-content:center;cursor:'+(done?'default':'pointer')+';transition:background .15s;" '+
+        (done ? '' : 'onclick="jeoOpenQ('+ci+','+ri+')" onmouseover="this.style.background=\'#1a1a6e\'" onmouseout="this.style.background=\'#060060\'"') +
+        '><span style="color:'+(done?'#333':'#FFD700')+';font-weight:900;font-size:clamp(.9rem,2vw,1.4rem);">'+(done?'—':'$'+pts)+'</span></div>';
+    });
+  });
+  board.innerHTML = html;
+}
+
+function jeoOpenQ(ci, ri) {
+  var set = JEO_SETS[jeoState.setIdx];
+  var cat = set.cats[ci];
+  var q = cat.qs[ri];
+  jeoState.qCell = {ci:ci,ri:ri};
+  document.getElementById('jeo-q-pts').textContent = '$'+JEO_PTS[ri];
+  document.getElementById('jeo-q-cat').textContent = cat.name;
+  document.getElementById('jeo-q-text').textContent = q.q;
+  document.getElementById('jeo-q-answer').style.display = 'none';
+  document.getElementById('jeo-q-answer').textContent = q.a;
+  document.getElementById('jeo-reveal-btn').style.display = '';
+  document.getElementById('jeo-award-btns').style.display = 'none';
+  document.getElementById('jeo-award-btns').innerHTML = '';
+  var qo = document.getElementById('jeo-q-overlay');
+  qo.style.display = 'flex';
+}
+
+function jeoReveal() {
+  var ri = jeoState.qCell ? jeoState.qCell.ri : 0;
+  var pts = JEO_PTS[ri];
+  document.getElementById('jeo-q-answer').style.display = '';
+  document.getElementById('jeo-reveal-btn').style.display = 'none';
+  var awardDiv = document.getElementById('jeo-award-btns');
+  var html = '<div style="color:#aaa;font-size:.85rem;width:100%;margin-bottom:4px;">Award points to:</div>';
+  jeoState.teams.forEach(function(t,i) {
+    html += '<button onclick="jeoAward('+i+','+pts+')" style="background:#FFD700;color:#060042;border:none;border-radius:6px;padding:7px 14px;font-weight:700;font-size:.85rem;cursor:pointer;">'+t.name+'</button>';
+  });
+  awardDiv.innerHTML = html;
+  awardDiv.style.display = 'flex';
+}
+
+function jeoAward(teamIdx, pts) {
+  jeoState.teams[teamIdx].score += pts;
+  jeoRenderTeams();
+  jeoCloseQ();
+}
+
+function jeoCloseQ() {
+  var cell = jeoState.qCell;
+  if (cell) {
+    if (!jeoUsed[jeoState.setIdx]) jeoUsed[jeoState.setIdx] = {};
+    jeoUsed[jeoState.setIdx][cell.ci+'-'+cell.ri] = true;
+  }
+  document.getElementById('jeo-q-overlay').style.display = 'none';
+  jeoRenderBoard();
+}
+
+function jeoPrintBoard() {
+  var set = JEO_SETS[jeoState.setIdx];
+  var rows = JEO_PTS.map(function(pts,ri) {
+    var cells = set.cats.map(function(cat,ci) {
+      return '<td style="border:2px solid #1a1a6e;padding:14px;text-align:center;background:#060060;color:#FFD700;font-weight:700;font-size:18px;">$'+pts+'</td>';
+    }).join('');
+    return '<tr>'+cells+'</tr>';
+  }).join('');
+  var headers = set.cats.map(function(cat) {
+    return '<th style="background:#1a1a6e;color:#FFD700;padding:12px;font-size:14px;">'+cat.name+'</th>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Jeopardy Board</title><style>body{background:#060042;color:#FFD700;font-family:Arial,sans-serif;padding:20px;}h1{text-align:center;}table{width:100%;border-collapse:collapse;}@media print{body{padding:10px;}}</style></head><body><h1>📺 JEOPARDY! — '+set.name+'</h1><table><tr>'+headers+'</tr>'+rows+'</table><p style="text-align:center;font-size:11px;margin-top:16px;">Empower Life 365 · empowerlife365.app</p></body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+/* Patch openGameModal to show/hide Jeopardy launch button */
+(function(){
+  var _orig = window.openGameModal;
+  window.openGameModal = function(id) {
+    _orig && _orig(id);
+    var btn = document.getElementById('gm-launch-jeopardy');
+    if (btn) btn.style.display = (id === 'jeopardy-game') ? '' : 'none';
   };
 })();
 </script>
