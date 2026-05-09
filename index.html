@@ -1259,6 +1259,78 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .sw-tip-icon { font-size:1.2rem; flex-shrink:0; margin-top:1px; }
 .sw-tip-text { font-size:.85rem; color:#374151; line-height:1.5; }
 
+
+/* ===== HOBBY CLUBS ===== */
+#panel-clubs { padding:0; }
+.hc-header { background:linear-gradient(135deg,#0891b2,#06b6d4); color:#fff; padding:20px 24px 16px; }
+.hc-header h2 { margin:0 0 4px; font-size:1.4rem; }
+.hc-header p  { margin:0; opacity:.85; font-size:.9rem; }
+.hc-mode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.hc-mode-btn  { padding:6px 16px; border-radius:20px; border:2px solid rgba(255,255,255,.5);
+  background:transparent; color:#fff; cursor:pointer; font-size:.85rem; font-weight:600; transition:all .2s; }
+.hc-mode-btn.active { background:#fff; color:#0891b2; border-color:#fff; }
+.hc-body { padding:16px; }
+
+/* Club directory */
+.hc-cat-label { font-size:.75rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.08em; color:#0891b2; margin:14px 0 8px; }
+.hc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; }
+.hc-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  overflow:hidden; cursor:pointer; transition:all .2s; }
+.hc-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
+.hc-card-top { height:6px; }
+.hc-card-body { padding:13px; }
+.hc-card-emoji { font-size:1.9rem; margin-bottom:6px; }
+.hc-card-title { font-size:.95rem; font-weight:700; color:#1f2937; margin:0 0 3px; }
+.hc-card-cat   { font-size:.72rem; font-weight:600; display:inline-block;
+  padding:2px 8px; border-radius:10px; margin-bottom:6px; }
+.hc-card-desc  { font-size:.8rem; color:#6b7280; margin:0; line-height:1.4; }
+.hc-badge-row  { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.hc-badge      { font-size:.7rem; padding:2px 7px; border-radius:8px;
+  background:#f1f5f9; color:#64748b; font-weight:500; }
+
+/* Club modal */
+.hc-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
+  display:none; align-items:center; justify-content:center; padding:16px; }
+.hc-modal-overlay.open { display:flex; }
+.hc-modal { background:#fff; border-radius:16px; max-width:680px; width:100%;
+  max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.hc-modal-header { color:#fff; padding:20px 24px 16px; border-radius:16px 16px 0 0;
+  position:sticky; top:0; z-index:1; }
+.hc-modal-title { font-size:1.2rem; font-weight:700; margin:0 0 4px; }
+.hc-modal-sub   { font-size:.85rem; opacity:.85; margin:0; }
+.hc-modal-close { position:absolute; top:14px; right:16px; background:rgba(255,255,255,.25);
+  border:none; color:#fff; width:30px; height:30px; border-radius:50%; cursor:pointer;
+  font-size:1.1rem; display:flex; align-items:center; justify-content:center; }
+.hc-modal-body  { padding:20px 24px; }
+.hc-section-lbl { font-size:.78rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:#0891b2; margin:16px 0 8px; }
+.hc-info-grid   { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px; }
+.hc-info-box    { background:#f0f9ff; border-radius:8px; padding:10px 12px; }
+.hc-info-label  { font-size:.72rem; color:#0891b2; font-weight:600; margin-bottom:2px; }
+.hc-info-val    { font-size:.88rem; color:#1f2937; font-weight:500; }
+.hc-project-item { background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px;
+  padding:9px 12px; margin-bottom:6px; font-size:.85rem; color:#374151; }
+.hc-project-item strong { color:#0891b2; }
+.hc-tip-row { display:flex; gap:10px; align-items:flex-start; margin-bottom:9px; }
+.hc-tip-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.hc-tip-text { font-size:.84rem; color:#374151; line-height:1.5; }
+.hc-modal-actions { display:flex; gap:10px; flex-wrap:wrap; padding:0 24px 20px; }
+.hc-modal-btn { padding:8px 18px; border-radius:8px; border:none; cursor:pointer;
+  font-size:.84rem; font-weight:600; transition:all .2s; }
+.hc-btn-teal    { background:#0891b2; color:#fff; }
+.hc-btn-outline { background:#fff; color:#0891b2; border:2px solid #0891b2; }
+
+/* Start a Club guide */
+.hc-guide-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  padding:16px; margin-bottom:12px; }
+.hc-guide-step { display:flex; gap:14px; align-items:flex-start; }
+.hc-guide-num  { width:34px; height:34px; border-radius:50%; background:#0891b2;
+  color:#fff; font-weight:700; font-size:.95rem; display:flex; align-items:center;
+  justify-content:center; flex-shrink:0; }
+.hc-guide-body h4 { margin:0 0 4px; font-size:.95rem; color:#1f2937; }
+.hc-guide-body p  { margin:0; font-size:.83rem; color:#6b7280; line-height:1.5; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1331,6 +1403,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="aromatherapy" id="aromatherapy-tab" onclick="switchTab('aromatherapy')">🌸 Aromatherapy</button>
       <button class="tab-btn" data-tab="reminiscing" id="reminiscing-tab" onclick="switchTab('reminiscing')">💭 Reminiscing</button>
       <button class="tab-btn" data-tab="stories" id="stories-tab" onclick="switchTab('stories')">📖 Stories & Writing</button>
+      <button class="tab-btn" data-tab="clubs" id="clubs-tab" onclick="switchTab('clubs')">🎯 Hobby Clubs</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3862,6 +3935,37 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div class="sw-modal-actions">
           <button class="sw-modal-btn sw-btn-purple" onclick="swPrintWriting()">🖨️ Print Guide</button>
           <button class="sw-modal-btn sw-btn-outline" onclick="swCloseWModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== HOBBY CLUBS PANEL ===== -->
+  <section class="tab-panel" id="panel-clubs">
+    <div class="hc-header">
+      <h2>🎯 Hobby Clubs</h2>
+      <p>Club profiles, project ideas, meeting resources, and a guide to starting new clubs</p>
+      <div class="hc-mode-tabs">
+        <button class="hc-mode-btn active" id="hc-mode-dir" onclick="hcSetMode('dir')">🗂️ Club Directory</button>
+        <button class="hc-mode-btn" id="hc-mode-start" onclick="hcSetMode('start')">✨ Start a Club</button>
+        <button class="hc-mode-btn" id="hc-mode-print" onclick="hcSetMode('print')">🖨️ Print Materials</button>
+      </div>
+    </div>
+    <div class="hc-body" id="hc-body"></div>
+    <!-- Club modal -->
+    <div class="hc-modal-overlay" id="hc-modal">
+      <div class="hc-modal">
+        <div class="hc-modal-header" id="hc-modal-header">
+          <button class="hc-modal-close" onclick="hcCloseModal()">✕</button>
+          <div class="hc-modal-title" id="hc-modal-title"></div>
+          <div class="hc-modal-sub"   id="hc-modal-sub"></div>
+        </div>
+        <div class="hc-modal-body" id="hc-modal-body"></div>
+        <div class="hc-modal-actions">
+          <button class="hc-modal-btn hc-btn-teal"    onclick="hcPrintClub()">🖨️ Print Club Profile</button>
+          <button class="hc-modal-btn hc-btn-outline" onclick="hcPrintAgenda()">📋 Print Agenda</button>
+          <button class="hc-modal-btn hc-btn-outline" onclick="hcCloseModal()">Close</button>
         </div>
       </div>
     </div>
@@ -31075,6 +31179,782 @@ function swPrintWriting() {
   window.switchTab = function(name) {
     _swOrig && _swOrig(name);
     if (name === 'stories') swInit();
+  };
+})();
+</script>
+
+
+<script>
+/* ===== HOBBY CLUBS ===== */
+
+var HC_CLUBS = [
+  /* ── ARTS & CRAFTS ── */
+  { id:'knitting-crochet', cat:'arts', catLabel:'Arts & Crafts', emoji:'🧶',
+    title:'Knitting & Crochet Circle', color:'#ec4899',
+    size:'4–12', freq:'Weekly', cost:'Low ($5–$15/mo)', space:'Lounge or activity room',
+    desc:'A beloved social craft that builds fine motor skills and produces beautiful, shareable items. Members work on personal projects while chatting, or collaborate on community donation drives.',
+    projects:[
+      { name:'Chemo caps', detail:'Soft, seamless hats donated to local cancer treatment centers — deeply meaningful community service.' },
+      { name:'Baby blankets', detail:'Lap-sized blankets for the NICU or local shelter. Great beginner project with big impact.' },
+      { name:'Community scarf wall', detail:'Each member knits/crochets one panel; panels are joined into a large decorative wall hanging for the lobby.' },
+      { name:'Seasonal decorations', detail:'Pumpkins, snowflakes, Easter eggs — fun mini-projects that rotate with the calendar.' },
+      { name:'Cozy slippers', detail:'Practical and popular. Members can make pairs for friends, family, or donation.' },
+      { name:'Stuffed animals', detail:'Simple amigurumi creatures for pediatric wards or grandchildren.' }
+    ],
+    tips:[
+      { icon:'💡', text:'Keep a communal yarn stash organized by color for members who want to contribute without buying supplies.' },
+      { icon:'🎓', text:'Pair beginners with experienced knitters — the mentorship dynamic strengthens club bonds.' },
+      { icon:'🎁', text:'Host a "Stitch & Give" quarter where all projects go to a chosen charity. End with a donation ceremony.' }
+    ],
+    supplies:['Yarn (various weights)', 'Knitting needles (US 7–10)', 'Crochet hooks (G–J)', 'Stitch markers', 'Scissors', 'Tapestry needles', 'Project bags']
+  },
+  { id:'watercolor-painting', cat:'arts', catLabel:'Arts & Crafts', emoji:'🎨',
+    title:'Watercolor Painting Club', color:'#8b5cf6',
+    size:'4–10', freq:'Weekly or bi-weekly', cost:'Medium ($20–$40 setup)', space:'Activity room with tables',
+    desc:'Watercolor is forgiving, portable, and produces stunning results even for beginners. Members develop personal styles over time and often become the community\'s resident artists.',
+    projects:[
+      { name:'Seasonal greeting cards', detail:'Hand-painted cards for holidays, birthdays, and "thinking of you" notes — treasured by families.' },
+      { name:'Community calendar art', detail:'12 members each paint a monthly illustration for a community art calendar, printed and distributed.' },
+      { name:'Botanical series', detail:'Focused study of flowers, leaves, and garden subjects. Pairs well with the Garden Club.' },
+      { name:'Memory landscapes', detail:'Residents paint places they have loved — hometowns, vacation spots, the view from a childhood window.' },
+      { name:'Abstract color play', detail:'Free, non-representational painting. Focus on mood and color rather than accuracy. Very accessible.' },
+      { name:'Portrait mini-series', detail:'Loose, impressionistic portraits of family members from photographs.' }
+    ],
+    tips:[
+      { icon:'🖼️', text:'Display finished work in the hallways and dining room. Labeled with the artist\'s name — residents walk taller.' },
+      { icon:'💧', text:'Watercolor is very forgiving of accidents. Lean into happy surprises rather than correcting them.' },
+      { icon:'📸', text:'Photograph every piece before the creator takes it home — build a digital gallery to share with families.' }
+    ],
+    supplies:['Watercolor pan sets (student grade)', 'Watercolor paper (140lb cold press)', 'Round brushes (#4, #8, #12)', 'Flat wash brush', 'Water containers', 'Masking tape', 'Paper towels']
+  },
+  { id:'scrapbooking', cat:'arts', catLabel:'Arts & Crafts', emoji:'📷',
+    title:'Scrapbooking & Memory Books', color:'#f59e0b',
+    size:'4–12', freq:'Weekly', cost:'Low–Medium', space:'Table space with good lighting',
+    desc:'Combining photographs, mementos, and storytelling, scrapbooking is one of the most therapeutic and family-connecting activities available. Members create lasting legacies.',
+    projects:[
+      { name:'Life story album', detail:'A personal album tracing major life chapters — childhood, career, family, adventures. A profound legacy project.' },
+      { name:'Community history book', detail:'A collaborative album documenting the facility\'s events, residents, and milestones over the year.' },
+      { name:'Family recipe book', detail:'Recipes illustrated with photos and handwritten annotations. One of the most popular items to give as a gift.' },
+      { name:'Season in photos', detail:'A simple album documenting one season — outings, events, weather, and people — from start to finish.' },
+      { name:'Gratitude journal', detail:'An ongoing decorated journal of things members are grateful for, revisited monthly.' },
+      { name:'"When I Was Young" book', detail:'Side-by-side comparisons: old photos and current ones. A conversation-starting keepsake for grandchildren.' }
+    ],
+    tips:[
+      { icon:'🖨️', text:'Offer to print digital photos on-demand. Families often have digital archives they\'d love turned into physical albums.' },
+      { icon:'✂️', text:'Keep a communal embellishment bin — stamps, stickers, ribbons, washi tape — that everyone shares.' },
+      { icon:'💬', text:'The real work is the storytelling. Encourage members to write captions and stories, not just arrange photos.' }
+    ],
+    supplies:['Acid-free albums', 'Decorative papers', 'Photo-safe adhesive', 'Scissors & paper trimmer', 'Markers & pens', 'Stickers & stamps', 'Page protectors']
+  },
+  /* ── NATURE & OUTDOORS ── */
+  { id:'garden-club', cat:'nature', catLabel:'Nature & Outdoors', emoji:'🌱',
+    title:'Garden Club', color:'#16a34a',
+    size:'4–15', freq:'Weekly (seasonal)', cost:'Low–Medium', space:'Outdoor garden beds or indoor containers',
+    desc:'Gardening reduces stress, improves mood, and connects members to the rhythms of the natural world. A garden club can manage raised beds, container gardens, or indoor plant propagation year-round.',
+    projects:[
+      { name:'Raised bed vegetable garden', detail:'Spring planting through fall harvest — tomatoes, peppers, beans, herbs. Produce donated to the kitchen or used in cooking events.' },
+      { name:'Pollinator garden', detail:'A dedicated bed of native wildflowers, lavender, and coneflowers to attract butterflies and bees.' },
+      { name:'Herb wall', detail:'A vertical or window-box herb garden supplying fresh basil, rosemary, and mint to the dining room.' },
+      { name:'Seed library', detail:'Members save, dry, label, and trade seeds at the end of each season. A beloved tradition.' },
+      { name:'Fairy garden project', detail:'Miniature container gardens with tiny figurines and mossy paths. Wonderful for memory care participants.' },
+      { name:'Holiday wreath workshop', detail:'Members harvest evergreens, dried flowers, and seed pods for seasonal wreath-making events.' }
+    ],
+    tips:[
+      { icon:'♿', text:'Ensure all beds are at accessible height (30–36 inches). Seated gardening is full gardening.' },
+      { icon:'🌡️', text:'Hot days: schedule garden time before 10 am or after 4 pm. Always have water and shade available.' },
+      { icon:'🍅', text:'Post a harvest board in the dining room — residents beam when their tomatoes appear on the dinner menu.' }
+    ],
+    supplies:['Raised bed or containers', 'Potting mix & compost', 'Trowels & hand rakes', 'Watering cans', 'Gloves (multiple sizes)', 'Plant markers', 'Seeds & seedlings', 'Kneeling pads']
+  },
+  { id:'birding-club', cat:'nature', catLabel:'Nature & Outdoors', emoji:'🐦',
+    title:'Bird Watching Club', color:'#0284c7',
+    size:'3–15', freq:'Weekly', cost:'Very Low', space:'Outdoor patio, window lounge, or walking paths',
+    desc:'Birdwatching combines gentle observation, nature connection, and ongoing discovery. Members maintain a community life list and celebrate new species sightings together.',
+    projects:[
+      { name:'Community life list', detail:'A running tally on a posted board of every species spotted on the property. Grows satisfyingly over time.' },
+      { name:'Feeder station network', detail:'Members research, fundraise for, and maintain a network of feeders visible from the lounge windows.' },
+      { name:'Seasonal migration tracking', detail:'Document arrival and departure dates of migratory birds each spring and fall.' },
+      { name:'Illustrated bird journal', detail:'Members sketch or paint birds they\'ve spotted. Collected into a beautiful community field guide.' },
+      { name:'Bird bath project', detail:'Paint, place, and maintain decorative ceramic bird baths in the courtyard.' },
+      { name:'eBird community account', detail:'Log sightings to the Cornell Lab\'s free eBird platform and contribute to citizen science.' }
+    ],
+    tips:[
+      { icon:'🔭', text:'Invest in one or two good binoculars and a copy of a regional field guide for communal use.' },
+      { icon:'🪟', text:'Install a suction-cup window feeder in the lounge — it brings birds within arm\'s length and is endlessly captivating.' },
+      { icon:'📱', text:'The free Merlin Bird ID app identifies birds by photo or sound — a huge hit with all ages.' }
+    ],
+    supplies:['Binoculars (communal)', 'Regional field guide', 'Bird feeders & seed', 'Bird bath', 'Observation journal', 'Colored pencils (for sketching)']
+  },
+  /* ── MIND & LEARNING ── */
+  { id:'book-club', cat:'mind', catLabel:'Mind & Learning', emoji:'📚',
+    title:'Book Club', color:'#7c3aed',
+    size:'5–12', freq:'Monthly (or bi-weekly)', cost:'Very Low', space:'Lounge or library',
+    desc:'A book club creates shared intellectual life, spark conversation, and keep minds engaged. Well-chosen titles open doors to memory, debate, and discovery across generations.',
+    projects:[
+      { name:'Monthly novel read', detail:'One novel per month, discussed over 60–90 minutes. Rotate who chooses the book.' },
+      { name:'Short story month', detail:'Read 4–6 short stories instead of one novel — great for varying cognitive stamina in the group.' },
+      { name:'Author focus series', detail:'Spend three months on one author\'s works. Develop deep familiarity with a voice and style.' },
+      { name:'Memoir & biography rotation', detail:'Alternate fiction with true stories. Memoirs spark especially vivid personal sharing.' },
+      { name:'Poetry month', detail:'Once a year, spend a month on poetry — one poem per meeting, read aloud twice and discussed.' },
+      { name:'"What We Read" anthology', detail:'Members write one paragraph about the book that most affected their life. Compiled as a keepsake.' }
+    ],
+    tips:[
+      { icon:'📖', text:'Large-print editions and audiobooks should always be available. Check local library systems for free access.' },
+      { icon:'🍵', text:'The social ritual matters as much as the literary discussion. Tea, coffee, and a small snack make attendance feel like a treat.' },
+      { icon:'🗳️', text:'Rotate book selection — one member chooses each meeting — so everyone feels ownership and variety stays high.' }
+    ],
+    supplies:['Copies of current book (library or purchase)', 'Large-print editions', 'Discussion question sheets', 'Reading log binder', 'Name tags for new members']
+  },
+  { id:'history-club', cat:'mind', catLabel:'Mind & Learning', emoji:'🏛️',
+    title:'History & Current Events Club', color:'#b45309',
+    size:'5–15', freq:'Weekly', cost:'Very Low', space:'Lounge with TV/projector',
+    desc:'This club celebrates lived history and engaged citizenship. Members who personally remember events that others only read about bring irreplaceable perspective to every discussion.',
+    projects:[
+      { name:'Decade spotlight series', detail:'Each session focuses on one decade — music, news, fashion, technology. Members who lived it lead the discussion.' },
+      { name:'Where were you when…', detail:'Discussion series around major historical events: moon landing, JFK, 9/11, the Berlin Wall. Members share firsthand accounts.' },
+      { name:'Local history project', detail:'Research and document the history of the local town, neighborhood, or the facility itself.' },
+      { name:'Weekly news digest', detail:'A short weekly session summarizing top local and national news, followed by discussion.' },
+      { name:'Veterans oral history', detail:'Record and preserve firsthand military service stories with participant permission.' },
+      { name:'Documentary film series', detail:'Monthly documentary screening followed by group discussion. Great variety of topics available.' }
+    ],
+    tips:[
+      { icon:'🎖️', text:'Veterans and former civic leaders often shine in this group. Create space for their expertise and experience.' },
+      { icon:'⚖️', text:'Keep current events discussions balanced and focused on understanding multiple perspectives, not political debate.' },
+      { icon:'🎬', text:'The Ken Burns documentary series (jazz, baseball, national parks, civil war) is an excellent ongoing resource.' }
+    ],
+    supplies:['Newspaper subscriptions or printouts', 'Projector or TV', 'Map of the world', 'Historical timeline poster', 'Recording device for oral histories']
+  },
+  { id:'trivia-team', cat:'mind', catLabel:'Mind & Learning', emoji:'🧠',
+    title:'Trivia Team', color:'#0891b2',
+    size:'4–16', freq:'Weekly', cost:'Very Low', space:'Common area',
+    desc:'More than a game, a trivia team builds camaraderie, celebrates knowledge, and gives members a reason to learn something new every week. Many communities enter regional competitions.',
+    projects:[
+      { name:'Weekly trivia league', detail:'Internal weekly competition with rotating teams. Track scores on a leaderboard all season.' },
+      { name:'Inter-community challenge', detail:'Challenge a neighboring senior community to a friendly trivia tournament. Social and exciting.' },
+      { name:'Specialty category nights', detail:'Each session focuses on a theme: 1960s music, geography, sports history, science. Members can prepare.' },
+      { name:'Member-authored questions', detail:'Members write and submit questions in their area of expertise. A wonderful pride exercise.' },
+      { name:'Family trivia night', detail:'An all-ages event where residents and family compete together. Very popular with grandchildren.' },
+      { name:'Championship season finale', detail:'End-of-season tournament with a celebration dinner. Award a perpetual trophy or plaque.' }
+    ],
+    tips:[
+      { icon:'⚖️', text:'Mix easy, medium, and hard questions in every session so all ability levels feel included and successful.' },
+      { icon:'🤝', text:'Team formats (rather than individual) reduce performance anxiety and increase social interaction.' },
+      { icon:'🎉', text:'Celebration matters as much as competition. Cheer everyone, not just winners.' }
+    ],
+    supplies:['Question sets or trivia app', 'Answer sheets', 'Buzzers or hand-raise system', 'Score whiteboard', 'Small prizes or ribbons']
+  },
+  /* ── MUSIC ── */
+  { id:'choir', cat:'music', catLabel:'Music & Performance', emoji:'🎤',
+    title:'Community Choir', color:'#dc2626',
+    size:'6–30', freq:'Weekly rehearsal', cost:'Low', space:'Activity room with chairs',
+    desc:'Singing in a group is one of the most joyful and beneficial activities for older adults — it improves breathing, mood, and social bonds. No experience or voice quality required.',
+    projects:[
+      { name:'Holiday concert', detail:'Annual signature performance for residents, families, and staff. The most anticipated event of the year.' },
+      { name:'Resident birthday serenade', detail:'The choir visits residents on their birthdays to sing a personalized song. A beloved tradition.' },
+      { name:'Themed sing-alongs', detail:'Monthly public sing-along open to all residents, not just choir members — different decade each time.' },
+      { name:'Hymn and gospel session', detail:'A weekly or monthly session focused on sacred music for members who wish to participate.' },
+      { name:'Recording project', detail:'Record a CD or digital album of the choir performing 10–12 songs. Share with families.' },
+      { name:'Inter-facility concert tour', detail:'Perform at a neighboring community or local school. Creates genuine civic connection.' }
+    ],
+    tips:[
+      { icon:'🎵', text:'Include songs from multiple decades and cultures so every member finds something familiar and beloved.' },
+      { icon:'🫁', text:'Group singing is proven to synchronize breathing and heart rates — it is literally good for the body.' },
+      { icon:'🎶', text:'Seat members by voice range, not just social preference. Even an informal alto/soprano/tenor division helps the sound.' }
+    ],
+    supplies:['Song lyric sheets (large print)', 'Simple percussion instruments', 'Bluetooth speaker or piano access', 'Risers or tiered chairs (optional)', 'Matching scarves or accessories for performances']
+  },
+  { id:'ukulele-club', cat:'music', catLabel:'Music & Performance', emoji:'🪗',
+    title:'Ukulele & Easy Instruments Club', color:'#d97706',
+    size:'4–12', freq:'Weekly', cost:'Medium ($30–$80 per instrument)', space:'Activity room',
+    desc:'The ukulele is the most accessible stringed instrument for beginners — four strings, soft nylon strings gentle on fingers, and hundreds of popular songs learnable in weeks.',
+    projects:[
+      { name:'First songs showcase', detail:'After 4–6 weeks of learning, members perform 3 songs for an audience. Huge confidence builder.' },
+      { name:'Ukulele jam circle', detail:'Informal weekly jam where more experienced players lead, beginners follow. Relaxed and fun.' },
+      { name:'Song request project', detail:'Members vote on songs to learn each month — popular, patriotic, folk, holiday.' },
+      { name:'Duet & ensemble pieces', detail:'Pair members up to practice and perform duets. Deepens musical relationships.' },
+      { name:'Holiday performance set', detail:'A six-song holiday set performed at the winter event. Something to work toward all fall.' },
+      { name:'Teach a family member', detail:'Members teach a grandchild or family member a simple song at the next family day.' }
+    ],
+    tips:[
+      { icon:'🎸', text:'Soprano ukuleles are cheapest and easiest to hold. Tenor ukuleles have slightly larger frets that are easier on arthritic fingers.' },
+      { icon:'📱', text:'The free Yousician app and YouTube "Ukulele for Seniors" tutorials are excellent practice tools between sessions.' },
+      { icon:'🩹', text:'Sore fingertips are normal for the first 2–3 weeks. Thin rubber fingertip protectors help enormously.' }
+    ],
+    supplies:['Ukuleles (soprano or tenor)', 'Tuners (clip-on)', 'Chord chart posters', 'Song lyric/chord sheets', 'Music stands', 'Extra strings']
+  },
+  /* ── GAMES & COMPETITION ── */
+  { id:'chess-checkers', cat:'games', catLabel:'Games & Strategy', emoji:'♟️',
+    title:'Chess & Checkers Club', color:'#374151',
+    size:'4–16', freq:'Weekly', cost:'Very Low', space:'Tables in lounge or game room',
+    desc:'Strategic board games sharpen concentration, planning, and working memory. A mix of chess and checkers ensures all ability levels have a competitive and satisfying game.',
+    projects:[
+      { name:'Weekly round-robin tournament', detail:'Structured weekly play where everyone gets at least two games. Track the season standings.' },
+      { name:'Beginner chess program', detail:'Teach chess from scratch over 6 sessions. Use simplified rules initially, add complexity gradually.' },
+      { name:'Simultaneous exhibition', detail:'The club champion plays multiple opponents at once — a classic chess event with great spectator energy.' },
+      { name:'Online play sessions', detail:'Use Chess.com or Lichess to play residents at other communities or family members remotely.' },
+      { name:'Giant outdoor chess', detail:'Coordinate with the outdoor program to use oversized chess pieces in the courtyard for a memorable event.' },
+      { name:'End-of-season championship', detail:'Annual playoff bracket with a celebration and perpetual champion plaque.' }
+    ],
+    tips:[
+      { icon:'🧩', text:'Keep games accessible for all — have both chess and checkers available every session so everyone has a match.' },
+      { icon:'⏱️', text:'Use chess clocks for experienced players, but never for beginners. Pressure ruins the enjoyment of learning.' },
+      { icon:'🤝', text:'Pair experienced and newer players for mentored games — it elevates skill faster and builds friendship.' }
+    ],
+    supplies:['Chess sets (standard Staunton)', 'Checkers sets', 'Chess clocks (optional)', 'Score sheets', 'Leaderboard display']
+  },
+  { id:'cards-club', cat:'games', catLabel:'Games & Strategy', emoji:'🃏',
+    title:'Cards & Table Games Club', color:'#059669',
+    size:'4–20', freq:'2–3x weekly', cost:'Very Low', space:'Card tables in lounge',
+    desc:'Card games are among the most social and stimulating activities available — they combine strategy, memory, luck, and rich human interaction. Bridge, pinochle, canasta, and rummy all have devoted followings.',
+    projects:[
+      { name:'Bridge program', detail:'Offer a beginner bridge course (8 sessions) and an ongoing intermediate game. Bridge has a passionate and devoted following.' },
+      { name:'Pinochle league', detail:'Regular partnership pinochle with rotating partners and a seasonal leaderboard.' },
+      { name:'Canasta & rummy nights', detail:'More accessible games for mixed-experience groups. Great for new members.' },
+      { name:'Poker night', detail:'Friendly low-stakes or chip-only poker nights. Very popular with a specific crowd.' },
+      { name:'Teach-a-game series', detail:'Each month, one member teaches a game they love to the rest of the group.' },
+      { name:'Intergenerational game day', detail:'Grandchildren and family members invited for a casual card game afternoon.' }
+    ],
+    tips:[
+      { icon:'🃏', text:'Large-print playing cards are a meaningful accessibility upgrade — they also tend to be more durable.' },
+      { icon:'🕐', text:'Keep sessions to 90 minutes maximum. End while energy is still high rather than playing until people are tired.' },
+      { icon:'👫', text:'Rotating partners (rather than fixed) keeps the social dynamics fresh and ensures no one feels left out.' }
+    ],
+    supplies:['Multiple decks of cards (large print)', 'Shufflers (for arthritis)', 'Score pads', 'Card holders', 'Poker chips (for poker nights)', 'Card tables and comfortable chairs']
+  },
+  /* ── WELLNESS ── */
+  { id:'walking-club', cat:'wellness', catLabel:'Wellness & Movement', emoji:'👟',
+    title:'Walking & Nature Club', color:'#0d9488',
+    size:'4–20', freq:'3–5x weekly', cost:'Very Low', space:'Outdoor paths or hallways',
+    desc:'Regular walking is one of the highest-impact wellness habits available. A walking club turns solo exercise into a social event with accountability, conversation, and shared discovery.',
+    projects:[
+      { name:'Steps challenge', detail:'Team or individual monthly steps challenge tracked on a shared board. Celebrate milestones with fun recognition.' },
+      { name:'Walking bingo', detail:'Bingo card with things to spot on walks (red flower, dog, cloud shaped like something, etc.). Popular all year.' },
+      { name:'50 miles in 50 days', detail:'Community goal: collectively walk 50 miles. Post a progress tracker in a visible location.' },
+      { name:'Photo walk', detail:'Members bring cameras or phones to document beautiful or interesting things they spot on the walk.' },
+      { name:'Seasonal scavenger hunt', detail:'Seasonal lists: first robin, first crocus, first frost on glass. Members report sightings at next walk.' },
+      { name:'Chair walk option', detail:'Wheelchair-accessible version follows the same route — full inclusion for all mobility levels.' }
+    ],
+    tips:[
+      { icon:'☀️', text:'Schedule walks in the morning (before 10 am) in summer to avoid heat. Move to hallways in bad weather — it counts.' },
+      { icon:'👟', text:'Encourage proper footwear before the club starts. A brief foot and shoe check at the first session prevents falls.' },
+      { icon:'💬', text:'The conversation IS the workout for many members. Focus on social enjoyment as much as physical achievement.' }
+    ],
+    supplies:['Pedometers or step tracker', 'Walking bingo cards', 'Sunscreen & hats', 'Water bottles', 'Reflective vests (for low-light walks)', 'First aid kit']
+  },
+  { id:'yoga-tai-chi', cat:'wellness', catLabel:'Wellness & Movement', emoji:'🧘',
+    title:'Chair Yoga & Tai Chi Club', color:'#7c3aed',
+    size:'4–15', freq:'2–3x weekly', cost:'Low', space:'Activity room (clear floor space)',
+    desc:'Gentle movement practices that improve balance, flexibility, strength, and calm. Chair versions ensure full accessibility while delivering the same core benefits as floor-based practice.',
+    projects:[
+      { name:'12-week beginner series', detail:'A structured introduction to chair yoga covering breath, seated poses, and gentle standing work.' },
+      { name:'Sun salutation adaptation', detail:'A chair-based morning sun salutation routine that members can practice independently on off-days.' },
+      { name:'Mindful stretch & breathe', detail:'A 20-minute daily gentle stretch session — lower commitment for residents who want movement without formal class.' },
+      { name:'Tai chi slow form', detail:'Teach the simplified 10-movement Yang-style tai chi form over 10 weeks. Beautiful to watch and practice.' },
+      { name:'Balance confidence workshop', detail:'A monthly workshop with specific exercises for fall prevention and balance — enormously valuable.' },
+      { name:'Relaxation & visualization series', detail:'Evening sessions combining gentle movement with guided visualization. Excellent for sleep quality.' }
+    ],
+    tips:[
+      { icon:'🪑', text:'Sturdy chairs without wheels. Encourage bare or sock feet when safe — connection to the floor improves stability.' },
+      { icon:'🧘', text:'Gentle reminder at every session: this is not competition. "What feels good for your body today" is always the right level.' },
+      { icon:'🎶', text:'Background music sets the tone: slow instrumental, nature sounds, or light classical. Avoid lyrics during active instruction.' }
+    ],
+    supplies:['Sturdy armless chairs', 'Yoga blocks (for grip modifications)', 'Light resistance bands', 'Soft mats (optional for standing work)', 'Music speaker', 'Instruction cards with illustrations']
+  },
+  /* ── FOOD ── */
+  { id:'cooking-club', cat:'food', catLabel:'Food & Cooking', emoji:'👨‍🍳',
+    title:'Cooking & Baking Club', color:'#ea580c',
+    size:'4–10', freq:'Monthly (or bi-weekly)', cost:'Medium ($10–$20/session)', space:'Kitchen or adapted table setup',
+    desc:'Cooking connects memory, culture, and creativity. A cooking club produces tangible, delicious results that members share with pride. It is also one of the most consistently popular programs across all communities.',
+    projects:[
+      { name:'Heritage recipe showcase', detail:'Each member brings and teaches a recipe from their cultural heritage. The most meaningful session of the year.' },
+      { name:'Seasonal bake-off', detail:'Friendly competition: members bake a themed item, residents and staff vote, a ribbon is awarded with great ceremony.' },
+      { name:'Holiday cookie exchange', detail:'Each member makes a batch of their signature cookies; everyone goes home with a box of variety.' },
+      { name:'Farm-to-table cooking', detail:'Cook with produce from the community garden. Simple recipes that honor fresh ingredients.' },
+      { name:'No-bake dessert series', detail:'Accessible for members who cannot use heat safely — parfaits, no-bake cheesecake, chocolate truffles.' },
+      { name:'Recipe book project', detail:'Compile member recipes into an illustrated cookbook. Distributed to families as a holiday gift.' }
+    ],
+    tips:[
+      { icon:'🔥', text:'Assign roles based on ability: some members chop, some stir, some measure, some supervise. Everyone participates.' },
+      { icon:'🧤', text:'Keep adaptive tools available: rocker knives, jar openers, non-slip mats, and long oven mitts.' },
+      { icon:'📸', text:'Document every session with photos. A "Cooking Club Wall of Fame" in the dining area is enormously popular.' }
+    ],
+    supplies:['Aprons', 'Mixing bowls', 'Measuring cups & spoons', 'Adaptive kitchen tools', 'Recipe cards (large print)', 'Disposable containers for sharing', 'Food safety gloves']
+  },
+  /* ── CRAFTS & MAKING ── */
+  { id:'woodworking', cat:'making', catLabel:'Crafts & Making', emoji:'🪚',
+    title:'Woodworking & Workshop Club', color:'#92400e',
+    size:'3–8', freq:'Weekly', cost:'Medium', space:'Workshop or outdoor area with ventilation',
+    desc:'Woodworking builds genuine skill and produces lasting, tangible creations. For many men and women, the workshop is a deeply familiar and beloved space. Adaptive tools make participation accessible.',
+    projects:[
+      { name:'Birdhouses', detail:'Classic beginner project. Simple construction, satisfying result, can be placed in the community garden.' },
+      { name:'Garden planters & raised beds', detail:'Practical community contribution — build containers for the garden program to use.' },
+      { name:'Picture frames', detail:'Members make frames for their own artwork or photos. Beautiful keepsake and manageable project.' },
+      { name:'Wooden puzzles & toys', detail:'Donated to local schools or pediatric wards. A meaningful legacy project.' },
+      { name:'Repair café', detail:'Members fix broken furniture, toys, and objects brought by staff or other residents. Hugely satisfying.' },
+      { name:'Holiday gifts series', detail:'Small wooden ornaments, serving boards, or trivets as handmade holiday gifts. Always in demand.' }
+    ],
+    tips:[
+      { icon:'🦺', text:'Safety review at every session start — eye protection, no loose clothing, proper tool handling. Non-negotiable.' },
+      { icon:'🤝', text:'Pair experienced woodworkers with newcomers. The mentorship is as valuable as the finished product.' },
+      { icon:'🪵', text:'Source reclaimed wood from local contractors or the facility\'s own renovations. Free materials and sustainability.' }
+    ],
+    supplies:['Hand tools (hammers, mallets, hand saws)', 'Power tools (drill, sander) if space permits', 'Safety glasses', 'Clamps & vises', 'Sandpaper (various grits)', 'Wood glue & nails', 'Finishing materials']
+  },
+  { id:'sewing-quilting', cat:'making', catLabel:'Crafts & Making', emoji:'🧵',
+    title:'Sewing & Quilting Guild', color:'#be185d',
+    size:'4–12', freq:'Weekly', cost:'Low–Medium', space:'Table space with good lighting',
+    desc:'Sewing and quilting combine precision, creativity, and community in ways few activities match. A quilting guild creates heirlooms, strengthens friendships, and preserves a beloved traditional craft.',
+    projects:[
+      { name:'Community quilt', detail:'Each member designs and sews one block; blocks are assembled into a community quilt for the lobby or auction.' },
+      { name:'Comfort quilts', detail:'Simple tied quilts donated to veterans\' hospitals, children\'s wards, or local shelters.' },
+      { name:'Mending circle', detail:'Members bring damaged clothing and quilts for repair. Practical, satisfying, and social.' },
+      { name:'Memory quilt', detail:'A deeply personal project using fabric from meaningful garments — children\'s clothes, worn shirts, special fabrics.' },
+      { name:'Table runner series', detail:'Small, fast projects that members complete and keep or donate. Great for beginners to build confidence.' },
+      { name:'Hand embroidery exploration', detail:'A gentle companion skill — members embroider simple designs while chatting in circle.' }
+    ],
+    tips:[
+      { icon:'💡', text:'Good lighting is essential. Invest in a daylight-spectrum lamp for the sewing area — it prevents eye strain and errors.' },
+      { icon:'🧶', text:'Keep a communal fabric stash sorted by color. Donating fabric scraps keeps the shared supply rich and varied.' },
+      { icon:'✂️', text:'Rotary cutters are much safer and more accurate than scissors for quilting. A self-healing mat and ruler make a huge difference.' }
+    ],
+    supplies:['Sewing machines (2–3)', 'Hand sewing needles', 'Thread (variety)', 'Fabric scissors & rotary cutters', 'Cutting mats', 'Pins & pincushions', 'Thimbles', 'Iron & board']
+  },
+  /* ── PERFORMING ── */
+  { id:'drama-club', cat:'performing', catLabel:'Performing Arts', emoji:'🎭',
+    title:'Drama & Theater Club', color:'#6d28d9',
+    size:'6–20', freq:'Weekly rehearsal', cost:'Low', space:'Activity room or theater',
+    desc:'Theater brings stories to life and gives participants a chance to inhabit characters, experience emotion safely, and perform with pride. Reader\'s theater is a fully accessible entry point for all ability levels.',
+    projects:[
+      { name:'Reader\'s theater performance', detail:'Members read a play aloud from scripts — no memorization required. Immediately accessible and surprisingly powerful.' },
+      { name:'Short scene showcase', detail:'Pairs or trios rehearse 5-minute scenes over 3 weeks and perform at a resident showcase.' },
+      { name:'Original one-act play', detail:'The club writes and performs an original play based on community stories or local history. A landmark event.' },
+      { name:'Improvisational games', detail:'Non-performance improv activities: yes-and exercises, story circles, character walks. Great for early sessions.' },
+      { name:'Classic radio play', detail:'Perform a vintage radio drama with sound effects — a nostalgic and fun format that feels like a celebration.' },
+      { name:'Holiday variety show', detail:'A mixed-format holiday show: scenes, monologues, music, and audience participation. Very popular.' }
+    ],
+    tips:[
+      { icon:'🎭', text:'Begin with reader\'s theater — scripts in hand removes the anxiety of memorization and makes theater accessible to everyone.' },
+      { icon:'👏', text:'The audience is as important as the performers. Invite all residents and families. A full room transforms a performance.' },
+      { icon:'📝', text:'Let members help with backstage roles (directing, costumes, sound) — everyone should feel essential to the production.' }
+    ],
+    supplies:['Script copies (large print)', 'Simple props bin', 'Costume accessories (scarves, hats, glasses)', 'Microphone or PA system', 'Program printing supplies']
+  },
+  { id:'photography', cat:'arts', catLabel:'Arts & Crafts', emoji:'📸',
+    title:'Photography Club', color:'#475569',
+    size:'4–12', freq:'Bi-weekly', cost:'Very Low (members use own devices)', space:'Outdoors + indoor review sessions',
+    desc:'Photography teaches mindful observation of the world. Smartphone cameras have made this accessible to everyone, and the results — displayed in the community — are a source of enormous pride.',
+    projects:[
+      { name:'Weekly photo challenge', detail:'A posted theme each week (shadows, red, joy, texture) guides members\' shooting. Submissions reviewed together.' },
+      { name:'Seasons in our community', detail:'A year-long project documenting the community through all four seasons. Culminates in a printed photo book.' },
+      { name:'Portrait series', detail:'Members photograph and interview fellow residents. A profound community connection project.' },
+      { name:'Nature macro series', detail:'Close-up photography of flowers, insects, bark, and water. Reveals a world invisible to the naked eye.' },
+      { name:'Printed photo exhibition', detail:'Select and print the best photos from the year for a gallery-style hallway exhibition, labeled with artist names.' },
+      { name:'Family photo session', detail:'Members photograph visiting families. Parents and grandchildren love these candid, authentic portraits.' }
+    ],
+    tips:[
+      { icon:'📱', text:'Smartphones are entirely sufficient. A brief "how to use your phone camera" session at the first meeting helps everyone start confidently.' },
+      { icon:'🖼️', text:'Print and display photos prominently. Digital images that are never seen don\'t motivate. Physical prints in hallways do.' },
+      { icon:'👁️', text:'The most important skill is not technical — it is noticing. Ask members: what caught your eye today and why?' }
+    ],
+    supplies:['Members\' smartphones or tablets', 'Spare phone (community-owned)', 'Photo printer or print service', 'Frames & hanging hardware', 'Display boards', 'Labels & mounting materials']
+  }
+];
+
+var HC_CATS = [
+  { id:'arts',      label:'🎨 Arts & Crafts' },
+  { id:'nature',    label:'🌿 Nature & Outdoors' },
+  { id:'mind',      label:'🧠 Mind & Learning' },
+  { id:'music',     label:'🎵 Music & Performance' },
+  { id:'games',     label:'♟️ Games & Strategy' },
+  { id:'wellness',  label:'💪 Wellness & Movement' },
+  { id:'food',      label:'🍳 Food & Cooking' },
+  { id:'making',    label:'🔨 Crafts & Making' },
+  { id:'performing',label:'🎭 Performing Arts' }
+];
+
+var hcCurrentMode = 'dir';
+var hcCurrentClub = null;
+
+function hcInit() { hcRender(); }
+
+function hcSetMode(m) {
+  hcCurrentMode = m;
+  ['dir','start','print'].forEach(function(id) {
+    document.getElementById('hc-mode-' + id).classList.toggle('active', m === id);
+  });
+  hcRender();
+}
+
+function hcRender() {
+  var body = document.getElementById('hc-body');
+  if (!body) return;
+  if (hcCurrentMode === 'dir')   hcRenderDir(body);
+  else if (hcCurrentMode === 'start') hcRenderStart(body);
+  else hcRenderPrint(body);
+}
+
+function hcRenderDir(body) {
+  var html = '';
+  HC_CATS.forEach(function(cat) {
+    var clubs = HC_CLUBS.filter(function(c) { return c.cat === cat.id; });
+    if (!clubs.length) return;
+    html += '<div class="hc-cat-label">' + cat.label + '</div><div class="hc-grid">';
+    clubs.forEach(function(c) {
+      html += '<div class="hc-card" onclick="hcOpenClub(\'' + c.id + '\')">' +
+        '<div class="hc-card-top" style="background:' + c.color + '"></div>' +
+        '<div class="hc-card-body">' +
+        '<div class="hc-card-emoji">' + c.emoji + '</div>' +
+        '<div class="hc-card-title">' + c.title + '</div>' +
+        '<span class="hc-card-cat" style="background:' + c.color + '20;color:' + c.color + '">' + c.catLabel + '</span>' +
+        '<p class="hc-card-desc">' + c.desc.substring(0, 100) + '…</p>' +
+        '<div class="hc-badge-row">' +
+        '<span class="hc-badge">👥 ' + c.size + '</span>' +
+        '<span class="hc-badge">📅 ' + c.freq + '</span>' +
+        '<span class="hc-badge">💰 ' + c.cost + '</span>' +
+        '</div></div></div>';
+    });
+    html += '</div>';
+  });
+  body.innerHTML = html;
+}
+
+function hcOpenClub(id) {
+  var c = HC_CLUBS.find(function(x) { return x.id === id; });
+  if (!c) return;
+  hcCurrentClub = c;
+  var hdr = document.getElementById('hc-modal-header');
+  hdr.style.background = 'linear-gradient(135deg,' + c.color + ',' + c.color + 'cc)';
+  document.getElementById('hc-modal-title').textContent = c.emoji + ' ' + c.title;
+  document.getElementById('hc-modal-sub').textContent = c.catLabel + ' · ' + c.freq + ' · ' + c.size + ' members';
+  var body = document.getElementById('hc-modal-body');
+
+  var infoHtml = '<div class="hc-info-grid">' +
+    hcInfoBox('👥 Group Size', c.size) +
+    hcInfoBox('📅 Meeting Frequency', c.freq) +
+    hcInfoBox('💰 Typical Cost', c.cost) +
+    hcInfoBox('📍 Space Needed', c.space) +
+    '</div>';
+
+  var projHtml = '<div class="hc-section-lbl">🛠️ Project & Activity Ideas</div>';
+  c.projects.forEach(function(p) {
+    projHtml += '<div class="hc-project-item"><strong>' + p.name + '</strong> — ' + p.detail + '</div>';
+  });
+
+  var tipsHtml = '<div class="hc-section-lbl">💡 Facilitator Tips</div>';
+  c.tips.forEach(function(t) {
+    tipsHtml += '<div class="hc-tip-row"><div class="hc-tip-icon">' + t.icon + '</div>' +
+      '<div class="hc-tip-text">' + t.text + '</div></div>';
+  });
+
+  var suppliesHtml = '<div class="hc-section-lbl">🛒 Suggested Supplies</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;">' +
+    c.supplies.map(function(s) {
+      return '<span style="background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd;border-radius:8px;padding:3px 10px;font-size:.8rem;">' + s + '</span>';
+    }).join('') + '</div>';
+
+  body.innerHTML = '<p style="color:#374151;font-size:.9rem;line-height:1.6;margin:0 0 12px;">' + c.desc + '</p>' +
+    infoHtml + projHtml + tipsHtml + suppliesHtml;
+  document.getElementById('hc-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function hcInfoBox(label, val) {
+  return '<div class="hc-info-box"><div class="hc-info-label">' + label + '</div>' +
+    '<div class="hc-info-val">' + val + '</div></div>';
+}
+
+function hcCloseModal() {
+  document.getElementById('hc-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function hcPrintClub() {
+  if (!hcCurrentClub) return;
+  var c = hcCurrentClub;
+  var projRows = c.projects.map(function(p) {
+    return '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:8px 10px;margin-bottom:6px;">' +
+      '<strong style="color:' + c.color + '">' + p.name + '</strong> — <span style="font-size:13px;">' + p.detail + '</span></div>';
+  }).join('');
+  var tipRows = c.tips.map(function(t) {
+    return '<div style="display:flex;gap:8px;margin-bottom:8px;font-size:13px;">' +
+      '<span>' + t.icon + '</span><span>' + t.text + '</span></div>';
+  }).join('');
+  var suppList = c.supplies.map(function(s) {
+    return '<span style="display:inline-block;background:#e0f2fe;color:#0369a1;border-radius:6px;padding:2px 8px;margin:2px;font-size:12px;">' + s + '</span>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>' + c.title + '</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:28px;color:#1f2937;}' +
+    'h1{font-size:22px;color:' + c.color + ';margin-bottom:2px;}' +
+    '.meta{font-size:12px;color:#9ca3af;margin-bottom:14px;}' +
+    '.desc{font-size:14px;line-height:1.7;margin-bottom:14px;}' +
+    '.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}' +
+    '.box{background:#f0f9ff;border-radius:6px;padding:8px 10px;}' +
+    '.box-lbl{font-size:11px;color:#0891b2;font-weight:700;}' +
+    '.box-val{font-size:13px;font-weight:600;}' +
+    '.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:' + c.color + ';margin:14px 0 6px;}' +
+    '.footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:10px;}' +
+    '@media print{body{padding:14px;}}' +
+    '</style></head><body>' +
+    '<h1>' + c.emoji + ' ' + c.title + '</h1>' +
+    '<div class="meta">' + c.catLabel + ' &nbsp;·&nbsp; Empower Life 365</div>' +
+    '<div class="desc">' + c.desc + '</div>' +
+    '<div class="grid">' +
+    '<div class="box"><div class="box-lbl">👥 Group Size</div><div class="box-val">' + c.size + '</div></div>' +
+    '<div class="box"><div class="box-lbl">📅 Frequency</div><div class="box-val">' + c.freq + '</div></div>' +
+    '<div class="box"><div class="box-lbl">💰 Cost</div><div class="box-val">' + c.cost + '</div></div>' +
+    '<div class="box"><div class="box-lbl">📍 Space</div><div class="box-val">' + c.space + '</div></div>' +
+    '</div>' +
+    '<div class="sec">🛠️ Project & Activity Ideas</div>' + projRows +
+    '<div class="sec">💡 Facilitator Tips</div>' + tipRows +
+    '<div class="sec">🛒 Supplies</div><div>' + suppList + '</div>' +
+    '<div class="footer">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</div>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function() { w.print(); }, 400);
+}
+
+function hcPrintAgenda() {
+  if (!hcCurrentClub) return;
+  var c = hcCurrentClub;
+  var today = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>' + c.title + ' – Meeting Agenda</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:28px;color:#1f2937;}' +
+    'h1{font-size:20px;color:' + c.color + ';margin-bottom:2px;}' +
+    '.sub{font-size:12px;color:#9ca3af;margin-bottom:20px;}' +
+    '.item{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}' +
+    '.time{min-width:52px;font-size:11px;font-weight:700;color:' + c.color + ';padding-top:2px;}' +
+    '.detail h4{margin:0 0 2px;font-size:14px;}' +
+    '.detail p{margin:0;font-size:12px;color:#6b7280;}' +
+    '.notes{margin-top:18px;border:1.5px dashed #d1d5db;border-radius:8px;padding:12px;min-height:80px;}' +
+    '.notes-lbl{font-size:11px;font-weight:700;color:#9ca3af;margin-bottom:6px;}' +
+    '.footer{font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:10px;}' +
+    '@media print{body{padding:14px;}}' +
+    '</style></head><body>' +
+    '<h1>' + c.emoji + ' ' + c.title + '</h1>' +
+    '<div class="sub">Meeting Agenda &nbsp;·&nbsp; ' + today + '</div>' +
+    '<div class="item"><div class="time">0:00</div><div class="detail"><h4>Welcome & Attendance</h4><p>Sign in, introduce any new members, brief announcements</p></div></div>' +
+    '<div class="item"><div class="time">0:05</div><div class="detail"><h4>Warm-Up / Check-In</h4><p>Share one highlight from since the last meeting</p></div></div>' +
+    '<div class="item"><div class="time">0:15</div><div class="detail"><h4>Main Activity / Project Work</h4><p>Today\'s project: ___________________________________</p></div></div>' +
+    '<div class="item"><div class="time">0:40</div><div class="detail"><h4>Share & Celebrate</h4><p>Members share work in progress or completed pieces</p></div></div>' +
+    '<div class="item"><div class="time">0:50</div><div class="detail"><h4>Upcoming Plans</h4><p>Next meeting topic, any supplies needed, upcoming events</p></div></div>' +
+    '<div class="item"><div class="time">0:55</div><div class="detail"><h4>Wrap-Up</h4><p>Thank members, note any follow-up items</p></div></div>' +
+    '<div class="notes"><div class="notes-lbl">NOTES</div><p style="color:#d1d5db;font-size:12px;">Write here…</p></div>' +
+    '<div class="footer">Empower Life 365 · empowerlife365.app · ' + c.title + '</div>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function() { w.print(); }, 400);
+}
+
+function hcRenderStart(body) {
+  var steps = [
+    { n:1, title:'Find Your Champion', body:'Every successful club starts with one enthusiastic person — a staff member or resident — who cares deeply about the activity. This person sets the tone, keeps momentum, and models enthusiasm. Find your champion before anything else.' },
+    { n:2, title:'Gauge Interest', body:'Post a simple interest sign-up sheet in the dining room and lounge for one week. Ask: "Would you join a _____ club? Yes / Maybe / Tell me more." Aim for at least 4 confirmed interested parties before scheduling the first session. Six or more is a strong start.' },
+    { n:3, title:'Plan the First Session Simply', body:'The first session has one goal: make people want to come back. Keep it short (45 minutes), low-pressure, highly social, and end with something positive — a shared creation, a laugh, a discovery. Do not try to cover everything at once.' },
+    { n:4, title:'Set a Consistent Schedule', body:'Same day, same time, same place every week (or month). Predictability builds habit. Members will plan their week around a club they love. A Wednesday at 2 pm that never moves is worth ten one-off events.' },
+    { n:5, title:'Create a Sign and a Name', body:'A club with a name and a posted sign feels real. Let members choose the name at the first session. Post a schedule in the activity calendar, hallways, and dining room. Visibility drives attendance.' },
+    { n:6, title:'Start a Simple Club Folder', body:'Keep one folder with: current member list, meeting notes (just bullet points), upcoming project ideas, and supply needs. This makes handoff easy if leadership changes and demonstrates program continuity to administration.' },
+    { n:7, title:'Celebrate Small Wins Loudly', body:'Post photos of completed projects. Announce achievements at community meetings. Put finished work on display. Send a photo to families via the newsletter. The pride of being recognized is often what keeps members coming back most reliably.' },
+    { n:8, title:'Grow Thoughtfully', body:'A club of 6 that meets consistently and produces meaningful experiences is more valuable than a club of 20 that dissolves in two months. Resist the pressure to recruit heavily before the culture is established. Let quality drive word-of-mouth growth.' }
+  ];
+  var html = '<div style="max-width:680px;">' +
+    '<div style="background:#f0f9ff;border-left:4px solid #0891b2;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:18px;font-size:.9rem;color:#075985;">' +
+    '<strong>Starting a new club?</strong> Follow these eight steps in order. Most clubs that fail do so not because the activity is wrong, but because the foundation was not set. These steps fix that.' +
+    '</div>';
+  steps.forEach(function(s) {
+    html += '<div class="hc-guide-card"><div class="hc-guide-step">' +
+      '<div class="hc-guide-num">' + s.n + '</div>' +
+      '<div class="hc-guide-body"><h4>' + s.title + '</h4><p>' + s.body + '</p></div>' +
+      '</div></div>';
+  });
+  html += '<div style="margin-top:14px;text-align:center;">' +
+    '<button class="hc-modal-btn hc-btn-teal" onclick="hcPrintStartGuide()" style="font-size:.9rem;padding:10px 24px;">🖨️ Print Start-a-Club Guide</button>' +
+    '</div></div>';
+  body.innerHTML = html;
+}
+
+function hcPrintStartGuide() {
+  var steps = [
+    {n:1,title:'Find Your Champion',body:'Every successful club starts with one enthusiastic person — a staff member or resident — who cares deeply about the activity.'},
+    {n:2,title:'Gauge Interest',body:'Post a sign-up sheet for one week. Aim for at least 4 confirmed interested parties before scheduling the first session.'},
+    {n:3,title:'Plan the First Session Simply',body:'45 minutes, low-pressure, highly social. End with something positive. Make people want to come back.'},
+    {n:4,title:'Set a Consistent Schedule',body:'Same day, same time, same place every week. Predictability builds habit.'},
+    {n:5,title:'Create a Sign and a Name',body:'Let members choose the club name. Post the schedule in the calendar, hallways, and dining room.'},
+    {n:6,title:'Start a Simple Club Folder',body:'Member list, meeting notes, project ideas, supply needs. One folder is enough.'},
+    {n:7,title:'Celebrate Small Wins Loudly',body:'Post photos, announce achievements, display finished work, send updates to families.'},
+    {n:8,title:'Grow Thoughtfully',body:'A consistent club of 6 beats an unstable club of 20. Let quality drive word-of-mouth growth.'}
+  ];
+  var rows = steps.map(function(s) {
+    return '<div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;">' +
+      '<div style="min-width:32px;height:32px;border-radius:50%;background:#0891b2;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;">' + s.n + '</div>' +
+      '<div><strong style="font-size:14px;">' + s.title + '</strong><br><span style="font-size:12px;color:#374151;">' + s.body + '</span></div></div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Start a Club Guide</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:620px;margin:0 auto;padding:28px;}</style>' +
+    '</head><body>' +
+    '<h2 style="color:#0891b2;margin-bottom:4px;">🎯 How to Start a New Hobby Club</h2>' +
+    '<p style="color:#6b7280;font-size:12px;margin-bottom:18px;">Empower Life 365 · empowerlife365.app</p>' +
+    rows +
+    '<div style="margin-top:18px;border:1.5px dashed #d1d5db;border-radius:8px;padding:12px;">' +
+    '<strong style="font-size:12px;color:#9ca3af;">NOTES</strong><br><br><br></div>' +
+    '<div style="font-size:10px;color:#9ca3af;text-align:center;margin-top:16px;border-top:1px solid #e5e7eb;padding-top:10px;">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</div>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function() { w.print(); }, 400);
+}
+
+function hcRenderPrint(body) {
+  var items = [
+    { title:'Sign-Up Sheet', desc:'Blank interest sign-up sheet for a new or existing club', fn:'hcPrintSignup' },
+    { title:'Meeting Agenda (Blank)', desc:'Clean reusable meeting agenda template with time slots and notes section', fn:'hcPrintBlankAgenda' },
+    { title:'Club Charter Template', desc:'One-page founding document: club name, mission, officers, meeting details', fn:'hcPrintCharter' },
+    { title:'Member Roster', desc:'Printable member list with contact info, meeting attendance tracker', fn:'hcPrintRoster' },
+    { title:'Complete Club Directory', desc:'All ' + HC_CLUBS.length + ' club profiles in a printable multi-page reference', fn:'hcPrintAll' }
+  ];
+  var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">';
+  items.forEach(function(item) {
+    html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;" onclick="' + item.fn + '()">' +
+      '<div style="font-size:1.6rem;margin-bottom:8px;">🖨️</div>' +
+      '<div style="font-weight:700;font-size:.9rem;color:#1f2937;margin-bottom:4px;">' + item.title + '</div>' +
+      '<p style="font-size:.8rem;color:#6b7280;margin:0 0 10px;">' + item.desc + '</p>' +
+      '<button style="background:#0891b2;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:.8rem;font-weight:600;cursor:pointer;">Print</button>' +
+      '</div>';
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function hcPrintSignup() {
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Club Sign-Up Sheet</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:650px;margin:0 auto;padding:28px;}' +
+    'h2{color:#0891b2;}table{width:100%;border-collapse:collapse;margin-top:14px;}' +
+    'th{background:#0891b2;color:#fff;padding:8px 10px;text-align:left;font-size:13px;}' +
+    'td{border:1px solid #e5e7eb;padding:10px;font-size:13px;height:28px;}' +
+    'tr:nth-child(even){background:#f0f9ff;}' +
+    '.field{border-bottom:1.5px solid #374151;min-width:160px;display:inline-block;margin-left:6px;}' +
+    '</style></head><body>' +
+    '<h2>🎯 Club Interest Sign-Up Sheet</h2>' +
+    '<p style="font-size:13px;">Club Name: <span class="field">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>' +
+    '<p style="font-size:13px;">Meeting Day/Time: <span class="field">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> &nbsp; Location: <span class="field">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>' +
+    '<table><tr><th>#</th><th>Name</th><th>Room / Unit</th><th>Phone / Email</th><th>Interest Level</th></tr>' +
+    Array.from({length:20},function(_,i){return '<tr><td>'+(i+1)+'</td><td></td><td></td><td></td><td></td></tr>';}).join('') +
+    '</table>' +
+    '<p style="font-size:11px;color:#9ca3af;margin-top:14px;">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</p>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+function hcPrintBlankAgenda() {
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Club Meeting Agenda</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:28px;}' +
+    'h2{color:#0891b2;}.item{display:flex;gap:14px;margin-bottom:16px;}' +
+    '.time{min-width:60px;font-size:11px;font-weight:700;color:#0891b2;padding-top:3px;}' +
+    '.line{border-bottom:1px solid #d1d5db;min-width:300px;display:inline-block;margin-left:6px;}' +
+    '.notes{border:1.5px dashed #d1d5db;border-radius:8px;padding:14px;min-height:100px;margin-top:18px;}' +
+    '</style></head><body>' +
+    '<h2>📋 Club Meeting Agenda</h2>' +
+    '<p style="font-size:13px;">Club: <span style="border-bottom:1px solid #374151;display:inline-block;min-width:180px;">&nbsp;</span> &nbsp; Date: <span style="border-bottom:1px solid #374151;display:inline-block;min-width:120px;">&nbsp;</span></p>' +
+    '<div class="item"><div class="time">:00</div><div><strong>Welcome & Attendance</strong><br><span style="font-size:12px;color:#9ca3af;">Introductions, announcements</span></div></div>' +
+    '<div class="item"><div class="time">:10</div><div><strong>Check-In</strong><br><span style="font-size:12px;color:#9ca3af;">Brief share — one highlight since last meeting</span></div></div>' +
+    '<div class="item"><div class="time">:20</div><div><strong>Main Activity</strong><br>Today\'s focus: <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div></div>' +
+    '<div class="item"><div class="time">:45</div><div><strong>Share & Celebrate</strong><br><span style="font-size:12px;color:#9ca3af;">Members share work, accomplishments</span></div></div>' +
+    '<div class="item"><div class="time">:55</div><div><strong>Next Meeting Preview</strong><br>Next topic: <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div></div>' +
+    '<div class="notes"><strong style="font-size:12px;color:#9ca3af;">NOTES & ACTION ITEMS</strong><br><br></div>' +
+    '<p style="font-size:11px;color:#9ca3af;margin-top:14px;">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</p>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+function hcPrintCharter() {
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Club Charter</title>' +
+    '<style>body{font-family:Georgia,serif;max-width:620px;margin:0 auto;padding:34px;color:#1f2937;}' +
+    'h1{text-align:center;font-size:22px;color:#0891b2;margin-bottom:4px;}' +
+    '.subtitle{text-align:center;font-size:13px;color:#9ca3af;margin-bottom:24px;letter-spacing:.05em;}' +
+    '.field-row{margin-bottom:16px;}.label{font-size:12px;font-weight:700;color:#0891b2;margin-bottom:4px;}' +
+    '.line{border-bottom:1.5px solid #374151;width:100%;display:block;padding-bottom:4px;min-height:22px;}' +
+    '.sig-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;}' +
+    '.sig-box{border-top:1.5px solid #374151;padding-top:6px;font-size:12px;color:#9ca3af;}' +
+    '</style></head><body>' +
+    '<h1>🎯 Club Charter</h1>' +
+    '<div class="subtitle">EMPOWER LIFE 365 · OFFICIAL CLUB RECORD</div>' +
+    '<div class="field-row"><div class="label">CLUB NAME</div><div class="line"></div></div>' +
+    '<div class="field-row"><div class="label">MISSION STATEMENT (What we do and why)</div><div class="line">&nbsp;</div><div class="line">&nbsp;</div></div>' +
+    '<div class="field-row"><div class="label">CATEGORY</div><div class="line"></div></div>' +
+    '<div class="field-row"><div class="label">MEETING DAY & TIME</div><div class="line"></div></div>' +
+    '<div class="field-row"><div class="label">MEETING LOCATION</div><div class="line"></div></div>' +
+    '<div class="field-row"><div class="label">FOUNDING MEMBERS (list names)</div><div class="line">&nbsp;</div><div class="line">&nbsp;</div><div class="line">&nbsp;</div></div>' +
+    '<div class="field-row"><div class="label">CLUB LEAD / CHAMPION</div><div class="line"></div></div>' +
+    '<div class="field-row"><div class="label">DATE ESTABLISHED</div><div class="line"></div></div>' +
+    '<div class="field-row"><div class="label">ANNUAL GOAL (one big thing we want to accomplish)</div><div class="line">&nbsp;</div><div class="line">&nbsp;</div></div>' +
+    '<div class="sig-row">' +
+    '<div class="sig-box">Club Lead Signature</div>' +
+    '<div class="sig-box">Activity Director Signature</div>' +
+    '</div>' +
+    '<p style="font-size:11px;color:#9ca3af;text-align:center;margin-top:20px;">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</p>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+function hcPrintRoster() {
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Club Member Roster</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:28px;}' +
+    'h2{color:#0891b2;}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:11px;}' +
+    'th{background:#0891b2;color:#fff;padding:7px 8px;text-align:left;}' +
+    'td{border:1px solid #e5e7eb;padding:8px;height:26px;}' +
+    'tr:nth-child(even){background:#f0f9ff;}' +
+    '</style></head><body>' +
+    '<h2>📋 Club Member Roster</h2>' +
+    '<p style="font-size:13px;">Club Name: <span style="border-bottom:1px solid #374151;display:inline-block;min-width:200px;">&nbsp;</span></p>' +
+    '<table><tr><th>#</th><th>Member Name</th><th>Room</th><th>Phone / Email</th><th>Joined</th><th>Notes</th></tr>' +
+    Array.from({length:25},function(_,i){return '<tr><td>'+(i+1)+'</td><td></td><td></td><td></td><td></td><td></td></tr>';}).join('') +
+    '</table>' +
+    '<p style="font-size:11px;color:#9ca3af;margin-top:14px;">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</p>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+function hcPrintAll() {
+  var rows = HC_CLUBS.map(function(c) {
+    var projs = c.projects.map(function(p) {
+      return '<li style="font-size:12px;margin-bottom:3px;"><strong>' + p.name + '</strong> — ' + p.detail + '</li>';
+    }).join('');
+    return '<div style="page-break-inside:avoid;border:1px solid #e5e7eb;border-radius:8px;padding:14px;margin-bottom:16px;">' +
+      '<h3 style="margin:0 0 4px;color:' + c.color + ';font-size:16px;">' + c.emoji + ' ' + c.title + '</h3>' +
+      '<div style="font-size:11px;color:#9ca3af;margin-bottom:8px;">' + c.catLabel + ' · ' + c.freq + ' · ' + c.size + ' · ' + c.cost + '</div>' +
+      '<p style="font-size:13px;margin:0 0 8px;">' + c.desc + '</p>' +
+      '<strong style="font-size:12px;color:' + c.color + ';">Projects & Activities:</strong>' +
+      '<ul style="margin:4px 0 0 16px;padding:0;">' + projs + '</ul></div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Hobby Club Directory</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:720px;margin:0 auto;padding:28px;}' +
+    '@media print{body{padding:14px;}.no-break{page-break-inside:avoid;}}' +
+    '</style></head><body>' +
+    '<h1 style="color:#0891b2;margin-bottom:4px;">🎯 Hobby Club Directory</h1>' +
+    '<p style="color:#9ca3af;font-size:12px;margin-bottom:20px;">Empower Life 365 · ' + HC_CLUBS.length + ' clubs · empowerlife365.app</p>' +
+    rows +
+    '<div style="font-size:10px;color:#9ca3af;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:10px;">Empower Life 365 · empowerlife365.app · Printed ' + new Date().toLocaleDateString() + '</div>' +
+    '</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+/* hook switchTab */
+(function(){
+  var _hcOrig = window.switchTab;
+  window.switchTab = function(name) {
+    _hcOrig && _hcOrig(name);
+    if (name === 'clubs') hcInit();
   };
 })();
 </script>
