@@ -1149,6 +1149,18 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   display:inline-block; font-size:10px; font-weight:700;
   border-radius:10px; padding:2px 8px; margin-right:4px; margin-bottom:4px;
 }
+/* panel-pettherapy */
+.pt-cat-btn {
+  background:#fdf4ff; color:#7e22ce; border:2px solid #e9d5ff;
+  border-radius:20px; padding:6px 16px; font-weight:700; font-size:13px; cursor:pointer;
+  transition:all .15s;
+}
+.pt-cat-btn.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+.pt-card {
+  background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  padding:16px; cursor:pointer; transition:box-shadow .15s;
+}
+.pt-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1216,6 +1228,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="travel"   id="travel-tab"   onclick="switchTab('travel')">✈️ Travel Hub</button>
       <button class="tab-btn" data-tab="mens"     id="mens-tab"     onclick="switchTab('mens')">👨 Men's Corner</button>
       <button class="tab-btn" data-tab="outdoors"  id="outdoors-tab"  onclick="switchTab('outdoors')">🌿 Outdoors</button>
+      <button class="tab-btn" data-tab="pettherapy" id="pettherapy-tab" onclick="switchTab('pettherapy')">🐾 Pet Therapy</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3542,6 +3555,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="od-season-btn" data-season="summer" onclick="odSetSeason('summer')">☀️ Summer</button>
       <button class="od-season-btn" data-season="fall"   onclick="odSetSeason('fall')">🍂 Fall</button>
       <button class="od-season-btn" data-season="winter" onclick="odSetSeason('winter')">❄️ Winter</button>
+      <button class="od-season-btn" data-season="games"  onclick="odSetSeason('games')">🎮 Games</button>
     </div>
     <!-- Mobility filter -->
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="od-mob-filters">
@@ -3558,6 +3572,38 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   <!-- Detail modal -->
   <div id="od-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)odCloseModal()">
     <div style="background:#fff;max-width:680px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="od-modal-body"></div>
+  </div>
+</section>
+
+<section class="tab-panel" id="panel-pettherapy">
+  <div style="padding:18px 20px 0;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+      <h2 style="margin:0;">🐾 Pet Therapy</h2>
+      <span style="font-size:13px;color:#6b7280;">Activities, visit planning &amp; program guides</span>
+    </div>
+    <!-- Category filter -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="pt-cat-tabs">
+      <button class="pt-cat-btn active" data-cat="all"     onclick="ptFilter('all')">🐾 All</button>
+      <button class="pt-cat-btn" data-cat="dogs"    onclick="ptFilter('dogs')">🐕 Dogs</button>
+      <button class="pt-cat-btn" data-cat="cats"    onclick="ptFilter('cats')">🐈 Cats</button>
+      <button class="pt-cat-btn" data-cat="small"   onclick="ptFilter('small')">🐰 Small Animals</button>
+      <button class="pt-cat-btn" data-cat="birds"   onclick="ptFilter('birds')">🦜 Birds</button>
+      <button class="pt-cat-btn" data-cat="aquarium" onclick="ptFilter('aquarium')">🐟 Aquarium</button>
+      <button class="pt-cat-btn" data-cat="farm"    onclick="ptFilter('farm')">🐄 Farm &amp; Special</button>
+      <button class="pt-cat-btn" data-cat="virtual" onclick="ptFilter('virtual')">📱 Virtual</button>
+      <button class="pt-cat-btn" data-cat="program" onclick="ptFilter('program')">📋 Program Setup</button>
+    </div>
+    <div id="pt-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <button onclick="ptPrintAll()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print Visible Activities</button>
+      <button onclick="ptPrintVisitLog()" style="background:#0369a1;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">📋 Print Visit Log</button>
+      <button onclick="ptPrintPrefSurvey()" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">📝 Print Preference Survey</button>
+      <button onclick="ptPrintThankYou()" style="background:#ea580c;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">💌 Print Handler Thank-You</button>
+    </div>
+  </div>
+  <!-- Detail modal -->
+  <div id="pt-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)ptCloseModal()">
+    <div style="background:#fff;max-width:680px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="pt-modal-body"></div>
   </div>
 </section>
 
@@ -27629,10 +27675,254 @@ var OD_ACTIVITIES = [
   supplies:['Printed lyric sheets (large print)','Portable bluetooth speaker','Accompaniment tracks or live musician','Warm blankets and layers','Hot drinks','Optional: battery-powered candles or LED lanterns'],
   steps:['Set up seating circle in a sheltered outdoor space','Distribute large-print lyric sheets','Begin with familiar favorites (Jingle Bells, Silent Night, White Christmas)','Invite residents who play instruments to accompany','Alternate between lively carols and slower hymns','End with a moment of reflection or a shared "Amen" / toast'],
   tips:['Invite family members to join — this is a beautiful multigenerational moment','Keep to 30–40 minutes max in cold weather','Memory care: even residents with advanced dementia often remember carol lyrics — this is profoundly meaningful'],
-  variations:['Sing in front of the building for a community performance','Caroling trip to visit neighboring buildings or areas','Indoor version at a window looking out at winter landscape'] }
+  variations:['Sing in front of the building for a community performance','Caroling trip to visit neighboring buildings or areas','Indoor version at a window looking out at winter landscape'] },
+
+/* ── GAMES (all-season) ── */
+{ id:'pool-noodle-ring', season:'games', mob:['all','seated'],
+  emoji:'🌀', title:'Pool Noodle Ring Toss', complexity:'Simple', cost:'$',
+  costLabel:'$5–$10', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Cut pool noodles into rings and toss them onto upright noodle poles — like ring toss but bigger, softer, and way more satisfying.',
+  supplies:['4–6 pool noodles (cut 3" rings from some, keep 3 whole for poles)','Buckets or cones to hold poles upright','Scoring tape or chalk marks on ground','Prizes'],
+  steps:['Cut 2 noodles into 3-inch rings (8–10 rings per noodle)','Stand 3 full noodles upright in buckets as targets at varying distances','Mark toss lines with chalk (closer for seated residents)','Players take turns tossing 3 rings each','Score: 1 pt close pole, 2 pts middle, 3 pts far','Play 3 rounds; highest total wins'],
+  tips:['Pool noodle rings are softer than traditional rings — no injury risk','Seated residents play from a chair at the nearest line','Use different colors per player so scoring is easy'],
+  variations:['Team version — alternate tosses, combine scores','Moving targets — have a staff member slowly move the pole','Color match challenge — must toss rings to matching color pole'] },
+
+{ id:'pool-noodle-limbo', season:'games', mob:['all','active'],
+  emoji:'🏄', title:'Pool Noodle Limbo', complexity:'Simple', cost:'$',
+  costLabel:'$3–$8', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Two staff hold a pool noodle as the limbo bar — lower it each round as residents try to pass under. Laughter guaranteed.',
+  supplies:['1–2 pool noodles','2 staff or volunteers to hold the bar','Upbeat music (limbo / calypso)','Prizes'],
+  steps:['Set up a clear path outdoors with room for residents to walk','Two staff hold the noodle at shoulder height to start','Play music; residents take turns going under the noodle','Lower the noodle each round','Anyone who touches the noodle or falls out is done','Last resident under the lowest bar wins'],
+  tips:['For wheelchair residents, hold noodle low enough for a slight forward lean — no full limbo required; they still participate!','Start high so everyone gets multiple turns','Ham it up with calypso music for maximum fun'],
+  variations:['Reverse limbo — how HIGH can you raise your leg over the noodle','Noodle jump — lay noodle on ground and jump over it (walking version)','Relay version — team passes the noodle overhead down the line'] },
+
+{ id:'pool-noodle-hockey', season:'games', mob:['all','active','seated'],
+  emoji:'🏒', title:'Pool Noodle Hockey', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'30–45 min', groupSize:'4–16 residents',
+  desc:'Use pool noodles as hockey sticks to push a soft foam ball into goals. Can be played standing or from a wheelchair.',
+  supplies:['1 pool noodle per player','Soft foam ball or beach ball','2 cones or laundry baskets as goals','Chalk boundary lines','Pinnies or ribbons for teams (optional)'],
+  steps:['Mark a simple rectangular field with chalk','Place goals (laundry baskets on sides) at each end','Divide into 2 teams; each person gets a noodle','Start ball in center; push/swat it toward goal','No body contact — only noodle-to-ball','Play 10-minute halves; team with most goals wins'],
+  tips:['Seated players use noodle from wheelchair — works great','Use a beach ball for slower pace, foam ball for more action','Goalies can use two hands on noodle to block'],
+  variations:['Solo version — slalom course, push ball around cones','Noodle billiards — knock colored balls into cups using noodle','Partner version — pairs share one noodle, must work together'] },
+
+{ id:'pool-noodle-javelin', season:'games', mob:['all','active'],
+  emoji:'🎯', title:'Pool Noodle Javelin Throw', complexity:'Simple', cost:'$',
+  costLabel:'$3–$8', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Who can throw a pool noodle the farthest? Simple, hilarious, and surprisingly competitive.',
+  supplies:['1 pool noodle per player (or share 2–3)','Tape measure or measuring rope','Chalk or flags for distance markers','Score sheet'],
+  steps:['Mark a throwing line with chalk','Each player gets 3 throws','Measure each throw from the line to where noodle first landed','Record best throw for each player','Award medals: gold (farthest), silver, bronze','Play a second round for rematches'],
+  tips:['Encourage overhand throws for distance; underhand is fine too','For seated residents, use a lighter noodle and shorter distance','This works great as part of a mini Olympics event'],
+  variations:['Target accuracy version — throw at a hula hoop target','Noodle hammer throw — spin in place and release','Relay race carrying noodles overhead'] },
+
+{ id:'giant-bubbles', season:'games', mob:['all','seated','memory'],
+  emoji:'🫧', title:'Giant Bubble Station', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'30–45 min', groupSize:'Any size',
+  desc:'Make giant bubbles using homemade solution and large wands — residents are transfixed trying to make the biggest bubble possible.',
+  supplies:['6 cups water + 1 cup dish soap + 2 tbsp glycerin (glycerin from pharmacy, optional but helps)','Large bubble wands (store-bought or DIY with string + sticks)','Shallow trays or bins for dipping','Towels for cleanup','Optional: small wands for everyone'],
+  steps:['Mix solution 1–2 hours ahead so it settles','Fill shallow bins or trays with solution','Demonstrate giant wand technique: slow, smooth movement','Residents take turns making giant bubbles','Challenge: who can make the biggest? Longest-lasting?','Let everyone try small wands too'],
+  tips:['Calm, windless days make the biggest bubbles','Slow, steady movements work better than fast','Memory care residents light up watching bubbles float — just observing counts!'],
+  variations:['Bubble Olympics — biggest, longest-lasting, most at once','Inside a bubble — make a solution pool, let a hula hoop create a giant dome','Colored bubbles with a drop of food coloring'] },
+
+{ id:'bubble-wand-making', season:'games', mob:['all','seated','memory'],
+  emoji:'✨', title:'DIY Bubble Wand Craft & Contest', complexity:'Simple', cost:'$',
+  costLabel:'$3–$8', duration:'45–60 min', groupSize:'4–20 residents',
+  desc:'Residents craft their own bubble wands from pipe cleaners, then take them outside to test — the whole session is part craft, part game.',
+  supplies:['Pipe cleaners (multiple colors)','Bubble solution (dish soap + water + glycerin)','Shallow trays for dipping','Scissors','Optional: beads, ribbon accents'],
+  steps:['Each resident shapes a pipe cleaner into a wand (circle, star, heart, etc.)','Reinforce handles with extra pipe cleaner wrapping','Head outside with bubble solution trays','Each person tests their wand design','Discuss: what shapes make the best bubbles?','Award ribbons: most creative, biggest bubble, most bubbles at once'],
+  tips:['Square shapes work surprisingly well for bubbles','Twist two pipe cleaners together for sturdier wands','This pairs perfectly with giant bubble station as a combined event'],
+  variations:['Cookie cutter wands — dip large cookie cutters','Straw bundle wands — tape 6 straws together for a multi-bubble effect','Themed shapes for holidays (hearts for Valentine\'s, stars for 4th of July)'] },
+
+{ id:'lemonade-contest', season:'games', mob:['all','seated','memory'],
+  emoji:'🍋', title:'Lemonade Recipe Contest', complexity:'Simple', cost:'$',
+  costLabel:'$10–$20', duration:'45–60 min', groupSize:'4–20 residents',
+  desc:'Everyone makes their own cup of lemonade with their secret twist — strawberry, mint, lavender, ginger — then the group votes on the best.',
+  supplies:['Fresh lemons (plenty) + lemon juice','Sugar + simple syrup','Water + sparkling water option','Add-ins: strawberries, mint, lavender, ginger, cucumber','Pitchers and stirring spoons','Tasting cups + voting slips','Juice squeezer per table'],
+  steps:['Set up a lemonade bar with all ingredients labeled','Each resident concocts their own recipe (ratios are up to them)','Pour finished creations into labeled small cups for judging','Everyone tastes all entries (small sips)','Vote for: most refreshing, most creative, best classic','Announce results; everyone drinks their creation'],
+  tips:['Pre-squeeze extra juice for residents who need help','Lavender simple syrup (lavender steeped in sugar water) is always a crowd-pleaser','Memory care residents love the familiar smell of lemons — offer lemon halves to squeeze and smell'],
+  variations:['Lemonade stand — sell cups to staff for a quarter as a fundraiser','Arnold Palmer contest (lemonade + iced tea)','Frozen lemonade competition with blended ice'] },
+
+{ id:'sun-tea', season:'games', mob:['all','seated','memory'],
+  emoji:'☀️', title:'Sun Tea Making Station', complexity:'Simple', cost:'$',
+  costLabel:'$5–$10', duration:'2–3 hrs total (active 20 min)', groupSize:'Any size',
+  desc:'Set out mason jars of water and tea bags in the sun in the morning — check back in 2–3 hours for a tasting party. The sun is the chef!',
+  supplies:['Large mason jars (1 per team/flavor)','Assorted tea bags (black, green, herbal, mint, peach)','Water','Tasting cups','Labels + markers','Honey, lemon, sugar for serving','Sunny spot outdoors'],
+  steps:['Morning session: residents fill jars with water + 3–4 tea bags each','Label each jar with tea type + resident name','Set jars in full sun on a table or ledge','Come back in 2–3 hours for the reveal','Pour over ice and taste each variety','Vote for favorite flavor; share brewing notes'],
+  tips:['Great ongoing activity — set up in morning, finish after lunch','Use decorative jars for display — residents love seeing them lined up in the sun','Add mint sprigs or citrus slices to jars for extra flavor and visual appeal'],
+  variations:['Flavored water jars alongside tea (cucumber, lemon, berry)','Cold brew coffee version for coffee lovers','Tea party ceremony after — use the sun tea for a formal tea service'] },
+
+{ id:'balloon-volleyball', season:'games', mob:['all','seated','memory'],
+  emoji:'🎈', title:'Balloon Volleyball', complexity:'Simple', cost:'$',
+  costLabel:'$2–$5', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Volleyball with a balloon — played sitting in a circle or across a string net. The balloon moves slowly enough for everyone to reach it.',
+  supplies:['Balloons (round, 11-12 inch)','String or rope for net (tie between two chairs)','Chairs arranged in two rows facing each other','Pump (optional)','Extra balloons'],
+  steps:['Blow up 2–3 balloons (extras for when one pops)','Set up string "net" between chairs at seated height','Divide into two teams facing the net','Tap balloon back and forth over net — keep it in the air','Count consecutive volleys as a team score','Play several rounds; rotate positions'],
+  tips:['No standing required — excellent for seated residents and wheelchairs','Use a slightly under-inflated balloon for slower, more forgiving play','Memory care residents love the bright colors — even if scoring is dropped, just keeping it in the air is the win'],
+  variations:['Circle keep-up — no net, just count how many times group can tap balloon without it hitting ground','Speed round — use 2 balloons at once','Numbered balloon — each player has a number; call a number and they must hit the balloon'] },
+
+{ id:'cornhole-tournament', season:'games', mob:['all','active','seated'],
+  emoji:'🎳', title:'Cornhole Tournament', complexity:'Simple', cost:'$$',
+  costLabel:'$20–$40', duration:'60–90 min', groupSize:'4–16 residents',
+  desc:'The classic American lawn game — tournament bracket style with prizes. Great for all mobility levels; seated residents play from their wheelchair.',
+  supplies:['Cornhole boards (2) with holes','Bean bags (8 — 4 per team color)','Chalk for distance markers','Bracket sheet + prizes','Chairs for teams waiting their turn'],
+  steps:['Set up boards 15–20 ft apart (closer for seated players)','Draw a bracket with team names (pairs or solo)','Explain scoring: hole = 3 pts, board = 1 pt, cancel-out rules','Play each round to 21 pts; loser is eliminated','Winners advance on bracket','Champion match; award gold/silver/bronze ribbons'],
+  tips:['Mark a "seated line" closer to board for wheelchair players','Wider bean bags are easier for residents with grip issues','Cornhole is a great family day game — let visiting family members play too'],
+  variations:['Reverse cornhole — try NOT to score, score goes to opponent','Trick shot round — underhand, behind back, eyes closed bonus shots','Teams of 3+ for a more social, longer event'] },
+
+{ id:'giant-checkers', season:'games', mob:['all','seated'],
+  emoji:'♟️', title:'Giant Outdoor Checkers', complexity:'Simple', cost:'$$',
+  costLabel:'$15–$30', duration:'20–45 min per game', groupSize:'2–8 residents (watching counts)',
+  desc:'Oversized checkers pieces on a painted tarp or foam-tile board — residents move their pieces by hand or by pointing for staff to move.',
+  supplies:['Giant checkers set (buy or DIY: paint red/black circles on cardboard)','8x8 grid: painted canvas tarp, foam floor tiles, or chalk grid on pavement','Chairs on each side','Score/turn tracker'],
+  steps:['Lay out giant checkerboard (chalk on pavement works great)','Two players choose red or black; set up 12 pieces each','Take turns moving one piece diagonally forward','Jump opponent\'s piece to capture; reach far row to "king" a piece','Stack a second piece on "kinged" pieces so they can move backward','Winner clears opponent\'s board; play another round'],
+  tips:['Staff can move pieces for residents who prefer to direct play','Giant boards create a natural audience — spectators love cheering and offering advice','Memory care: simplified version — just move one color toward the other side, first to cross wins'],
+  variations:['Giant chess — for the chess players','Giant tic-tac-toe with foam X and O pieces','Giant Connect Four — DIY with buckets and colored balls'] },
+
+{ id:'giant-jenga', season:'games', mob:['all','active'],
+  emoji:'🧱', title:'Giant Jenga Tower', complexity:'Simple', cost:'$$',
+  costLabel:'$30–$50', duration:'20–40 min', groupSize:'2–12 residents',
+  desc:'The classic block-pulling game at massive scale outdoors. When this tower falls, everyone within earshot reacts!',
+  supplies:['Giant Jenga set (2x4 wooden blocks, 54 pieces — buy or DIY)','Flat, stable outdoor surface','Optional: write prompts/trivia questions on blocks','Chairs for players'],
+  steps:['Stack blocks in sets of 3, rotating 90 degrees each layer','Players take turns removing one block from below the topmost layer','Place removed block on top','Keep going until the tower falls','The player who made the tower fall starts the next game'],
+  tips:['Label blocks with fun prompts ("Tell a joke!" "Share a memory!") for extra engagement','Use a rubber mallet to tap stubborn blocks','Played on a table or low cart so seated residents can reach'],
+  variations:['Truth or Dare Jenga — written prompts on blocks','Trivia Jenga — answer a question to place your block back','Timed version — 30 seconds per turn or you forfeit'] },
+
+{ id:'lawn-bowling', season:'games', mob:['all','seated'],
+  emoji:'🎳', title:'Lawn Bowling', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'30–45 min', groupSize:'4–16 residents',
+  desc:'Set up 10 plastic bottles or cones as pins on the lawn and roll a ball to knock them down — like bowling but in the fresh air.',
+  supplies:['10 plastic bottles (fill with sand or water for stability)','OR store-bought lawn bowling pins','Medium rubber ball or bocce ball','Tape or chalk for lanes and foul line','Score sheet'],
+  steps:['Set up 10 pins in classic bowling triangle formation','Mark a foul line 15–20 ft away (adjust per ability)','Each player gets 2 rolls per turn','Count knocked pins (spare/strike rules optional)','Keep score over 5–10 frames','Award pins: most strikes, highest score, most improved'],
+  tips:['Heavier filled-bottle pins hold up better in breeze','For seated players, remove the foul line requirement','Bring the pins closer for memory care or limited mobility residents'],
+  variations:['Colored pin scoring — each color worth different points','Partner version — take turns rolling each frame','Night bowling — glow sticks inside translucent bottles'] },
+
+{ id:'ring-toss-carnival', season:'games', mob:['all','seated'],
+  emoji:'🎡', title:'Ring Toss Carnival', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'30–45 min', groupSize:'Any size',
+  desc:'Set up a carnival-style ring toss with multiple targets at different distances — run it as a standalone game or as part of a carnival day.',
+  supplies:['Plastic rings or embroidery hoops','Targets: cones, bottles, pool noodles, stakes','Distance markers (chalk)','Prizes or tickets','Score card'],
+  steps:['Set up 5–7 targets at varying distances','Assign point values (farther = more points)','Each player gets 5 rings per round','Toss all rings; add up points','Play 3 rounds; highest cumulative score wins','Award prizes: tickets redeemable at "prize table"'],
+  tips:['Heavier rings (embroidery hoops) fly more predictably than lightweight plastic','Mark separate toss lines for seated vs. standing players','Run as a station at a carnival day alongside other games'],
+  variations:['Glow ring toss at twilight with LED targets','Bottle ring toss — rings must land around bottleneck (classic carnival)','Team version — combine scores for team total'] },
+
+{ id:'hula-hoop-challenge', season:'games', mob:['all','active'],
+  emoji:'⭕', title:'Hula Hoop Challenge', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Who can hula hoop the longest? Or toss and catch? Or roll to a target? Three mini-challenges in one fun station.',
+  supplies:['Hula hoops (various sizes — larger = easier)','Stopwatch','Chalk targets for rolling','Prize ribbons'],
+  steps:['Challenge 1: Waist hoop — count how long before it falls (even 3 seconds counts!)','Challenge 2: Arm hoop — spin hoop around arm or wrist','Challenge 3: Roll it — roll hoop along chalk line to a target','Challenge 4: Toss & catch — toss up and catch on arm','Record personal bests; everyone cheers','Award: longest hoop, best roll, most creative trick'],
+  tips:['Larger hoops (36"+) are much easier to waist hoop — use these for seniors','Arm and wrist hooping requires zero balance — accessible for most','For wheelchair residents: rolling the hoop on the ground is fully accessible'],
+  variations:['Hoop relay — pass hoop through a line of joined-hands participants (bodies step through)','Hoop jump — lay hoops on ground; hop from hoop to hoop','Hoop toss at cone targets'] },
+
+{ id:'parachute-games', season:'games', mob:['all','seated'],
+  emoji:'🌈', title:'Parachute Games', complexity:'Simple', cost:'$$',
+  costLabel:'$20–$40', duration:'30–45 min', groupSize:'8–20 residents',
+  desc:'A colorful activity parachute brings out joy in every age group — waves, popcorn, mushroom, and cooperative games for all ability levels.',
+  supplies:['Activity parachute (6–12 ft for small groups; 20+ ft for larger)','Foam balls or beach balls for popcorn game','Open outdoor space','Upbeat music (optional)'],
+  steps:['Spread parachute; everyone holds an edge (seated in chairs around it)','Wave game: ripple the chute up and down in waves together','Popcorn: place foam balls on top and shake — try to keep them on!','Mushroom: everyone lifts high together, creating a dome','Ball roll: roll a ball around the edge by tilting as a group','Tent: lift high, step under, sit on edge — everyone inside a tent!'],
+  tips:['Seated residents in chairs can participate fully — no standing required','Parachute is one of the best group cooperation activities — no competition, pure fun','Memory care residents respond beautifully to the colors, motion, and group laughter'],
+  variations:['Color calls: lift only people holding green section at the same time','Cat and mouse: one ball chases another around the parachute','Exchange places: lift high, call out two names, they swap while under dome'] },
+
+{ id:'ladder-ball', season:'games', mob:['all','active'],
+  emoji:'🪢', title:'Ladder Ball / Bola Toss', complexity:'Simple', cost:'$$',
+  costLabel:'$15–$30', duration:'30–45 min', groupSize:'2–8 residents',
+  desc:'Toss rope bolas (two balls connected by string) onto a 3-rung PVC ladder for points — simple, satisfying, and surprisingly addictive.',
+  supplies:['Ladder Ball set (buy or DIY with PVC pipe and golf balls on rope)','Flat outdoor surface','Score sheet','Drinks for players waiting their turn'],
+  steps:['Set up ladder 5 paces away from toss line','Each player has 3 bolas per turn','Toss bolas underhand to wrap around rungs (top=3, mid=2, bottom=1)','Opponents\' bolas can knock yours off — cancel scoring applies','Play to 21 exact (must hit exactly)','Doubles version: partners alternate throws'],
+  tips:['Heavier bolas (golf balls) fly more predictably','Adjust distance for seated or limited-range players','This is a great tailgate/BBQ game — pairs well with a cookout event'],
+  variations:['Bola relay — teams of 3, each person throws one bola','Timed version — most points in 60 seconds','Color code bolas and assign point multipliers'] },
+
+{ id:'washer-toss', season:'games', mob:['all','seated'],
+  emoji:'🔩', title:'Washer Toss', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'20–30 min', groupSize:'2–8 residents',
+  desc:'Toss metal washers into a cup target box — similar to horseshoes but gentler, quieter, and just as competitive.',
+  supplies:['2 target boxes (small wooden boxes with a cup in center — DIY or buy)','8 washers (4 per player, 2 different colors)','Chalk or tape for distance marks'],
+  steps:['Place target boxes 10–20 ft apart (closer for seated players)','Two players stand behind opposing boxes','Each tosses 4 washers per round, trying to land in the cup','Cup = 3 pts, in-box = 1 pt, cancel scoring applies','Play to 21; swap sides each round','Tournament bracket for larger groups'],
+  tips:['Great for residents with limited throwing range — can move target much closer','Heavier washers are easier to toss accurately than lightweight ones','DIY version: cut hole in cardboard box and use can inside'],
+  variations:['Mug toss version — use a coffee mug as target (softer tosses, closer range)','Blind washer — eyes closed, rely on memory of target position','Doubles version — partners toss alternate washers'] },
+
+{ id:'sponge-relay', season:'games', mob:['all','active'],
+  emoji:'🧽', title:'Sponge Water Relay Race', complexity:'Simple', cost:'$',
+  costLabel:'$3–$8', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Teams race to fill a bucket using only a wet sponge — carry water from one bucket to another. Great on hot days!',
+  supplies:['Large sponges (one per team)','Two buckets per team (one full of water, one empty)','Measuring cup to check water transferred','Towels','Waterproof shoes recommended','Chalk start/finish lines'],
+  steps:['Set up full water bucket and empty bucket 15 ft apart per team','Players dip sponge, carry it to empty bucket, squeeze, run back','Next player repeats; relay continues until time is called','Team with most water in receiving bucket wins','Optional: play until receiving bucket reaches 1-cup mark'],
+  tips:['This is best on a hot summer day when getting wet is welcome','For seated players: squeeze sponge from chair into bucket held nearby','Use bigger sponges for faster play; smaller for a longer game'],
+  variations:['Over-the-head relay — carry sponge on head, no hands','Sponge toss across a line instead of carrying','Bucket line — pass sponge down a line of players'] },
+
+{ id:'spoon-egg-race', season:'games', mob:['all','active'],
+  emoji:'🥄', title:'Spoon & Egg Race', complexity:'Simple', cost:'$',
+  costLabel:'$2–$5', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Balance a plastic egg on a spoon and race across the yard — drop it, go back to start. A timeless backyard classic.',
+  supplies:['Plastic Easter eggs (reusable)','Large dessert spoons','Chalk start/finish line','Cones for turn-around','Prizes for all finishers'],
+  steps:['Mark start and finish lines 20 ft apart','Each player gets a spoon with egg balanced on it','On "go" walk (or roll) to the finish line — no running required','Drop the egg? Go back to the start line and try again','First across wins; award everyone who finishes','Relay version: pass spoon + egg to next teammate without using hands'],
+  tips:['Heavier plastic eggs are easier to balance than hollow ones','For wheelchair residents: hold spoon in front while attendant slowly pushes chair — they focus on balance','Taping egg to spoon slightly is fine for memory care participants'],
+  variations:['Obstacle course version — weave between cones','Two-handed spoon for a more accessible version','Water balloon on spoon for the brave (messy and hilarious)'] },
+
+{ id:'giant-tic-tac-toe', season:'games', mob:['all','seated'],
+  emoji:'❌', title:'Giant Tic-Tac-Toe', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'10–20 min', groupSize:'2–6 residents',
+  desc:'Oversized X and O pieces on a chalk or tarp grid — quick to set up, endlessly playable, perfect filler game between events.',
+  supplies:['Chalk (for pavement grid) OR fabric tarp with painted grid','Large X pieces and O pieces (foam, cardboard, or painted rocks)','Optional: hula hoops as circles, pool noodles as X shapes'],
+  steps:['Draw 3x3 grid large enough to step into each square (4x4 ft per square)','Players alternate placing their piece in a square','First to get 3 in a row wins','Clear board and play again — games are fast!','Tournament: 5 wins takes the match','Commentary encouraged from spectators'],
+  tips:['Use hula hoops for O pieces and pool noodles shaped in an X for pieces — all reusable','Fast games = high turnover; keep a waiting list and rotate players in','Memory care: simplified version, just try to place 3 same pieces anywhere on board (no strategy pressure)'],
+  variations:['Giant Connect Four — stand colored discs in a 6x7 rack','Giant Battleship — two residents with grid sheets, call coordinates','3D tic-tac-toe — stack levels using crates'] },
+
+{ id:'target-spray', season:'games', mob:['all','active'],
+  emoji:'💧', title:'Water Pistol Target Gallery', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Set up targets on a fence or board — cups, ping pong balls, paper targets — and use water pistols or spray bottles to knock them down.',
+  supplies:['Water pistols or spray bottles (large trigger type for weak hands)','Targets: Solo cups, ping pong balls on cones, paper targets','Fence, board, or table to set targets on','Towels and tarps for cleanup','Refill bucket of water'],
+  steps:['Set up target gallery on a fence or table','Mark shooting lines at various distances','Each player gets 60 seconds to knock down as many targets as possible','Staff reset targets between players','Track scores; highest score in the set wins','Award: sharpshooter, most creative shot, best celebration'],
+  tips:['Use large-trigger spray bottles for residents with limited hand strength','Seated players at close range — completely accessible','On hot days this doubles as a cooling activity'],
+  variations:['Color-coded targets with different point values','Team relay — alternate shooters within time limit','Balloon pop — hang water balloons on fence as targets'] },
+
+{ id:'musical-chairs-outdoor', season:'games', mob:['all','active'],
+  emoji:'🎶', title:'Musical Chairs Outdoor', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'20–30 min', groupSize:'6–20 residents',
+  desc:'The classic kids\' game, but for seniors — with slower music, gentle movement, and no elimination (everyone stays in!)',
+  supplies:['Chairs in a circle (one fewer than players — but optional, see tips)','Bluetooth speaker + music playlist','Prizes for everyone','Fun playlist (upbeat oldies, Motown, etc.)'],
+  steps:['Arrange chairs in a circle facing out','Start music; residents walk (or wheel) around the outside','Stop music; everyone finds a seat','Instead of elimination: everyone squeezes onto remaining seats!','Continue removing chairs; see how many people can share!','End with everyone crowded onto 2–3 chairs — hilarious photo'],
+  tips:['Non-elimination version keeps EVERYONE playing and laughing','Wheelchair version: move between marked spots on floor','Use this as a warm-up game before a bigger event'],
+  variations:['Musical trivia: stop music, answer trivia to keep seat','Musical statues: freeze when music stops','Emotion chairs: strike a pose that matches the music genre when it stops'] },
+
+{ id:'frisbee-golf', season:'games', mob:['all','active'],
+  emoji:'🥏', title:'Frisbee Golf Course', complexity:'Medium', cost:'$',
+  costLabel:'$5–$20', duration:'45–60 min', groupSize:'2–12 residents',
+  desc:'Set up a 6-hole frisbee golf course around the grounds using cones, hula hoops, or buckets as targets — a full outdoor adventure.',
+  supplies:['Frisbees (2–3 per player or shared)','6 targets: cones, laundry baskets, hula hoops, or buckets','Numbered flag markers (1–6)','Score cards + pencils','Map of course (hand-drawn is fine)'],
+  steps:['Set up 6 targets around the outdoor space at varying distances','Draw a simple course map','Players start at hole 1 and toss frisbee toward target','Count throws per hole; lowest total score wins','Move together as a group from hole to hole','Post-game: award score cards as keepsakes'],
+  tips:['Shorter course holes (20–30 ft) work well for seniors','Softer rubber frisbees are easier on hands and less intimidating','Make it a walking tour of the grounds — point out flowers, birds along the way'],
+  variations:['Bocce disc golf — use bocce balls instead of frisbees for seated players','Night course — glow-in-dark frisbees at dusk','Putt-putt hybrid — final hole is a putting green chip shot'] },
+
+{ id:'balloon-stomp', season:'games', mob:['all','active'],
+  emoji:'💥', title:'Balloon Stomp', complexity:'Simple', cost:'$',
+  costLabel:'$3–$8', duration:'15–20 min', groupSize:'4–20 residents',
+  desc:'Every player has a balloon tied to their ankle — try to stomp others\' balloons while protecting your own. Pure chaos, pure joy.',
+  supplies:['Balloons (2 per person — extras for when they pop)','String (12 inches per balloon)','Open outdoor space','Pump','Prizes for last balloon standing'],
+  steps:['Inflate balloons; tie with 12 inches of string','Each resident ties balloon to their ankle (staff assist)','Mark a boundary area (chalk or cones)','On "go" — try to pop others\' balloons by stepping on the string/balloon','Stay inside the boundary area','Last person with intact balloon wins'],
+  tips:['Seated version: tie balloon to wheelchair footrest; players try to maneuver and pop others','Staff can participate for fun — let residents stomp theirs first for laughs','Skip this for residents with fall risk; use seated version instead'],
+  variations:['Team balloon stomp — protect your team\'s balloons, pop the other team\'s','Two balloons per person — first balloon doesn\'t count','Slow motion stomp — everyone moves in "slow motion" for a gentler version'] },
+
+{ id:'paper-airplane-contest', season:'games', mob:['all','seated','memory'],
+  emoji:'✈️', title:'Paper Airplane Design & Fly-Off', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'4–20 residents',
+  desc:'Fold paper airplanes and then take them outside for a fly-off competition — distance, accuracy, and style all count.',
+  supplies:['Paper (8.5x11, regular printer paper)','Measuring tape','Chalk landing markers','Optional: tape for reinforcing, markers for decoration','Prizes'],
+  steps:['Everyone folds their airplane design (staff show 2–3 basic designs)','Decorate planes with markers — names, colors, patterns','Head outside to launch area','Three flight categories: longest distance, most accurate, best loop','Each pilot gets 3 throws per category — record best','Award certificates for each category + "best design" award'],
+  tips:['Classic dart design works best for distance; wide-wing for loops','For residents with limited hand strength: pre-fold partially, they finish it','Memory care: focus on decoration + the moment of throwing — outcomes matter less'],
+  variations:['Glider contest — who can keep it in the air longest','Target landing — chalk circle target, closest landing wins','Team design — pairs design one plane together and share throwing duties'] },
+
+{ id:'garden-olympics', season:'games', mob:['all','active','seated'],
+  emoji:'🏅', title:'Backyard / Garden Olympics', complexity:'Medium', cost:'$',
+  costLabel:'$10–$20', duration:'90 min–2 hrs', groupSize:'8–30 residents',
+  desc:'A mini Olympics event with 5–8 stations cycling through various outdoor games — everyone earns medals, everyone participates.',
+  supplies:['Various game supplies (bean bags, hoops, noodles, balls)','5–8 stations set up around the yard','Score sheets per resident','Medal ribbons (gold, silver, bronze — one per event)','Olympic music playlist (Chariots of Fire, etc.)'],
+  steps:['Set up 5–8 game stations around outdoor space (ring toss, balloon volleyball, javelin, bowling, etc.)','Divide residents into groups of 3–4','Groups rotate through stations on a timer (10 min each)','Staff record scores at each station','Tally scores; award medals in each event + overall','Closing ceremony: everyone sings anthem or school fight song'],
+  tips:['This is a perfect quarterly or seasonal event — residents plan and look forward to it','Family members can be on the team with residents','Create a "Resident Hall of Fame" board for Garden Olympics records'],
+  variations:['Country vs. country theme — assign countries, teams compete','Senior vs. Staff Olympics — residents vs. activity staff','Team relay finale — one combined event all teams compete in at the end'] }
 ];
 
-var OD_SEASON_NAMES = { spring:'🌸 Spring', summer:'☀️ Summer', fall:'🍂 Fall', winter:'❄️ Winter' };
+var OD_SEASON_NAMES = { spring:'🌸 Spring', summer:'☀️ Summer', fall:'🍂 Fall', winter:'❄️ Winter', games:'🎮 Games' };
 var OD_MOB_NAMES = { all:'All Residents', active:'Active', seated:'Seated / Wheelchair', memory:'Memory Care' };
 var OD_MOB_COLORS = { all:'#0ea5e9', active:'#16a34a', seated:'#7c3aed', memory:'#ea580c' };
 
@@ -27792,6 +28082,459 @@ function odPrintAll() {
 })();
 </script>
 
+<script>
+/* ===== PET THERAPY ===== */
+var PT_CAT = 'all';
 
+var PT_CAT_NAMES = {
+  all:'All', dogs:'🐕 Dogs', cats:'🐈 Cats', small:'🐰 Small Animals',
+  birds:'🦜 Birds', aquarium:'🐟 Aquarium', farm:'🐄 Farm & Special',
+  virtual:'📱 Virtual', program:'📋 Program Setup'
+};
+var PT_CAT_COLORS = {
+  dogs:'#b45309', cats:'#7c3aed', small:'#16a34a', birds:'#0369a1',
+  aquarium:'#0891b2', farm:'#65a30d', virtual:'#dc2626', program:'#374151'
+};
+
+var PT_ACTIVITIES = [
+/* ── DOGS ── */
+{ id:'therapy-dog-visit', cat:'dogs', emoji:'🐕', title:'Therapy Dog Visit — Structured Session',
+  cost:'Free', duration:'30–60 min', groupSize:'4–20 residents',
+  desc:'A certified therapy dog and handler visit the common room for one-on-one and group interaction — the gold standard of pet therapy.',
+  supplies:['Certified therapy dog team (handler + dog)','Chairs arranged in a circle or row','Hand sanitizer + wipes','Optional: dog treats for residents to offer','Resident animal preference list (see survey printable)'],
+  steps:['Confirm animal allergies and fear/anxiety notes ahead of time with nursing','Arrange seating so dog can reach all residents easily','Welcome handler; introduce dog by name and breed to the group','Allow dog to approach each resident at its own pace — never force interaction','Facilitate conversation: "What\'s your favorite dog memory?"','Handler shares dog\'s story, training, and fun facts','Thank handler; offer treat-giving opportunity at end'],
+  tips:['Always check with nursing before visit for any new allergy/health concerns','Some residents afraid of dogs still enjoy watching from a distance — honor that','Document resident reactions in activity log — helps track therapeutic progress'],
+  variations:['One-on-one bedside visits for residents who can\'t attend group','Dog agility mini-demo in outdoor space','Resident "dog of the month" vote — post photo on bulletin board'] },
+
+{ id:'dog-brushing-grooming', cat:'dogs', emoji:'🪮', title:'Dog Brushing & Grooming Session',
+  cost:'Free', duration:'20–30 min', groupSize:'2–8 residents',
+  desc:'Residents take turns gently brushing the therapy dog — deeply therapeutic tactile activity that benefits both resident and dog.',
+  supplies:['Certified therapy dog (must be trained for grooming interaction)','Soft brushes (have extras for residents to use)','Wipes + hand sanitizer','Towels for lap protection'],
+  steps:['Handler confirms dog is comfortable with multiple brushers','Provide each resident a soft brush','Demonstrate correct brushing technique — gentle, long strokes','Residents take turns or brush simultaneously if dog allows','Narrate what you\'re doing: "Feel how soft her fur is near her ears"','Allow residents to talk to dog while brushing'],
+  tips:['The rhythmic motion of brushing is especially calming for anxiety and agitation','This is the most powerful one-on-one version of pet therapy','Memory care residents often become deeply focused and calm during this activity'],
+  variations:['Residents decorate dog bandanas to put on the dog afterward','Dog "bath day" demo (handler washes dog, residents watch and participate in drying)','Photo session: resident + dog portrait, printed and given as keepsake'] },
+
+{ id:'dog-training-demo', cat:'dogs', emoji:'🎓', title:'Dog Trick Training Demo & Participation',
+  cost:'Free', duration:'20–30 min', groupSize:'4–20 residents',
+  desc:'Handler demonstrates the dog\'s trained tricks, then teaches residents how to give commands — residents become the trainers!',
+  supplies:['Certified therapy dog with trick training','Dog treats (bring by handler or use provided)','Open space for dog to move','Applause!'],
+  steps:['Handler demonstrates 5–6 tricks (sit, shake, roll over, fetch, spin, etc.)','Explain how each trick was trained — residents love the "how"','Invite residents one at a time to give a command (handler coaches voice/gesture)','Celebrate each successful trick with clapping','Let residents name a new "trick" for dog to try to learn','Award residents "Certified Dog Trainer" ribbon'],
+  tips:['Giving a command successfully is deeply empowering for residents with limited mobility','Use simple hand gestures so residents with limited voice can participate','Dogs with a good "bow" trick always get a standing ovation'],
+  variations:['Agility course demo in outdoor space (weave poles, jumps, tunnels)','Dog "job" demo — show what working dogs do (scent work, retrieve, etc.)','Resident choice: vote on which tricks to see before the visit'] },
+
+{ id:'dog-reading-program', cat:'dogs', emoji:'📖', title:'Read to the Dog Program',
+  cost:'Free', duration:'30–45 min', groupSize:'1–4 residents',
+  desc:'Residents read aloud to a certified therapy dog — the non-judgmental audience reduces anxiety and builds confidence and joy.',
+  supplies:['Certified therapy dog (R.E.A.D. program dogs ideal)','Large-print books or magazines','Comfortable chairs','Quiet room or corner'],
+  steps:['Set up a cozy reading corner with comfortable chair and dog bed beside it','Resident selects a book or magazine to read aloud','Dog settles next to resident (floor or lap if small dog)','Resident reads at their own pace — no pressure, no assessment','Handler quietly facilitates; resident and dog do the work','Resident chooses a "favorite part" to re-read at the end'],
+  tips:['This is powerful for residents with low self-esteem, speech therapy goals, or loneliness','Even residents who "can\'t read anymore" will look at pictures and narrate to the dog','Works beautifully as a one-on-one during free time, not just group events'],
+  variations:['Storytelling version — resident makes up a story instead of reading','Resident writes a short poem or letter to the dog','Group reading circle — pass the book, each person reads one paragraph to the dog'] },
+
+{ id:'dog-art-activity', cat:'dogs', emoji:'🎨', title:'Dog-Inspired Art Session',
+  cost:'$', duration:'45–60 min', groupSize:'4–16 residents',
+  desc:'Residents draw, paint, or craft a portrait of the therapy dog during or after a visit. The dog serves as the live model!',
+  supplies:['Art supplies: colored pencils, watercolors, or pastels','Paper or canvas','The therapy dog (live model) or reference photo','Display space for finished art'],
+  steps:['Invite therapy dog to sit or lie near the art table','Residents observe and sketch or paint the dog','Handler keeps dog calm and posed (treats help!)','Residents work at own pace; no pressure for realism','Display finished art with artist name + dog name label','Send a photo of the gallery to the handler as a thank-you'],
+  tips:['Abstract or impressionist results are just as meaningful as realistic portraits','This activity extends the visit value — residents think about the dog all week','Memory care: tracing a paw print photo or stamping with a foam paw is a simpler alternative'],
+  variations:['Paw print art — ink the dog\'s paw and press onto paper (handler must agree)','Sculpt a dog out of clay','Make a dog bookmark or card as a gift for the handler'] },
+
+/* ── CATS ── */
+{ id:'therapy-cat-lap-visit', cat:'cats', emoji:'🐈', title:'Therapy Cat Lap Visit',
+  cost:'Free', duration:'30–45 min', groupSize:'2–10 residents',
+  desc:'A calm, certified therapy cat visits residents — purring on a lap is one of the most soothing therapeutic interactions possible.',
+  supplies:['Certified therapy cat + handler','Lap blankets (for protection from claws and cat hair)','Hand wipes + sanitizer','Allergy pre-screening','Lint roller for after'],
+  steps:['Pre-screen for cat allergies — ask nursing staff 1–2 days ahead','Set up comfortable seating; provide lap blankets','Handler introduces cat by name, age, and personality','Cat visits each resident at handler\'s guidance','Allow cat to sit on laps at its comfort level — never force','Residents can stroke, speak softly, or just enjoy the purring presence'],
+  tips:['Cat purring (25–50 Hz) has documented health benefits including reduced blood pressure and stress','Not every cat wants to be held — a cat that walks between residents\' chairs is still therapeutic','Great for residents who miss their own cats — ask them to share stories'],
+  variations:['Cat café afternoon — 2–3 cats roam freely in a designated safe room','Knitting/crafting with a cat in your lap (ultimate cozy)','Cat + music therapy combo: soft music + resident + purring cat'] },
+
+{ id:'cat-toy-making', cat:'cats', emoji:'🧶', title:'Cat Toy Crafting for Shelter Cats',
+  cost:'$', duration:'45–60 min', groupSize:'4–16 residents',
+  desc:'Residents craft simple toys for local shelter cats — making something useful while connecting with animals even when a live visit isn\'t possible.',
+  supplies:['Felt scraps','Catnip (available at pet stores)','Needle and thread or fabric glue','Scissors','Feathers, crinkle material, small bells','Donation bags for shelter'],
+  steps:['Explain the project: toys go to shelter cats waiting for homes','Demonstrate making a simple felt catnip mouse or feather wand','Residents cut, stuff, and sew or glue their toy','Add resident\'s first name tag on a ribbon tied to each toy','Box toys for shelter donation','Optional: visit the shelter to deliver — OR invite shelter staff to come accept them'],
+  tips:['Catnip stuffed toys are the most popular with shelter cats','Pre-cut felt shapes for residents with limited dexterity','The "giving" aspect is as therapeutic as the making'],
+  variations:['Dog toy version: tie knot toys from old T-shirt strips','Make blankets for shelter animals — no-sew fleece method','Write a card to accompany the donation explaining who made the toys'] },
+
+{ id:'cat-grooming-chat', cat:'cats', emoji:'✨', title:'Cat Grooming & Pampering Station',
+  cost:'Free', duration:'20–30 min', groupSize:'2–8 residents',
+  desc:'Residents gently groom and pamper a calm therapy cat — brushing, gentle massage, and talking softly to the cat.',
+  supplies:['Calm, grooming-tolerant therapy cat','Soft cat brush','Lap blankets','Treats','Quiet relaxing music'],
+  steps:['Handler confirms cat is comfortable with grooming','One or two residents at a time sit with cat on lap blanket','Residents take turns brushing cat in direction of fur','Narrate: "She loves behind the ears — watch how she leans in"','Residents share cat memories: "My cat used to do that too!"','Rotate residents through in small groups'],
+  tips:['The rhythm of brushing + the sound of purring together is deeply meditative','Residents who haven\'t spoken much will often open up while grooming an animal','End with a cat "selfie" — photo for the memory board'],
+  variations:['Cat massage workshop: handler teaches proper cat massage technique','Residents knit or crochet a tiny collar or bow for the cat','Resident names a "spirit animal" — which cat breed matches their personality?'] },
+
+/* ── SMALL ANIMALS ── */
+{ id:'rabbit-visit', cat:'small', emoji:'🐰', title:'Rabbit Cuddle Visit',
+  cost:'Free', duration:'20–30 min', groupSize:'4–12 residents',
+  desc:'A gentle, clean rabbit (or guinea pig) visits residents for lap time — incredibly calming, hypoallergenic for many, and universally beloved.',
+  supplies:['Friendly, people-trained rabbit or guinea pig + handler','Soft fleece lap blanket (easier cleanup)','Baby wipes + sanitizer','Pellets or small treats for residents to offer'],
+  steps:['Handler introduces animal and explains proper holding technique','Place animal on lap blanket — do NOT hand them to residents who can\'t support properly','Allow residents to stroke gently from head toward tail','Offer one pellet treat for residents who want to feed','Share fun facts: rabbit teeth, ear temperature regulation, etc.','Rotate animal between residents; keep visit calm and quiet'],
+  tips:['Rabbits and guinea pigs are hypoallergenic for many residents sensitive to dogs/cats','The small, gentle, slow-moving nature is ideal for memory care','Residents who had childhood rabbits or farm animals have rich memories to share'],
+  variations:['Guinea pig "popcorning" show — guinea pigs jump for joy when happy; very entertaining!','Rabbit agility mini-course (yes, rabbits can do agility!)','Rabbit story time: resident reads a book while holding rabbit on lap'] },
+
+{ id:'hamster-observation', cat:'small', emoji:'🐹', title:'Small Animal Habitat Tour',
+  cost:'$', duration:'30–45 min', groupSize:'4–16 residents',
+  desc:'Set up a hamster, gerbil, or mouse habitat in the activity room for a multi-day "resident" — observation, enrichment building, and naming.',
+  supplies:['Small animal in a habitat (borrow from a local pet store or shelter for a week)','Enrichment items: tubes, wheels, hideaways','Resident-created enrichment craft items','Habitat observation journal'],
+  steps:['Set up habitat in common area with a sign: "Our Visiting Guest"','Introduce the animal; let residents name it for the week','Each day add one new enrichment item that residents helped make (paper tube roll, cardboard box house)','Observation journal: residents note what they see each day (sleeping spot, eating habits)','At week\'s end: group reflection on what they learned','Return animal with a care package of homemade enrichment items'],
+  tips:['Hamsters are nocturnal — observe in dim lighting for best activity','The multi-day format builds relationship and anticipation across a whole week','Residents compete to catch the animal doing funny things and share at dinner'],
+  variations:['Fishbowl-style small habitat for beetles or stick insects (fascinating, no allergies)','Classroom-style: learn the life cycle of the small animal','Residents design and build a paper model of their dream habitat for the animal'] },
+
+{ id:'bird-feeder-small', cat:'small', emoji:'🌻', title:'Bird & Small Animal Feeding Station',
+  cost:'$', duration:'20–30 min', groupSize:'Any size',
+  desc:'Residents prepare food and hand-feed or tray-feed small socialized animals like chinchillas, guinea pigs, or doves — the gentleness required is itself therapeutic.',
+  supplies:['Socialized small animal(s)','Appropriate treats: apple slice, carrot, hay, seed','Small feeding trays or cups','Hand wipes','Aprons (optional)'],
+  steps:['Handler explains what food the animal eats and why','Residents prepare a small tray of treats','Animal is placed on table or in accessible habitat opening','Residents offer food by hand or on flat palm','Observe and narrate: "She smells it first before she bites!"','Count how many pieces each resident fed — friendly competition'],
+  tips:['Extended palm (rather than pinched fingers) is safer for all involved','This is a great fine motor activity — handling small pieces of food','Memory care: the simple repetition of offering a treat and watching the animal take it is deeply satisfying'],
+  variations:['Vegetable tasting: resident and animal taste the same carrot/apple slice together','Residents grow a small herb garden and harvest for animal treats','Create a "menu" for the animal — residents vote on what treat to bring next time'] },
+
+/* ── BIRDS ── */
+{ id:'parrot-visit', cat:'birds', emoji:'🦜', title:'Talking Bird & Parrot Visit',
+  cost:'Free', duration:'30–45 min', groupSize:'4–20 residents',
+  desc:'A socialized parrot or talking bird visits — whistling, copying phrases, and stepping up onto hands. Pure entertainment meets therapeutic joy.',
+  supplies:['Socialized parrot or cockatiel + experienced handler','Perch stand or T-bar perch','Treats (seeds, crackers, grapes)','Hand wipes','Towel for handler shoulder (bird poop protection!)'],
+  steps:['Handler introduces bird — name, species, age, and personality','Demonstrate bird\'s talking/whistling repertoire','Residents try to get bird to repeat a word or phrase','Handler brings bird to each resident; bird can step up on finger if comfortable','Teach residents to say "step up" in a firm, gentle voice','Group teaching challenge: teach bird a new phrase during the visit'],
+  tips:['Parrots mirror emotion — calm, happy voices get the best results','Cockatiels whistle to music — bring a music player for the best reactions','Residents who taught parakeets as children have wonderful stories to tell'],
+  variations:['Bird talent show: handler showcases all the bird\'s tricks and sounds','Resident teaches bird a line from their favorite song','Bird "interview": residents ask bird questions, handler interprets the responses humorously'] },
+
+{ id:'bird-watching-session', cat:'birds', emoji:'🔭', title:'Guided Birding Session',
+  cost:'$', duration:'30–60 min', groupSize:'4–20 residents',
+  desc:'Set up bird feeders at the window or take residents outdoors for a guided bird-watching experience — identification, behavior, and memories.',
+  supplies:['Bird feeders (stocked with seed)','Binoculars (even cheap ones are exciting)','Field guide or laminated ID chart (local birds)','Checklist per resident','Recording sheet for sightings'],
+  steps:['Set up feeders 1–2 days ahead so birds find them','Position residents near the best window or outdoors','Distribute checklists and binoculars','As birds arrive, identify them together using the chart','Mark off each new species on the checklist','Share childhood bird memories: "We had a canary named Tweety for 12 years"'],
+  tips:['Suet cakes attract woodpeckers — the most exciting feeder birds','A robin pulling a worm from the lawn is worth watching — scan the ground too','Memory care: hold binoculars up to their eyes for them; the magnification is magical'],
+  variations:['Bird bingo version (see Outdoors tab)','Resident sketches or photographs birds seen','"Big Day" birding challenge: see how many species in one day; compare to prior visits'] },
+
+{ id:'budgie-socialization', cat:'birds', emoji:'🐦', title:'Budgie & Parakeet Interaction',
+  cost:'Free–$', duration:'30–45 min', groupSize:'2–10 residents',
+  desc:'Small parakeets or budgies interact with residents — finger step-ups, eating from hand, and the pure delight of a tiny bright bird up close.',
+  supplies:['Socialized budgies (pair is ideal)','Travel cage or open-shoulder session','Millet spray for hand feeding','Quiet room','Soft voices encouraged'],
+  steps:['Handler explains "step up" technique for finger perching','Demonstrate with bird stepping onto finger at handler\'s command','Residents hold out finger at bird\'s perch height','Offer millet spray for bird to nibble from resident\'s hand','Allow free shoulder or head perching for willing residents','Resident names a "spirit bird" — which bird matches their personality?'],
+  tips:['Millet spray is irresistible to budgies — guaranteed interaction','Smaller = less intimidating than a large parrot; great for nervous residents','The trill and chatter of budgies is cheerful and stimulating for all nearby'],
+  variations:['Budgie singing circle: residents sing softly and bird joins in','Residents learn bird color genetics — why are some budgies blue, green, yellow?','Resident draws their own budgie portrait'] },
+
+/* ── AQUARIUM ── */
+{ id:'aquarium-therapy', cat:'aquarium', emoji:'🐟', title:'Aquarium Therapy Station',
+  cost:'$$', duration:'Ongoing', groupSize:'Any size',
+  desc:'A well-stocked aquarium in the common area provides continuous passive therapy — watching fish reduces blood pressure, anxiety, and agitation.',
+  supplies:['10–20 gallon aquarium (donated or facility purchase)','Colorful tropical fish (bettas, tetras, guppies)','Filter, heater, lighting','Gravel, plants, decorations','Feeding schedule posted nearby'],
+  steps:['Set up aquarium in a high-traffic common area at seated eye level','Introduce fish with name cards on the tank glass (residents name them!)','Post a feeding schedule: residents take turns feeding fish each morning','Weekly cleaning demonstration — residents watch and learn','Hold a "fish observation" time after breakfast each day','Keep a fish journal: residents note new behaviors, fish interactions, growth'],
+  tips:['Residents with dementia spend significant calm time watching fish — the effect is documented','Name each fish — this creates attachment and daily conversation topic','A single betta in a small decorated bowl on a table works if full aquarium isn\'t possible'],
+  variations:['Fish coloring project: residents color their ideal fish','Build a paper aquarium on the wall — residents draw and cut out fish for a collaborative mural','Virtual aquarium screensaver for residents who can\'t have a real one in their room'] },
+
+{ id:'fish-feeding-ritual', cat:'aquarium', emoji:'🐠', title:'Morning Fish Feeding Ritual',
+  cost:'$', duration:'5–10 min daily', groupSize:'1–3 residents per turn',
+  desc:'Assign rotating resident "Fish Keepers" who feed the aquarium fish each morning — a sense of purpose, responsibility, and connection.',
+  supplies:['Facility aquarium','Pre-measured fish food portions (in tiny cups or a dispenser)','Feeding rotation schedule posted at tank','Fish keeper badges (fun but optional)'],
+  steps:['Create a weekly "Fish Keeper" rotation schedule','Each morning, Fish Keeper(s) take their measured food to the tank','Observe fish for 5 minutes while feeding — narrate what they see','Note anything unusual in the fish log','Resident can share their fish report at morning meeting or announcements','Post "Fish Keeper of the Week" on bulletin board with photo'],
+  tips:['This gives purpose-driven connection to a resident every single day','Overfeeding is common — use pre-measured cups to prevent it','Residents in memory care love the simple ritual even if they don\'t remember doing it before'],
+  variations:['Fish tank decorating: residents vote on new decorations each month','Residents research the species in the tank and present fish fun facts','Name a new fish after a resident milestone — new fish for new month'] },
+
+{ id:'aquarium-art', cat:'aquarium', emoji:'🎨', title:'Underwater World Art Project',
+  cost:'$', duration:'45–60 min', groupSize:'4–20 residents',
+  desc:'Inspired by the facility aquarium or ocean/lake images, residents create beautiful underwater world artwork — painting, collage, or mixed media.',
+  supplies:['Blue watercolor or paint for background','Tissue paper, foil, cellophane for water texture','Cutout fish shapes (pre-drawn or traced)','Glitter, sequins for bubbles','Reference images of coral, fish, ocean scenes'],
+  steps:['Show residents the aquarium (or project underwater images)','Discuss: colors, shapes, how fish move, what lives on the bottom','Create blue watercolor washes as background','Add fish cutouts, tissue paper seaweed, foil bubbles','Layer transparencies for depth effect','Display as a classroom-style "aquarium wall" in the hallway'],
+  tips:['Tissue paper crumpled and glued creates beautiful water texture','Foil squares cut and twisted look like fish scales','Residents who\'ve snorkeled or dived have incredible stories to share during this activity'],
+  variations:['Paper plate aquarium diorama (individual take-home)','Window cling fish — residents paint fish on clear acetate for windows','Collaborative group mural: one giant ocean floor scene across 4 feet of paper'] },
+
+/* ── FARM & SPECIAL ── */
+{ id:'petting-zoo-visit', cat:'farm', emoji:'🐄', title:'Mobile Petting Zoo Visit',
+  cost:'$$', duration:'90 min–2 hrs', groupSize:'Any size',
+  desc:'Bring a mobile petting zoo to the facility — goats, chickens, ducks, bunnies, and more in a safe outdoor pen. A magical event.',
+  supplies:['Mobile petting zoo vendor (search local area)','Outdoor space for temporary pen','Feed cups for residents','Hand washing stations','Staff/volunteers to assist residents'],
+  steps:['Book 6–8 weeks in advance; confirm animals available and safety protocols','Prepare outdoor area with shade, seating, and hand-wash stations','Staff review resident mobility and allergy list the day before','Residents approach animals in their own time — no pressure','Provide small feed cups for goat/duck feeding','After visit: hand washing ritual, share favorite moment over a snack'],
+  tips:['Baby animals (baby goats, chicks, ducklings) are the most popular','Goats are interactive and funny — they\'ll eat anything, which entertains everyone','This is a perfect family day event — great for grandchildren visits'],
+  variations:['Theme it seasonally: spring baby animals, fall harvest animals','Partner with a local 4-H group who needs their animals socialized','Invite a local farmer to tell the story of where our food comes from'] },
+
+{ id:'horse-equine-therapy', cat:'farm', emoji:'🐴', title:'Equine-Assisted Therapy Visit',
+  cost:'$$', duration:'60–90 min', groupSize:'4–12 residents',
+  desc:'A trained therapy horse and certified handler visits or residents go to a local equine therapy center — one of the most powerful pet therapy experiences available.',
+  supplies:['Equine therapy organization (seek certified EAT programs)','Transportation if off-site','Warm layers (barns are drafty)','Camera for photos','Release forms per facility policy'],
+  steps:['Contact a certified EAT (Equine Assisted Therapy) organization','Arrange either an on-site visit (horse comes to facility grounds) or group outing','Staff brief residents on safety: calm voices, no sudden movements','Handler introduces horse; residents approach at their own pace','Offer grooming brushes — brushing a horse\'s flank is deeply calming','Photo with horse; each resident gets a printed keepsake'],
+  tips:['Horse therapy is particularly documented for trauma, PTSD (veteran populations), and depression','The size of a horse creates awe that smaller animals don\'t — profound for many residents','Residents who grew up farming or riding have transformative emotional reconnections'],
+  variations:['Donkey or miniature horse for a more accessible, less intimidating interaction','Carriage ride around facility grounds for less mobile residents','Residents write a poem or letter to the horse after the visit'] },
+
+{ id:'chicken-visit', cat:'farm', emoji:'🐓', title:'Backyard Chickens Visit',
+  cost:'$', duration:'45–60 min', groupSize:'4–20 residents',
+  desc:'A handler brings calm, friendly backyard chickens to the facility — residents can hold them, collect a "pretend egg," and talk chicken memories.',
+  supplies:['Friendly, people-habituated chickens (at least 2–3)','Portable pen or handler control','Feed (scratch grains)','Fake eggs for residents to "collect"','Lap blankets','Hand wipes'],
+  steps:['Handler sets up a small pen or brings chickens on leash/harness','Introduce each hen by name and personality','Residents offer scratch grain from flat palm — chickens peck gently','Allow chickens to sit on laps (some hens love this)','Tell the story of each chicken: where it came from, its quirks','"Egg hunt" — plant fake colorful eggs in pen for residents to find'],
+  tips:['Bantam hens (small chickens) are best for lap sitting','The sounds of clucking are deeply familiar to anyone who grew up in a rural area','Memory care: the egg-collecting gesture connects to powerful long-term memories'],
+  variations:['Egg decorating craft using store-bought eggs after the visit','Learn to make a simple chicken dish — recipe sharing session','Residents draw their chicken "character" and write a tiny bio for each bird'] },
+
+/* ── VIRTUAL ── */
+{ id:'virtual-pet-videos', cat:'virtual', emoji:'📺', title:'Virtual Pet Therapy Video Sessions',
+  cost:'Free', duration:'20–30 min', groupSize:'Any size',
+  desc:'Stream curated animal videos on the TV — baby animals, dog and cat compilations, nature documentaries. Evidence-based alternative when live animals aren\'t available.',
+  supplies:['TV or projector','Streaming service or YouTube','Curated playlist','Comfortable seating','Snacks for "movie" feel'],
+  steps:['Curate a 20–30 min playlist: baby animals, funny dogs, calming nature','Introduce each segment like a show: "Next up: baby ducklings learning to swim!"','Pause occasionally for resident reactions and memories','Ask during video: "Have you ever had a dog like that?"','End with a vote: which was the best animal video?','Keep a "favorites list" to replay most popular content'],
+  tips:['YouTube channels like "The Dodo" have incredibly moving animal rescue stories','Nature documentaries (Planet Earth, etc.) work beautifully on big screens','Short 3–5 minute clips work better than long videos — keep pace lively'],
+  variations:['Virtual aquarium screensaver on looped TV for passive viewing','Live wildlife camera streams: bald eagle nest cams, underwater reef cams','Virtual zoo tour — many zoos offer live cams of enclosures'] },
+
+{ id:'virtual-pet-robot', cat:'virtual', emoji:'🤖', title:'PARO or Robotic Pet Interaction',
+  cost:'$$$', duration:'Ongoing daily', groupSize:'1–4 residents',
+  desc:'Therapeutic robotic animals (PARO seal, Joy for All cat/dog) provide constant companionship for residents who can\'t have live animals — FDA-approved therapeutic device.',
+  supplies:['Robotic pet (PARO seal ~$5,000; Joy for All cats ~$100)','Charging station','Resident assignment plan','Documentation forms'],
+  steps:['Introduce robotic pet to resident as if it were real — no need to explain it\'s robotic','Place in resident\'s lap or on bed','Pet responds to touch, voice, and movement','Monitor interaction quality; document engagement and mood response','Charge nightly; bring to each resident\'s room in rotation','Monthly "meet and greet" in common room for new residents to try it'],
+  tips:['PARO is FDA-cleared as a medical device for dementia patients — take it seriously','Joy for All companions ($100) are an accessible starting point before investing in PARO','Residents with advanced dementia who are agitated frequently calm within minutes with robotic pet'],
+  variations:['Virtual pet app on iPad for residents who prefer interactive screen-based version','Stuffed animal weighted lap pets for sensory comfort without robotic features','Partner with a tech company for a robotic pet trial or donation'] },
+
+{ id:'animal-trivia-virtual', cat:'virtual', emoji:'❓', title:'Animal Trivia & Fun Facts Show',
+  cost:'Free', duration:'30–45 min', groupSize:'4–30 residents',
+  desc:'A lively trivia game with animal photos, videos, and sounds — residents guess breeds, animal facts, and wild records. No live animal needed!',
+  supplies:['TV/projector','Animal trivia questions (provided in this plan)','Team score sheets','Animal sound clips (YouTube)','Small prizes'],
+  steps:['Divide into 2–3 teams','Round 1: Name the breed — show dog/cat/bird photos','Round 2: True or False — animal facts ("A group of flamingos is called a flamboyance")','Round 3: Animal sounds — play a clip and name the animal','Round 4: World records — biggest dog, smallest cat, oldest parrot','Tally scores; award animal-themed prizes'],
+  tips:['Use photos of actual famous therapy animals and local shelter pets','Bonus question: name the most famous animal from your childhood (TV animal stars)','Lassie, Rin Tin Tin, Flipper, and Mr. Ed questions always generate stories'],
+  variations:['Animal Jeopardy board format','"What animal am I?" — clue-by-clue guessing game','Baby animal vs. adult match-up: who\'s the baby of this grown-up animal?'] },
+
+/* ── PROGRAM SETUP ── */
+{ id:'start-pet-program', cat:'program', emoji:'🚀', title:'Starting a Pet Therapy Program',
+  cost:'Free', duration:'Reference guide', groupSize:'Staff resource',
+  desc:'Step-by-step guide to launching a certified pet therapy program at your facility — from finding handlers to documentation and policies.',
+  supplies:['This guide','Internet access for registry searches','Facility policy template','Resident preference survey (printable below)'],
+  steps:['Step 1 — Find certified therapy animal teams via Pet Partners (petpartners.org), Alliance of Therapy Dogs, or Therapy Dogs International','Step 2 — Review team\'s certification; ask for current registration card and insurance certificate','Step 3 — Establish facility policy: health requirements, areas allowed, handling protocols','Step 4 — Survey residents for animal preferences and any allergies/fears (use printable survey)','Step 5 — Schedule a trial visit; evaluate resident response','Step 6 — Set a recurring schedule (weekly or biweekly works well)','Step 7 — Document each visit: animals present, residents who interacted, observed responses'],
+  tips:['Pet Partners teams carry $2M liability insurance — always verify','Most certified teams visit for FREE — this is volunteer work driven by love of the program','Build relationships with multiple teams so you have backup when one is unavailable'],
+  variations:['Invite a Pet Partners evaluator to speak at a staff training','Create a "resident ambassador" who helps welcome therapy teams each visit','Apply for a grant: many pet therapy nonprofit orgs fund startup costs for senior facilities'] },
+
+{ id:'visit-best-practices', cat:'program', emoji:'📋', title:'Visit Day Best Practices Guide',
+  cost:'Free', duration:'Reference guide', groupSize:'Staff resource',
+  desc:'How to run a smooth, safe, and therapeutic pet therapy visit from start to finish — setup, facilitation, and documentation.',
+  supplies:['Resident allergy/preference list','Seating plan','Hand sanitizer stations','Visit log form','Camera for documentation photos'],
+  steps:['Before visit: Pull resident preference list; note any new health changes with nursing; arrange seating in accessible circle or row','15 min before: Set up hand sanitizer at entry and exit; place lap blankets on chairs; clear pathways for wheelchairs','At arrival: Welcome handler warmly; confirm animal\'s name; introduce to staff who will co-facilitate','During visit: Never force interaction; let animal approach at its pace; facilitate conversation; watch for distress in both animal and resident','At close: Offer treat-giving opportunity; thank handler; take photos','After visit: Complete visit log; note 2–3 resident reactions; schedule next visit; send thank-you note within 24 hours'],
+  tips:['Some of your most isolated residents respond most dramatically — look for the resident sitting alone','If an animal shows stress signals (yawning excessively, licking lips, looking away) ask handler to end interaction','Residents who say "I don\'t like animals" often surprise everyone — start with them near the group but not in the direct interaction circle'],
+  variations:['Create a photo album of visit history — residents love looking back through it','Post a "Pet Therapy Day" sign the day before to build anticipation','Record a short video of visit highlights for the facility newsletter or family communications'] },
+
+{ id:'resident-animal-matching', cat:'program', emoji:'🤝', title:'Resident-Animal Matching Guide',
+  cost:'Free', duration:'Reference guide', groupSize:'Staff resource',
+  desc:'How to thoughtfully match residents with the right type of animal interaction for maximum therapeutic benefit.',
+  supplies:['Resident preference survey results','Animal type guide (this card)','Nursing input on each resident'],
+  steps:['Review preference survey results with nursing team','Consider: animal history (farm upbringing, pet ownership, allergies), current mobility, cognitive level, sensory sensitivities','High anxiety / dementia: small calm animals on lap (cat, rabbit, small dog); avoid loud or energetic animals','Grief / loneliness: breed matching (find a dog of the same breed as their late pet); triggers powerful healing reconnection','Low engagement / withdrawn: direct task (feeding, brushing) works better than passive sitting','Physical rehab goals: reaching to pet a dog placed at a therapeutic distance; supervised light walking with a dog','Fear of animals: start with aquarium observation or virtual animals; gradual desensitization over weeks'],
+  tips:['Nursing staff know residents best — involve them in matching decisions','Document what works: "Mr. Johnson responds best to small dogs, one-on-one, during morning hours"','Never override a resident\'s stated preference — a resident who doesn\'t want animal contact is valid'],
+  variations:['Create individual "animal care plans" for interested residents','Monthly check-in: has resident\'s preference changed?','Share success stories with families — "Your mom held the rabbit for 20 minutes and told us about her childhood dog"'] }
+];
+
+var PT_CAT = 'all';
+
+function initPetTherapy() {
+  PT_CAT = 'all';
+  ptFilter('all');
+}
+
+function ptFilter(cat) {
+  PT_CAT = cat;
+  document.querySelectorAll('.pt-cat-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  ptRenderGrid();
+}
+
+function ptVisible() {
+  if (PT_CAT === 'all') return PT_ACTIVITIES;
+  return PT_ACTIVITIES.filter(function(a){ return a.cat === PT_CAT; });
+}
+
+function ptCatColor(cat) {
+  var c = { dogs:'#b45309', cats:'#7c3aed', small:'#16a34a', birds:'#0369a1',
+            aquarium:'#0891b2', farm:'#65a30d', virtual:'#dc2626', program:'#374151' };
+  return c[cat] || '#6b7280';
+}
+
+function ptRenderGrid() {
+  var grid = document.getElementById('pt-grid');
+  if (!grid) return;
+  var acts = ptVisible();
+  if (!acts.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9ca3af;">No activities found for this category.</div>';
+    return;
+  }
+  grid.innerHTML = acts.map(function(a) {
+    var col = ptCatColor(a.cat);
+    var catName = PT_CAT_NAMES[a.cat] || a.cat;
+    return '<div class="pt-card" onclick="ptShowDetail(\'' + a.id + '\')">'
+      + '<div style="font-size:32px;margin-bottom:8px;">' + a.emoji + '</div>'
+      + '<div style="font-weight:800;font-size:15px;margin-bottom:6px;">' + a.title + '</div>'
+      + '<div style="margin-bottom:8px;"><span style="background:' + col + '22;color:' + col + ';border-radius:10px;padding:2px 10px;font-size:11px;font-weight:700;">' + catName + '</span></div>'
+      + '<div style="font-size:12px;color:#6b7280;margin-bottom:8px;">' + a.desc.substring(0,90) + '…</div>'
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+      + '<span style="background:#f0f9ff;color:#0369a1;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">⏱ ' + a.duration + '</span>'
+      + '<span style="background:#faf5ff;color:#7c3aed;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">💰 ' + a.cost + '</span>'
+      + '<span style="background:#f0fdf4;color:#166534;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">👥 ' + a.groupSize + '</span>'
+      + '</div></div>';
+  }).join('');
+}
+
+function ptShowDetail(id) {
+  var a = PT_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var col = ptCatColor(a.cat);
+  var body = document.getElementById('pt-modal-body');
+  body.innerHTML = '<button onclick="ptCloseModal()" style="position:absolute;top:16px;right:16px;background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;line-height:32px;">×</button>'
+    + '<div style="font-size:40px;margin-bottom:10px;">' + a.emoji + '</div>'
+    + '<h2 style="margin:0 0 6px;">' + a.title + '</h2>'
+    + '<div style="margin-bottom:12px;"><span style="background:' + col + '22;color:' + col + ';border-radius:10px;padding:3px 12px;font-size:12px;font-weight:700;">' + (PT_CAT_NAMES[a.cat]||a.cat) + '</span></div>'
+    + '<p style="color:#374151;margin-bottom:16px;">' + a.desc + '</p>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">'
+    + '<span style="background:#f0f9ff;color:#0369a1;border-radius:8px;padding:4px 12px;font-weight:700;">⏱ ' + a.duration + '</span>'
+    + '<span style="background:#faf5ff;color:#7c3aed;border-radius:8px;padding:4px 12px;font-weight:700;">💰 ' + a.cost + '</span>'
+    + '<span style="background:#f0fdf4;color:#166534;border-radius:8px;padding:4px 12px;font-weight:700;">👥 ' + a.groupSize + '</span>'
+    + '</div>'
+    + '<div style="margin-bottom:16px;"><strong>🛒 Supplies</strong><ul style="margin:6px 0 0 18px;">' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="margin-bottom:16px;"><strong>📋 Steps</strong><ol style="margin:6px 0 0 18px;">' + a.steps.map(function(s){return '<li style="margin-bottom:4px;">'+s+'</li>';}).join('') + '</ol></div>'
+    + '<div style="margin-bottom:16px;"><strong>💡 Tips</strong><ul style="margin:6px 0 0 18px;">' + a.tips.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="margin-bottom:20px;"><strong>🔄 Variations</strong><ul style="margin:6px 0 0 18px;">' + a.variations.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+    + '<button onclick="ptDoPrint(\'' + a.id + '\')" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print Plan</button>'
+    + '<button onclick="ptCloseModal()" style="background:#f3f4f6;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">Close</button>'
+    + '</div>';
+  document.getElementById('pt-modal').style.display = 'block';
+}
+
+function ptCloseModal() {
+  document.getElementById('pt-modal').style.display = 'none';
+}
+
+function ptDoPrint(id) {
+  var a = PT_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var col = ptCatColor(a.cat);
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>' + a.title + '</title>'
+    + '<style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;color:#111;} h1{color:' + col + ';} .badge{display:inline-block;background:#f5f3ff;color:' + col + ';border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;margin-right:6px;} ul,ol{margin-left:18px;line-height:1.8;} .section{margin-bottom:18px;} @media print{body{margin:20px;}}<\/style>'
+    + '<\/head><body>'
+    + '<div style="text-align:center;border-bottom:3px solid ' + col + ';padding-bottom:16px;margin-bottom:20px;">'
+    + '<div style="font-size:48px;">' + a.emoji + '</div>'
+    + '<h1 style="margin:8px 0;">' + a.title + '</h1>'
+    + '<div>' + (PT_CAT_NAMES[a.cat]||a.cat) + '</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">'
+    + '<span class="badge">⏱ ' + a.duration + '</span>'
+    + '<span class="badge">💰 ' + a.cost + '</span>'
+    + '<span class="badge">👥 ' + a.groupSize + '</span>'
+    + '</div>'
+    + '<div class="section"><p>' + a.desc + '</p></div>'
+    + '<div class="section"><h3>🛒 Supplies</h3><ul>' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div class="section"><h3>📋 Steps</h3><ol>' + a.steps.map(function(s){return '<li style="margin-bottom:6px;">'+s+'</li>';}).join('') + '</ol></div>'
+    + '<div class="section"><h3>💡 Tips</h3><ul>' + a.tips.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div class="section"><h3>🔄 Variations</h3><ul>' + a.variations.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="text-align:center;margin-top:30px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Pet Therapy</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function ptPrintAll() {
+  var acts = ptVisible();
+  if (!acts.length) { alert('No activities to print.'); return; }
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Pet Therapy Activities</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;} h1{color:#7c3aed;} table{width:100%;border-collapse:collapse;} th{background:#7c3aed;color:#fff;padding:10px;text-align:left;} td{padding:8px 10px;border-bottom:1px solid #e5e7eb;vertical-align:top;} tr:nth-child(even){background:#f9fafb;} @media print{body{margin:16px;}}<\/style>'
+    + '<\/head><body>'
+    + '<h1>🐾 Pet Therapy Activities</h1>'
+    + '<p>Category: ' + (PT_CAT_NAMES[PT_CAT]||PT_CAT) + ' · ' + acts.length + ' activities</p>'
+    + '<table><tr><th>Activity</th><th>Category</th><th>Duration</th><th>Cost</th><th>Group Size</th></tr>'
+    + acts.map(function(a){
+        return '<tr><td><strong>' + a.emoji + ' ' + a.title + '</strong><br><small>' + a.desc.substring(0,80) + '…</small></td>'
+          + '<td>' + (PT_CAT_NAMES[a.cat]||a.cat) + '</td><td>' + a.duration + '</td><td>' + a.cost + '</td><td>' + a.groupSize + '</td></tr>';
+      }).join('')
+    + '</table>'
+    + '<div style="text-align:center;margin-top:24px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function ptPrintVisitLog() {
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Pet Therapy Visit Log</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:780px;margin:32px auto;color:#111;} h1{color:#7c3aed;text-align:center;} table{width:100%;border-collapse:collapse;margin-top:16px;} th{background:#7c3aed;color:#fff;padding:8px 10px;text-align:left;font-size:12px;} td{padding:8px 10px;border:1px solid #ccc;font-size:12px;} .row{height:40px;} @media print{body{margin:16px;}}<\/style>'
+    + '<\/head><body>'
+    + '<h1>🐾 Pet Therapy Visit Log</h1>'
+    + '<div style="display:flex;gap:24px;margin-bottom:16px;font-size:13px;">'
+    + '<div>Facility: <span style="border-bottom:1px solid #999;display:inline-block;width:200px;">&nbsp;</span></div>'
+    + '<div>Month/Year: <span style="border-bottom:1px solid #999;display:inline-block;width:120px;">&nbsp;</span></div>'
+    + '</div>'
+    + '<table><tr><th>Date</th><th>Animal Name & Type</th><th>Handler Name</th><th>Visit Duration</th><th>Residents Who Interacted</th><th>Observed Outcomes / Notes</th><th>Staff Initials</th></tr>'
+    + Array(12).fill('<tr class="row"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>').join('')
+    + '</table>'
+    + '<div style="margin-top:20px;font-size:12px;color:#6b7280;">Use this log to document therapeutic outcomes, resident engagement, and handler coordination. Keep on file per facility policy.</div>'
+    + '<div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Pet Therapy</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function ptPrintPrefSurvey() {
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Pet Therapy Preference Survey</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:720px;margin:32px auto;color:#111;} h1{color:#7c3aed;text-align:center;} h2{color:#7c3aed;font-size:15px;margin-top:20px;} .q{margin-bottom:14px;font-size:13px;} .options{display:flex;gap:18px;margin-top:6px;} label{display:flex;align-items:center;gap:6px;} .line{border-bottom:1px solid #ccc;display:block;width:100%;margin-top:4px;} @media print{body{margin:16px;}}<\/style>'
+    + '<\/head><body>'
+    + '<h1>🐾 Pet Therapy Preference Survey</h1>'
+    + '<div style="font-size:13px;margin-bottom:16px;display:flex;gap:24px;">'
+    + '<div>Resident Name: <span class="line" style="width:220px;">&nbsp;</span></div>'
+    + '<div>Room #: <span class="line" style="width:60px;">&nbsp;</span></div>'
+    + '<div>Date: <span class="line" style="width:100px;">&nbsp;</span></div>'
+    + '</div>'
+    + '<h2>1. Animal Experience</h2>'
+    + '<div class="q">Did you have pets growing up? <span class="line">&nbsp;</span></div>'
+    + '<div class="q">What types of animals did you own or work with? <span class="line">&nbsp;</span></div>'
+    + '<div class="q">Do you currently have a pet? &nbsp; ☐ Yes &nbsp; ☐ No &nbsp;&nbsp; If yes: <span class="line" style="width:200px;">&nbsp;</span></div>'
+    + '<h2>2. Animal Preferences</h2>'
+    + '<div class="q">Which animals would you enjoy interacting with? (check all that apply)<br>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;font-size:13px;">'
+    + '☐ Dogs &nbsp;&nbsp; ☐ Cats &nbsp;&nbsp; ☐ Rabbits / Guinea Pigs &nbsp;&nbsp; ☐ Birds (parrots, cockatiels)<br>'
+    + '☐ Fish / Aquarium &nbsp;&nbsp; ☐ Farm Animals &nbsp;&nbsp; ☐ Virtual / Video Animals &nbsp;&nbsp; ☐ No preference'
+    + '</div></div>'
+    + '<div class="q">Are there any animals you prefer NOT to interact with? <span class="line">&nbsp;</span></div>'
+    + '<h2>3. Health & Safety</h2>'
+    + '<div class="q">Do you have any known animal allergies? &nbsp; ☐ Yes &nbsp; ☐ No &nbsp;&nbsp; If yes: <span class="line" style="width:180px;">&nbsp;</span></div>'
+    + '<div class="q">Do you have any fear of specific animals? &nbsp; ☐ Yes &nbsp; ☐ No &nbsp;&nbsp; If yes: <span class="line" style="width:180px;">&nbsp;</span></div>'
+    + '<div class="q">Any other health notes relevant to pet visits? <span class="line">&nbsp;</span></div>'
+    + '<h2>4. Interaction Style</h2>'
+    + '<div class="q">How would you like to participate? (check all that apply)<br>'
+    + '<div style="margin-top:8px;">☐ Pet / stroke the animal &nbsp; ☐ Hold the animal on my lap &nbsp; ☐ Feed treats to the animal<br>'
+    + '☐ Just watch from nearby &nbsp; ☐ Brush or groom &nbsp; ☐ Read to the animal &nbsp; ☐ Not interested at this time</div></div>'
+    + '<div style="margin-top:24px;font-size:11px;color:#9ca3af;">Staff use only: Survey completed by _______ &nbsp; Date _______ &nbsp; Reviewed with nursing ☐</div>'
+    + '<div style="text-align:center;margin-top:12px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Pet Therapy</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function ptPrintThankYou() {
+  var today = new Date();
+  var dateStr = today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Thank You - Therapy Animal Handler</title>'
+    + '<style>body{font-family:Georgia,serif;max-width:600px;margin:60px auto;color:#111;} .card{border:3px solid #7c3aed;border-radius:16px;padding:40px;text-align:center;} h1{color:#7c3aed;font-size:28px;} p{line-height:1.8;color:#374151;font-size:15px;} .paw{font-size:36px;} .line{border-bottom:1px solid #999;display:inline-block;width:240px;} @media print{body{margin:20px;}}<\/style>'
+    + '<\/head><body>'
+    + '<div class="card">'
+    + '<div class="paw">🐾</div>'
+    + '<h1>Thank You!</h1>'
+    + '<p>Dear <span class="line">&nbsp;</span>,</p>'
+    + '<p>On behalf of the residents and staff at</p>'
+    + '<p><strong><span class="line">&nbsp;</span></strong>,</p>'
+    + '<p>we want to express our heartfelt gratitude for bringing</p>'
+    + '<p><strong><span class="line">&nbsp;</span></strong> to visit us.</p>'
+    + '<p>The joy, comfort, and smiles you bring to our residents are truly immeasurable. The gentle presence of your animal companion creates moments of connection, laughter, and peace that stay with us long after you leave.</p>'
+    + '<p>We look forward to your next visit on <span class="line" style="width:160px;">&nbsp;</span>.</p>'
+    + '<p style="margin-top:30px;">With warmest thanks,</p>'
+    + '<p><span class="line">&nbsp;</span><br><em>Activity Director</em></p>'
+    + '<p style="font-size:12px;color:#9ca3af;margin-top:24px;">' + dateStr + '</p>'
+    + '</div>'
+    + '<div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Pet Therapy</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+// Hook into switchTab
+(function(){
+  var _ptOrig = window.switchTab;
+  window.switchTab = function(name) {
+    _ptOrig && _ptOrig(name);
+    if (name === 'pettherapy') initPetTherapy();
+  };
+})();
+</script>
 </body>
-</html>
