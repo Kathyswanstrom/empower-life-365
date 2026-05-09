@@ -1127,6 +1127,28 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .ls-milestone-row { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
 .ls-milestone-row input { padding:7px 10px; border:1px solid #C7D2FE; border-radius:7px; font-size:.85rem; }
 
+/* panel-outdoors */
+.od-season-btn {
+  background:#f0fdf4; color:#166534; border:2px solid #bbf7d0;
+  border-radius:20px; padding:6px 16px; font-weight:700; font-size:13px; cursor:pointer;
+  transition:all .15s;
+}
+.od-season-btn.active { background:#16a34a; color:#fff; border-color:#16a34a; }
+.od-mob-btn {
+  background:#f0f9ff; color:#0369a1; border:2px solid #bae6fd;
+  border-radius:20px; padding:5px 14px; font-weight:600; font-size:12px; cursor:pointer;
+  transition:all .15s;
+}
+.od-mob-btn.active { background:#0ea5e9; color:#fff; border-color:#0ea5e9; }
+.od-card {
+  background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  padding:16px; cursor:pointer; transition:box-shadow .15s;
+}
+.od-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
+.od-mob-tag {
+  display:inline-block; font-size:10px; font-weight:700;
+  border-radius:10px; padding:2px 8px; margin-right:4px; margin-bottom:4px;
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1193,6 +1215,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="wellness" id="wellness-tab" onclick="switchTab('wellness')">🌿 Wellness</button>
       <button class="tab-btn" data-tab="travel"   id="travel-tab"   onclick="switchTab('travel')">✈️ Travel Hub</button>
       <button class="tab-btn" data-tab="mens"     id="mens-tab"     onclick="switchTab('mens')">👨 Men's Corner</button>
+      <button class="tab-btn" data-tab="outdoors"  id="outdoors-tab"  onclick="switchTab('outdoors')">🌿 Outdoors</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3506,6 +3529,37 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   </div>
 </section>
 
+
+<section class="tab-panel" id="panel-outdoors">
+  <div style="padding:18px 20px 0;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+      <h2 style="margin:0;">🌿 Outdoor Activities</h2>
+      <span style="font-size:13px;color:#6b7280;margin-left:4px;">Seasonal plans for every ability level</span>
+    </div>
+    <!-- Season tabs -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="od-season-tabs">
+      <button class="od-season-btn active" data-season="spring" onclick="odSetSeason('spring')">🌸 Spring</button>
+      <button class="od-season-btn" data-season="summer" onclick="odSetSeason('summer')">☀️ Summer</button>
+      <button class="od-season-btn" data-season="fall"   onclick="odSetSeason('fall')">🍂 Fall</button>
+      <button class="od-season-btn" data-season="winter" onclick="odSetSeason('winter')">❄️ Winter</button>
+    </div>
+    <!-- Mobility filter -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="od-mob-filters">
+      <button class="od-mob-btn active" data-mob="all"    onclick="odSetMob('all')">👥 All Residents</button>
+      <button class="od-mob-btn" data-mob="active"  onclick="odSetMob('active')">🚶 Active</button>
+      <button class="od-mob-btn" data-mob="seated"  onclick="odSetMob('seated')">🧑‍🦽 Seated / Wheelchair</button>
+      <button class="od-mob-btn" data-mob="memory"  onclick="odSetMob('memory')">🧠 Memory Care</button>
+    </div>
+    <div id="od-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <button onclick="odPrintAll()" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print All Visible Activities</button>
+    </div>
+  </div>
+  <!-- Detail modal -->
+  <div id="od-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)odCloseModal()">
+    <div style="background:#fff;max-width:680px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="od-modal-body"></div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-family">
   <style>
@@ -27351,6 +27405,393 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<script>
+/* ===== OUTDOOR ACTIVITIES ===== */
+var OD_SEASON = 'spring';
+var OD_MOB    = 'all';
+
+var OD_ACTIVITIES = [
+/* ── SPRING ── */
+{ id:'garden-planting', season:'spring', mob:['all','active','memory'],
+  emoji:'🌱', title:'Raised Bed Garden Planting', complexity:'Simple', cost:'$',
+  costLabel:'$5–$20', duration:'45–60 min', groupSize:'4–12 residents',
+  desc:'Residents plant herbs, flowers, or veggies in raised beds or pots on the patio — perfect for all ability levels.',
+  supplies:['Raised beds or large pots','Potting soil','Seedlings or seeds (herbs, marigolds, tomatoes)','Trowels & gloves','Watering cans','Plant labels'],
+  steps:['Set up raised beds or pots at accessible heights','Give each resident a small section or pot to call their own','Demonstrate how to loosen soil, make a hole, and place the seedling','Let residents plant at their own pace; assist as needed','Label each plant with resident\'s name','Water together and take a group photo'],
+  tips:['Use herbs like basil, mint, or lavender for sensory engagement in memory care','Adaptive tools (wide-grip trowels) help residents with limited dexterity','Make it a recurring activity — residents love checking on "their" plants'],
+  variations:['Sensory herb garden for memory care','Window box version for rooms or hallways','Succulent planting for low-maintenance indoor follow-up'] },
+
+{ id:'nature-scavenger', season:'spring', mob:['all','active'],
+  emoji:'🔍', title:'Nature Walk Scavenger Hunt', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'Any size',
+  desc:'A guided outdoor walk with a scavenger hunt checklist — spot birds, flowers, insects, and seasonal signs of spring.',
+  supplies:['Printed scavenger hunt checklist','Pencils','Magnifying glasses (optional)','Camera or phone','Small prize or ribbon for finishers'],
+  steps:['Create a seasonal checklist (robin, dandelion, butterfly, mud puddle, etc.)','Distribute checklists and pencils','Walk the grounds together at a comfortable pace','Encourage residents to check off or circle items they spot','Share discoveries as a group at the end','Award a small ribbon or sticker for completion'],
+  tips:['Offer wheelchair-accessible route options','Laminate checklists for reuse across groups','Add a "mystery item" each week to keep it fresh'],
+  variations:['Photo scavenger hunt — snap a picture of each item','Color walk — find one item in each color of the rainbow','Bird-only bingo version for birding enthusiasts'] },
+
+{ id:'bird-watching-bingo', season:'spring', mob:['all','seated'],
+  emoji:'🐦', title:'Bird Watching Bingo', complexity:'Simple', cost:'$',
+  costLabel:'$2–$5', duration:'30–60 min', groupSize:'4–20 residents',
+  desc:'Set up a bird feeder on the patio and play bingo while watching for visiting birds — great for seated residents.',
+  supplies:['Bird feeder(s) with seed','Printed bird bingo cards','Bingo markers or coins','Bird identification chart','Small prizes (candy, bookmarks)','Binoculars (optional)'],
+  steps:['Set up feeder(s) 1–2 days early so birds find them','Print custom bingo cards featuring local birds','Seat residents comfortably facing the feeder','Call out birds as they arrive — residents mark their cards','Play multiple rounds; mix up the bingo cards','Award small prizes and discuss favorite birds seen'],
+  tips:['Laminate bingo cards for reuse','A bird feeder by a window works well for less mobile residents','Pair with a simple bird ID chart for engagement'],
+  variations:['Squirrel & critter bingo — include all yard visitors','Seasonal migration version in April/May','Photo bingo — bring a tablet and look up each bird spotted'] },
+
+{ id:'outdoor-watercolor', season:'spring', mob:['all','seated','memory'],
+  emoji:'🎨', title:'Outdoor Watercolor Painting', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'45–60 min', groupSize:'4–12 residents',
+  desc:'Take art outside — residents paint what they see: flowers, trees, birds, or the sky. Fresh air makes everything more vibrant.',
+  supplies:['Watercolor sets (basic is fine)','Watercolor paper or cardstock','Brushes (varied sizes)','Water cups','Paper towels','Clip boards or easels','Tables & chairs outside'],
+  steps:['Set up tables in a shaded outdoor area','Give each resident paper, brushes, and a small watercolor set','Invite them to paint what they see, or provide a simple reference photo','Play soft background music outdoors','Allow 30–40 minutes to paint freely','Share and display finished artwork; offer frames or frames as keepsake'],
+  tips:['Pre-wet the paper for easier blending — especially helpful for memory care','No artistic skill needed — celebrate all results equally','Sunscreen and hats for extended outdoor time'],
+  variations:['Nature printing — press flowers/leaves on paper, then paint around them','Rock painting instead of paper','Guided painting with step-by-step instruction'] },
+
+{ id:'spring-flower-arranging', season:'spring', mob:['all','seated','memory'],
+  emoji:'💐', title:'Spring Flower Arranging', complexity:'Simple', cost:'$',
+  costLabel:'$10–$25', duration:'30–45 min', groupSize:'4–15 residents',
+  desc:'Residents create their own flower arrangements outdoors using fresh or silk flowers — a tactile, sensory-rich activity.',
+  supplies:['Fresh or silk flowers (mixed bundles)','Small vases or mason jars','Floral foam or marbles (vase filler)','Scissors (safety type)','Ribbon or twine','Table coverings'],
+  steps:['Set up outdoor tables with flower bundles and vases for each resident','Demonstrate how to trim stems and place flowers in a vase','Encourage residents to arrange however they like — no wrong way','Add ribbon or greenery accents','Residents take finished arrangements to their rooms','Group photo with everyone holding their arrangement'],
+  tips:['Use fragrant flowers (lavender, roses) for extra sensory engagement in memory care','Pre-cut stems for residents with dexterity limitations','Silk flowers work great if budget or allergies are a concern'],
+  variations:['Flower crown making','Button-hole / corsage making for a dance or event','Dried flower arrangement for lasting display'] },
+
+{ id:'butterfly-walk', season:'spring', mob:['all','seated','active'],
+  emoji:'🦋', title:'Butterfly & Bloom Walk', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'20–40 min', groupSize:'Any size',
+  desc:'A slow, mindful stroll (or roll) through the garden to spot butterflies, blooming flowers, and spring wildlife.',
+  supplies:['Butterfly identification cards (print free online)','Magnifying glasses (optional)','Journal or notepad','Comfortable outdoor seating along route','Camera or phone'],
+  steps:['Plan a gentle loop through blooming garden areas','Invite residents to move at their own pace — walkers, wheelchairs welcome','Stop at flower clusters to observe butterflies and bees','Encourage residents to name or describe what they see','Rest at benches along the way and share memories of gardens past','End with a short sharing circle: "What did you spot today?"'],
+  tips:['Plant pollinator-friendly flowers in advance (coneflower, lavender, milkweed)','Pair with a simple journaling prompt: "I noticed..."','Great for memory care — sensory stimulation without task pressure'],
+  variations:['Guided mindfulness walk with breathing exercises at stops','Sketch walk — bring clipboards to sketch what you see','Evening version to spot fireflies in early summer'] },
+
+/* ── SUMMER ── */
+{ id:'patio-ice-cream', season:'summer', mob:['all','seated','memory'],
+  emoji:'🍦', title:'Patio Ice Cream Social', complexity:'Simple', cost:'$',
+  costLabel:'$10–$30', duration:'45–60 min', groupSize:'Any size',
+  desc:'A classic summer treat — set up an ice cream sundae bar on the patio with toppings galore. Beats the summer heat in style.',
+  supplies:['Ice cream (2–3 flavors)','Toppings bar (sprinkles, hot fudge, caramel, cherries, nuts, whipped cream)','Bowls, spoons, napkins','Tablecloths','Music (upbeat summer tunes)','Shade canopy or umbrella'],
+  steps:['Set up toppings bar with clear labels','Scoop ice cream for each resident or let them choose flavors','Residents customize their sundaes','Play summer music while everyone enjoys their treat','Optional: trivia questions between spoonfuls','Take group photo'],
+  tips:['Offer sherbet or sorbet for dairy-free residents','Pre-scoop into cups ahead of time for faster service','Memory care residents love the familiar comfort of ice cream'],
+  variations:['Root beer float bar','Smoothie / milkshake bar (healthier option)','Banana split competition — most creative topping combo wins'] },
+
+{ id:'flag-day-parade', season:'summer', mob:['all','seated','memory'],
+  emoji:'🇺🇸', title:'Patriotic Patio Parade & Party', complexity:'Simple', cost:'$',
+  costLabel:'$10–$20', duration:'60–90 min', groupSize:'Any size',
+  desc:'Celebrate July 4th, Flag Day, or Veterans Day with a festive outdoor parade, patriotic music, and red-white-blue decorations.',
+  supplies:['Small American flags','Red, white & blue streamers / balloons','Patriotic playlist (Sousa marches, "God Bless America")','Decorated wagons or wheelchairs optional','Lemonade or punch','Star-shaped cookies or cake','Patriotic hats / beads'],
+  steps:['Decorate outdoor area in red, white, and blue','Help residents decorate their wheelchairs or walkers with streamers','Organize a short parade loop around the grounds with patriotic music','Pause for a flag-raising moment or Pledge of Allegiance','Serve festive refreshments outdoors','Share memories: "Where were you for past 4th of July celebrations?"'],
+  tips:['Involve family members — great event for family visits','Keep parade route shaded or early morning to avoid heat','Memory care residents respond well to patriotic music from their era'],
+  variations:['Veterans tribute ceremony — residents share service stories','Make-your-own patriotic bandana craft before the parade','Evening version with sparklers (or glow sticks for safety)'] },
+
+{ id:'sunset-watch-party', season:'summer', mob:['all','seated','memory'],
+  emoji:'🌅', title:'Sunrise / Sunset Watch Party', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'Any size',
+  desc:'Gather outside to watch the sunrise or sunset together — a peaceful, meaningful moment that sparks conversation and reflection.',
+  supplies:['Comfortable outdoor seating','Blankets (for morning coolness)','Hot coffee, tea, or cider','Music (soft instrumental)','Journal or notepad (optional)','Camera for photos'],
+  steps:['Check sunrise/sunset time and plan gathering 15 min beforehand','Set up comfortable seating facing the right direction','Serve hot or cold drinks as appropriate for the time','Sit together quietly or with soft background music','Invite sharing: "What does this sunset remind you of?"','Photograph the sky and share with families'],
+  tips:['Sunrise is especially peaceful and sets a positive tone for the day','Pairs perfectly with breakfast outdoors','Memory care: simple sensory experience — no task required'],
+  variations:['Morning coffee & sunrise routine — make it weekly','Star-gazing version on clear summer nights','Weather journaling — track sunsets and skies over weeks'] },
+
+{ id:'outdoor-trivia', season:'summer', mob:['all','seated'],
+  emoji:'❓', title:'Outdoor Trivia Under the Trees', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'45–60 min', groupSize:'6–30 residents',
+  desc:'Take trivia night outside! Divide into teams and compete with summer-themed or era-appropriate questions in the fresh air.',
+  supplies:['Printed trivia questions (or phone/tablet with questions)','Team score cards','Whiteboard or easel for scores','Prizes (candy, ribbons)','Shade and comfortable seating','Microphone or loud clear voice'],
+  steps:['Set up seating in shaded area; divide into teams of 3–5','Explain rules: take turns answering, one point per correct answer','Use summer-themed, history, music, or nature categories','Read questions aloud clearly; give 30-second answer time','Track scores on whiteboard','Award prizes; celebrate all participants'],
+  tips:['Use a mix of easy and medium questions so everyone can contribute','Music round: play 10-second clips and name the song','Adapt for memory care: use visual question cards'],
+  variations:['Photo trivia — show old photos, residents guess the year or place','Sports edition for summer Olympics years','Team name competition — funniest team name gets a bonus point'] },
+
+{ id:'water-balloon-toss', season:'summer', mob:['active'],
+  emoji:'💦', title:'Water Balloon Toss & Splash Zone', complexity:'Simple', cost:'$',
+  costLabel:'$5–$10', duration:'30–45 min', groupSize:'6–20 residents',
+  desc:'A lively outdoor game for more active residents — classic water balloon toss, with a splash zone for hot summer days.',
+  supplies:['Pre-filled water balloons (use quick-fill tool)','Towels','Extra change of clothes notice','Water misting fans (optional)','Prizes','Aprons or ponchos'],
+  steps:['Pre-fill water balloons (staff can do this in advance)','Set up on grass or a paved area with good drainage','Pair residents and start at close distance','After each catch, step back one step','Last pair still catching without a burst wins','End with free play — toss freely for fun'],
+  tips:['Have staff demonstrate first for laughs','Keep towels and extra clothes option readily available','Skip this one for residents with falling risk — offer misting fan station instead'],
+  variations:['Sponge toss — softer, less messy alternative','Bucket relay — carry water in sponges between buckets','Water pistol painting — spray paint targets on paper'] },
+
+{ id:'patio-bbq', season:'summer', mob:['all','active'],
+  emoji:'🍖', title:'Patio BBQ & Lawn Games', complexity:'Medium', cost:'$$',
+  costLabel:'$20–$50', duration:'2–3 hours', groupSize:'Any size',
+  desc:'A full summer cookout experience — grilled food, lawn games, and great company. A community favorite.',
+  supplies:['Grill and fuel (or partner with kitchen)','Burgers, hot dogs, veggie options','Condiments, buns, plates','Lawn games (cornhole, ring toss, horseshoes)','Tables, chairs, tablecloths','Beverages (lemonade, iced tea)','Napkins, utensils'],
+  steps:['Coordinate with kitchen staff for grilling','Set up lawn games in a safe area','Invite residents and family members','Serve food buffet style when ready','Run lawn game tournaments with bracket','Announce winners; everyone gets a prize ribbon'],
+  tips:['Start in the morning before peak heat','Have shaded seating available for the entire event','This works especially well as a family event day'],
+  variations:['Hawaiian luau theme BBQ','Taco Tuesday outdoor version','Country fair theme with more carnival games'] },
+
+/* ── FALL ── */
+{ id:'pumpkin-painting', season:'fall', mob:['all','seated','memory'],
+  emoji:'🎃', title:'Pumpkin Painting Party', complexity:'Simple', cost:'$',
+  costLabel:'$10–$25', duration:'45–60 min', groupSize:'4–20 residents',
+  desc:'Skip the carving — painting pumpkins is safer, easier, and just as festive. Set up outdoors on tables for easy cleanup.',
+  supplies:['Small to medium pumpkins (1 per resident)','Acrylic paints (fall colors)','Brushes (various sizes)','Foam plates as palettes','Paper towels','Table coverings','Optional: stickers, googly eyes, stencils'],
+  steps:['Set up outdoor tables with pumpkins and supplies','Demonstrate a few simple designs (dots, stripes, faces, leaves)','Residents paint freely at their own pace','Encourage creativity — no wrong approach','Allow to dry; add sticker embellishments if desired','Display pumpkins on a "Harvest Row" on the porch'],
+  tips:['Use sponge daubers for memory care — easier to use than brushes','Provide design idea cards for residents who want guidance','Great volunteer activity — invite local kids or schools to paint with residents'],
+  variations:['Pumpkin decorating with foam stickers (no painting needed)','Mini gourd decorating for smaller-scale version','Painted pumpkins as centerpieces for a harvest dinner'] },
+
+{ id:'leaf-rubbing-art', season:'fall', mob:['all','seated','memory'],
+  emoji:'🍁', title:'Leaf Rubbing Nature Art', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'Any size',
+  desc:'Collect fall leaves, then create beautiful artwork by placing leaves under paper and rubbing crayons over them. A timeless, sensory-rich activity.',
+  supplies:['Collected fall leaves (various shapes/sizes)','White paper','Crayons (peeled, so sides can be used)','Tape','Display frames or wall space','Clipboards'],
+  steps:['Walk outdoors together to collect colorful fallen leaves','Bring leaves inside or stay at patio tables','Place a leaf under paper and tape corners down','Rub the side of a crayon over the paper to reveal the leaf shape','Experiment with layering different leaves and colors','Display as autumn artwork in the common area'],
+  tips:['Works beautifully for memory care — simple, tactile, rewarding','Pressing leaves in a book first makes them flatter and easier to trace','Make a group "autumn quilt" collage by combining everyone\'s rubbings on one board'],
+  variations:['Leaf painting — paint the leaf itself and press onto paper','Nature journal: tape real leaves in a booklet and write about each one','Fall color chart — match crayon colors to real leaf colors found outside'] },
+
+{ id:'apple-cider-tasting', season:'fall', mob:['all','seated','memory'],
+  emoji:'🍎', title:'Apple Cider Tasting & Social', complexity:'Simple', cost:'$',
+  costLabel:'$10–$20', duration:'45–60 min', groupSize:'Any size',
+  desc:'Set up an outdoor apple cider tasting station with warm and cold varieties, apple snacks, and fall ambiance.',
+  supplies:['Warm apple cider','Sparkling apple cider','Apple slices with dipping options (caramel, peanut butter)','Tasting cups','Voting cards for favorite','Hay bales or fall decor','Background fall music'],
+  steps:['Set up cider tasting station outside with fall decor','Pour small tasting cups of each variety (warm, cold, sparkling)','Residents rate each on a simple 1–3 card','Serve apple slices and dipping options','Tally votes and announce the "crowd favorite"','Share apple memories — "What\'s your favorite apple memory?"'],
+  tips:['Warm cider is especially comforting on crisp fall mornings','Use small cups for tasting so residents try all varieties','Memory care: pair with apple-scented candles or lotions for multi-sensory experience'],
+  variations:['Add a caramel apple dipping station','Pair with a pie or cider donut tasting','Host a full harvest festival with multiple stations'] },
+
+{ id:'fall-harvest-walk', season:'fall', mob:['all','active'],
+  emoji:'🌾', title:'Fall Harvest Nature Walk', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'Any size',
+  desc:'A guided walk through fall foliage — collect nature items, observe seasonal changes, and soak in autumn air.',
+  supplies:['Collection bags or baskets','Nature bingo cards (optional)','Comfortable walking shoes','Layered clothing','Camera','Identification cards for leaves/trees (optional)'],
+  steps:['Plan a comfortable route with fall color visibility','Invite residents to bring a bag for collecting acorns, pinecones, leaves','Walk at a comfortable pace; staff encourage conversation about what\'s seen','Stop at scenic points for photos','Collect items for a future craft project','Finish with warm cider or hot cocoa at a patio table'],
+  tips:['Shorter loop for more limited walkers; longer option for active residents','This is a great activity for engaging residents who resist structured programs','Pair with leaf rubbing art later in the week using collected leaves'],
+  variations:['Timed photo challenge — most unique fall photo in 10 minutes','Fall scavenger hunt with checklist','Bird migration watch — look for geese, hawks heading south'] },
+
+{ id:'scarecrow-building', season:'fall', mob:['all','active'],
+  emoji:'🕺', title:'Outdoor Scarecrow Building', complexity:'Medium', cost:'$',
+  costLabel:'$10–$20', duration:'60–90 min', groupSize:'6–16 residents',
+  desc:'Teams compete to build the most creative (or funniest) scarecrow using old clothes and stuffing — a hilarious fall tradition.',
+  supplies:['Old shirts, pants, hats, shoes (donations work great)','Newspaper or plastic bags for stuffing','Rope or twine','Stakes or chairs to mount scarecrow','Markers for faces','Optional: wigs, props, accessories','Voting ballots'],
+  steps:['Divide residents into teams of 3–4','Give each team a set of clothes and stuffing materials','Teams have 30 minutes to build and name their scarecrow','Each team presents their scarecrow and explains its personality','Residents vote for funniest, most creative, scariest','Award ribbons; display scarecrows around the entrance for the season'],
+  tips:['Ask for clothing donations weeks in advance from families','Have staff or volunteers help with the physical assembly','Great for family visit day — families can help build'],
+  variations:['Snowman-building equivalent in winter','Mannequin decorating version (indoor)','Scarecrow photo booth — take pictures with each finished scarecrow'] },
+
+{ id:'fire-pit-smores', season:'fall', mob:['all','seated'],
+  emoji:'🔥', title:'Fire Pit Stories & S\'mores', complexity:'Simple', cost:'$',
+  costLabel:'$10–$15', duration:'60–90 min', groupSize:'4–16 residents',
+  desc:'Gather around the fire pit (or tabletop fire bowl) for s\'mores, hot drinks, and storytelling. The quintessential fall evening.',
+  supplies:['Fire pit or tabletop fire bowl','Graham crackers, marshmallows, chocolate','Roasting sticks (long enough for safety)','Hot cocoa or cider','Chairs arranged in circle','Blankets','Optional: guitar or acoustic music'],
+  steps:['Set up seating circle around fire pit','Light fire; ensure safety clearance for all residents','Staff assist with roasting marshmallows as needed','Serve hot drinks while s\'mores are made','Begin storytelling prompt: "Tell us about a memorable campfire or bonfire"','Share stories freely; play soft music in background'],
+  tips:['Use a propane tabletop fire bowl if open fires aren\'t permitted','Always have a water source or extinguisher nearby','Memory care: the warmth, smell of fire, and familiar s\'mores are deeply comforting'],
+  variations:['Campfire songs instead of storytelling','Ghost stories night (early Halloween)','Hot dog roast instead of / in addition to s\'mores'] },
+
+/* ── WINTER ── */
+{ id:'holiday-light-tour', season:'winter', mob:['all','seated'],
+  emoji:'🎄', title:'Holiday Light Cart Tour', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'Any size',
+  desc:'Bundle up and take a tour of the facility\'s holiday light decorations — by cart, wheelchair, or slow walk — with holiday music.',
+  supplies:['Outdoor holiday lights (already in place)','Warm blankets','Hot cocoa in travel cups','Holiday music playlist','Cart or golf cart (optional for larger facilities)','Jingle bells or small noisemakers'],
+  steps:['Decorate the building perimeter and garden with holiday lights in advance','Plan a route that passes the best displays','Gather residents with warm layers and blankets','Staff lead the tour with commentary about each display','Play holiday music via portable speaker','End with hot cocoa and carol singing back inside'],
+  tips:['Evening tour after dark is most magical','Coordinate with families — invite them to join for a special shared experience','Memory care residents respond beautifully to familiar holiday music and lights'],
+  variations:['Judged light display — vote on best section','Residents help decorate before the tour','Lantern walk — each resident carries a simple LED lantern'] },
+
+{ id:'hot-cocoa-stargazing', season:'winter', mob:['all','seated'],
+  emoji:'⭐', title:'Hot Cocoa & Stargazing', complexity:'Simple', cost:'$',
+  costLabel:'$5–$10', duration:'30–45 min', groupSize:'4–20 residents',
+  desc:'On a clear winter night, take residents outside for hot cocoa and stargazing — simple, peaceful, and surprisingly memorable.',
+  supplies:['Hot cocoa mix + hot water (thermos)','Mugs or insulated cups','Marshmallows & toppings','Warm blankets','Star chart or stargazing app on tablet','Reclining lawn chairs or stable regular chairs','Hats and warm layers'],
+  steps:['Check weather forecast for a clear cold night','Set up chairs facing an open sky view','Serve hot cocoa as residents settle in','Use a star chart or app to point out constellations','Share constellation stories or mythology','Ask: "What do you remember about looking at stars as a child?"'],
+  tips:['Limit to 30 minutes in cold weather; have a warm space to return to','A tablet with a stargazing app (e.g. SkySafari) adds great visual context','Memory care: keep it simple — warm drink, soft voices, sky above'],
+  variations:['Indoor stargazing with projector on ceiling','Moon-watching party during full moons','Meteor shower viewing event — schedule in advance'] },
+
+{ id:'winter-bird-feeding', season:'winter', mob:['all','seated','memory'],
+  emoji:'🐦', title:'Winter Bird Feeding Station', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'30–60 min', groupSize:'Any size',
+  desc:'Set up bird feeders together and then watch the birds from a warm or sheltered outdoor space — birds are most active at feeders in winter.',
+  supplies:['Bird feeders (various styles)','Birdseed (suet cakes, sunflower seed, nyjer)','Hooks or shepherd poles','Bird identification book or laminated chart','Binoculars','Hot drinks for watching'],
+  steps:['Have residents help fill feeders inside first (tactile, social)','Go outside to hang feeders on hooks or poles near a window view','Wait and watch — birds often arrive within minutes','Use ID chart to name birds that visit','Keep a group "bird log" — who spotted which bird','Check and refill feeders weekly as a recurring routine'],
+  tips:['Place feeders visible from a common room window for ongoing enjoyment','Suet cakes attract woodpeckers — exciting for all','Memory care residents love the gentle routine of checking "their" feeder daily'],
+  variations:['Pinecone bird feeder craft — roll in peanut butter & birdseed then hang outside','Window cling birds for residents who can\'t go outside','Christmas ornament feeders — festive suet shapes'] },
+
+{ id:'pinecone-wreath', season:'winter', mob:['all','seated','memory'],
+  emoji:'🌲', title:'Pinecone & Greenery Wreath Making', complexity:'Simple', cost:'$',
+  costLabel:'$5–$15', duration:'45–60 min', groupSize:'4–16 residents',
+  desc:'Collect pinecones and greenery outside, then make natural wreaths or arrangements on the patio or in a sheltered outdoor space.',
+  supplies:['Collected pinecones','Grapevine or wire wreath frames','Fresh or artificial greenery sprigs','Hot glue guns (staff operated) or floral wire','Ribbon','Pine cones sprayed gold or red (optional)','Berries, small ornaments'],
+  steps:['Begin with a short outdoor walk to collect pinecones and natural greenery','Return to tables and lay out wreath frames and supplies','Residents attach greenery to frames using wire or with staff hot-glue assist','Add pinecones, berries, and decorative accents','Tie a ribbon bow at the bottom','Hang finished wreaths on residents\' room doors or the main entrance'],
+  tips:['Prepare extra materials in case natural collection is limited','The hot glue should be staff-operated; residents place and hold items','Memory care: focus on the sensory aspects — smell of pine, texture of cones'],
+  variations:['Tabletop centerpiece version — no wreath frame needed','Kissing ball — round ball of greenery and pinecones','Natural garland for hallway decoration'] },
+
+{ id:'chalk-snowflakes', season:'winter', mob:['all','active'],
+  emoji:'❄️', title:'Sidewalk Snowflake Chalk Art', complexity:'Simple', cost:'$',
+  costLabel:'$3–$8', duration:'30–45 min', groupSize:'4–16 residents',
+  desc:'On milder winter days, use large sidewalk chalk to create giant snowflake designs on the patio — festive outdoor art that washes away with rain.',
+  supplies:['Large sidewalk chalk (multiple colors)','Printed snowflake stencils (optional)','Kneeling pads or low chairs','Hand warmers','Warm layers','Clear sealant spray (optional for longevity)'],
+  steps:['Choose a mild winter day (above 35°F / comfortable)','Print or draw simple snowflake designs as guides','Residents kneel, sit on low chairs, or use long-handled chalk holders','Create one large community snowflake together, or individual designs','Sign names next to each creation','Photograph before the rain comes!'],
+  tips:['Provide kneeling pads or chairs to make this accessible for more residents','Pre-draw a basic snowflake outline for memory care residents to fill in with color','Use white chalk on dark pavement for the most dramatic effect'],
+  variations:['Holiday message art — write "Happy Holidays" in large decorative letters','Stencil art — use cutout stencils for other winter shapes','Glow-in-the-dark chalk for an evening activity'] },
+
+{ id:'winter-carol-sing', season:'winter', mob:['all','seated','memory'],
+  emoji:'🎵', title:'Outdoor Carol Sing & Hymn Circle', complexity:'Simple', cost:'Free',
+  costLabel:'Free', duration:'30–45 min', groupSize:'Any size',
+  desc:'Bundle up and sing holiday carols or hymns outdoors — the crisp air and open sky make this truly magical, especially near the holidays.',
+  supplies:['Printed lyric sheets (large print)','Portable bluetooth speaker','Accompaniment tracks or live musician','Warm blankets and layers','Hot drinks','Optional: battery-powered candles or LED lanterns'],
+  steps:['Set up seating circle in a sheltered outdoor space','Distribute large-print lyric sheets','Begin with familiar favorites (Jingle Bells, Silent Night, White Christmas)','Invite residents who play instruments to accompany','Alternate between lively carols and slower hymns','End with a moment of reflection or a shared "Amen" / toast'],
+  tips:['Invite family members to join — this is a beautiful multigenerational moment','Keep to 30–40 minutes max in cold weather','Memory care: even residents with advanced dementia often remember carol lyrics — this is profoundly meaningful'],
+  variations:['Sing in front of the building for a community performance','Caroling trip to visit neighboring buildings or areas','Indoor version at a window looking out at winter landscape'] }
+];
+
+var OD_SEASON_NAMES = { spring:'🌸 Spring', summer:'☀️ Summer', fall:'🍂 Fall', winter:'❄️ Winter' };
+var OD_MOB_NAMES = { all:'All Residents', active:'Active', seated:'Seated / Wheelchair', memory:'Memory Care' };
+var OD_MOB_COLORS = { all:'#0ea5e9', active:'#16a34a', seated:'#7c3aed', memory:'#ea580c' };
+
+function initOutdoors() {
+  OD_SEASON = 'spring';
+  OD_MOB = 'all';
+  odRenderGrid();
+}
+
+function odSetSeason(s) {
+  OD_SEASON = s;
+  document.querySelectorAll('.od-season-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.season === s);
+  });
+  odRenderGrid();
+}
+
+function odSetMob(m) {
+  OD_MOB = m;
+  document.querySelectorAll('.od-mob-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.mob === m);
+  });
+  odRenderGrid();
+}
+
+function odVisible() {
+  return OD_ACTIVITIES.filter(function(a) {
+    if (a.season !== OD_SEASON) return false;
+    if (OD_MOB === 'all') return true;
+    return a.mob.indexOf(OD_MOB) > -1;
+  });
+}
+
+function odMobTagsHtml(mobs) {
+  var map = { all:'All', active:'Active', seated:'Seated', memory:'Memory Care' };
+  var cols = { all:'#0ea5e9', active:'#16a34a', seated:'#7c3aed', memory:'#ea580c' };
+  return mobs.map(function(m) {
+    return '<span class="od-mob-tag" style="background:' + (cols[m]||'#6b7280') + '22;color:' + (cols[m]||'#6b7280') + ';">'
+      + (map[m]||m) + '</span>';
+  }).join('');
+}
+
+function odRenderGrid() {
+  var grid = document.getElementById('od-grid');
+  if (!grid) return;
+  var acts = odVisible();
+  if (!acts.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#9ca3af;">No activities match this filter. Try "All Residents" to see everything.</div>';
+    return;
+  }
+  grid.innerHTML = acts.map(function(a) {
+    var costColor = a.cost === 'Free' ? '#16a34a' : (a.cost === '$' ? '#0369a1' : '#7c3aed');
+    return '<div class="od-card" onclick="odShowDetail(\'' + a.id + '\')">'
+      + '<div style="font-size:32px;margin-bottom:8px;">' + a.emoji + '</div>'
+      + '<div style="font-weight:800;font-size:15px;margin-bottom:6px;">' + a.title + '</div>'
+      + '<div style="margin-bottom:8px;">' + odMobTagsHtml(a.mob) + '</div>'
+      + '<div style="font-size:12px;color:#6b7280;margin-bottom:8px;">' + a.desc.substring(0,90) + '…</div>'
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+      + '<span style="background:#f0fdf4;color:#166534;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">⏱ ' + a.duration + '</span>'
+      + '<span style="background:#faf5ff;color:' + costColor + ';border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">💰 ' + a.costLabel + '</span>'
+      + '<span style="background:#f0f9ff;color:#0369a1;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">👥 ' + a.groupSize + '</span>'
+      + '</div></div>';
+  }).join('');
+}
+
+function odShowDetail(id) {
+  var a = OD_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var body = document.getElementById('od-modal-body');
+  body.innerHTML = '<button onclick="odCloseModal()" style="position:absolute;top:16px;right:16px;background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;line-height:32px;">×</button>'
+    + '<div style="font-size:40px;margin-bottom:10px;">' + a.emoji + '</div>'
+    + '<h2 style="margin:0 0 6px;">' + a.title + '</h2>'
+    + '<div style="margin-bottom:10px;">' + odMobTagsHtml(a.mob) + '</div>'
+    + '<p style="color:#374151;margin-bottom:16px;">' + a.desc + '</p>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">'
+    + '<span style="background:#f0fdf4;color:#166534;border-radius:8px;padding:4px 12px;font-weight:700;">⏱ ' + a.duration + '</span>'
+    + '<span style="background:#faf5ff;color:#7c3aed;border-radius:8px;padding:4px 12px;font-weight:700;">💰 ' + a.costLabel + '</span>'
+    + '<span style="background:#f0f9ff;color:#0369a1;border-radius:8px;padding:4px 12px;font-weight:700;">👥 ' + a.groupSize + '</span>'
+    + '</div>'
+    + '<div style="margin-bottom:16px;"><strong>🛒 Supplies</strong><ul style="margin:6px 0 0 18px;">' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="margin-bottom:16px;"><strong>📋 Steps</strong><ol style="margin:6px 0 0 18px;">' + a.steps.map(function(s){return '<li style="margin-bottom:4px;">'+s+'</li>';}).join('') + '</ol></div>'
+    + '<div style="margin-bottom:16px;"><strong>💡 Tips</strong><ul style="margin:6px 0 0 18px;">' + a.tips.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="margin-bottom:20px;"><strong>🔄 Variations</strong><ul style="margin:6px 0 0 18px;">' + a.variations.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+    + '<button onclick="odDoPrint(\'' + a.id + '\')" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print Plan</button>'
+    + '<button onclick="odCloseModal()" style="background:#f3f4f6;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">Close</button>'
+    + '</div>';
+  document.getElementById('od-modal').style.display = 'block';
+}
+
+function odCloseModal() {
+  document.getElementById('od-modal').style.display = 'none';
+}
+
+function odDoPrint(id) {
+  var a = OD_ACTIVITIES.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>' + a.title + '</title>'
+    + '<style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;color:#111;} h1{color:#166534;} .badge{display:inline-block;background:#f0fdf4;color:#166534;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;margin-right:6px;} ul,ol{margin-left:18px;line-height:1.8;} .section{margin-bottom:18px;} @media print{body{margin:20px;}}</style>'
+    + '<\/head><body>'
+    + '<div style="text-align:center;border-bottom:3px solid #16a34a;padding-bottom:16px;margin-bottom:20px;">'
+    + '<div style="font-size:48px;">' + a.emoji + '</div>'
+    + '<h1 style="margin:8px 0;">' + a.title + '</h1>'
+    + '<div>' + OD_SEASON_NAMES[a.season] + ' · ' + a.mob.map(function(m){return OD_MOB_NAMES[m]||m;}).join(', ') + '</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">'
+    + '<span class="badge">⏱ ' + a.duration + '</span>'
+    + '<span class="badge">💰 ' + a.costLabel + '</span>'
+    + '<span class="badge">👥 ' + a.groupSize + '</span>'
+    + '<span class="badge">🎯 ' + a.complexity + '</span>'
+    + '</div>'
+    + '<div class="section"><p>' + a.desc + '</p></div>'
+    + '<div class="section"><h3>🛒 Supplies</h3><ul>' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div class="section"><h3>📋 Step-by-Step Plan</h3><ol>' + a.steps.map(function(s){return '<li style="margin-bottom:6px;">'+s+'</li>';}).join('') + '</ol></div>'
+    + '<div class="section"><h3>💡 Tips for Success</h3><ul>' + a.tips.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div class="section"><h3>🔄 Variations & Adaptations</h3><ul>' + a.variations.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>'
+    + '<div style="text-align:center;margin-top:30px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Outdoor Activities</div>'
+    + '<\/body><\/html>');
+  w.document.close();
+  w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function odPrintAll() {
+  var acts = odVisible();
+  if (!acts.length) { alert('No activities to print.'); return; }
+  var w = window.open('','_blank','width=900,height=700');
+  var seasonName = OD_SEASON_NAMES[OD_SEASON] || OD_SEASON;
+  var mobName = OD_MOB === 'all' ? 'All Residents' : (OD_MOB_NAMES[OD_MOB] || OD_MOB);
+  w.document.write('<!DOCTYPE html><html><head><title>Outdoor Activities - ' + seasonName + '</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;color:#111;} h1{color:#166534;} table{width:100%;border-collapse:collapse;} th{background:#16a34a;color:#fff;padding:10px;text-align:left;} td{padding:8px 10px;border-bottom:1px solid #e5e7eb;vertical-align:top;} tr:nth-child(even){background:#f9fafb;} .mob-tag{display:inline-block;background:#f0fdf4;color:#166534;border-radius:4px;padding:1px 6px;font-size:11px;margin:1px;} @media print{body{margin:16px;}}</style>'
+    + '<\/head><body>'
+    + '<h1>🌿 Outdoor Activities — ' + seasonName + '</h1>'
+    + '<p>Filter: ' + mobName + ' &nbsp;|&nbsp; ' + acts.length + ' activities</p>'
+    + '<table><tr><th>Activity</th><th>Audience</th><th>Duration</th><th>Cost</th><th>Group Size</th></tr>'
+    + acts.map(function(a){
+        return '<tr><td><strong>' + a.emoji + ' ' + a.title + '</strong><br><small>' + a.desc.substring(0,80) + '…</small></td>'
+          + '<td>' + a.mob.map(function(m){return '<span class="mob-tag">'+(OD_MOB_NAMES[m]||m)+'</span>';}).join('') + '</td>'
+          + '<td>' + a.duration + '</td><td>' + a.costLabel + '</td><td>' + a.groupSize + '</td></tr>';
+      }).join('')
+    + '</table>'
+    + '<div style="text-align:center;margin-top:24px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app</div>'
+    + '<\/body><\/html>');
+  w.document.close();
+  w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+// Hook into switchTab
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'outdoors') initOutdoors();
+  };
+})();
+</script>
+
 
 </body>
 </html>
