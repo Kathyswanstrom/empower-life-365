@@ -1693,6 +1693,43 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .wg-meeting-form { background:#FFF1F7; border:2px solid #FBCFE8; border-radius:14px; padding:18px 20px; margin-bottom:20px; }
 .wg-meeting-form input, .wg-meeting-form select, .wg-meeting-form textarea { width:100%; padding:8px 12px; border:1px solid #FBCFE8; border-radius:8px; font-size:14px; margin-bottom:10px; box-sizing:border-box; }
 
+
+/* ═══════════════ SPA & BEAUTY ═══════════════ */
+.sp-header { background:linear-gradient(135deg,#FDA4AF,#F43F5E); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.sp-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#FFF1F2; border-bottom:1px solid #FECDD3; flex-wrap:wrap; }
+.sp-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #F43F5E; background:#fff; color:#9F1239; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.sp-mode-btn.active, .sp-mode-btn:hover { background:#F43F5E; color:#fff; }
+.sp-body { padding:20px; }
+.sp-cat-title { font-weight:900; font-size:16px; color:#9F1239; border-left:4px solid #F43F5E; padding-left:12px; margin:20px 0 12px; }
+.sp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-bottom:24px; }
+.sp-card { background:#fff; border:2px solid #FECDD3; border-radius:14px; overflow:hidden; cursor:pointer; transition:all .2s; }
+.sp-card:hover { box-shadow:0 6px 20px rgba(244,63,94,.18); border-color:#F43F5E; }
+.sp-card-top { padding:16px; }
+.sp-card-emoji { font-size:34px; margin-bottom:8px; }
+.sp-card-name { font-weight:800; font-size:15px; color:#881337; margin-bottom:4px; }
+.sp-card-meta { font-size:12px; color:#BE123C; display:flex; gap:10px; }
+.sp-card-bottom { background:#FFF1F2; padding:9px 14px; font-size:12px; color:#BE123C; line-height:1.5; }
+.sp-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+.sp-modal-overlay.open { display:flex; }
+.sp-modal { background:#fff; border-radius:18px; max-width:600px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.sp-modal-hdr { background:linear-gradient(135deg,#FDA4AF,#F43F5E); color:#fff; padding:20px 24px; border-radius:18px 18px 0 0; display:flex; justify-content:space-between; align-items:start; }
+.sp-modal-body { padding:22px 24px; }
+.sp-step { display:flex; gap:10px; margin-bottom:12px; }
+.sp-step-num { width:26px; height:26px; border-radius:50%; background:#F43F5E; color:#fff; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+.sp-supply-tag { display:inline-block; background:#FFF1F2; border:1px solid #FECDD3; border-radius:12px; padding:3px 10px; font-size:12px; color:#BE123C; margin:3px; font-weight:600; }
+.sp-aroma-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.sp-aroma-card { background:#fff; border:2px solid #FECDD3; border-radius:14px; padding:16px; }
+.sp-aroma-name { font-weight:900; font-size:15px; color:#881337; margin-bottom:4px; }
+.sp-aroma-benefit { font-size:12px; color:#BE123C; margin-bottom:8px; font-weight:700; }
+.sp-aroma-desc { font-size:13px; color:#374151; line-height:1.5; }
+.sp-aroma-uses { margin-top:8px; display:flex; flex-wrap:wrap; gap:4px; }
+.sp-aroma-use { background:#FFF1F2; border-radius:10px; padding:2px 9px; font-size:11px; color:#9F1239; font-weight:700; }
+.sp-appt-form { background:#FFF1F2; border:2px solid #FECDD3; border-radius:14px; padding:18px 20px; margin-bottom:20px; }
+.sp-appt-form input, .sp-appt-form select, .sp-appt-form textarea { width:100%; padding:8px 12px; border:1px solid #FECDD3; border-radius:8px; font-size:14px; margin-bottom:10px; box-sizing:border-box; }
+.sp-appt-row { background:#fff; border:2px solid #FECDD3; border-radius:10px; padding:13px 16px; margin-bottom:8px; }
+.sp-tip-card { background:#FFF1F2; border:2px solid #FECDD3; border-radius:12px; padding:14px 16px; margin-bottom:10px; }
+.sp-tip-cat { font-weight:900; font-size:12px; color:#F43F5E; letter-spacing:.5px; text-transform:uppercase; margin-bottom:8px; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1772,6 +1809,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="monthly" id="monthly-tab" onclick="switchTab('monthly')">📅 Monthly Themes</button>
       <button class="tab-btn" data-tab="talent" id="talent-tab" onclick="switchTab('talent')">🎭 Talent Show</button>
       <button class="tab-btn" data-tab="womens" id="womens-tab" onclick="switchTab('womens')">👩 Women's Groups</button>
+      <button class="tab-btn" data-tab="spa" id="spa-tab" onclick="switchTab('spa')">💅 Spa & Beauty</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -5200,6 +5238,134 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div id="wg-wm-questions"></div>
         <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
           <button onclick="wgCloseWomanModal()" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-spa">
+  <div class="sp-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">💅 Spa &amp; Beauty</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">Nails · Facials · Aromatherapy · Hand &amp; Foot Care · Appointment Tracker · Print Menus</div>
+    </div>
+    <button onclick="spPrint()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+  </div>
+  <div class="sp-mode-bar">
+    <button class="sp-mode-btn active" id="spmode-menu" onclick="spSetMode('menu')">🌸 Treatment Menu</button>
+    <button class="sp-mode-btn" id="spmode-aroma" onclick="spSetMode('aroma')">🌿 Aromatherapy</button>
+    <button class="sp-mode-btn" id="spmode-tips" onclick="spSetMode('tips')">✨ Beauty Tips</button>
+    <button class="sp-mode-btn" id="spmode-appts" onclick="spSetMode('appts')">📅 Appointments</button>
+    <button class="sp-mode-btn" id="spmode-print" onclick="spSetMode('print')">🖨️ Print Materials</button>
+  </div>
+
+  <!-- TREATMENT MENU -->
+  <div id="sp-view-menu" class="sp-body">
+    <div style="background:linear-gradient(135deg,#FFF1F2,#FECDD3);border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:28px;">🌺</div>
+      <div>
+        <div style="font-weight:800;font-size:15px;color:#881337;">Welcome to the Spa</div>
+        <div style="font-size:13px;color:#BE123C;line-height:1.6;">Click any treatment for the full step-by-step guide. All treatments are designed to be safe, relaxing, and wonderful for seniors.</div>
+      </div>
+    </div>
+    <div id="sp-menu-body"></div>
+  </div>
+
+  <!-- AROMATHERAPY -->
+  <div id="sp-view-aroma" class="sp-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#881337;margin-bottom:6px;">🌿 Aromatherapy Guide</div>
+    <div style="font-size:13px;color:#BE123C;margin-bottom:16px;">12 essential oils for your spa toolkit — benefits, uses, and safety notes.</div>
+    <div class="sp-aroma-grid" id="sp-aroma-grid"></div>
+    <div style="background:#FFF1F2;border-radius:12px;padding:16px 18px;margin-top:8px;border-left:4px solid #F43F5E;">
+      <div style="font-weight:900;font-size:13px;color:#9F1239;margin-bottom:8px;">⚠️ Safety Guidelines</div>
+      <div style="font-size:13px;color:#374151;line-height:1.8;">
+        <b>Always dilute</b> essential oils in a carrier oil before applying to skin (3–5 drops per tablespoon of carrier oil).<br>
+        <b>Check for allergies</b> before each session — ask about skin sensitivities and asthma.<br>
+        <b>Never apply undiluted</b> oils directly to skin — especially for seniors with delicate skin.<br>
+        <b>Avoid the eyes</b> and mucous membranes.<br>
+        <b>Diffusers are the safest method</b> for group settings — 30 minutes on, 30 minutes off.<br>
+        <b>Peppermint and eucalyptus</b> should be used sparingly with residents who have respiratory conditions.
+      </div>
+    </div>
+    <button onclick="spPrintAromaGuide()" class="btn" style="background:#F43F5E;color:#fff;margin-top:16px;">🖨️ Print Aromatherapy Guide</button>
+  </div>
+
+  <!-- BEAUTY TIPS -->
+  <div id="sp-view-tips" class="sp-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#881337;margin-bottom:14px;">✨ Simple Beauty Tips for Seniors</div>
+    <div id="sp-tips-body"></div>
+    <button onclick="spPrintBeautyTips()" class="btn" style="background:#F43F5E;color:#fff;margin-top:8px;">🖨️ Print Beauty Tips</button>
+  </div>
+
+  <!-- APPOINTMENTS -->
+  <div id="sp-view-appts" class="sp-body" style="display:none;">
+    <div class="sp-appt-form">
+      <div style="font-weight:800;font-size:15px;color:#881337;margin-bottom:12px;">📅 Schedule / Log a Spa Session</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#BE123C;">Resident Name</label>
+          <input type="text" id="sp-a-resident" placeholder="Resident name..." />
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:#BE123C;">Date</label>
+          <input type="date" id="sp-a-date" />
+        </div>
+      </div>
+      <label style="font-size:12px;font-weight:700;color:#BE123C;">Treatments Received</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;" id="sp-treatment-checks"></div>
+      <label style="font-size:12px;font-weight:700;color:#BE123C;">Nail Color (if applicable)</label>
+      <input type="text" id="sp-a-color" placeholder="e.g. Pale pink, Red, Clear coat..." />
+      <label style="font-size:12px;font-weight:700;color:#BE123C;">Notes / Reactions / Preferences</label>
+      <textarea id="sp-a-notes" rows="2" placeholder="How did they enjoy it? Any sensitivities? Preferences for next time?"></textarea>
+      <button onclick="spSaveAppt()" class="btn" style="background:#F43F5E;color:#fff;">✅ Save Record</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:15px;color:#881337;" id="sp-appt-count">Appointment Log</div>
+      <button onclick="spPrintApptLog()" class="btn" style="background:#FFF1F2;color:#BE123C;border:2px solid #FECDD3;font-size:13px;">🖨️ Print Log</button>
+    </div>
+    <div id="sp-appt-empty" style="text-align:center;padding:40px;color:#BE123C;font-size:15px;">No appointments logged yet. Add the first one above!</div>
+    <div id="sp-appt-list"></div>
+  </div>
+
+  <!-- PRINT -->
+  <div id="sp-view-print" class="sp-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#881337;margin-bottom:14px;">🖨️ Print Materials</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+      <div style="background:#fff;border:2px solid #FECDD3;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">🌸</div><div style="font-weight:800;color:#881337;margin-bottom:6px;">Spa Menu</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Full treatment menu for residents</div><button onclick="spPrintSpaMenu()" class="btn" style="background:#F43F5E;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FECDD3;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">🌿</div><div style="font-weight:800;color:#881337;margin-bottom:6px;">Aromatherapy Guide</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Essential oil reference card</div><button onclick="spPrintAromaGuide()" class="btn" style="background:#F43F5E;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FECDD3;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">💅</div><div style="font-weight:800;color:#881337;margin-bottom:6px;">Nail Color Menu</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Color selection sheet for residents</div><button onclick="spPrintNailMenu()" class="btn" style="background:#F43F5E;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FECDD3;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">✨</div><div style="font-weight:800;color:#881337;margin-bottom:6px;">Beauty Tips Sheet</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Simple daily beauty care tips</div><button onclick="spPrintBeautyTips()" class="btn" style="background:#F43F5E;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FECDD3;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">📣</div><div style="font-weight:800;color:#881337;margin-bottom:6px;">Spa Day Poster</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Announcement flyer for residents</div><button onclick="spPrintPoster()" class="btn" style="background:#F43F5E;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div style="background:#fff;border:2px solid #FECDD3;border-radius:12px;padding:16px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">📋</div><div style="font-weight:800;color:#881337;margin-bottom:6px;">Supply Checklist</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Everything you need for spa day</div><button onclick="spPrintSupplyList()" class="btn" style="background:#F43F5E;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+    </div>
+  </div>
+
+  <!-- TREATMENT MODAL -->
+  <div class="sp-modal-overlay" id="sp-modal" onclick="if(event.target===this)spCloseModal()">
+    <div class="sp-modal">
+      <div class="sp-modal-hdr">
+        <div>
+          <div id="sp-m-emoji" style="font-size:32px;"></div>
+          <div id="sp-m-name" style="font-size:20px;font-weight:900;margin-top:4px;"></div>
+          <div id="sp-m-meta" style="font-size:13px;opacity:.85;margin-top:3px;"></div>
+        </div>
+        <button onclick="spCloseModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:22px;cursor:pointer;border-radius:50%;width:36px;height:36px;">✕</button>
+      </div>
+      <div class="sp-modal-body">
+        <div id="sp-m-desc" style="font-size:14px;color:#374151;line-height:1.7;margin-bottom:14px;"></div>
+        <div style="font-weight:900;font-size:12px;color:#BE123C;letter-spacing:.5px;margin-bottom:8px;">🛒 SUPPLIES NEEDED</div>
+        <div id="sp-m-supplies" style="margin-bottom:16px;"></div>
+        <div style="font-weight:900;font-size:12px;color:#BE123C;letter-spacing:.5px;margin-bottom:8px;">📋 STEP-BY-STEP</div>
+        <div id="sp-m-steps" style="margin-bottom:14px;"></div>
+        <div style="background:#FFF1F2;border-radius:10px;padding:12px 16px;margin-bottom:16px;">
+          <div style="font-weight:800;font-size:12px;color:#BE123C;margin-bottom:4px;">💡 TIPS & NOTES</div>
+          <div id="sp-m-tip" style="font-size:13px;color:#374151;line-height:1.6;"></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="spPrintTreatmentCard(spActiveTreatment)" class="btn" style="background:#F43F5E;color:#fff;">🖨️ Print Treatment Card</button>
+          <button onclick="spCloseModal()" class="btn btn-secondary">Close</button>
         </div>
       </div>
     </div>
@@ -37759,6 +37925,421 @@ function wgPrintMeetingLog() {
   var rows = meetings.map(function(m){ return '<tr><td style="padding:9px;border-bottom:1px solid #eee;">' + (m.date||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-weight:700;">' + m.topic + '</td><td style="padding:9px;border-bottom:1px solid #eee;">' + (m.attendees||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:12px;font-style:italic;">' + (m.notes||'') + '</td></tr>'; }).join('');
   var w = window.open('','_blank');
   w.document.write('<html><head><title>Women\'s Group Log</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#831843}table{width:100%;border-collapse:collapse}th{background:#EC4899;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>👩 Women\'s Group Meeting Log</h1><p style="color:#888;font-size:12px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>Date</th><th>Program</th><th>Attendees</th><th>Notes</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SPA & BEAUTY  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var SP_APPTS_KEY = 'el365_spa_appts';
+var spActiveTreatment = null;
+
+var SP_TREATMENTS = [
+  /* NAILS */
+  { id:'sn1', emoji:'💅', name:'Classic Manicure', cat:'nails', catLabel:'💅 Nails', time:'20–30 min', level:'Easy',
+    desc:'A complete nail care treatment including soaking, filing, cuticle care, hand massage, and polish application. One of the most popular and mood-lifting spa activities.',
+    supplies:['Warm water basin','Gentle dish soap or nail soak solution','Nail file and buffer (one per resident)','Cuticle pusher (soft rubber tip)','Cuticle oil or olive oil','Hand lotion','Nail polish (2–3 color choices)','Top coat (clear)','Cotton balls and nail polish remover','Small towel'],
+    steps:['Soak resident\'s hands in warm soapy water for 3–5 minutes to soften nails and cuticles.','Pat hands dry gently with a soft towel.','File nails into desired shape — straight across or gently rounded. File in one direction only.',  'Gently push back cuticles using the soft rubber pusher. Do not cut cuticles.','Apply a drop of cuticle oil or olive oil to each cuticle and massage in gently.','Apply hand lotion and give a 2–3 minute hand massage (see Hand Massage treatment for technique).','Apply a base coat if available, then one to two coats of chosen polish color.','Finish with a clear top coat for shine and durability.','Allow nails to dry for at least 10 minutes. Fan gently to speed drying.'],
+    tip:'Let the resident choose their color — this small act of autonomy matters enormously. Use fast-dry polish when available. Keep conversations warm and personal during the treatment. Many residents will share beautiful stories during this quiet, connected time.' },
+  { id:'sn2', emoji:'🎨', name:'Nail Art & Accents', cat:'nails', catLabel:'💅 Nails', time:'15 min', level:'Easy',
+    desc:'Fun, simple nail art accents using dotting tools, stickers, or striping tape — adding personality to a standard manicure.',
+    supplies:['Nail art stickers (flowers, dots, gems)','Dotting tool or toothpick','Nail striping tape','Top coat','Base polish already applied'],
+    steps:['Complete a standard manicure first and allow polish to dry.','Choose accents: stickers for ease, or dotting tool for a flower or polka dot effect.','For stickers: peel and press gently onto dry nail, smooth with fingertip.','For dots: dip toothpick or dotting tool in contrasting polish, press gently onto nail.','Allow accents to dry 2 minutes, then seal everything with top coat.','Let dry completely before resident handles anything.'],
+    tip:'Nail stickers are the safest, easiest option with the most satisfying results for residents with tremors or limited dexterity. Accent one finger (ring finger) for a beautiful effect with minimal effort.' },
+  { id:'sn3', emoji:'🪮', name:'Nail Soak & Buff', cat:'nails', catLabel:'💅 Nails', time:'15 min', level:'Easy',
+    desc:'A gentle no-polish treatment focused on nail health — soaking, filing, and buffing to a natural shine. Great for residents who prefer no color or have fragile nails.',
+    supplies:['Warm water basin','Gentle soap','Nail file','Nail buffer (4-sided)','Cuticle oil','Hand lotion'],
+    steps:['Soak nails in warm soapy water for 5 minutes.','Pat dry.','File gently to smooth any rough edges.','Use buffer: rough side first to smooth ridges, then fine side to shine.','Massage cuticle oil into each nail bed.','Finish with hand lotion massage.'],
+    tip:'Buffing creates a natural shine that looks polished without any color. Great for men or residents who resist nail polish. The shine from a good buff lasts 1–2 weeks.' },
+  /* FACIAL */
+  { id:'sf1', emoji:'🫧', name:'Gentle Cleansing Facial', cat:'facial', catLabel:'🫧 Facial', time:'20 min', level:'Easy',
+    desc:'A simple, soothing facial using gentle cleanser, warm towels, and moisturizer. Leaves skin feeling clean, refreshed, and cared for.',
+    supplies:['Gentle facial cleanser (fragrance-free preferred)','Warm water','Soft washcloths or facial sponges','Facial moisturizer (unscented for sensitive skin)','Optional: toner (alcohol-free)','Headband to keep hair back','Small towel'],
+    steps:['Ask resident to sit comfortably. Place a headband or soft cloth to keep hair back.','Apply a small amount of cleanser to fingertips. Gently cleanse the face in small circular motions, avoiding the eyes.','Rinse with a warm damp cloth — use gentle, downward strokes.','If using toner: apply a small amount to cotton pad and gently wipe across face.','Apply moisturizer using fingertips. Press (don\'t rub) into skin with gentle upward strokes.','Invite resident to close their eyes during the moisturizer step for maximum relaxation.'],
+    tip:'Always do a patch test on the inner wrist first for new products. Unscented, hypoallergenic products are safest for senior skin. Warm (not hot) water is essential — older skin is more sensitive. Speak in a calm, reassuring voice throughout.' },
+  { id:'sf2', emoji:'🥒', name:'Cucumber Eye Treatment', cat:'facial', catLabel:'🫧 Facial', time:'10 min', level:'Easy',
+    desc:'A cooling, refreshing eye treatment using chilled cucumber slices or cool eye pads. Reduces puffiness and provides lovely sensory relaxation.',
+    supplies:['Fresh cucumber (1 medium, chilled)','Or: gel eye pads (refrigerated)','Soft reclining chair or bed','Relaxing music','Cool cloth (optional)'],
+    steps:['Slice cucumber into ¼-inch rounds. Chill in refrigerator for 10 minutes if possible.','Ask resident to lie back or recline comfortably.','Play soft, calming music.','Place cucumber slices gently over closed eyes.','Allow 5–10 minutes of rest.','Remove cucumber slices. Gently dab any moisture with a soft cloth.','Follow with facial moisturizer if desired.'],
+    tip:'This is one of the most universally loved and simple spa treatments. The coolness and the quiet rest are deeply restorative. Many residents will fall lightly asleep — a lovely outcome.' },
+  { id:'sf3', emoji:'💆', name:'Face & Scalp Massage', cat:'facial', catLabel:'🫧 Facial', time:'15 min', level:'Easy',
+    desc:'A calming face and scalp massage using gentle fingertip pressure. Relieves tension, improves circulation, and feels incredibly soothing.',
+    supplies:['Facial oil or light lotion','Quiet space','Optional: lavender essential oil (diluted in carrier oil)'],
+    steps:['Ask resident to close eyes and relax.','Warm a small amount of facial oil between palms.','Begin at the forehead: use fingertips to make small circular motions from center outward.','Move to temples: use gentle circular pressure (10 seconds each side).','Trace the cheekbones outward toward ears with light pressure.','Use thumbs to gently press along the eyebrows from inner to outer edge.','Move to scalp: use fingertips to make circular motions across the entire scalp.','Close with long, sweeping strokes from forehead to the back of the head.','Finish with three slow, deep breaths together.'],
+    tip:'This is deeply relaxing for residents with anxiety, pain, or difficulty sleeping. Maintain a slow, deliberate pace — never rush. Ask for verbal feedback on pressure. Many residents report this being their favorite spa treatment.' },
+  { id:'sf4', emoji:'🌸', name:'Rose Water Facial Mist', cat:'facial', catLabel:'🫧 Facial', time:'5 min', level:'Easy',
+    desc:'A quick, refreshing facial spritz with rose water — hydrates, refreshes, and smells beautiful. A lovely finishing touch to any facial.',
+    supplies:['Rose water spray bottle (purchase pre-made or make: 1 part rose water to 1 part distilled water)','Soft cloth for patting dry'],
+    steps:['Hold spray bottle 8–10 inches from face.','Ask resident to close eyes.','Mist lightly over the face — 2–3 spritzes.','Allow to absorb for 30 seconds.','Gently pat (don\'t rub) any excess with a soft cloth.','Follow with moisturizer if desired.'],
+    tip:'Rose water has a gentle, universally appealing scent that almost everyone loves. It\'s also an excellent mood lifter — the scent and the cool mist together are immediately refreshing.' },
+  /* HAND & FOOT */
+  { id:'sh1', emoji:'🙌', name:'Paraffin Hand Wax', cat:'hands', catLabel:'🙌 Hands & Feet', time:'20 min', level:'Medium',
+    desc:'Warm paraffin wax treatment for the hands — deeply moisturizing and soothing for arthritic joints and dry skin. One of the most beloved spa treatments for seniors.',
+    supplies:['Paraffin wax bath/warmer','Paraffin wax (pre-scented with lavender or unscented)','Plastic bags or paraffin mitts','Small towels','Hand lotion for finish'],
+    steps:['Heat paraffin wax per machine instructions — should be just melted, not boiling.','Test temperature on your inner wrist first. It should feel warm, not hot.','Ask resident to remove any rings.','Dip resident\'s hand into the wax slowly (do not touch the bottom of the warmer).','Withdraw and allow wax to set for 3 seconds.','Dip again 3–4 more times to build up a thick coating.','Slide plastic bag or mitt over the hand. Wrap in a small towel.','Let rest 10–15 minutes.','Peel off the wax (residents often love doing this!). Massage in the natural moisture left on skin.','Apply additional hand lotion.'],
+    tip:'Check for any open wounds or skin conditions before this treatment. Always test temperature carefully. The peeling-off step is surprisingly satisfying and often produces delighted reactions. Residents with arthritis frequently report immediate joint relief.' },
+  { id:'sh2', emoji:'💆', name:'Hand Massage', cat:'hands', catLabel:'🙌 Hands & Feet', time:'10 min', level:'Easy',
+    desc:'A thorough, technique-driven hand massage using warm lotion — relaxing, therapeutic, and wonderful for circulation and joint health.',
+    supplies:['Warm hand lotion (lavender, rose, or unscented)','Small towel','Optional: warm the lotion in hands before applying'],
+    steps:['Warm lotion between your own palms first.','Hold resident\'s hand palm-up. Use thumbs to make circular pressure across the palm from wrist to fingers.','Gently squeeze and pull each finger from base to tip.','Rotate each finger gently — 3 circles each direction.','Turn hand over. Use thumbs to press along tendons on the back of the hand, wrist to knuckles.','Use knuckles to roll gently across the palm (feel free to apply more pressure here — the palm loves it).','Finish with long strokes from fingertips to wrist, then gently squeeze the wrist.','Repeat on the other hand.'],
+    tip:'This 10-minute treatment has profound effects on mood, circulation, and sense of connection. Many residents with dementia who resist touch in other contexts respond positively to hand massage because the hands are a familiar, safe area. Narrate what you\'re doing in a calm, warm voice.' },
+  { id:'sh3', emoji:'🛁', name:'Luxury Hand Soak', cat:'hands', catLabel:'🙌 Hands & Feet', time:'15 min', level:'Easy',
+    desc:'A warm, fragrant hand soak using essential oils or bath salts, followed by exfoliation and deep moisturizing.',
+    supplies:['Warm water basin','2 tbsp Epsom salt or bath salts','3 drops lavender or rose essential oil','Sugar scrub or gentle exfoliant','Rich hand cream','Soft towel'],
+    steps:['Fill basin with comfortably warm water.','Dissolve Epsom salts and add essential oil drops.','Have resident soak hands for 5–8 minutes.','While soaking, offer a warm beverage or play soft music.','Pat hands dry gently.','Apply a small amount of sugar scrub and massage gently over hands and wrists.','Rinse or wipe off scrub.','Apply generous hand cream and massage in.'],
+    tip:'The combination of warmth, scent, and texture in this treatment is highly sensory and therapeutic. Pair with a cup of herbal tea for the ultimate relaxation experience.' },
+  { id:'sh4', emoji:'🦶', name:'Foot Soak & Massage', cat:'hands', catLabel:'🙌 Hands & Feet', time:'25 min', level:'Easy',
+    desc:'A warm foot soak with essential oils and Epsom salts, followed by a gentle foot massage with lotion. Incredibly relaxing and therapeutic for tired feet.',
+    supplies:['Foot basin','Warm water','3 tbsp Epsom salt','3 drops peppermint or lavender oil','Foot scrub or pumice stone (gentle)','Thick foot lotion or shea butter','Soft towels','Waterproof mat under basin'],
+    steps:['Fill foot basin with comfortably warm water. Add Epsom salts and essential oil.','Help resident place feet in basin. Allow 10 minutes to soak.','Gently use pumice stone or foot scrub on heels and balls of feet (areas of callus only).','Rinse and pat feet thoroughly dry — especially between toes.','Apply generous foot lotion.','Massage feet: use thumbs to press along the arch, from heel to ball. Apply firm, comfortable pressure.','Squeeze the entire foot gently, then work each toe.','Finish with long strokes from toes to ankle.','Offer cozy socks after treatment.'],
+    tip:'Always check feet carefully for wounds, sores, or diabetic-related concerns before soaking. Warm (not hot) water is essential. Peppermint oil creates a lovely cooling sensation in the foot soak. Offer to put on warm socks after — a beautiful finishing touch.' },
+  /* RELAXATION */
+  { id:'sr1', emoji:'🌬️', name:'Guided Breathing & Relaxation', cat:'relax', catLabel:'🧘 Relaxation', time:'15 min', level:'Easy',
+    desc:'A gentle, guided breathing and progressive relaxation session — the perfect opening or closing to any spa day.',
+    supplies:['Comfortable chairs or recliners','Soft blankets','Relaxing music (instrumental)','Optional: lavender diffuser'],
+    steps:['Dim lights slightly. Play soft instrumental music.','Invite residents to close their eyes and settle into their chairs.','Begin with three slow deep breaths together — breathe in for 4 counts, hold 2, release for 6.','Guide a body scan: "Notice your hands... let them soften... notice your shoulders... let them drop..."','Invite residents to picture a peaceful place: a garden, a beach, a favorite chair at home.','Allow 5 minutes of quiet with only the music.','Gently guide residents back: "Wiggle your fingers and toes... take a deep breath in... and open your eyes."','Close with a warm affirmation: "You are cared for. You are appreciated. You matter."'],
+    tip:'This treatment pairs perfectly with aromatherapy. Even residents who are initially resistant to "closing their eyes" often relax once they hear the music and the calm voice. The closing affirmation is powerful — never skip it.' },
+  { id:'sr2', emoji:'🕯️', name:'Candlelit Relaxation Lounge', cat:'relax', catLabel:'🧘 Relaxation', time:'30–60 min', level:'Easy',
+    desc:'Transform the common room into a relaxation spa using flameless candles, soft music, warm drinks, and a pampered atmosphere. The whole room becomes the treatment.',
+    supplies:['Flameless LED candles (many)','Soft blankets or lap robes','Herbal teas and warm lemon water','Soft instrumental music','Optional: lavender diffuser','Spa-style facial masks or cool eye pads'],
+    steps:['Set up the room 20 minutes before residents arrive.','Place flameless candles throughout. Dim overhead lights.','Start soft music — nature sounds, harp, or spa instrumental.','Diffuse lavender or citrus essential oil.','As residents arrive, offer a warm drink and a soft blanket.','Offer cucumber eye pads or a simple face mask.','Let the room do the work — allow 20–30 minutes of quiet relaxation.','Offer gentle conversation, not required participation.','Close by dimming the music and turning up lights slowly.'],
+    tip:'The setup itself creates the experience. Even the journey from hallway to room — the music, the scent, the candles — begins the relaxation response before residents sit down. This is one of the highest-attendance spa activities.' },
+  { id:'sr3', emoji:'🌺', name:'Hot Towel Treatment', cat:'relax', catLabel:'🧘 Relaxation', time:'10 min', level:'Easy',
+    desc:'Warm, lightly scented towels applied to the hands, face, or neck for deep relaxation and tension relief.',
+    supplies:['Small hand towels','Warm water + a few drops of lavender oil','Microwave or towel warmer','Tongs for handling warm towels','Lavender spray (optional)'],
+    steps:['Dampen towels and roll loosely. Microwave for 30–45 seconds (check temperature carefully on wrist before applying).','Or: use a commercial towel warmer.','Optionally, spritz warm towels lightly with lavender water.','Apply one warm towel to hands — let resident hold it.','Apply a second towel gently across the face if resident is comfortable.','Allow towels to rest for 2–3 minutes.','Remove and pat skin gently dry.','Follow with lotion.'],
+    tip:'Check towel temperature carefully every time — resident skin is delicate. This is also a beautiful sensory treatment for residents with dementia who respond to warmth and gentle touch.' }
+];
+
+var SP_AROMAS = [
+  { emoji:'💜', name:'Lavender', scent:'Floral, soft, powdery', benefit:'Calming · Sleep Support · Anxiety Relief',
+    desc:'The most universally loved spa scent. Lavender has well-documented calming effects and is gentle enough for nearly all residents.',
+    uses:['Diffuser (evening or relaxation sessions)','Hand massage lotion blend','Pillow spray','Towel treatment','Bath and foot soaks'] },
+  { emoji:'🌹', name:'Rose', scent:'Rich, sweet, floral', benefit:'Mood Lifting · Comfort · Self-Worth',
+    desc:'Rose essential oil (or affordable rose water) creates an atmosphere of luxury and care. Deeply associated with love and comfort.',
+    uses:['Facial mist (rose water)','Hand massage lotion blend','Diffuser (social events)','Bath soak'] },
+  { emoji:'🍊', name:'Sweet Orange', scent:'Bright, citrusy, cheerful', benefit:'Energizing · Uplifting · Mood Boosting',
+    desc:'One of the most uplifting citrus scents — warm, sweet, and immediately cheerful. Wonderful for morning sessions.',
+    uses:['Diffuser (morning or afternoon sessions)','Room spray','Hand lotion blend','Foot soak'] },
+  { emoji:'🌿', name:'Peppermint', scent:'Cool, fresh, minty', benefit:'Alertness · Headache Relief · Foot Cooling',
+    desc:'Invigorating and refreshing. Excellent in foot soaks for a cooling sensation. Use sparingly for residents with asthma.',
+    uses:['Foot soaks (3 drops)','Cool compress for headaches','Diffuser (use sparingly)','Room freshener'] },
+  { emoji:'🌲', name:'Eucalyptus', scent:'Clean, medicinal, woodsy', benefit:'Respiratory · Clearing · Energizing',
+    desc:'A clean, spa-like scent associated with cleanliness and breathing. Use lightly and avoid with respiratory conditions.',
+    uses:['Diffuser (diluted)','Shower steamers','Room spray (light)','Steam facial (careful with sensitive skin)'] },
+  { emoji:'🍋', name:'Lemon', scent:'Bright, clean, citrusy', benefit:'Uplifting · Focus · Cleansing',
+    desc:'Crisp and cheerful lemon creates an instant sense of cleanliness and brightness. One of the best "wake up" scents.',
+    uses:['Diffuser (daytime)','Cleaning product blend','Hand rinse water','Room spray'] },
+  { emoji:'🌾', name:'Frankincense', scent:'Warm, woody, slightly sweet', benefit:'Deep Calm · Grounding · Meditation',
+    desc:'A rich, ancient scent associated with peace and ceremony. Wonderful for deeply relaxing sessions and guided meditation.',
+    uses:['Diffuser (deep relaxation sessions)','Facial oil blend (excellent for mature skin)','Meditation sessions','Candle scent'] },
+  { emoji:'🌸', name:'Geranium', scent:'Floral, slightly rosy', benefit:'Balancing · Comfort · PMS/Mood',
+    desc:'A gentle floral that blends beautifully with rose and lavender. Balancing and emotionally grounding.',
+    uses:['Massage oil blend','Diffuser','Bath salts','Facial oil (excellent for mature and dry skin)'] },
+  { emoji:'🍦', name:'Vanilla', scent:'Sweet, warm, comforting', benefit:'Comfort · Warmth · Nostalgia',
+    desc:'Universally loved, vanilla creates an atmosphere of warmth and comfort. Strongly associated with baking and home — excellent for memory and reminiscing.',
+    uses:['Diffuser','Room spray','Massage lotion blend','Candle/warmers'] },
+  { emoji:'🌻', name:'Chamomile', scent:'Soft, apple-like, gentle', benefit:'Calming · Sleep · Irritability Relief',
+    desc:'Very gentle and soothing. Roman chamomile is especially calming and safe for sensitive skin. Excellent for bedtime routines.',
+    uses:['Diffuser (evening)','Bath soak','Compress for irritated skin','Facial oil (very sensitive skin)'] },
+  { emoji:'🌴', name:'Ylang Ylang', scent:'Sweet, exotic, floral', benefit:'Romance · Relaxation · Self-Esteem',
+    desc:'A rich, exotic floral that creates a feeling of luxury and sensuality. Use sparingly — a little goes a long way.',
+    uses:['Diffuser (use 1–2 drops only)','Massage oil blend','Bath soak','Hair oil treatment'] },
+  { emoji:'🪵', name:'Cedarwood', scent:'Woody, warm, earthy', benefit:'Grounding · Calm · Sleep',
+    desc:'A warm, comforting woodsy scent that promotes feelings of safety and groundedness. Pairs beautifully with lavender.',
+    uses:['Diffuser (nighttime)','Massage oil blend','Room spray','Pillow mist'] }
+];
+
+var SP_TIPS = [
+  { cat:'💅 Nail Care', tips:[
+    'Apply hand cream every night before bed — keep a tube on the nightstand.',
+    'Wear gloves when hands are in water to protect polish and prevent dryness.',
+    'File nails in one direction only (not sawing back and forth) to prevent splitting.',
+    'Always apply a base coat — it prevents staining and helps polish last longer.',
+    'To dry polish faster: dip fingers in ice cold water for 2 minutes after applying.',
+    'Cuticle oil applied daily keeps nails strong and healthy.',
+    'Push — never cut — cuticles to avoid infection and pain.',
+    'Buffing without polish creates a natural shine that lasts 1–2 weeks.'
+  ]},
+  { cat:'🫧 Facial & Skin Care', tips:[
+    'Pat — never rub — skin dry after washing. Rubbing causes irritation and broken capillaries.',
+    'Always apply moisturizer to slightly damp skin to lock in moisture.',
+    'The neck and décolleté deserve the same care as the face — extend moisturizer downward.',
+    'Drink plenty of water — hydrated skin glows from the inside out.',
+    'Wash pillowcases weekly — they collect oils and bacteria that affect skin.',
+    'For puffy eyes: two cold spoons held against the eyes for 2 minutes works wonders.',
+    'Sunscreen is the #1 anti-aging product — even through windows.',
+    'Gentle upward strokes when applying creams counteract gravity and lift the skin.'
+  ]},
+  { cat:'💆 Hand & Body Care', tips:[
+    'Apply hand cream immediately after washing hands while skin is still slightly damp.',
+    'Keep a tube of hand cream at every sink, nightstand, and chair.',
+    'Warm lotion in your palms before applying — cold lotion is startling and less effective.',
+    'For very dry hands: apply thick lotion at night and sleep in soft cotton gloves.',
+    'Massage lotion into the spaces between fingers and around the knuckles — often forgotten.',
+    'Epsom salt soaks once a week soften skin and relax joints and muscles.',
+    'Pat — never scrub — skin dry after bathing to retain natural moisture.',
+    'A small amount of coconut oil is an excellent body moisturizer and very affordable.'
+  ]},
+  { cat:'💄 Makeup & Beauty', tips:[
+    'A tinted lip balm adds a hint of color and keeps lips moisturized — two in one.',
+    'Blush on the apples of the cheeks and a sweep of mascara refreshes any look quickly.',
+    'Less is more — a light touch of color looks more youthful than heavy application.',
+    'A clean, brushed brow frames the face more than almost any other feature.',
+    'For longer-lasting lipstick: apply, blot with tissue, apply again.',
+    'Rose gold or peachy tones are universally flattering on most skin tones.',
+    'A bright lip color is a mood lifter — don\'t save it for special occasions.',
+    'Powder on the T-zone only (not the cheeks) keeps makeup fresh without looking cakey.'
+  ]},
+  { cat:'💆 Relaxation & Wellness', tips:[
+    'Three deep slow breaths immediately lower heart rate and reduce anxiety.',
+    'A warm lavender-scented cloth over the eyes for 5 minutes releases tension headaches.',
+    'Singing — even humming — releases endorphins and reduces stress hormones.',
+    'Touching something soft (a velvet pillow, a fluffy blanket) activates the calm response.',
+    'A 5-minute hand massage before bed improves sleep quality.',
+    'Cold water splashed on the face and wrists quickly lowers body temperature and refreshes.',
+    'Sitting in sunlight for 15 minutes daily improves mood and vitamin D levels.',
+    'Rubbing lavender lotion into wrists and inhaling is a 30-second relaxation reset.'
+  ]}
+];
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'spa') spInit();
+  };
+})();
+
+function spInit() {
+  spRenderMenu();
+  spRenderAroma();
+  spRenderTips();
+  spRenderAppts();
+  spBuildTreatmentChecks();
+  var d = document.getElementById('sp-a-date');
+  if (d && !d.value) d.value = new Date().toISOString().split('T')[0];
+}
+
+/* ── MODE ── */
+function spSetMode(mode) {
+  ['menu','aroma','tips','appts','print'].forEach(function(m) {
+    document.getElementById('sp-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('spmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+}
+
+/* ── TREATMENT MENU ── */
+var SP_CATS = [
+  { id:'nails', label:'💅 Nails' },
+  { id:'facial', label:'🫧 Facial' },
+  { id:'hands', label:'🙌 Hands & Feet' },
+  { id:'relax', label:'🧘 Relaxation' }
+];
+
+function spRenderMenu() {
+  var el = document.getElementById('sp-menu-body');
+  if (!el) return;
+  el.innerHTML = SP_CATS.map(function(cat) {
+    var items = SP_TREATMENTS.filter(function(t){ return t.cat === cat.id; });
+    return '<div class="sp-cat-title">' + cat.label + '</div>'
+      + '<div class="sp-grid">'
+      + items.map(function(t) {
+        return '<div class="sp-card" onclick="spOpenModal(\'' + t.id + '\')">'
+          + '<div class="sp-card-top">'
+          + '<div class="sp-card-emoji">' + t.emoji + '</div>'
+          + '<div class="sp-card-name">' + t.name + '</div>'
+          + '<div class="sp-card-meta"><span>⏱ ' + t.time + '</span><span>✅ ' + t.level + '</span></div>'
+          + '</div>'
+          + '<div class="sp-card-bottom">' + t.desc.slice(0,85) + '…</div>'
+          + '</div>';
+      }).join('')
+      + '</div>';
+  }).join('');
+}
+
+/* ── MODAL ── */
+function spOpenModal(id) {
+  var t = SP_TREATMENTS.find(function(x){ return x.id === id; });
+  if (!t) return;
+  spActiveTreatment = t;
+  document.getElementById('sp-m-emoji').textContent = t.emoji;
+  document.getElementById('sp-m-name').textContent = t.name;
+  document.getElementById('sp-m-meta').textContent = '⏱ ' + t.time + ' · ' + t.catLabel;
+  document.getElementById('sp-m-desc').textContent = t.desc;
+  document.getElementById('sp-m-supplies').innerHTML = t.supplies.map(function(s){ return '<span class="sp-supply-tag">• ' + s + '</span>'; }).join('');
+  document.getElementById('sp-m-steps').innerHTML = t.steps.map(function(s, i){ return '<div class="sp-step"><div class="sp-step-num">' + (i+1) + '</div><div style="font-size:14px;color:#374151;line-height:1.6;">' + s + '</div></div>'; }).join('');
+  document.getElementById('sp-m-tip').textContent = t.tip;
+  document.getElementById('sp-modal').classList.add('open');
+}
+function spCloseModal() { document.getElementById('sp-modal').classList.remove('open'); spActiveTreatment = null; }
+
+/* ── AROMATHERAPY ── */
+function spRenderAroma() {
+  var el = document.getElementById('sp-aroma-grid');
+  if (!el) return;
+  el.innerHTML = SP_AROMAS.map(function(a) {
+    return '<div class="sp-aroma-card">'
+      + '<div style="font-size:30px;margin-bottom:6px;">' + a.emoji + '</div>'
+      + '<div class="sp-aroma-name">' + a.name + '</div>'
+      + '<div class="sp-aroma-benefit">' + a.benefit + '</div>'
+      + '<div style="font-size:11px;color:#9F1239;font-style:italic;margin-bottom:6px;">"' + a.scent + '"</div>'
+      + '<div class="sp-aroma-desc">' + a.desc + '</div>'
+      + '<div class="sp-aroma-uses">' + a.uses.map(function(u){ return '<span class="sp-aroma-use">' + u + '</span>'; }).join('') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── BEAUTY TIPS ── */
+function spRenderTips() {
+  var el = document.getElementById('sp-tips-body');
+  if (!el) return;
+  el.innerHTML = SP_TIPS.map(function(cat) {
+    return '<div class="sp-tip-card">'
+      + '<div class="sp-tip-cat">' + cat.cat + '</div>'
+      + cat.tips.map(function(tip){ return '<div style="font-size:13px;color:#374151;padding:6px 0;border-bottom:1px solid #FECDD3;line-height:1.6;">✦ ' + tip + '</div>'; }).join('')
+      + '</div>';
+  }).join('');
+}
+
+/* ── APPOINTMENTS ── */
+function spBuildTreatmentChecks() {
+  var el = document.getElementById('sp-treatment-checks');
+  if (!el) return;
+  var names = SP_TREATMENTS.map(function(t){ return t.name; });
+  el.innerHTML = names.map(function(n){ return '<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" value="' + n + '" style="accent-color:#F43F5E;"> ' + n + '</label>'; }).join('');
+}
+
+function spGetAppts() { try { return JSON.parse(localStorage.getItem(SP_APPTS_KEY)) || []; } catch(e) { return []; } }
+function spSetAppts(a) { localStorage.setItem(SP_APPTS_KEY, JSON.stringify(a)); }
+
+function spSaveAppt() {
+  var resident = document.getElementById('sp-a-resident').value.trim();
+  if (!resident) return alert('Please enter a resident name.');
+  var date = document.getElementById('sp-a-date').value;
+  var color = document.getElementById('sp-a-color').value.trim();
+  var notes = document.getElementById('sp-a-notes').value.trim();
+  var checks = Array.from(document.querySelectorAll('#sp-treatment-checks input:checked')).map(function(c){ return c.value; });
+  var appts = spGetAppts();
+  appts.unshift({ id: Date.now(), resident: resident, date: date, treatments: checks, color: color, notes: notes });
+  spSetAppts(appts);
+  document.getElementById('sp-a-resident').value = '';
+  document.getElementById('sp-a-color').value = '';
+  document.getElementById('sp-a-notes').value = '';
+  document.querySelectorAll('#sp-treatment-checks input').forEach(function(c){ c.checked = false; });
+  spRenderAppts();
+}
+
+function spDeleteAppt(id) {
+  if (!confirm('Delete this record?')) return;
+  spSetAppts(spGetAppts().filter(function(a){ return a.id !== id; }));
+  spRenderAppts();
+}
+
+function spRenderAppts() {
+  var appts = spGetAppts();
+  var list = document.getElementById('sp-appt-list');
+  var empty = document.getElementById('sp-appt-empty');
+  var count = document.getElementById('sp-appt-count');
+  if (count) count.textContent = 'Appointment Log (' + appts.length + ' records)';
+  if (!list) return;
+  if (!appts.length) { list.innerHTML = ''; if (empty) empty.style.display = ''; return; }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = appts.map(function(a) {
+    return '<div class="sp-appt-row">'
+      + '<div style="display:flex;justify-content:space-between;align-items:start;">'
+      + '<div style="flex:1;">'
+      + '<div style="font-weight:800;font-size:14px;color:#881337;">💅 ' + a.resident + '</div>'
+      + '<div style="font-size:12px;color:#BE123C;margin:3px 0;">' + (a.date || '') + (a.color ? ' · 💅 ' + a.color : '') + '</div>'
+      + (a.treatments && a.treatments.length ? '<div style="font-size:12px;color:#374151;margin-top:3px;">' + a.treatments.join(', ') + '</div>' : '')
+      + (a.notes ? '<div style="font-size:12px;color:#6B7280;margin-top:4px;font-style:italic;">' + a.notes + '</div>' : '')
+      + '</div>'
+      + '<button onclick="spDeleteAppt(' + a.id + ')" style="background:none;border:none;color:#EF4444;font-size:16px;cursor:pointer;padding:0;margin-left:8px;">✕</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+/* ── PRINT ── */
+function spPrint() {
+  var active = document.querySelector('.sp-mode-btn.active');
+  var m = active ? active.id.replace('spmode-','') : 'menu';
+  if (m === 'menu') spPrintSpaMenu();
+  else if (m === 'aroma') spPrintAromaGuide();
+  else if (m === 'tips') spPrintBeautyTips();
+  else if (m === 'appts') spPrintApptLog();
+  else spPrintSpaMenu();
+}
+
+function spPrintTreatmentCard(t) {
+  if (!t) return;
+  var supplies = t.supplies.map(function(s){ return '<li>' + s + '</li>'; }).join('');
+  var steps = t.steps.map(function(s,i){ return '<div style="display:flex;gap:10px;margin-bottom:10px;"><div style="width:24px;height:24px;border-radius:50%;background:#F43F5E;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + (i+1) + '</div><div style="font-size:14px;line-height:1.6;">' + s + '</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + t.name + '</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:#881337}h2{color:#BE123C;font-size:15px;border-bottom:2px solid #FECDD3;padding-bottom:5px;margin-top:22px}ul{line-height:2}.tip{background:#FFF1F2;padding:14px;border-radius:8px;font-size:13px;margin-top:20px;}</style></head><body><h1>' + t.emoji + ' ' + t.name + '</h1><p style="color:#888;font-size:13px;">⏱ ' + t.time + ' · ' + t.catLabel + ' · Empower Life 365 Spa</p><p>' + t.desc + '</p><h2>🛒 Supplies</h2><ul>' + supplies + '</ul><h2>📋 Steps</h2>' + steps + '<div class="tip"><b>💡 Tip:</b> ' + t.tip + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintSpaMenu() {
+  var html = SP_CATS.map(function(cat) {
+    var items = SP_TREATMENTS.filter(function(t){ return t.cat === cat.id; });
+    return '<div style="margin-bottom:24px;"><div style="font-weight:900;font-size:17px;color:#881337;border-bottom:2px solid #FECDD3;padding-bottom:6px;margin-bottom:12px;">' + cat.label + '</div>'
+      + items.map(function(t){ return '<div style="display:flex;gap:14px;align-items:start;padding:10px 0;border-bottom:1px solid #FFF1F2;"><div style="font-size:24px;">' + t.emoji + '</div><div><div style="font-weight:800;font-size:15px;">' + t.name + '</div><div style="font-size:12px;color:#BE123C;">⏱ ' + t.time + '</div><div style="font-size:13px;color:#6B7280;">' + t.desc.slice(0,100) + '…</div></div></div>'; }).join('')
+      + '</div>';
+  }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Spa Menu</title><style>body{font-family:Arial,sans-serif;padding:40px;max-width:680px;margin:0 auto;}h1{color:#881337;text-align:center;font-size:32px;}h3{text-align:center;color:#F43F5E;font-style:italic;}</style></head><body><h1>🌸 Spa & Beauty Menu</h1><h3>Relax · Refresh · Restore</h3><p style="text-align:center;color:#888;font-size:13px;">Empower Life 365 · Ask your activity director to schedule a treatment</p><hr style="border-color:#FECDD3;margin:20px 0;">' + html + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintAromaGuide() {
+  var rows = SP_AROMAS.map(function(a){ return '<tr><td style="padding:10px;border-bottom:1px solid #eee;font-size:20px;">' + a.emoji + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:700;">' + a.name + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-size:12px;color:#BE123C;">' + a.benefit + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-size:12px;">' + a.uses.slice(0,3).join(', ') + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Aromatherapy Guide</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:750px}h1{color:#881337}table{width:100%;border-collapse:collapse}th{background:#F43F5E;color:#fff;padding:10px;text-align:left;}.safety{background:#FFF1F2;padding:14px;border-radius:8px;margin-top:20px;font-size:13px;}</style></head><body><h1>🌿 Aromatherapy Guide</h1><p style="color:#888;font-size:12px;">Empower Life 365 Spa & Beauty · ' + new Date().toLocaleDateString() + '</p><table><tr><th></th><th>Oil</th><th>Benefit</th><th>Best Uses</th></tr>' + rows + '</table><div class="safety"><b>⚠️ Safety:</b> Always dilute in carrier oil. Check for allergies. Test on inner wrist before applying to skin. Use diffuser for 30 min on / 30 min off. Avoid peppermint and eucalyptus with respiratory conditions.</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintNailMenu() {
+  var swatches = [['Pale Blush','#FFE4E8'],['Soft Pink','#FBCFE8'],['Hot Pink','#F472B6'],['Red','#EF4444'],['Berry','#BE185D'],['Coral','#FB923C'],['Peach','#FED7AA'],['Lavender','#DDD6FE'],['Nude','#E7CDB5'],['Burgundy','#881337'],['Clear / Top Coat','#F9FAFB'],['French White','#FFFFFF']];
+  var swatchHtml = swatches.map(function(s){ return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee;"><div style="width:40px;height:40px;border-radius:8px;background:' + s[1] + ';border:1px solid #ddd;flex-shrink:0;"></div><div style="font-weight:600;font-size:14px;">' + s[0] + '</div><div style="flex:1;border-bottom:1px dotted #ccc;margin-left:10px;"></div><div style="font-size:12px;color:#aaa;">☐ Choose</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Nail Color Menu</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:500px;margin:0 auto;}h1{color:#881337;text-align:center;}h3{text-align:center;color:#F43F5E;}</style></head><body><h1>💅 Nail Color Menu</h1><h3>Choose Your Shade</h3><p style="text-align:center;font-size:13px;color:#888;">Check the box next to your favorite color</p><hr style="border-color:#FECDD3;margin:16px 0;">' + swatchHtml + '<p style="margin-top:20px;font-size:13px;color:#888;text-align:center;">Can\'t decide? Ask for a French manicure or a surprise pick!</p><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintBeautyTips() {
+  var html = SP_TIPS.map(function(cat){ return '<div style="margin-bottom:20px;"><div style="font-weight:900;font-size:15px;color:#881337;border-bottom:2px solid #FECDD3;padding-bottom:6px;margin-bottom:10px;">' + cat.cat + '</div>' + cat.tips.map(function(tip){ return '<div style="padding:7px 0;border-bottom:1px solid #FFF1F2;font-size:14px;line-height:1.6;">✦ ' + tip + '</div>'; }).join('') + '</div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Beauty Tips</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:#881337;text-align:center}</style></head><body><h1>✨ Simple Beauty Tips</h1><p style="text-align:center;color:#888;font-size:12px;">Empower Life 365 Spa & Beauty · ' + new Date().toLocaleDateString() + '</p>' + html + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintPoster() {
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Spa Day Poster</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:60px 40px;max-width:600px;margin:0 auto;background:linear-gradient(135deg,#FFF1F2,#FECDD3);}h1{font-size:48px;color:#881337;margin-bottom:6px;}h2{font-size:20px;color:#F43F5E;font-weight:400;font-style:italic;}.line{border:3px solid #F43F5E;margin:20px 0;}p{font-size:16px;color:#374151;line-height:1.9;}.treatments{font-size:15px;color:#881337;font-weight:700;margin:16px 0;line-height:2;}</style></head><body><div style="font-size:54px;margin-bottom:8px;">🌸</div><h1>Spa & Beauty Day</h1><div class="line"></div><h2>Relax · Refresh · Restore</h2><div class="treatments">💅 Manicures &amp; Nail Art<br>🫧 Facials &amp; Skin Care<br>🙌 Hand &amp; Foot Treatments<br>🌿 Aromatherapy &amp; Relaxation</div><div class="line"></div><p>All residents welcome · No appointment needed<br>Ask your Activity Director for details</p><p style="font-size:14px;color:#BE123C;margin-top:20px;">You deserve to be pampered! ✨</p><p style="font-size:12px;color:#aaa;">Empower Life 365</p><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintSupplyList() {
+  var allSupplies = {};
+  SP_TREATMENTS.forEach(function(t){ t.supplies.forEach(function(s){ allSupplies[s] = true; }); });
+  var rows = Object.keys(allSupplies).sort().map(function(s){ return '<tr><td style="padding:8px;border-bottom:1px solid #eee;">☐</td><td style="padding:8px;border-bottom:1px solid #eee;font-size:14px;">' + s + '</td><td style="padding:8px;border-bottom:1px solid #eee;min-width:120px;font-size:12px;color:#aaa;">Qty: _______</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Spa Supply List</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:600px}h1{color:#881337}table{width:100%;border-collapse:collapse}th{background:#F43F5E;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>🛒 Spa Day Supply Checklist</h1><p style="color:#888;font-size:12px;">Empower Life 365 Spa & Beauty · ' + new Date().toLocaleDateString() + '</p><table><tr><th></th><th>Supply Item</th><th>Quantity</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function spPrintApptLog() {
+  var appts = spGetAppts();
+  if (!appts.length) return alert('No appointment records yet!');
+  var rows = appts.map(function(a){ return '<tr><td style="padding:9px;border-bottom:1px solid #eee;">' + (a.date||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-weight:700;">' + a.resident + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:12px;">' + (a.treatments||[]).join(', ') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:12px;">' + (a.color||'') + '</td><td style="padding:9px;border-bottom:1px solid #eee;font-size:12px;font-style:italic;">' + (a.notes||'') + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Spa Log</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:800px}h1{color:#881337}table{width:100%;border-collapse:collapse}th{background:#F43F5E;color:#fff;padding:10px;text-align:left;}</style></head><body><h1>💅 Spa Appointment Log</h1><p style="color:#888;font-size:12px;">Empower Life 365 · ' + new Date().toLocaleDateString() + '</p><table><tr><th>Date</th><th>Resident</th><th>Treatments</th><th>Nail Color</th><th>Notes</th></tr>' + rows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
   w.document.close();
 }
 </script>
