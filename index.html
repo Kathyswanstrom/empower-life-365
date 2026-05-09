@@ -1161,6 +1161,12 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   padding:16px; cursor:pointer; transition:box-shadow .15s;
 }
 .pt-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); }
+/* panel-aromatherapy */
+.ar-cat-btn{background:#fff0f6;color:#be185d;border:2px solid #fbcfe8;border-radius:20px;padding:6px 16px;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;}
+.ar-cat-btn.active{background:#be185d;color:#fff;border-color:#be185d;}
+.ar-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;cursor:pointer;transition:box-shadow .15s;}
+.ar-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.oil-badge{display:inline-block;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;margin:2px;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1230,6 +1236,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="outdoors"  id="outdoors-tab"  onclick="switchTab('outdoors')">🌿 Outdoors</button>
       <button class="tab-btn" data-tab="pettherapy" id="pettherapy-tab" onclick="switchTab('pettherapy')">🐾 Pet Therapy</button>
       <button class="tab-btn" data-tab="roomservice" id="roomservice-tab" onclick="switchTab('roomservice')">🚪 Room Service</button>
+      <button class="tab-btn" data-tab="aromatherapy" id="aromatherapy-tab" onclick="switchTab('aromatherapy')">🌸 Aromatherapy</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
   </div>
@@ -3660,6 +3667,31 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div>🧠 <strong>Perfect for</strong> dementia care, isolation, quiet time, one-to-one</div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="tab-panel" id="panel-aromatherapy">
+  <div style="padding:18px 20px 0;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+      <h2 style="margin:0;">🌸 Aromatherapy</h2>
+      <span style="font-size:13px;color:#6b7280;">Essential oils, blends, activities &amp; safety for senior living</span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="ar-cat-tabs">
+      <button class="ar-cat-btn active" data-cat="all"       onclick="arFilter('all')">🌸 All</button>
+      <button class="ar-cat-btn" data-cat="oils"      onclick="arFilter('oils')">💧 Oils Guide</button>
+      <button class="ar-cat-btn" data-cat="blends"    onclick="arFilter('blends')">🧪 Blends</button>
+      <button class="ar-cat-btn" data-cat="activities" onclick="arFilter('activities')">🎨 Activities</button>
+      <button class="ar-cat-btn" data-cat="safety"    onclick="arFilter('safety')">⚕️ Safety</button>
+    </div>
+    <div id="ar-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <button onclick="arPrintAll()" style="background:#be185d;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print Visible Cards</button>
+      <button onclick="arPrintBlendCards()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🧪 Print All Blend Cards</button>
+      <button onclick="arPrintSafetyGuide()" style="background:#0369a1;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">⚕️ Print Safety Guide</button>
+    </div>
+  </div>
+  <div id="ar-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;" onclick="if(event.target===this)arCloseModal()">
+    <div style="background:#fff;max-width:680px;margin:40px auto;border-radius:16px;padding:30px 32px;position:relative;" id="ar-modal-body"></div>
   </div>
 </section>
 
@@ -28735,6 +28767,564 @@ function rasPrintSheet(n) {
   window.switchTab = function(name) {
     _rasOrig && _rasOrig(name);
     if (name === 'roomservice') initRoomService();
+  };
+})();
+</script>
+
+<script>
+/* ===== AROMATHERAPY ===== */
+var AR_CAT = 'all';
+
+var AR_DATA = [
+
+/* ── OILS GUIDE ── */
+{ id:'lavender', cat:'oils', emoji:'💜', name:'Lavender',
+  latin:'Lavandula angustifolia', color:'#a78bfa',
+  scent:'Floral, soft, herbaceous', strength:'Mild',
+  benefits:['Reduces anxiety and stress','Promotes deep, restful sleep','Eases mild pain and headaches','Calms agitation in dementia','Supports emotional wellbeing'],
+  uses:['Diffuse 3–4 drops at bedtime','Add 2 drops to pillow or sachet','Mix 1 drop in 1 tsp carrier oil for hand massage','Room spray: 10 drops in 2 oz water'],
+  cautions:['Generally very safe for seniors','Avoid in very high doses if on sedatives','Patch test before skin application'],
+  pairsWith:['Chamomile','Cedarwood','Bergamot','Frankincense'],
+  desc:'The most popular and versatile essential oil. Lavender is the go-to for calming, sleep support, and anxiety relief — a staple in every senior care aromatherapy kit.' },
+
+{ id:'lemon', cat:'oils', emoji:'🍋', name:'Lemon',
+  latin:'Citrus limon', color:'#fbbf24',
+  scent:'Bright, citrusy, clean', strength:'Moderate',
+  benefits:['Uplifts mood and energy','Improves mental clarity and focus','Reduces nausea','Creates a clean, fresh atmosphere','Can trigger positive memories'],
+  uses:['Diffuse 3–4 drops in morning to energise','Add to cleaning spray for natural fresh scent','Room freshener for shared spaces','Combine with peppermint for a focus blend'],
+  cautions:['Photosensitive — do NOT apply to skin before sun exposure','Use cold-pressed version for diffusing','Very stimulating — avoid late evening'],
+  pairsWith:['Peppermint','Eucalyptus','Lavender','Orange'],
+  desc:'Bright and instantly uplifting, lemon oil cuts through sluggishness and brings mental clarity. Perfect for morning activities and communal spaces.' },
+
+{ id:'peppermint', cat:'oils', emoji:'🍃', name:'Peppermint',
+  latin:'Mentha piperita', color:'#34d399',
+  scent:'Cool, minty, sharp', strength:'Strong',
+  benefits:['Sharpens alertness and focus','Relieves headaches when diluted on temples','Soothes nausea','Cools and refreshes in hot weather','Opens airways for easier breathing'],
+  uses:['Diffuse 1–2 drops only (strong)','Diluted roller: 1 drop in 10ml carrier oil for temple application','Personal inhaler for nausea','Foot massage blend for tired, achy feet'],
+  cautions:['USE SPARINGLY — very potent, especially for seniors','Avoid with residents who have heart conditions or epilepsy','Do not use near infants or young children in the building','Can interact with some medications — check with nursing'],
+  pairsWith:['Lemon','Eucalyptus','Lavender','Rosemary'],
+  desc:'Intensely refreshing and clarifying. Use in small amounts — a little goes a long way with seniors. Excellent for alertness activities and headache relief.' },
+
+{ id:'frankincense', cat:'oils', emoji:'🟤', name:'Frankincense',
+  latin:'Boswellia carterii', color:'#92400e',
+  scent:'Woody, warm, resinous, sacred', strength:'Mild',
+  benefits:['Deeply grounding and centering','Reduces anxiety and nervous tension','Supports meditation and prayer','May support cognitive function','Eases grief and emotional pain'],
+  uses:['Diffuse during quiet time, prayer, or meditation','Blend with lavender for deep relaxation','1 drop diluted for chest massage during breathwork','Use in palliative care settings for comfort'],
+  cautions:['Very safe for most seniors','Avoid with blood-thinning medications in high doses on skin','Check with nursing for residents on anticoagulants'],
+  pairsWith:['Lavender','Sandalwood','Rose','Myrrh'],
+  desc:'Revered for thousands of years, frankincense brings stillness and spiritual grounding. Especially meaningful in palliative care, prayer circles, and grief support.' },
+
+{ id:'eucalyptus', cat:'oils', emoji:'🌿', name:'Eucalyptus',
+  latin:'Eucalyptus globulus', color:'#059669',
+  scent:'Sharp, camphorous, clean', strength:'Strong',
+  benefits:['Clears congestion and supports breathing','Antimicrobial — freshens shared spaces','Mental clarity and focus','Energising without being stimulating like caffeine','Reduces muscle tension'],
+  uses:['Diffuse 2–3 drops to freshen rooms','Blend with peppermint for respiratory support','Steam inhalation: 2 drops in bowl of hot water (supervised)','Diluted back rub for respiratory congestion'],
+  cautions:['Do NOT use with residents with asthma or severe respiratory conditions without GP advice','Avoid with epilepsy','Never ingest','Keep well diluted for topical use'],
+  pairsWith:['Peppermint','Lemon','Tea Tree','Lavender'],
+  desc:'The scent most associated with "clearing" and fresh air. Excellent for cold season, respiratory wellness, and refreshing shared spaces naturally.' },
+
+{ id:'chamomile', cat:'oils', emoji:'🌼', name:'Roman Chamomile',
+  latin:'Anthemis nobilis', color:'#d97706',
+  scent:'Sweet, apple-like, warm', strength:'Mild',
+  benefits:['Gentle sedative — promotes sleep','Soothes anxiety in dementia patients','Reduces irritability and restlessness','Anti-inflammatory for skin and joints','Deeply comforting and nostalgic scent'],
+  uses:['Diffuse at bedtime for gentle sleep support','Blend with lavender in a bedtime sachet','Diluted massage oil for restless residents','Room spray for dementia units'],
+  cautions:['Generally extremely safe for seniors','Those with ragweed allergy may react — patch test first','Very expensive — Roman chamomile is more gentle than German chamomile'],
+  pairsWith:['Lavender','Rose','Bergamot','Clary Sage'],
+  desc:'The gentlest calming oil — safe even for sensitive or fragile residents. The sweet, slightly apple-like scent is nostalgic and deeply soothing for memory care.' },
+
+{ id:'bergamot', cat:'oils', emoji:'🍊', name:'Bergamot',
+  latin:'Citrus bergamia', color:'#16a34a',
+  scent:'Citrusy, floral, uplifting', strength:'Moderate',
+  benefits:['Reduces depression and anxiety','Uplifts mood without overstimulating','The oil in Earl Grey tea — triggers memories','Balances emotions','Excellent for grief and loss'],
+  uses:['Diffuse 3 drops during social activities','Personal inhaler for anxiety on demand','Blend with lavender for balanced calm-uplift','Drop on fabric near resident during counselling'],
+  cautions:['Photosensitive — never apply to skin before sun exposure','Use bergapten-free version for topical application','Avoid with residents on blood pressure medications at high doses'],
+  pairsWith:['Lavender','Chamomile','Ylang Ylang','Frankincense'],
+  desc:'Often called "the antidepressant oil" — uplifts without stimulating, soothes without sedating. Its connection to Earl Grey tea makes it wonderfully nostalgic for many residents.' },
+
+{ id:'rose', cat:'oils', emoji:'🌹', name:'Rose',
+  latin:'Rosa damascena', color:'#f43f5e',
+  scent:'Rich, floral, deeply sweet', strength:'Strong (use sparingly)',
+  benefits:['Profound emotional healing and grief support','Reduces anxiety and depression','The most "feminine" oil — connects to femininity and self-worth','Triggers powerful positive memories','Palliative comfort'],
+  uses:['1 drop in diffuser (very powerful — use sparingly)','Personal roller: 1 drop in 10ml carrier for wrists','In room spray for palliative care rooms','Blend into hand cream for a luxury touch'],
+  cautions:['Extremely expensive — use sparingly; even 1 drop is effective','Avoid with residents on antidepressants at high topical doses','Some residents may find it overpowering — start with 1 drop only'],
+  pairsWith:['Frankincense','Sandalwood','Bergamot','Geranium'],
+  desc:'Perhaps the most emotionally powerful essential oil. Rose touches grief, loss, love, and feminine identity in ways no other oil can. Even one drop transforms a space.' },
+
+{ id:'orange', cat:'oils', emoji:'🍊', name:'Sweet Orange',
+  latin:'Citrus sinensis', color:'#f97316',
+  scent:'Warm, sweet, familiar citrus', strength:'Mild-Moderate',
+  benefits:['Immediately uplifting and joyful','Reduces anxiety','Warm, familiar scent — less sharp than lemon','Wonderful for Christmas/holiday season','Appetite-stimulating'],
+  uses:['Diffuse freely — very safe and universally loved','Blend with cinnamon and clove for holiday season','Personal inhaler for pre-activity energy boost','Mix with frankincense for warm winter atmosphere'],
+  cautions:['Mild photosensitivity — avoid skin application before sun','One of the safest oils overall','Short shelf life once opened — refrigerate'],
+  pairsWith:['Cinnamon','Clove','Frankincense','Peppermint'],
+  desc:'The most universally beloved citrus oil. Sweet, warm, and immediately mood-lifting without being sharp. One of the safest oils and perfect for communal spaces.' },
+
+{ id:'cedarwood', cat:'oils', emoji:'🌲', name:'Cedarwood',
+  latin:'Cedrus atlantica', color:'#78350f',
+  scent:'Woody, warm, grounding', strength:'Mild',
+  benefits:['Deeply calming and grounding','Promotes sleep — synergistic with lavender','Reduces anxiety without sedation','Masculine scent — popular with male residents','Comforting, like a forest walk'],
+  uses:['Diffuse with lavender at bedtime','Add to sachets and pillows','Blend in a "forest walk" diffuser mix','Men\'s hand massage blend'],
+  cautions:['Very safe for seniors','Avoid during pregnancy (not relevant for most senior residents but worth noting)','Atlas cedarwood is preferred over Texas cedarwood'],
+  pairsWith:['Lavender','Frankincense','Bergamot','Sandalwood'],
+  desc:'Warm, earthy, and deeply comforting. Cedarwood is one of the best oils for the Men\'s Corner — grounding and familiar without being floral. Excellent sleep support.' },
+
+{ id:'ylangylang', cat:'oils', emoji:'🌺', name:'Ylang Ylang',
+  latin:'Cananga odorata', color:'#c026d3',
+  scent:'Exotic, sweet, floral', strength:'Very Strong — use 1 drop max',
+  benefits:['Lowers blood pressure and heart rate','Deeply relaxing','Reduces tension headaches','Lifts mood and self-esteem','Romance and joy association'],
+  uses:['1 drop maximum in diffuser — very powerful','Blend with lavender and bergamot to temper','Add to foot soak for deep relaxation','1 drop in bath water (mixed with carrier first)'],
+  cautions:['Use VERY sparingly — can cause headaches in high amounts','Avoid with residents who have very low blood pressure','Not suitable for people with hypotension medication'],
+  pairsWith:['Lavender','Bergamot','Geranium','Rose'],
+  desc:'Intensely floral and exotic — a little goes a long way. At low doses, ylang ylang is wonderfully calming and mood-lifting. A luxury oil for special wellness sessions.' },
+
+{ id:'geranium', cat:'oils', emoji:'🌸', name:'Geranium',
+  latin:'Pelargonium graveolens', color:'#ec4899',
+  scent:'Floral, rosy, green', strength:'Moderate',
+  benefits:['Balances mood and emotions','Reduces anxiety and nervous tension','Excellent for grief and bereavement','Skin-loving — good for hand massage','Bridges between rose and lavender'],
+  uses:['Diffuse 3–4 drops for mood balancing','Hand and arm massage with 2 drops in carrier oil','Room spray for bereavement or counselling rooms','Blend with rose for premium grief support'],
+  cautions:['Generally very safe','Those with hormone-sensitive conditions should use sparingly','Some people dislike the scent — always ask first'],
+  pairsWith:['Rose','Lavender','Bergamot','Clary Sage'],
+  desc:'The "affordable rose" — geranium has a rosy, warm floral scent at a fraction of the cost. Excellent for grief support, women\'s wellness sessions, and mood balancing.' },
+
+{ id:'rosemary', cat:'oils', emoji:'🌿', name:'Rosemary',
+  latin:'Salvia rosmarinus', color:'#16a34a',
+  scent:'Herby, sharp, medicinal', strength:'Moderate',
+  benefits:['Memory and cognitive support — research-backed','Mental alertness and focus','Invigorating — counters mental fatigue','Triggers food and cooking memories','Scalp and circulation stimulant'],
+  uses:['Diffuse during cognitive activities, trivia, life story work','Personal inhaler before cognitive games','Blend with lemon for a morning focus combo','Diluted scalp massage during hair care'],
+  cautions:['AVOID with epilepsy — can trigger seizures','AVOID with high blood pressure (hypertension)','AVOID with residents on blood thinners','Not suitable for everyone — check nursing notes'],
+  pairsWith:['Lemon','Peppermint','Basil','Eucalyptus'],
+  desc:'One of the most research-backed oils for memory. Studies show inhaling rosemary improved memory performance. Use carefully with seniors who have epilepsy or hypertension.' },
+
+/* ── BLENDS ── */
+{ id:'sweet-dreams', cat:'blends', emoji:'🌙', name:'Sweet Dreams Blend',
+  color:'#6366f1',
+  desc:'The most requested blend in senior care — promotes deep, restful sleep and calms bedtime anxiety.',
+  recipe:['3 drops Lavender','2 drops Roman Chamomile','1 drop Cedarwood'],
+  method:'Add to diffuser 30 minutes before bedtime. Or mix with 1 tbsp fractionated coconut oil and apply to feet or wrists.',
+  mood:'😴 Sleepy · 😌 Calm · 🌙 Night',
+  bestFor:['Insomnia and difficulty falling asleep','Bedtime anxiety','Sundowning in dementia','Restlessness at night'],
+  cautions:['Check sedative medications — add extra supervision if sedated'] },
+
+{ id:'morning-sunshine', cat:'blends', emoji:'☀️', name:'Morning Sunshine Blend',
+  color:'#f59e0b',
+  desc:'Energise and uplift to start the day — the antidote to morning lethargy and low mood.',
+  recipe:['3 drops Sweet Orange','2 drops Lemon','1 drop Peppermint'],
+  method:'Diffuse in the dining room or common room during breakfast. Or add to a personal inhaler for individual use.',
+  mood:'⚡ Energised · 😊 Happy · ☀️ Morning',
+  bestFor:['Morning lethargy','Low mood at the start of the day','Pre-activity energising','Communal breakfast atmosphere'],
+  cautions:['Use peppermint sparingly with heart conditions','Avoid diffusing peppermint near residents with epilepsy'] },
+
+{ id:'memory-lane', cat:'blends', emoji:'💭', name:'Memory Lane Blend',
+  color:'#d97706',
+  desc:'Scents are the fastest route to memory. This warm, familiar blend triggers positive memories and opens conversation.',
+  recipe:['2 drops Bergamot','2 drops Cedarwood','1 drop Frankincense','1 drop Rose (optional)'],
+  method:'Diffuse during reminiscence sessions, life story work, or dementia activities. Or apply 1 drop to a handkerchief.',
+  mood:'💭 Nostalgic · 🤗 Connected · 🕰️ Memory',
+  bestFor:['Reminiscence therapy sessions','Life story work','Dementia engagement','Grief support groups'],
+  cautions:['Go slow — this blend can bring up strong emotions. Have a staff member present.'] },
+
+{ id:'calm-centered', cat:'blends', emoji:'🕊️', name:'Calm & Centred Blend',
+  color:'#7c3aed',
+  desc:'The ultimate anxiety-relief blend — grounding, soothing, and balanced for moments of agitation or overwhelm.',
+  recipe:['3 drops Lavender','2 drops Frankincense','1 drop Bergamot'],
+  method:'Diffuse continuously in common rooms. For acute anxiety, apply 1 drop lavender to wrists and have resident inhale from cupped hands.',
+  mood:'🕊️ Peaceful · 🌿 Grounded · 💜 Safe',
+  bestFor:['Anxiety and agitation','Sundowning','Pre-procedure nervousness','Palliative care rooms','Sensory overload in dementia'],
+  cautions:['Frankincense can interact with blood thinners topically — diffusing is safe'] },
+
+{ id:'breathe-easy', cat:'blends', emoji:'💨', name:'Breathe Easy Blend',
+  color:'#0891b2',
+  desc:'A respiratory support blend for cold season and congestion — clear, fresh, and opening.',
+  recipe:['2 drops Eucalyptus','2 drops Peppermint','1 drop Lemon'],
+  method:'Diffuse in common areas during cold and flu season. Do NOT diffuse in rooms with residents who have asthma.',
+  mood:'💨 Clear · 🫁 Open · ✨ Fresh',
+  bestFor:['Cold and flu season','Mild congestion','Room freshening','Morning alertness alongside respiratory support'],
+  cautions:['Do NOT use near residents with asthma, severe COPD, or epilepsy','Consult nursing before use in individual rooms'] },
+
+{ id:'happy-heart', cat:'blends', emoji:'💛', name:'Happy Heart Blend',
+  color:'#ca8a04',
+  desc:'Lifts spirits and counters low mood — bright, warm, and gently joyful without being overstimulating.',
+  recipe:['3 drops Sweet Orange','2 drops Bergamot','1 drop Ylang Ylang'],
+  method:'Diffuse in common areas, especially during social activities. Or use as a room spray (add to water in a spray bottle).',
+  mood:'💛 Joyful · 🌞 Warm · 😊 Uplifted',
+  bestFor:['Low mood and mild depression','Isolation and withdrawal','Social activity warm-up','Winter blues and seasonal low mood'],
+  cautions:['Ylang Ylang can lower blood pressure — use only 1 drop','Bergamot is photosensitive — diffuse only, don\'t apply before sun'] },
+
+{ id:'forest-walk', cat:'blends', emoji:'🌲', name:'Forest Walk Blend',
+  color:'#15803d',
+  desc:'Bring the outdoors inside — a grounding, nature-inspired blend that reduces stress and connects to the natural world.',
+  recipe:['2 drops Cedarwood','2 drops Frankincense','1 drop Eucalyptus','1 drop Pine or Juniper (optional)'],
+  method:'Diffuse during gentle movement activities, mindfulness sessions, or outdoor-themed programs. Pairs beautifully with nature sounds.',
+  mood:'🌲 Grounded · 🍃 Natural · 🧘 Still',
+  bestFor:['Mindfulness sessions','Men\'s Corner activities','Movement and stretching classes','Residents who miss spending time outdoors'],
+  cautions:['Pine and juniper can irritate airways — start with just cedarwood and frankincense'] },
+
+{ id:'holiday-spice', cat:'blends', emoji:'🎄', name:'Holiday Spice Blend',
+  color:'#dc2626',
+  desc:'Instantly evokes Christmas, autumn gatherings, and family warmth. One of the most memory-triggering seasonal blends.',
+  recipe:['3 drops Sweet Orange','1 drop Cinnamon Leaf (NOT bark)','1 drop Clove Bud','1 drop Frankincense'],
+  method:'Diffuse during holiday crafts, decoration events, or seasonal programs. Also wonderful simmered (not boiled) in water on a stovetop.',
+  mood:'🎄 Festive · 🍂 Warm · 🏡 Home',
+  bestFor:['Christmas and holiday events','Autumn harvest activities','Reminiscence of family gatherings','Appetite stimulation before holiday meals'],
+  cautions:['Cinnamon and clove are SKIN IRRITANTS — diffuse only, never apply to skin directly','Use cinnamon LEAF not bark — bark is much more irritating'] },
+
+{ id:'spa-day', cat:'blends', emoji:'💆', name:'Spa Day Blend',
+  color:'#be185d',
+  desc:'Pure pampering — the scent of a luxury spa experience for residents during wellness activities.',
+  recipe:['2 drops Lavender','2 drops Geranium','1 drop Ylang Ylang','1 drop Bergamot'],
+  method:'Diffuse during manicures, hand massage, foot soaks, or any pampering activity. Can be added to unscented lotion (2 drops per tsp).',
+  mood:'💆 Pampered · 🌸 Luxurious · 💅 Special',
+  bestFor:['Manicure and pampering sessions','Women\'s wellness activities','Self-esteem and dignity activities','One-on-one staff engagement'],
+  cautions:['Patch test before skin application','Use 1% dilution max for seniors (1 drop per 2 tsp carrier oil)'] },
+
+/* ── ACTIVITIES ── */
+{ id:'inhaler-making', cat:'activities', emoji:'💊', name:'Personal Aromatherapy Inhaler Making',
+  color:'#7c3aed',
+  desc:'Residents choose their favourite oil and make a personal aromatherapy inhaler to use anytime — for sleep, anxiety, or uplifting their mood on demand.',
+  duration:'30–45 min', groupSize:'2–12 residents', cost:'$',
+  supplies:['Blank personal inhalers (buy in bulk online — very affordable)','Essential oil selection (lavender, lemon, peppermint, orange, bergamot)','Tweezers (to insert wick)','Labels + markers','Carrier cotton wicks (included with inhalers)','Resource cards showing each oil\'s benefits'],
+  steps:['Explain what a personal inhaler is and how it works','Residents smell each oil option on a test strip','Each resident chooses 1–2 oils for their blend','Use tweezers to add 10–15 drops to the cotton wick','Insert wick into inhaler tube; cap it','Label with resident\'s name and blend name (they choose!)','Teach how to use: uncap, hold near nose, breathe deeply 3 times'],
+  tips:['Personal inhalers last 6–12 months sealed','This gives residents genuine autonomy and self-care tools they can use independently','Memory care: pre-make inhalers with staff; have residents help with labelling only'],
+  variations:['Diffuser bracelet version — add oil to lava bead bracelet','Scented hanky — 2 drops on folded handkerchief in a labelled bag','Room spray station — residents blend their own room spray'] },
+
+{ id:'lavender-sachet', cat:'activities', emoji:'🛍️', name:'Lavender Sachet Crafting',
+  color:'#a78bfa',
+  desc:'A classic activity that produces a beautiful, useful take-home — residents sew or fill sachets with dried lavender to keep in drawers, under pillows, or give as gifts.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'$',
+  supplies:['Dried lavender (buy in bulk)','Muslin bags OR pre-cut fabric squares','Needle and thread OR fabric glue','Ribbon in various colours','Optional: dried rose petals, chamomile','Labels or gift tags'],
+  steps:['Show finished sachet as example','Residents choose fabric and ribbon colour','Fill bag or wrap fabric square with 2–3 tbsp dried lavender','Tie or sew closed; add ribbon bow','Attach personalised label or gift tag','Discuss: "What does this smell remind you of?"'],
+  tips:['Pre-fill bags for memory care residents; let them add ribbon and labels','Sachets make wonderful gifts for family members','The process of crushing dried lavender releases the scent — involve everyone in this sensory step'],
+  variations:['Scented eye pillow: filled with lavender + rice for warmth in microwave','Herb mix sachets: lavender + mint + rosemary','Christmas version: orange peel + cinnamon sticks + cloves in a mesh bag'] },
+
+{ id:'hand-massage', cat:'activities', emoji:'🤲', name:'Aromatherapy Hand Massage',
+  color:'#f43f5e',
+  desc:'A structured hand massage session using a diluted essential oil blend — deeply therapeutic for pain, connection, and emotional wellbeing.',
+  duration:'30–45 min', groupSize:'2–8 residents (plus staff)', cost:'$',
+  supplies:['Carrier oil (fractionated coconut or sweet almond — both non-greasy)','Essential oils for blending','Small bowls or massage oil dispensers','Towels','Relaxing music'],
+  steps:['Prepare diluted oil: 1 drop essential oil per 2 tsp carrier oil (0.5% dilution for seniors)','Explain the blend and its benefits before starting','Ask permission: "Would you like a hand massage today?"','Warm a small amount of oil between YOUR hands first','Begin with gentle pressure on the back of the hand; work between fingers','Resident tells you their preferred pressure','End with a long, slow stroke from wrist to fingertips'],
+  tips:['Always dilute properly — seniors have thinner, more permeable skin (use 0.5–1% max)','Use lavender for calming, geranium for nurturing, orange for uplifting','Touch is deeply therapeutic on its own — the oil enhances but isn\'t the whole benefit'],
+  variations:['Foot massage session with peppermint (1 drop in 2 tsp carrier) for tired feet','Shoulder and neck massage for able-bodied residents','Self-massage instruction — teach residents to massage their own hands'] },
+
+{ id:'scent-memory-journey', cat:'activities', emoji:'👃', name:'Scent Memory Journey',
+  color:'#d97706',
+  desc:'A guided sensory experience where residents smell a series of familiar scents and share memories — enormously powerful for reminiscence and connection.',
+  duration:'45–60 min', groupSize:'4–16 residents', cost:'$',
+  supplies:['Collection of scents: essential oils + familiar items (fresh coffee, cedar, rose, bread, citrus, pine, cinnamon, lavender, grass clippings)','Small smell jars or cotton balls with a few drops','Blindfold (optional for some participants)','Memory prompt cards','Group sharing space'],
+  steps:['Prepare 8–10 smell samples on cotton balls in labelled cups','Explain: "We\'re going to smell things and share what they remind us of — no wrong answers"','Pass each cup around; residents inhale and sit with the scent for a moment','Facilitator asks: "What does this smell remind you of? Where does it take you?"','Go around the group — everyone who wants to share does','Record notable memories; follow up in life story work'],
+  tips:['Smell is the MOST direct route to memory in the brain (via the olfactory bulb to the limbic system)','Residents with advanced dementia often light up dramatically at familiar scents','Coffee, fresh bread, and cut grass are among the most universally memory-triggering scents'],
+  variations:['Seasonal scent journey (spring/summer/autumn/winter sets)','Holiday memories scent journey (pine, cinnamon, fruitcake, mulled wine)','Personal scent boxes: gather scents meaningful to an individual resident for one-on-one reminiscence'] },
+
+{ id:'foot-soak', cat:'activities', emoji:'🦶', name:'Aromatherapy Foot Soak Station',
+  color:'#0891b2',
+  desc:'A warm, aromatic foot soak is one of the most universally appreciated wellness activities — relaxing, pain-relieving, and deeply pampering.',
+  duration:'20–30 min', groupSize:'2–8 residents', cost:'$',
+  supplies:['Foot basins or large bowls (1 per resident)','Warm water','Carrier oil or unscented Epsom salts','Essential oils: peppermint, lavender, or eucalyptus','Towels','Non-slip mats','Comfortable chairs'],
+  steps:['Prepare basins with warm water + 1 cup Epsom salts','Add 2 drops peppermint (energising) or 3 drops lavender (relaxing) — mixed into carrier oil first','Residents remove footwear and settle into chairs with feet in basins','Soak for 15–20 minutes; play soft music','Staff gently towel-dry feet after','Optional: apply light moisturiser with 1 drop lavender'],
+  tips:['Check for wounds, diabetic foot conditions, or contraindications with nursing first','Water temperature: comfortable warm, not hot — seniors\' skin is more sensitive to heat','This is a wonderful one-on-one activity for isolated residents'],
+  variations:['Hand soak version for arthritic hands (warm water + lavender + Epsom salts)','Spring foot soak: lemon + peppermint','Winter warming soak: orange + cinnamon + ginger (very diluted)'] },
+
+{ id:'room-spray-making', cat:'activities', emoji:'💦', name:'Room Spray Blending Workshop',
+  color:'#be185d',
+  desc:'Residents blend their own personalised room spray — choosing from a curated oil menu to create a scent that feels like home.',
+  duration:'30–45 min', groupSize:'4–12 residents', cost:'$',
+  supplies:['Small 2 oz spray bottles (amber glass is ideal)','Distilled water','Rubbing alcohol or witch hazel (emulsifier)','Essential oil selection (5–8 oils)','Labels + markers','Oil benefit cards','Funnel'],
+  steps:['Explain blend ratios: 10–15 drops total oil per 2 oz water + 1 tsp alcohol','Residents smell oil options and choose their blend','Fill bottles: 1 tsp alcohol first, then oils, then water — shake well','Label with blend name and ingredients','Shake before each use — test spray in the room','Take home or use in resident\'s room'],
+  tips:['Glass bottles (amber or cobalt) preserve oils better than plastic','Pre-make a "house blend" and a "calm blend" as examples to inspire choices','Residents feel proud using something they made themselves — reinforce this at every opportunity'],
+  variations:['Linen spray for pillows and bedding','Closet/drawer freshener version in a small jar with holes in lid','Shoe deodoriser spray (tea tree + lemon)'] },
+
+{ id:'sensory-garden-walk', cat:'activities', emoji:'🌿', name:'Sensory Herb & Aromatherapy Garden Walk',
+  color:'#15803d',
+  desc:'A walk through a herb garden (or potted herbs on the patio) where residents crush leaves, inhale scents, and discuss memories — living aromatherapy in nature.',
+  duration:'30–45 min', groupSize:'4–16 residents', cost:'$–Free',
+  supplies:['Potted or planted herbs: lavender, rosemary, mint, lemon balm, chamomile, thyme','Accessible paths or raised beds','Small cutting scissors','Bags for cuttings','Memory prompt cards'],
+  steps:['Tour the herb area together at a leisurely pace','At each plant: pinch a leaf, rub between fingers, inhale the released scent','Ask: "What does this smell remind you of?"','Identify culinary herbs — "This is rosemary — who\'s cooked with rosemary?"','Collect small cuttings for sachets or pressing','End with seated sharing and a herbal tea from the garden'],
+  tips:['Lemon balm and mint are among the most universally loved and accessible to grow','Even a small collection of 4–5 potted herbs on a window sill creates a year-round sensory resource','Memory care: guided hand-over-hand leaf crushing is deeply engaging and calming'],
+  variations:['Post-walk herbal tea tasting from what was collected','Pressing flowers and herbs for a botanical art project','Create a group herb guide booklet with residents\' scent memories noted beside each plant'] },
+
+/* ── SAFETY ── */
+{ id:'dilution-guide', cat:'safety', emoji:'⚗️', name:'Dilution & Dosage Guide for Seniors',
+  color:'#0369a1',
+  desc:'Essential oils must be diluted before skin contact. Senior skin is thinner, more permeable, and more reactive — use lower dilutions than general guidelines.',
+  keyPoints:[
+    'General population: 2% dilution (2 drops per tsp carrier oil)',
+    'Seniors: 0.5–1% dilution (1 drop per 2 tsp carrier oil)',
+    'Memory care/frail elderly: 0.5% max or diffuse only',
+    'Diffuser: 3–5 drops total for a standard room',
+    'Personal inhaler: 10–15 drops on cotton wick',
+    'Room spray: 10–15 drops in 2 oz water + 1 tsp alcohol',
+    'NEVER apply undiluted (neat) essential oils to senior skin',
+    'NEVER ingest essential oils'
+  ],
+  carrierOils:['Fractionated coconut oil (best — non-greasy, long shelf life)','Sweet almond oil (nourishing, good for dry skin)','Jojoba (technically a wax — very stable, good for sensitive skin)','Avocado oil (rich, good for very dry skin)','Avoid nut oils if nut allergies are a concern'],
+  desc2:'When in doubt, use less. The therapeutic benefit of essential oils is achieved with very small amounts. More is not better — especially with seniors.' },
+
+{ id:'contraindications', cat:'safety', emoji:'⚠️', name:'Contraindications & Medical Conditions',
+  color:'#dc2626',
+  desc:'Always check with the nursing team before starting any aromatherapy program. These conditions require special care or avoidance of specific oils.',
+  conditions:[
+    {condition:'Epilepsy / Seizure disorders', avoid:'Rosemary, Eucalyptus, Camphor, Fennel, Hyssop', safe:'Lavender, Chamomile, Frankincense'},
+    {condition:'High blood pressure (Hypertension)', avoid:'Rosemary, Thyme (thymol CT), Peppermint (high doses)', safe:'Lavender, Ylang Ylang, Bergamot, Clary Sage'},
+    {condition:'Low blood pressure (Hypotension)', avoid:'Ylang Ylang (in excess), Clary Sage', safe:'Lemon, Peppermint (light use), Rosemary'},
+    {condition:'Blood thinners (Warfarin, aspirin)', avoid:'Clove, Cinnamon, Rosemary (topical high doses)', safe:'Diffusing most oils is generally fine'},
+    {condition:'Asthma / COPD', avoid:'Eucalyptus, Peppermint, Strong menthols — in individual rooms', safe:'Lavender, Chamomile, Frankincense (diffused lightly)'},
+    {condition:'Hormone-sensitive conditions', avoid:'Clary Sage, Fennel, Sage (phytoestrogens)', safe:'Most other oils at normal diffusing doses'},
+    {condition:'Skin sensitivity / Allergy history', avoid:'Cinnamon bark, Clove, Oregano on skin', safe:'Always patch test; lavender and frankincense are lowest risk'}
+  ],
+  general:['Always inform nursing staff before introducing aromatherapy to a new resident','Keep a record of each resident\'s response to each oil','If a resident dislikes a scent, remove it immediately — aversion responses are valid','Post "aromatherapy in use" signs outside rooms so nursing staff are aware','Store oils safely: out of reach, in original bottles, away from heat and light'] },
+
+{ id:'safe-diffusing', cat:'safety', emoji:'🌬️', name:'Safe Diffusing in Care Settings',
+  color:'#7c3aed',
+  desc:'Diffusing is the safest way to use essential oils in group settings — but even diffusing requires attention to the care environment.',
+  keyPoints:[
+    'Diffuse for 30–60 minutes maximum, then allow a 30-minute break',
+    'Never diffuse in an enclosed room without ventilation',
+    'Do NOT diffuse in individual rooms without resident consent',
+    'Avoid diffusing the same oil every day — rotate blends',
+    'Always ask residents if the scent is comfortable before continuing',
+    'Remove any resident from the area who shows discomfort',
+    'Do NOT diffuse near oxygen concentrators or supplemental oxygen',
+    'Keep diffusers clean — old oil residue can become a respiratory irritant',
+    'Use ultrasonic or nebulising diffusers, NOT candle-based diffusers (fire risk)',
+    'Post "Aromatherapy in Use" signs and record in activity log'
+  ] },
+
+{ id:'getting-started', cat:'safety', emoji:'🚀', name:'Getting Started: Starter Kit Guide',
+  color:'#15803d',
+  desc:'You do not need a large collection to begin. Start with 5 core oils that cover the most common needs in senior living.',
+  starterKit:[
+    {oil:'Lavender', why:'Calming, sleep, anxiety — the universal go-to'},
+    {oil:'Sweet Orange', why:'Uplifting, safe, universally loved, affordable'},
+    {oil:'Frankincense', why:'Grounding, grief support, meditation, memory care'},
+    {oil:'Peppermint', why:'Alertness, nausea, headaches — use sparingly'},
+    {oil:'Roman Chamomile (or Bergamot)', why:'Gentle calming, dementia support, emotional balance'}
+  ],
+  equipment:['Ultrasonic diffuser ($20–$50)', 'Personal inhaler tubes (pack of 10, ~$5)', 'Fractionated coconut oil (carrier oil)', 'Amber glass roll-on bottles', 'Cotton test strips for sampling'],
+  suppliers:['Plant Therapy — certified, affordable, good quality','Rocky Mountain Oils — therapeutic grade, good for care settings','Eden\'s Garden — affordable starter kits','doTERRA / Young Living — higher cost but widely available','Always choose 100% pure essential oils — avoid fragrance oils (synthetic)'] }
+];
+
+var AR_CAT = 'all';
+
+function initAromatherapy() {
+  AR_CAT = 'all';
+  arFilter('all');
+}
+
+function arFilter(cat) {
+  AR_CAT = cat;
+  document.querySelectorAll('.ar-cat-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  arRenderGrid();
+}
+
+function arVisible() {
+  if (AR_CAT === 'all') return AR_DATA;
+  return AR_DATA.filter(function(a){ return a.cat === AR_CAT; });
+}
+
+function arCatLabel(cat) {
+  return {oils:'💧 Oils Guide', blends:'🧪 Blend', activities:'🎨 Activity', safety:'⚕️ Safety'}[cat] || cat;
+}
+
+function arRenderGrid() {
+  var grid = document.getElementById('ar-grid');
+  if (!grid) return;
+  var items = arVisible();
+  grid.innerHTML = items.map(function(a) {
+    var col = a.color || '#be185d';
+    var sub = a.cat === 'oils' ? (a.scent || '') :
+              a.cat === 'blends' ? (a.recipe ? a.recipe.slice(0,2).join(', ') + '…' : '') :
+              a.cat === 'activities' ? ('⏱ ' + (a.duration||'') + ' · 👥 ' + (a.groupSize||'')) :
+              (a.keyPoints ? a.keyPoints[0] : '');
+    return '<div class="ar-card" onclick="arShowDetail(\'' + a.id + '\')">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+      + '<span style="font-size:28px;">' + a.emoji + '</span>'
+      + '<div>'
+      + '<div style="font-weight:800;font-size:14px;color:#1e293b;">' + a.name + '</div>'
+      + '<span style="background:' + col + '22;color:' + col + ';border-radius:10px;padding:1px 8px;font-size:11px;font-weight:700;">' + arCatLabel(a.cat) + '</span>'
+      + '</div></div>'
+      + '<div style="font-size:12px;color:#6b7280;margin-bottom:8px;line-height:1.4;">' + a.desc.substring(0,80) + '…</div>'
+      + (sub ? '<div style="font-size:11px;color:#9ca3af;font-style:italic;">' + sub + '</div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function arShowDetail(id) {
+  var a = AR_DATA.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var col = a.color || '#be185d';
+  var body = document.getElementById('ar-modal-body');
+  var html = '<button onclick="arCloseModal()" style="position:absolute;top:16px;right:16px;background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;line-height:32px;">×</button>'
+    + '<div style="font-size:36px;margin-bottom:8px;">' + a.emoji + '</div>'
+    + '<h2 style="margin:0 0 6px;">' + a.name + '</h2>'
+    + '<div style="margin-bottom:12px;"><span style="background:' + col + '22;color:' + col + ';border-radius:10px;padding:3px 12px;font-size:12px;font-weight:700;">' + arCatLabel(a.cat) + '</span></div>'
+    + '<p style="color:#374151;margin-bottom:16px;">' + a.desc + '</p>';
+
+  if (a.cat === 'oils') {
+    if (a.latin) html += '<div style="font-size:12px;color:#9ca3af;font-style:italic;margin-bottom:10px;">' + a.latin + '</div>';
+    if (a.scent) html += '<div style="margin-bottom:8px;"><strong>👃 Scent:</strong> ' + a.scent + ' &nbsp;|&nbsp; <strong>Strength:</strong> ' + a.strength + '</div>';
+    html += '<div style="margin-bottom:14px;"><strong>✨ Benefits</strong><ul style="margin:6px 0 0 18px;">' + a.benefits.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    html += '<div style="margin-bottom:14px;"><strong>💡 How to Use</strong><ul style="margin:6px 0 0 18px;">' + a.uses.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    html += '<div style="margin-bottom:14px;"><strong>⚠️ Cautions</strong><ul style="margin:6px 0 0 18px;">' + a.cautions.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    if (a.pairsWith) html += '<div style="margin-bottom:14px;"><strong>🤝 Pairs Well With:</strong> ' + a.pairsWith.join(', ') + '</div>';
+  } else if (a.cat === 'blends') {
+    if (a.mood) html += '<div style="margin-bottom:12px;font-size:14px;">' + a.mood + '</div>';
+    html += '<div style="background:' + col + '11;border:2px solid ' + col + '44;border-radius:10px;padding:14px;margin-bottom:16px;">'
+      + '<div style="font-weight:800;margin-bottom:8px;color:' + col + ';">🧪 Recipe</div>'
+      + a.recipe.map(function(r){return '<div style="padding:4px 0;border-bottom:1px solid ' + col + '22;">• ' + r + '</div>';}).join('')
+      + '</div>';
+    html += '<div style="margin-bottom:14px;"><strong>📝 Method:</strong> ' + a.method + '</div>';
+    html += '<div style="margin-bottom:14px;"><strong>✨ Best For</strong><ul style="margin:6px 0 0 18px;">' + a.bestFor.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    if (a.cautions) html += '<div style="margin-bottom:14px;"><strong>⚠️ Cautions:</strong> ' + (Array.isArray(a.cautions) ? a.cautions.join('<br>') : a.cautions) + '</div>';
+  } else if (a.cat === 'activities') {
+    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">'
+      + '<span style="background:#f0fdf4;color:#166534;border-radius:8px;padding:4px 12px;font-weight:700;">⏱ ' + a.duration + '</span>'
+      + '<span style="background:#faf5ff;color:#7c3aed;border-radius:8px;padding:4px 12px;font-weight:700;">💰 ' + a.cost + '</span>'
+      + '<span style="background:#f0f9ff;color:#0369a1;border-radius:8px;padding:4px 12px;font-weight:700;">👥 ' + a.groupSize + '</span>'
+      + '</div>';
+    html += '<div style="margin-bottom:14px;"><strong>🛒 Supplies</strong><ul style="margin:6px 0 0 18px;">' + a.supplies.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    html += '<div style="margin-bottom:14px;"><strong>📋 Steps</strong><ol style="margin:6px 0 0 18px;">' + a.steps.map(function(s){return '<li style="margin-bottom:4px;">'+s+'</li>';}).join('') + '</ol></div>';
+    html += '<div style="margin-bottom:14px;"><strong>💡 Tips</strong><ul style="margin:6px 0 0 18px;">' + a.tips.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    html += '<div style="margin-bottom:14px;"><strong>🔄 Variations</strong><ul style="margin:6px 0 0 18px;">' + a.variations.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+  } else if (a.cat === 'safety') {
+    if (a.keyPoints) html += '<div style="margin-bottom:14px;"><ul style="margin:6px 0 0 18px;">' + a.keyPoints.map(function(s){return '<li style="margin-bottom:4px;">'+s+'</li>';}).join('') + '</ul></div>';
+    if (a.conditions) {
+      html += '<div style="margin-bottom:14px;"><strong>Conditions Reference</strong><table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:13px;">'
+        + '<tr style="background:#fee2e2;"><th style="padding:6px;text-align:left;">Condition</th><th style="padding:6px;text-align:left;">Avoid</th><th style="padding:6px;text-align:left;">Generally Safe</th></tr>'
+        + a.conditions.map(function(c,i){
+            return '<tr style="background:' + (i%2?'#fafafa':'#fff') + ';">'
+              + '<td style="padding:6px;border:1px solid #e5e7eb;font-weight:600;">' + c.condition + '</td>'
+              + '<td style="padding:6px;border:1px solid #e5e7eb;color:#dc2626;">' + c.avoid + '</td>'
+              + '<td style="padding:6px;border:1px solid #e5e7eb;color:#16a34a;">' + c.safe + '</td></tr>';
+          }).join('')
+        + '</table></div>';
+      if (a.general) html += '<div style="margin-bottom:14px;"><strong>General Guidelines</strong><ul style="margin:6px 0 0 18px;">' + a.general.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    }
+    if (a.starterKit) {
+      html += '<div style="margin-bottom:14px;"><strong>🌟 Starter Kit (5 Essential Oils)</strong><ul style="margin:6px 0 0 18px;">' + a.starterKit.map(function(s){return '<li><strong>' + s.oil + '</strong> — ' + s.why + '</li>';}).join('') + '</ul></div>';
+      html += '<div style="margin-bottom:14px;"><strong>🛒 Equipment You Need</strong><ul style="margin:6px 0 0 18px;">' + a.equipment.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+      html += '<div style="margin-bottom:14px;"><strong>🏪 Trusted Suppliers</strong><ul style="margin:6px 0 0 18px;">' + a.suppliers.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    }
+    if (a.carrierOils) html += '<div style="margin-bottom:14px;"><strong>🫙 Carrier Oils</strong><ul style="margin:6px 0 0 18px;">' + a.carrierOils.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul></div>';
+    if (a.desc2) html += '<div style="background:#fef9c3;border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;">' + a.desc2 + '</div>';
+  }
+
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">'
+    + '<button onclick="arDoPrint(\'' + a.id + '\')" style="background:#be185d;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">🖨️ Print</button>'
+    + '<button onclick="arCloseModal()" style="background:#f3f4f6;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;">Close</button>'
+    + '</div>';
+
+  body.innerHTML = html;
+  document.getElementById('ar-modal').style.display = 'block';
+}
+
+function arCloseModal() { document.getElementById('ar-modal').style.display = 'none'; }
+
+function arDoPrint(id) {
+  var a = AR_DATA.filter(function(x){return x.id===id;})[0];
+  if (!a) return;
+  var col = a.color || '#be185d';
+  var body = document.getElementById('ar-modal-body').innerHTML;
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>' + a.name + '</title>'
+    + '<style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;color:#111;} h2{color:' + col + ';} ul,ol{line-height:1.8;margin-left:18px;} table{width:100%;border-collapse:collapse;} th,td{padding:6px;border:1px solid #ccc;} @media print{body{margin:20px;}.no-print{display:none;}}<\/style>'
+    + '<\/head><body>'
+    + '<div style="text-align:center;border-bottom:3px solid ' + col + ';padding-bottom:12px;margin-bottom:20px;">'
+    + '<div style="font-size:40px;">' + a.emoji + '</div>'
+    + '<h2 style="margin:8px 0;">' + a.name + '</h2>'
+    + '<div style="color:#9ca3af;font-size:12px;">Empower Life 365 · Aromatherapy Reference</div>'
+    + '</div>'
+    + body.replace(/<button[^>]*>.*?<\/button>/gi,'')
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function arPrintAll() {
+  var acts = arVisible();
+  if (!acts.length) { alert('No items to print.'); return; }
+  var w = window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Aromatherapy Guide</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;} h1{color:#be185d;} table{width:100%;border-collapse:collapse;} th{background:#be185d;color:#fff;padding:9px;text-align:left;} td{padding:8px;border-bottom:1px solid #e5e7eb;vertical-align:top;} tr:nth-child(even){background:#fdf2f8;} @media print{body{margin:16px;}}<\/style>'
+    + '<\/head><body>'
+    + '<h1>🌸 Aromatherapy — ' + (arCatLabel(AR_CAT)||'All') + '</h1>'
+    + '<table><tr><th>Name</th><th>Category</th><th>Description</th></tr>'
+    + acts.map(function(a){
+        return '<tr><td><strong>' + a.emoji + ' ' + a.name + '</strong></td>'
+          + '<td>' + arCatLabel(a.cat) + '</td>'
+          + '<td>' + a.desc.substring(0,120) + '…</td></tr>';
+      }).join('')
+    + '</table>'
+    + '<div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},500);
+}
+
+function arPrintBlendCards() {
+  var blends = AR_DATA.filter(function(a){ return a.cat === 'blends'; });
+  var w = window.open('','_blank','width=900,height=700');
+  var cards = blends.map(function(b) {
+    var col = b.color || '#be185d';
+    return '<div style="border:2px solid ' + col + ';border-radius:12px;padding:16px 18px;margin-bottom:16px;break-inside:avoid;">'
+      + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">'
+      + '<span style="font-size:28px;">' + b.emoji + '</span>'
+      + '<div><div style="font-weight:800;font-size:16px;color:' + col + ';">' + b.name + '</div>'
+      + '<div style="font-size:12px;color:#6b7280;">' + b.mood + '</div></div></div>'
+      + '<div style="background:' + col + '11;border-radius:8px;padding:10px;margin-bottom:10px;">'
+      + b.recipe.map(function(r){ return '<div>• ' + r + '</div>'; }).join('')
+      + '</div>'
+      + '<div style="font-size:12px;color:#374151;"><strong>Method:</strong> ' + b.method + '</div>'
+      + '<div style="font-size:12px;color:#374151;margin-top:6px;"><strong>Best for:</strong> ' + b.bestFor.join(' · ') + '</div>'
+      + '</div>';
+  }).join('');
+  w.document.write('<!DOCTYPE html><html><head><title>Aromatherapy Blend Cards</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:750px;margin:30px auto;} h1{color:#be185d;} @media print{body{margin:16px;} .card{break-inside:avoid;} -webkit-print-color-adjust:exact; print-color-adjust:exact;}<\/style>'
+    + '<\/head><body><h1>🧪 Aromatherapy Blend Cards</h1>' + cards
+    + '<div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Aromatherapy</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},600);
+}
+
+function arPrintSafetyGuide() {
+  var safety = AR_DATA.filter(function(a){ return a.cat === 'safety'; });
+  var w = window.open('','_blank','width=900,height=700');
+  var sections = safety.map(function(s) {
+    var col = s.color || '#0369a1';
+    var html = '<div style="margin-bottom:24px;break-inside:avoid;">'
+      + '<h2 style="color:' + col + ';margin-bottom:8px;">' + s.emoji + ' ' + s.name + '</h2>'
+      + '<p style="color:#374151;">' + s.desc + '</p>';
+    if (s.keyPoints) html += '<ul>' + s.keyPoints.map(function(k){return '<li>'+k+'</li>';}).join('') + '</ul>';
+    if (s.conditions) {
+      html += '<table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:12px;">'
+        + '<tr style="background:#fee2e2;"><th style="padding:6px;text-align:left;">Condition</th><th style="padding:6px;text-align:left;">Avoid</th><th style="padding:6px;text-align:left;">Safe Alternatives</th></tr>'
+        + s.conditions.map(function(c,i){
+            return '<tr style="background:' + (i%2?'#fafafa':'#fff') + ';">'
+              + '<td style="padding:6px;border:1px solid #ccc;font-weight:600;">' + c.condition + '</td>'
+              + '<td style="padding:6px;border:1px solid #ccc;color:#dc2626;">' + c.avoid + '</td>'
+              + '<td style="padding:6px;border:1px solid #ccc;color:#16a34a;">' + c.safe + '</td></tr>';
+          }).join('')
+        + '</table>';
+      if (s.general) html += '<ul style="margin-top:10px;">' + s.general.map(function(g){return '<li>'+g+'</li>';}).join('') + '</ul>';
+    }
+    html += '</div>';
+    return html;
+  }).join('');
+  w.document.write('<!DOCTYPE html><html><head><title>Aromatherapy Safety Guide</title>'
+    + '<style>body{font-family:Arial,sans-serif;max-width:750px;margin:30px auto;} h1{color:#0369a1;} h2{font-size:16px;} ul{line-height:1.8;} table{width:100%;} @media print{body{margin:16px;}-webkit-print-color-adjust:exact;print-color-adjust:exact;}<\/style>'
+    + '<\/head><body><h1>⚕️ Aromatherapy Safety Guide for Senior Living</h1>' + sections
+    + '<div style="text-align:center;margin-top:20px;color:#9ca3af;font-size:11px;">Empower Life 365 · empowerlife365.app · Consult your nursing team before starting any aromatherapy program.</div>'
+    + '<\/body><\/html>');
+  w.document.close(); w.focus();
+  setTimeout(function(){w.print();},600);
+}
+
+(function(){
+  var _arOrig = window.switchTab;
+  window.switchTab = function(name) {
+    _arOrig && _arOrig(name);
+    if (name === 'aromatherapy') initAromatherapy();
   };
 })();
 </script>
