@@ -1589,6 +1589,34 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
 .bg-result-banner.win { background:#DCFCE7; border:2px solid #16A34A; color:#14532D; }
 .bg-result-banner.lose { background:#FEF2F2; border:2px solid #EF4444; color:#991B1B; }
 
+
+/* ═══════════════ MONTHLY THEMES ═══════════════ */
+.mt-header { background:linear-gradient(135deg,#F59E0B,#D97706); color:#fff; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.mt-mode-bar { display:flex; gap:8px; padding:14px 20px; background:#FFFBEB; border-bottom:1px solid #FDE68A; flex-wrap:wrap; }
+.mt-mode-btn { padding:7px 16px; border-radius:20px; border:2px solid #D97706; background:#fff; color:#92400E; font-weight:700; font-size:13px; cursor:pointer; transition:all .2s; }
+.mt-mode-btn.active, .mt-mode-btn:hover { background:#D97706; color:#fff; }
+.mt-body { padding:20px; }
+.mt-month-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; }
+.mt-month-card { border-radius:14px; overflow:hidden; cursor:pointer; border:3px solid transparent; transition:all .2s; }
+.mt-month-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,.15); }
+.mt-month-card.active-month { border-color:#D97706; }
+.mt-month-top { padding:18px 16px 14px; }
+.mt-month-emoji { font-size:36px; margin-bottom:6px; }
+.mt-month-name { font-weight:900; font-size:15px; margin-bottom:2px; }
+.mt-month-theme { font-size:13px; opacity:.85; }
+.mt-month-bottom { padding:10px 14px; font-size:12px; opacity:.9; }
+.mt-detail { background:#fff; border:2px solid #FDE68A; border-radius:16px; overflow:hidden; }
+.mt-detail-header { padding:20px 24px; display:flex; align-items:center; gap:14px; }
+.mt-detail-body { padding:0 24px 24px; }
+.mt-section-title { font-weight:900; font-size:13px; margin:18px 0 8px; letter-spacing:.5px; }
+.mt-tag { display:inline-block; border-radius:12px; padding:3px 11px; font-size:12px; font-weight:700; margin:3px; }
+.mt-week-card { background:#FFFBEB; border:1px solid #FDE68A; border-radius:10px; padding:12px 16px; margin-bottom:10px; }
+.mt-week-label { font-weight:900; font-size:12px; color:#92400E; margin-bottom:6px; letter-spacing:.5px; text-transform:uppercase; }
+.mt-week-activity { font-size:13px; color:#374151; padding:3px 0; border-bottom:1px solid #FEF3C7; }
+.mt-week-activity:last-child { border-bottom:none; }
+.mt-print-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.mt-print-card { background:#fff; border:2px solid #FDE68A; border-radius:12px; padding:16px; text-align:center; }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1665,6 +1693,7 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
       <button class="tab-btn" data-tab="arts" id="arts-tab" onclick="switchTab('arts')">🎨 Arts & Crafts</button>
       <button class="tab-btn" data-tab="garden" id="garden-tab" onclick="switchTab('garden')">🌱 Gardening</button>
       <button class="tab-btn" data-tab="brain" id="brain-tab" onclick="switchTab('brain')">🧩 Brain Games</button>
+      <button class="tab-btn" data-tab="monthly" id="monthly-tab" onclick="switchTab('monthly')">📅 Monthly Themes</button>
       <button class="tab-btn" data-tab="karaoke" id="karaoke-tab" onclick="switchTab('karaoke')">🎤 Karaoke</button>
       <button class="tab-btn" data-tab="bblog"    id="bblog-tab"    onclick="switchTab('bblog')" style="display:none;">📋 BB Log</button>
     </div>
@@ -4693,6 +4722,67 @@ h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
         <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Complete 10 famous phrases</div>
         <button onclick="bgPrintWordFillSheet()" class="btn" style="background:#4F46E5;color:#fff;font-size:13px;width:100%;">🖨️ Print</button>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="tab-panel" id="panel-monthly">
+  <div class="mt-header">
+    <div>
+      <div style="font-size:26px;font-weight:900;">📅 Monthly Themes</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px;">12 themed months · week-by-week plans · decorations · songs · print calendars</div>
+    </div>
+    <button onclick="mtPrint()" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);font-size:13px;">🖨️ Print</button>
+  </div>
+  <div class="mt-mode-bar">
+    <button class="mt-mode-btn active" id="mtmode-overview" onclick="mtSetMode('overview')">📆 All Months</button>
+    <button class="mt-mode-btn" id="mtmode-detail" onclick="mtSetMode('detail')">🔍 Month Detail</button>
+    <button class="mt-mode-btn" id="mtmode-planner" onclick="mtSetMode('planner')">📋 Week Planner</button>
+    <button class="mt-mode-btn" id="mtmode-print" onclick="mtSetMode('print')">🖨️ Print Materials</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="mt-view-overview" class="mt-body">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:16px;color:#92400E;">Choose a Month to Explore</div>
+      <div id="mt-current-month-badge" style="background:#FEF3C7;border:2px solid #FDE68A;border-radius:20px;padding:6px 16px;font-weight:700;font-size:13px;color:#92400E;"></div>
+    </div>
+    <div class="mt-month-grid" id="mt-month-grid"></div>
+  </div>
+
+  <!-- DETAIL -->
+  <div id="mt-view-detail" class="mt-body" style="display:none;">
+    <button onclick="mtSetMode('overview')" class="btn btn-secondary" style="margin-bottom:16px;">← All Months</button>
+    <div class="mt-detail" id="mt-detail-panel"></div>
+  </div>
+
+  <!-- WEEK PLANNER -->
+  <div id="mt-view-planner" class="mt-body" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <div style="font-weight:800;font-size:16px;color:#92400E;" id="mt-planner-title">Week Planner</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <select id="mt-planner-month-sel" onchange="mtRenderPlanner()" style="padding:7px 12px;border:2px solid #FDE68A;border-radius:10px;font-size:14px;font-weight:700;color:#92400E;background:#fff;"></select>
+        <button onclick="mtPrintWeekPlanner()" class="btn" style="background:#D97706;color:#fff;font-size:13px;">🖨️ Print</button>
+      </div>
+    </div>
+    <div id="mt-planner-body"></div>
+  </div>
+
+  <!-- PRINT -->
+  <div id="mt-view-print" class="mt-body" style="display:none;">
+    <div style="font-weight:800;font-size:16px;color:#92400E;margin-bottom:6px;">🖨️ Printable Materials</div>
+    <div style="font-size:13px;color:#92400E;margin-bottom:16px;">Select a month to generate themed print materials.</div>
+    <div style="margin-bottom:16px;">
+      <select id="mt-print-month-sel" onchange="mtUpdatePrintMonth()" style="padding:9px 14px;border:2px solid #FDE68A;border-radius:10px;font-size:14px;font-weight:700;color:#92400E;background:#fff;width:240px;box-sizing:border-box;"></select>
+    </div>
+    <div class="mt-print-grid">
+      <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">📅</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Monthly Calendar</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Full calendar with themed activities</div><button onclick="mtPrintMonthCalendar()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">📋</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Activity Plan</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">4-week activity breakdown</div><button onclick="mtPrintActivityPlan()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">🎨</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Decoration Guide</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Decor, colors &amp; supply checklist</div><button onclick="mtPrintDecoGuide()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">💬</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Discussion Guide</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Conversation starters &amp; prompts</div><button onclick="mtPrintDiscussionGuide()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">🎵</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Song &amp; Trivia List</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Themed songs &amp; trivia topics</div><button onclick="mtPrintSongTrivia()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print</button></div>
+      <div class="mt-print-card"><div style="font-size:30px;margin-bottom:8px;">📦</div><div style="font-weight:800;color:#92400E;margin-bottom:6px;">Full Theme Package</div><div style="font-size:12px;color:#6B7280;margin-bottom:12px;">All materials in one print</div><button onclick="mtPrintFullPackage()" class="btn" style="background:#D97706;color:#fff;width:100%;font-size:13px;">🖨️ Print All</button></div>
     </div>
   </div>
 </section>
@@ -35827,6 +35917,427 @@ function bgPrintWordFillSheet() {
   var answers = items.map(function(item,i){ return (i+1)+'. '+item.answer; }).join(' &nbsp;|&nbsp; ');
   var w = window.open('','_blank');
   w.document.write('<html><head><title>Word Fill-In</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:#312E81}.answers{background:#f5f5f5;padding:14px;border-radius:8px;font-size:12px;margin-top:24px;}</style></head><body><h1>📝 Word Fill-In</h1><p style="color:#888;font-size:12px;">Complete each famous phrase · Empower Life 365 · ' + new Date().toLocaleDateString() + '</p>' + html + '<div class="answers"><b>ANSWER KEY:</b><br>' + answers + '</div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   MONTHLY THEMES  —  Empower Life 365
+   ═══════════════════════════════════════════════════════════ */
+
+var mtActiveMonth = new Date().getMonth(); // 0-indexed
+
+var MT_MONTHS = [
+  { id:0, name:'January', emoji:'❄️', theme:'Winter Wonderland',
+    color:'#BFDBFE', textColor:'#1E40AF', darkColor:'#1D4ED8',
+    tagline:'Cozy up with warm memories and winter magic',
+    decorations:['Blue & silver streamers','Snowflake window clings','White fairy lights','Cotton batting as snow','Silver balloons','Ice-blue tablecloths','Pinecone centerpieces'],
+    colors:['Ice Blue','Silver','White','Deep Navy'],
+    songs:['Let It Snow','Winter Wonderland','Frosty the Snowman','Baby It\'s Cold Outside','White Christmas','Sleigh Ride','Silver Bells'],
+    crafts:['Snowflake Window Clings','Zentangle Doodling','Watercolor Sunset'],
+    games:['Winter-themed trivia','Snowflake bingo','Indoor bowling','Card games'],
+    foods:['Hot cocoa bar','Warm soup tasting','Cinnamon rolls','Apple cider','Oatmeal cookies','Chili cook-off'],
+    discussions:['What\'s your favorite memory of a snowy day?','Describe your dream cozy day inside.','What did you do to stay warm as a child?','Tell us about the best winter meal you ever had.','Did you ever go sledding or ice skating?','What\'s your favorite winter holiday tradition?'],
+    trivia:'Winter weather, famous blizzards, holiday traditions',
+    weeks:[
+      {label:'Week 1 — New Year\'s',activities:['New Year\'s resolution sharing circle','Memory jar: write 3 good memories from last year','Winter trivia quiz','Watercolor snowflake painting']},
+      {label:'Week 2 — Cozy Winter',activities:['Hot cocoa bar with toppings','Winter word games (anagrams & fill-in)','Memory match — winter edition','Story sharing: best snow day memory']},
+      {label:'Week 3 — Indoor Games',activities:['Card game tournament','Winter bingo','Snowflake window cling craft','Sing-along: winter songs']},
+      {label:'Week 4 — Look Ahead',activities:['Seed catalog browsing — plan a spring garden','Make a February bulletin board together','Zentangle doodling session','Movie afternoon: classic winter film']}
+    ]},
+  { id:1, name:'February', emoji:'💕', theme:'Love & Friendship',
+    color:'#FBCFE8', textColor:'#9D174D', darkColor:'#BE185D',
+    tagline:'Celebrate the people who matter most',
+    decorations:['Red & pink heart garlands','Rose centerpieces (silk)','Heart-shaped balloons','Red tablecloths','Cupid cutouts','Lace doilies','Love-themed photos on bulletin board'],
+    colors:['Red','Pink','White','Gold'],
+    songs:['My Funny Valentine','Can\'t Help Falling in Love','You Are My Sunshine','L-O-V-E','Let Me Call You Sweetheart','I Only Have Eyes for You','What a Wonderful World'],
+    crafts:['Flower Watercolor Cards','Greeting Card Making','Button Art (hearts)'],
+    games:['Love song trivia','Famous couples quiz','Word games: words of love','Valentine bingo'],
+    foods:['Heart-shaped cookies decorating','Chocolate tasting','Strawberries & cream','Red velvet cake','Pink lemonade','Candy conversation hearts activity'],
+    discussions:['Tell us about someone who has been a lifelong friend.','What\'s the best advice about love you ever received?','Describe a time someone did something kind for you.','What does friendship mean to you?','Tell us about your wedding day (if applicable).','Who was your favorite teacher and why?'],
+    trivia:'Famous love songs, Valentine\'s Day history, famous couples',
+    weeks:[
+      {label:'Week 1 — Pen Pals',activities:['Write a Valentine card to a family member','Discussion: favorite love songs','Heart button art craft','Love song sing-along']},
+      {label:'Week 2 — Friendship Week',activities:['Friendship bracelet activity','Share: tell us about your best friend','Famous couples trivia quiz','Flower watercolor cards']},
+      {label:'Week 3 — Valentine\'s Day',activities:['Valentine\'s party with treats','Heart-shaped cookie decorating','Valentine bingo','Photo booth with heart props']},
+      {label:'Week 4 — Acts of Kindness',activities:['Write thank-you notes to staff','Share kindness: what nice thing happened this week?','Greeting card making for upcoming birthdays','Discussion: a random act of kindness you witnessed']}
+    ]},
+  { id:2, name:'March', emoji:'🍀', theme:'Spring Awakening',
+    color:'#A7F3D0', textColor:'#065F46', darkColor:'#059669',
+    tagline:'New beginnings, fresh air, and the luck of the Irish',
+    decorations:['Shamrock garlands','Green streamers & balloons','Flower cutouts','Butterfly mobiles','Pastel table runners','Potted daffodils or tulips','Spring bird cutouts'],
+    colors:['Emerald Green','Pastel Yellow','White','Gold'],
+    songs:['When Irish Eyes Are Smiling','Danny Boy','This Land Is Your Land','Here Comes the Sun','Springtime Songs Medley','Oh! Susanna','You Are My Sunshine'],
+    crafts:['Paper Plate Spring Flowers','Tissue Paper Flowers','Pressed Leaf Art'],
+    games:['St. Patrick\'s Day trivia','Spring nature bingo','Flower identification game','March Madness bracket fun'],
+    foods:['Corned beef & cabbage','Irish soda bread','Green lemonade','Shamrock shake','Spring salad bar','Potato soup'],
+    discussions:['Do you have Irish heritage? Tell us about it.','What sign of spring do you look forward to most?','What was spring like where you grew up?','Did you ever celebrate St. Patrick\'s Day in a special way?','Describe the perfect spring day.','What flowers did you grow or love as a child?'],
+    trivia:'Irish history & culture, spring nature facts, famous March events',
+    weeks:[
+      {label:'Week 1 — Signs of Spring',activities:['Spring scavenger hunt outside (or from window)','Plant seeds in small pots to watch grow','Paper plate spring flowers craft','Discussion: first signs of spring where you grew up']},
+      {label:'Week 2 — St. Patrick\'s Week',activities:['Irish heritage discussion and trivia','Green lemonade & treats','When Irish Eyes Are Smiling sing-along','Shamrock craft activity']},
+      {label:'Week 3 — Garden Prep',activities:['Gardening club: plan the spring garden','Flower identification game','Tissue paper flowers for decoration','Spring nature bingo']},
+      {label:'Week 4 — Spring Celebration',activities:['Spring party with pastel colors','Flower arranging (silk or fresh)','Spring trivia quiz','Pressed leaf art project']}
+    ]},
+  { id:3, name:'April', emoji:'🌷', theme:'Garden Party',
+    color:'#DDD6FE', textColor:'#5B21B6', darkColor:'#6D28D9',
+    tagline:'Bloom where you\'re planted — beauty is everywhere',
+    decorations:['Fresh or silk flower centerpieces','Butterfly net & butterfly cutouts','Garden tool display','Watering can with flowers','Pastel tablecloths','Flower crown station','Bird & bee cutouts'],
+    colors:['Lavender','Soft Pink','Butter Yellow','Sage Green'],
+    songs:['April in Paris','Here Comes the Sun','What a Wonderful World','Somewhere Over the Rainbow','Beautiful Dreamer','Spring Can Really Hang You Up the Most','Nature Boy'],
+    crafts:['Dried Flower Arrangement','Pressed Flower Bookmarks','Watercolor Sunset'],
+    games:['Flower identification quiz','Garden trivia','Name that bird','Butterfly bingo'],
+    foods:['Garden tea party','Cucumber sandwiches','Lemon bars','Lavender lemonade','Strawberry shortcake','Herb-infused water tasting'],
+    discussions:['What was your favorite flower and why?','Tell us about your most memorable garden.','What\'s the most beautiful thing you ever saw in nature?','Did you have a vegetable garden? What did you grow?','What bird did you love to watch growing up?','What smell reminds you of spring?'],
+    trivia:'Famous gardens, flower meanings, bird identification, spring holidays',
+    weeks:[
+      {label:'Week 1 — Butterfly Garden',activities:['Butterfly identification activity','Plant butterfly-attracting seeds','Butterfly watercolor art','Discussion: most beautiful place you\'ve ever been']},
+      {label:'Week 2 — Flower Week',activities:['Dried flower arrangement workshop','Flower meaning trivia (what does each flower mean?)','Flower pressing for bookmarks','Garden party tea with cucumber sandwiches']},
+      {label:'Week 3 — Earth Day',activities:['Earth Day discussion: environmental memories','Repot houseplants for residents\' rooms','Pressed flower bookmark craft','Nature walk or window bird watching']},
+      {label:'Week 4 — Spring Showcase',activities:['Display all April crafts in a "gallery"','Garden trivia championship','Lavender lemonade social','April reflection: what bloomed this month?']}
+    ]},
+  { id:4, name:'May', emoji:'🌹', theme:'Honoring Our Heroes',
+    color:'#FEF9C3', textColor:'#854D0E', darkColor:'#92400E',
+    tagline:'Celebrating mothers, veterans, and all who served',
+    decorations:['Red, white & blue for Memorial Day','Flower bouquets for Mother\'s Day','Gold star display','Military photos on bulletin board','Rose centerpieces','American flag bunting'],
+    colors:['Red','White','Blue','Gold'],
+    songs:['God Bless America','You\'ll Never Walk Alone','My Way','Over the Rainbow','My Favorite Things','Grand Old Flag','America the Beautiful'],
+    crafts:['Flower Watercolor Cards','Decoupage Memory Frames','Greeting Card Making'],
+    games:['Military history trivia','US geography quiz','Mother\'s Day memory sharing','Patriotic song bingo'],
+    foods:['Mother\'s Day brunch','Strawberries & cream','Apple pie','Memorial Day BBQ-style picnic','Lemonade','Banana splits'],
+    discussions:['Tell us about your mother or a maternal figure in your life.','What\'s the best thing your mother ever taught you?','Did you or a family member serve in the military? Tell us about it.','What does Memorial Day mean to you?','What\'s a tradition from your mother you still carry with you?','What would you want to be remembered for?'],
+    trivia:'Military history, famous mothers, Memorial Day, patriotic songs',
+    weeks:[
+      {label:'Week 1 — Military Heroes',activities:['Veterans sharing circle: share service stories','Military history trivia','Write thank-you letters to active duty troops','Patriotic sing-along: God Bless America']},
+      {label:'Week 2 — Mother\'s Day Prep',activities:['Flower watercolor cards for Mother\'s Day','Discussion: favorite memory with your mother','Make a memory frame as a keepsake gift','Mother\'s Day music: favorite songs from Mom']},
+      {label:'Week 3 — Mother\'s Day Celebration',activities:['Mother\'s Day brunch or tea','Share: what your mother always said','Mother\'s Day trivia','Photo-taking: residents with family photos']},
+      {label:'Week 4 — Memorial Day',activities:['Memorial Day history discussion','Place flags or flowers in memory of loved ones','Patriotic bingo','America the Beautiful group sing-along']}
+    ]},
+  { id:5, name:'June', emoji:'☀️', theme:'Summer Kickoff',
+    color:'#FEF3C7', textColor:'#92400E', darkColor:'#D97706',
+    tagline:'Long days, warm breezes, and summer memories',
+    decorations:['Sunflower centerpieces','Lemonade stand display','Beach chairs & umbrellas','Colorful bunting','Yellow & orange balloons','Sun cutouts','Flip flop garlands'],
+    colors:['Sunshine Yellow','Sky Blue','Orange','White'],
+    songs:['Here Comes the Sun','Walking on Sunshine','Summertime','Under the Boardwalk','In the Good Old Summertime','Summer Wind','Those Lazy-Hazy-Crazy Days of Summer'],
+    crafts:['Sponge Painting on Canvas','Painted Rocks','Sunflower planting'],
+    games:['Summer memory trivia','Beach themed bingo','Summer song Name That Tune','Outdoor lawn games (bocce, horseshoes)'],
+    foods:['Ice cream social','Lemonade stand','Watermelon slices','Corn on the cob','Fruit salad bar','Root beer floats'],
+    discussions:['Where was your favorite summer vacation spot?','Tell us about your favorite summer job.','What was summer like for you as a child?','Describe the best meal you ever had outdoors.','What\'s your favorite summer sound?','What did you do to beat the heat before air conditioning?'],
+    trivia:'Famous summer songs, summer Olympics history, classic vacation spots',
+    weeks:[
+      {label:'Week 1 — Summer Kickoff Party',activities:['Ice cream social to kick off summer','Summer memory sharing: best summer ever','Make a summer bucket list together','Walking on Sunshine sing-along']},
+      {label:'Week 2 — Outdoor Week',activities:['Outdoor activity: bocce, gardening, or walking','Pine cone bird feeder craft','Summer trivia quiz','Lemonade stand & fruit tasting']},
+      {label:'Week 3 — Beach Day',activities:['Indoor beach party with decorations','Beach-themed trivia and bingo','Painted rocks craft','Summer songs Name That Tune']},
+      {label:'Week 4 — Father\'s Day',activities:['Father\'s Day: share memories of your father','Make a card or memory frame for Dad','Father\'s Day trivia: famous fathers in history & TV','Root beer floats social']}
+    ]},
+  { id:6, name:'July', emoji:'🇺🇸', theme:'American Pride',
+    color:'#BFDBFE', textColor:'#1E40AF', darkColor:'#1D4ED8',
+    tagline:'Stars, stripes, and the stories that made America',
+    decorations:['Red, white & blue everywhere','American flag bunting','Star streamers','Patriotic table runners','Eagle cutouts','Fireworks posters','Photo display: historical America'],
+    colors:['Red','White','Blue'],
+    songs:['Stars and Stripes Forever','This Land Is Your Land','Yankee Doodle','God Bless America','Born in the USA','Sweet Home Chicago','My Country \'Tis of Thee'],
+    crafts:['Sponge Painting (red, white & blue)','Collage Making (patriotic)','Flag making craft'],
+    games:['American history trivia','US states & capitals quiz','Patriotic song bingo','Who Am I? (famous Americans)'],
+    foods:['4th of July BBQ celebration','Strawberry shortcake flag cake','Red & blue Jell-O cups','Apple pie','Grilled corn','Cherry lemonade'],
+    discussions:['What does the 4th of July mean to you?','Tell us about the most patriotic moment you ever witnessed.','What American historical event do you remember most vividly?','Where were you when Neil Armstrong landed on the moon?','What makes America special to you?','Tell us about a 4th of July celebration you\'ll never forget.'],
+    trivia:'American history, famous Americans, Declaration of Independence, space race',
+    weeks:[
+      {label:'Week 1 — American History',activities:['American history trivia: founding era','Watch or discuss Declaration of Independence','Red, white & blue sponge painting','God Bless America sing-along']},
+      {label:'Week 2 — 4th of July Celebration',activities:['4th of July party with decorations','Strawberry flag cake baking','Patriotic bingo','Fireworks stories: where were you?']},
+      {label:'Week 3 — Famous Americans',activities:['Who Am I? game with famous Americans','US states & capitals quiz','Collage of American memories','This Land Is Your Land group sing']},
+      {label:'Week 4 — American Stories',activities:['Share: where did your family come from?','Immigration and heritage discussion circle','American songs through the decades','Stars & Stripes trivia championship']}
+    ]},
+  { id:7, name:'August', emoji:'🏆', theme:'Summer Games',
+    color:'#FED7AA', textColor:'#7C2D12', darkColor:'#C2410C',
+    tagline:'Compete, cheer, and celebrate every victory',
+    decorations:['Olympic rings display','Gold, silver & bronze balloons','Scoreboard display','Sports pennants','Athletic photos','Gold star garlands','Medal cutouts'],
+    colors:['Gold','Silver','Bronze','White'],
+    songs:['Eye of the Tiger','We Are the Champions','Simply the Best','Celebration','Hit Me With Your Best Shot','The Greatest Love of All','Don\'t Stop Me Now'],
+    crafts:['Painted Rocks (medals & trophies)','Button Art (team logos)','Sports-themed collage'],
+    games:['Olympic trivia','Sports history quiz','Indoor mini Olympics (balloon volleyball, ring toss)','Name That Sport'],
+    foods:['Gold medal cookies','Sports mix snack bags','Champion\'s ice cream sundae bar','Olympic rings fruit kabobs','Power smoothies','Hot dogs (classic ballpark)'],
+    discussions:['What sports did you play growing up?','Tell us about a sports team you\'ve always loved.','Did you ever watch the Olympics? What\'s your favorite memory?','Who is the greatest athlete you ever saw?','What was your personal "greatest victory"?','Did you or someone you know play a sport competitively?'],
+    trivia:'Olympic Games history, famous athletes, sports records, classic sports moments',
+    weeks:[
+      {label:'Week 1 — Olympics Week',activities:['Olympic history trivia','Watch highlight clips of famous Olympic moments','Gold medal cookies decorating','We Are the Champions sing-along']},
+      {label:'Week 2 — Sports Memories',activities:['Sports stories sharing circle','Name that sport game','Sports-themed collage craft','Sports history quiz']},
+      {label:'Week 3 — Mini Olympics',activities:['Indoor mini Olympics: balloon volleyball, ring toss, beanbag toss','Medal ceremony with certificates','Olympic rings fruit kabob snack','Champion\'s ice cream sundae']},
+      {label:'Week 4 — Greatest Moments',activities:['Greatest moments in sports: group ranking game','Sports trivia championship','Painted rocks: decorate a medal','Celebration party: award certificates to all']}
+    ]},
+  { id:8, name:'September', emoji:'🍂', theme:'Harvest Festival',
+    color:'#FED7AA', textColor:'#7C2D12', darkColor:'#B45309',
+    tagline:'Give thanks for the harvest — and for each other',
+    decorations:['Hay bale & scarecrow display','Pumpkins & gourds','Autumn leaf garlands','Corn stalks','Apple basket centerpieces','Warm amber lighting','Plaid tablecloths'],
+    colors:['Burnt Orange','Deep Red','Gold','Brown'],
+    songs:['Autumn Leaves','September Song','Try to Remember','Country Roads','Amazing Grace','Harvest Moon','Old MacDonald Had a Farm'],
+    crafts:['Autumn Leaf Wreath','Pressed Leaf Art','Pumpkin Decorating'],
+    games:['Harvest trivia','Apple tasting & identification','Fall bingo','Corn husking relay (fun & sensory)'],
+    foods:['Apple cider tasting','Caramel apples','Pumpkin bread','Chili bar','Roasted corn','Apple pie'],
+    discussions:['Tell us about harvest time growing up.','Did you grow up on a farm or near one?','What\'s your favorite fall food?','What did your family do in the fall?','Tell us about picking apples or other fruit.','What does the smell of autumn remind you of?'],
+    trivia:'Harvest traditions, farm history, fall holidays, apple varieties',
+    weeks:[
+      {label:'Week 1 — Apple Season',activities:['Apple tasting: identify varieties','Caramel apple making','September song sing-along','Discussion: harvest memories growing up']},
+      {label:'Week 2 — Autumn Crafts',activities:['Autumn leaf wreath making','Pressed leaf art','Harvest trivia quiz','Chili bar social']},
+      {label:'Week 3 — Pumpkin Week',activities:['Pumpkin decorating (no-carve)','Pumpkin seed activity: how many seeds?','Fall bingo','Pumpkin bread tasting']},
+      {label:'Week 4 — Harvest Celebration',activities:['Harvest festival party','Country Roads & Harvest Moon sing-along','Apple pie social','Share: what are you most grateful for this harvest season?']}
+    ]},
+  { id:9, name:'October', emoji:'🎃', theme:'Halloween & Spooky Fun',
+    color:'#FED7AA', textColor:'#7C2D12', darkColor:'#EA580C',
+    tagline:'Spooky, silly, and full of Halloween magic',
+    decorations:['Jack-o-lanterns & pumpkins','Orange & black streamers','Spider webs','Friendly ghost cutouts','Witch hat centerpieces','Cauldron candy bowl','Skeleton display'],
+    colors:['Orange','Black','Purple','Green'],
+    songs:['Monster Mash','This Is Halloween','Purple People Eater','Witch Doctor','I Put a Spell on You','Spooky','Ghostbusters'],
+    crafts:['Pumpkin Decorating','Paper Bag Puppet (ghost)','Autumn Leaf Wreath'],
+    games:['Halloween trivia','Spooky bingo','Costume parade','Pumpkin bowling','Guess the candy (blindfolded)'],
+    foods:['Candy corn tasting','Pumpkin soup','Halloween-decorated cookies','Apple cider with cinnamon','Monster Mash punch','Caramel apples'],
+    discussions:['What was your best Halloween costume ever?','Tell us about trick-or-treating as a child.','What was the scariest movie you ever saw?','Did you decorate your house for Halloween?','Tell us your favorite ghost story (or urban legend from your town).','What candy did you love most as a kid?'],
+    trivia:'Halloween history & traditions, famous monsters & films, candy history',
+    weeks:[
+      {label:'Week 1 — Halloween History',activities:['Halloween history trivia','Costume discussion: best costume ever','Monster Mash & Ghostbusters sing-along','Spider web craft activity']},
+      {label:'Week 2 — Pumpkin Week',activities:['Pumpkin decorating party','Pumpkin trivia: pumpkin facts','Candy tasting & guessing game','Spooky story sharing circle']},
+      {label:'Week 3 — Costume Parade',activities:['Costume parade & voting','Halloween bingo','Ghost puppet craft','Haunted house memories discussion']},
+      {label:'Week 4 — Halloween Party',activities:['Halloween party with decorations','Trick-or-treat candy distribution','Halloween playlist dance/movement','Pumpkin bowling competition']}
+    ]},
+  { id:10, name:'November', emoji:'🦃', theme:'Gratitude & Giving',
+    color:'#D6B99A', textColor:'#78350F', darkColor:'#92400E',
+    tagline:'Count your blessings and share your thanks',
+    decorations:['Gratitude tree with paper leaves','Cornucopia centerpiece','Autumn harvest display','Candles & warm lighting','Turkey cutouts','Thankful bulletin board','Brown & gold garlands'],
+    colors:['Warm Brown','Gold','Burnt Orange','Cream'],
+    songs:['Count Your Blessings','Grateful','Over the Rainbow','Simple Gifts','Amazing Grace','We Gather Together','God Bless America'],
+    crafts:['Decoupage Memory Frames','Greeting Card Making','Fabric Bookmark'],
+    games:['Thanksgiving trivia','Gratitude bingo','Name that tune: thankful songs','Guess the traditional dish'],
+    foods:['Thanksgiving feast','Pumpkin pie tasting','Apple cider','Cornbread','Cranberry sauce tasting','Pecan pie'],
+    discussions:['What are you most grateful for in your life?','Tell us about your favorite Thanksgiving memory.','What dish did your family always have at Thanksgiving?','Who cooked in your family? What was their specialty?','Tell us about a time when someone\'s kindness changed your day.','What tradition from your family do you wish you could pass on?'],
+    trivia:'Thanksgiving history & traditions, gratitude science, famous acts of giving',
+    weeks:[
+      {label:'Week 1 — Gratitude Week',activities:['Gratitude tree: each resident adds a leaf','Discussion: what are you most thankful for?','Write thank-you notes to loved ones','Count Your Blessings sing-along']},
+      {label:'Week 2 — Thanksgiving History',activities:['Thanksgiving history trivia','Share: family Thanksgiving traditions','Turkey craft decoration','Traditional foods tasting']},
+      {label:'Week 3 — Acts of Giving',activities:['Giving ideas: what could we do for others?','Make cards for children\'s hospital or food bank','Gratitude bingo','Memory frames craft: a thankful memory']},
+      {label:'Week 4 — Thanksgiving Feast',activities:['Thanksgiving celebration feast','Share: favorite holiday dish & recipe','We Gather Together group sing','Reflection: three good things from November']}
+    ]},
+  { id:11, name:'December', emoji:'🎄', theme:'Holiday Celebrations',
+    color:'#DCFCE7', textColor:'#14532D', darkColor:'#15803D',
+    tagline:'Joy, light, warmth, and the magic of the season',
+    decorations:['Christmas tree','Menorah display','Kwanzaa kinara','Twinkling lights everywhere','Poinsettias','Stockings hung','Nativity or winter village scene','Snowman centerpieces'],
+    colors:['Red','Green','Gold','Silver','Blue & White (Hanukkah)'],
+    songs:['Jingle Bells','White Christmas','Silent Night','The Dreidel Song','Deck the Halls','O Holy Night','Rudolph the Red-Nosed Reindeer','Frosty the Snowman','Joy to the World'],
+    crafts:['Paper Fan Flower Wreath','Snowflake Window Clings','Tissue Paper Flowers (poinsettia colors)'],
+    games:['Holiday trivia (Christmas, Hanukkah, Kwanzaa)','Christmas carol bingo','Name that Christmas song','White elephant gift exchange'],
+    foods:['Holiday cookie decorating','Eggnog tasting','Latkes','Candy cane hot chocolate','Gingerbread men','Christmas ham & sides','Fruit cake (love it or leave it debate!)'],
+    discussions:['What\'s your most cherished holiday memory?','Tell us about a gift that meant everything to you.','What holiday traditions did your family have?','Tell us about the best holiday meal you ever had.','Did you ever have a white Christmas? Tell us about it.','What does this season mean to you?'],
+    trivia:'Christmas history & traditions, Hanukkah & Kwanzaa, famous holiday songs',
+    weeks:[
+      {label:'Week 1 — Decorating Day',activities:['Decorate the common areas together','Holiday trivia: Christmas traditions','Paper fan flower wreath craft','Jingle Bells & Deck the Halls sing-along']},
+      {label:'Week 2 — Holiday Memories',activities:['Holiday memory sharing circle','Cookie decorating party','Hanukkah & Kwanzaa discussion & celebration','Holiday card making for family']},
+      {label:'Week 3 — Christmas Week',activities:['Christmas carol sing-along concert','Snowflake window cling craft','Holiday bingo with prizes','Eggnog & cookie social']},
+      {label:'Week 4 — New Year\'s Eve Prep',activities:['Best of the year: share highlights','New Year\'s countdown party','Champagne/sparkling cider toast','Auld Lang Syne sing-along & reflection']}
+    ]}
+];
+
+/* ── INIT ── */
+(function(){
+  var _orig = window.switchTab;
+  window.switchTab = function(name) {
+    _orig && _orig(name);
+    if (name === 'monthly') mtInit();
+  };
+})();
+
+function mtInit() {
+  mtRenderOverview();
+  mtPopulateSelects();
+  var badge = document.getElementById('mt-current-month-badge');
+  if (badge) badge.textContent = '📍 Current Month: ' + MT_MONTHS[new Date().getMonth()].name;
+}
+
+/* ── MODE ── */
+function mtSetMode(mode) {
+  ['overview','detail','planner','print'].forEach(function(m) {
+    document.getElementById('mt-view-' + m).style.display = m === mode ? '' : 'none';
+    var btn = document.getElementById('mtmode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+  if (mode === 'planner') mtRenderPlanner();
+}
+
+/* ── OVERVIEW ── */
+function mtRenderOverview() {
+  var grid = document.getElementById('mt-month-grid');
+  if (!grid) return;
+  var curMonth = new Date().getMonth();
+  grid.innerHTML = MT_MONTHS.map(function(m) {
+    var isCurrent = m.id === curMonth;
+    return '<div class="mt-month-card' + (isCurrent ? ' active-month' : '') + '" style="background:' + m.color + ';" onclick="mtOpenDetail(' + m.id + ')">'
+      + '<div class="mt-month-top">'
+      + '<div class="mt-month-emoji">' + m.emoji + '</div>'
+      + '<div class="mt-month-name" style="color:' + m.textColor + ';">' + m.name + (isCurrent ? ' 📍' : '') + '</div>'
+      + '<div class="mt-month-theme" style="color:' + m.textColor + ';">' + m.theme + '</div>'
+      + '</div>'
+      + '<div class="mt-month-bottom" style="background:' + m.darkColor + ';color:#fff;">' + m.songs.slice(0,2).join(' · ') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ── DETAIL ── */
+function mtOpenDetail(id) {
+  mtActiveMonth = id;
+  var m = MT_MONTHS[id];
+  var panel = document.getElementById('mt-detail-panel');
+  if (!panel) return;
+  panel.innerHTML = '<div class="mt-detail-header" style="background:' + m.color + ';">'
+    + '<div style="font-size:50px;">' + m.emoji + '</div>'
+    + '<div><div style="font-size:22px;font-weight:900;color:' + m.textColor + ';">' + m.name + ' — ' + m.theme + '</div>'
+    + '<div style="font-size:13px;color:' + m.textColor + ';opacity:.8;margin-top:4px;">' + m.tagline + '</div></div>'
+    + '</div>'
+    + '<div class="mt-detail-body">'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">🎨 DECORATIONS & COLORS</div>'
+    + '<div>' + m.decorations.map(function(d){ return '<span class="mt-tag" style="background:' + m.color + ';color:' + m.textColor + ';">• ' + d + '</span>'; }).join('') + '</div>'
+    + '<div style="margin-top:8px;">' + m.colors.map(function(c){ return '<span class="mt-tag" style="background:' + m.darkColor + ';color:#fff;">' + c + '</span>'; }).join('') + '</div>'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">🎵 SONGS</div>'
+    + '<div>' + m.songs.map(function(s){ return '<span class="mt-tag" style="background:#F3F4F6;color:#374151;">' + s + '</span>'; }).join('') + '</div>'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">🎨 CRAFTS</div>'
+    + '<div>' + m.crafts.map(function(c){ return '<span class="mt-tag" style="background:#F3F4F6;color:#374151;">' + c + '</span>'; }).join('') + '</div>'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">🎯 GAMES</div>'
+    + '<div>' + m.games.map(function(g){ return '<span class="mt-tag" style="background:#F3F4F6;color:#374151;">' + g + '</span>'; }).join('') + '</div>'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">🍽️ FOOD IDEAS</div>'
+    + '<div>' + m.foods.map(function(f){ return '<span class="mt-tag" style="background:#F3F4F6;color:#374151;">' + f + '</span>'; }).join('') + '</div>'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">💬 DISCUSSION PROMPTS</div>'
+    + '<div>' + m.discussions.map(function(d, i){ return '<div style="background:' + m.color + ';border-radius:8px;padding:9px 14px;margin-bottom:6px;font-size:13px;color:' + m.textColor + ';"><b>' + (i+1) + '.</b> ' + d + '</div>'; }).join('') + '</div>'
+
+    + '<div class="mt-section-title" style="color:' + m.darkColor + ';">📅 4-WEEK PLAN</div>'
+    + m.weeks.map(function(w){ return '<div class="mt-week-card" style="border-color:' + m.color + ';">'
+      + '<div class="mt-week-label" style="color:' + m.darkColor + ';">' + w.label + '</div>'
+      + w.activities.map(function(a){ return '<div class="mt-week-activity">• ' + a + '</div>'; }).join('')
+      + '</div>'; }).join('')
+
+    + '<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">'
+    + '<button onclick="mtPrintFullPackage(' + id + ')" class="btn" style="background:' + m.darkColor + ';color:#fff;">📦 Print Full Package</button>'
+    + '<button onclick="mtSetMode(\'overview\')" class="btn btn-secondary">← All Months</button>'
+    + '</div>'
+    + '</div>';
+  mtSetMode('detail');
+}
+
+/* ── PLANNER ── */
+function mtPopulateSelects() {
+  var opts = MT_MONTHS.map(function(m){ return '<option value="' + m.id + '">' + m.emoji + ' ' + m.name + ' — ' + m.theme + '</option>'; }).join('');
+  var sel1 = document.getElementById('mt-planner-month-sel');
+  var sel2 = document.getElementById('mt-print-month-sel');
+  if (sel1) { sel1.innerHTML = opts; sel1.value = new Date().getMonth(); }
+  if (sel2) { sel2.innerHTML = opts; sel2.value = new Date().getMonth(); }
+}
+
+function mtRenderPlanner() {
+  var sel = document.getElementById('mt-planner-month-sel');
+  if (!sel) return;
+  var m = MT_MONTHS[parseInt(sel.value)];
+  var title = document.getElementById('mt-planner-title');
+  if (title) title.textContent = m.emoji + ' ' + m.name + ' — ' + m.theme;
+  var body = document.getElementById('mt-planner-body');
+  if (!body) return;
+  body.innerHTML = m.weeks.map(function(w) {
+    return '<div class="mt-week-card" style="border-color:' + m.color + ';border-width:2px;">'
+      + '<div class="mt-week-label" style="color:' + m.darkColor + ';font-size:14px;">' + w.label + '</div>'
+      + w.activities.map(function(a, i) {
+        return '<div style="display:flex;align-items:start;gap:10px;padding:8px 0;border-bottom:1px solid ' + m.color + ';">'
+          + '<div style="width:22px;height:22px;border-radius:50%;background:' + m.darkColor + ';color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">' + (i+1) + '</div>'
+          + '<div style="font-size:14px;color:#374151;line-height:1.5;flex:1;">' + a + '</div>'
+          + '</div>';
+      }).join('')
+      + '</div>';
+  }).join('');
+}
+
+function mtUpdatePrintMonth() { /* just tracks selection */ }
+
+function mtPrint() {
+  var mode = document.querySelector('.mt-mode-btn.active');
+  var m = mode ? mode.id.replace('mtmode-','') : 'overview';
+  if (m === 'detail' || m === 'overview') mtPrintFullPackage(mtActiveMonth);
+  else if (m === 'planner') mtPrintWeekPlanner();
+  else mtPrintFullPackage(mtActiveMonth);
+}
+
+/* ── PRINT ── */
+function mtGetPrintMonth() {
+  var sel = document.getElementById('mt-print-month-sel');
+  return MT_MONTHS[sel ? parseInt(sel.value) : mtActiveMonth];
+}
+
+function mtPrintMonthCalendar() {
+  var m = mtGetPrintMonth();
+  var year = new Date().getFullYear();
+  var firstDay = new Date(year, m.id, 1).getDay();
+  var daysInMonth = new Date(year, m.id + 1, 0).getDate();
+  var cells = '';
+  for (var i = 0; i < firstDay; i++) cells += '<td></td>';
+  for (var d = 1; d <= daysInMonth; d++) {
+    if ((firstDay + d - 1) % 7 === 0 && d > 1) cells += '</tr><tr>';
+    cells += '<td style="border:1px solid #eee;padding:8px;vertical-align:top;height:70px;font-weight:700;color:#374151;">' + d + '</td>';
+  }
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + m.name + ' Calendar</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:750px}h1{color:' + m.textColor + ';text-align:center}table{width:100%;border-collapse:collapse}th{background:' + m.darkColor + ';color:#fff;padding:8px;text-align:center;}td{border:1px solid #eee;padding:8px;min-height:70px;vertical-align:top;}.theme{text-align:center;background:' + m.color + ';padding:10px;border-radius:8px;margin-bottom:20px;font-size:16px;font-weight:700;color:' + m.textColor + ';}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' ' + year + '</h1><div class="theme">' + m.theme + ' — ' + m.tagline + '</div><table><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr><tr>' + cells + '</tr></table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function mtPrintActivityPlan() {
+  var m = mtGetPrintMonth();
+  var weeks = m.weeks.map(function(w){ return '<div style="margin-bottom:20px;"><div style="font-weight:900;font-size:15px;color:' + m.darkColor + ';border-bottom:2px solid ' + m.color + ';padding-bottom:6px;margin-bottom:10px;">' + w.label + '</div>' + w.activities.map(function(a, i){ return '<div style="display:flex;gap:10px;margin-bottom:8px;"><div style="width:22px;height:22px;border-radius:50%;background:' + m.darkColor + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;">' + (i+1) + '</div><div style="font-size:14px;line-height:1.6;">' + a + '</div></div>'; }).join('') + '</div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + m.name + ' Activity Plan</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:' + m.textColor + '}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' — ' + m.theme + '</h1><p style="font-style:italic;color:#888;">' + m.tagline + ' · Empower Life 365</p>' + weeks + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function mtPrintDecoGuide() {
+  var m = mtGetPrintMonth();
+  var decoRows = m.decorations.map(function(d){ return '<tr><td style="padding:9px;border-bottom:1px solid #eee;">☐</td><td style="padding:9px;border-bottom:1px solid #eee;">' + d + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Decoration Guide</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:600px}h1{color:' + m.textColor + '}table{width:100%;border-collapse:collapse}th{background:' + m.darkColor + ';color:#fff;padding:10px;text-align:left;}.colors{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}.swatch{border-radius:8px;padding:5px 14px;font-size:13px;font-weight:700;}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' Decoration Guide</h1><h3 style="color:' + m.textColor + ';">Theme: ' + m.theme + '</h3><div class="colors">' + m.colors.map(function(c){ return '<span class="swatch" style="background:' + m.color + ';color:' + m.textColor + ';">' + c + '</span>'; }).join('') + '</div><table><tr><th></th><th>Decoration Item — Checklist</th></tr>' + decoRows + '</table><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function mtPrintDiscussionGuide() {
+  var m = mtGetPrintMonth();
+  var prompts = m.discussions.map(function(d, i){ return '<div style="margin-bottom:16px;padding:12px 16px;background:' + m.color + ';border-radius:8px;"><b>' + (i+1) + '.</b> ' + d + '<div style="margin-top:8px;border-top:1px solid rgba(0,0,0,.1);padding-top:6px;font-size:12px;color:#888;">Notes: ___________________________________________</div></div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Discussion Guide</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:' + m.textColor + '}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' Discussion Guide</h1><p style="color:#888;font-size:13px;">Theme: ' + m.theme + ' · Empower Life 365</p>' + prompts + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function mtPrintSongTrivia() {
+  var m = mtGetPrintMonth();
+  var songs = m.songs.map(function(s, i){ return '<tr><td style="padding:8px;border-bottom:1px solid #eee;">' + (i+1) + '.</td><td style="padding:8px;border-bottom:1px solid #eee;font-size:14px;">' + s + '</td></tr>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>Songs & Trivia</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:650px}h1{color:' + m.textColor + '}table{width:100%;border-collapse:collapse}th{background:' + m.darkColor + ';color:#fff;padding:10px;text-align:left;}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' — Songs &amp; Trivia</h1><h3 style="color:' + m.textColor + ';">🎵 Featured Songs</h3><table><tr><th>#</th><th>Song</th></tr>' + songs + '</table><div style="margin-top:24px;background:' + m.color + ';padding:16px;border-radius:8px;"><b style="color:' + m.textColor + ';">🧠 Trivia Topics for This Month:</b><div style="font-size:14px;margin-top:8px;line-height:1.8;">' + m.trivia + '</div></div><script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function mtPrintWeekPlanner() {
+  var sel = document.getElementById('mt-planner-month-sel');
+  var m = MT_MONTHS[sel ? parseInt(sel.value) : mtActiveMonth];
+  var weeks = m.weeks.map(function(w){ return '<div style="margin-bottom:20px;page-break-inside:avoid;"><div style="font-weight:900;font-size:15px;color:' + m.darkColor + ';border-bottom:2px solid ' + m.color + ';padding-bottom:6px;margin-bottom:10px;">' + w.label + '</div>' + w.activities.map(function(a){ return '<div style="display:flex;gap:10px;margin-bottom:10px;"><span style="font-size:16px;">•</span><div style="font-size:14px;line-height:1.6;">' + a + '</div></div>'; }).join('') + '</div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + m.name + ' Week Planner</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:680px}h1{color:' + m.textColor + '}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' Week-by-Week Planner</h1><p style="font-style:italic;color:' + m.textColor + ';">' + m.theme + ' · ' + m.tagline + '</p><hr style="border-color:' + m.color + ';border-width:3px;margin:16px 0;">' + weeks + '<script>window.onload=function(){window.print()};<\/script></body></html>');
+  w.document.close();
+}
+
+function mtPrintFullPackage(id) {
+  var m = MT_MONTHS[id !== undefined ? id : mtActiveMonth];
+  var weeks = m.weeks.map(function(w){ return '<div style="margin-bottom:16px;"><b style="color:' + m.darkColor + ';">' + w.label + '</b><ul>' + w.activities.map(function(a){ return '<li>' + a + '</li>'; }).join('') + '</ul></div>'; }).join('');
+  var decoList = m.decorations.map(function(d){ return '<li>☐ ' + d + '</li>'; }).join('');
+  var foodList = m.foods.map(function(f){ return '<li>' + f + '</li>'; }).join('');
+  var gameList = m.games.map(function(g){ return '<li>' + g + '</li>'; }).join('');
+  var prompts = m.discussions.map(function(d, i){ return '<div style="margin-bottom:10px;padding:10px 14px;background:' + m.color + ';border-radius:8px;"><b>' + (i+1) + '.</b> ' + d + '</div>'; }).join('');
+  var w = window.open('','_blank');
+  w.document.write('<html><head><title>' + m.name + ' Full Package</title><style>body{font-family:Arial,sans-serif;padding:36px;max-width:700px}h1{color:' + m.textColor + ';text-align:center;font-size:28px}h2{color:' + m.darkColor + ';font-size:17px;border-bottom:2px solid ' + m.color + ';padding-bottom:6px;margin-top:28px}ul{line-height:2}li{font-size:14px;}</style></head><body><h1>' + m.emoji + ' ' + m.name + ' — ' + m.theme + '</h1><p style="text-align:center;font-style:italic;color:#888;">' + m.tagline + ' · Empower Life 365</p><h2>📅 4-Week Activity Plan</h2>' + weeks + '<h2>🎨 Decorations Checklist</h2><ul>' + decoList + '</ul><h2>🍽️ Food Ideas</h2><ul>' + foodList + '</ul><h2>🎯 Game Ideas</h2><ul>' + gameList + '</ul><h2>💬 Discussion Prompts</h2>' + prompts + '<h2>🎵 Featured Songs</h2><ul>' + m.songs.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ul><h2>🧠 Trivia Topics</h2><p>' + m.trivia + '</p><script>window.onload=function(){window.print()};<\/script></body></html>');
   w.document.close();
 }
 </script>
